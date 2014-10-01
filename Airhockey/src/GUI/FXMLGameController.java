@@ -65,11 +65,6 @@ public class FXMLGameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //columnPlayer.setCellValueFactory(new );
-        
-        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-        
-        Image img = new Image("Speelveld.png");
-        gc.drawImage(img, -200, -200);
 
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         ArrayList<Coordinate> corners;
