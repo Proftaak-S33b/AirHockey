@@ -18,7 +18,7 @@ public class Administrator {
      *
      * @param player
      */
-    public static void getInstance(Player player) {
+    public static Administrator getInstance(Player player) {
         // TODO - implement Administrator.getInstance
         throw new UnsupportedOperationException();
     }
