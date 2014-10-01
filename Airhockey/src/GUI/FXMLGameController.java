@@ -6,6 +6,7 @@
 package GUI;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -56,9 +57,13 @@ public class FXMLGameController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //columnPlayer.setCellValueFactory(new );
+        
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        
         Image img = new Image("Speelveld.png");
         gc.drawImage(img, -200, -200);
+
+        
     }
     
     public void SetTekst(ActionEvent event)
@@ -66,5 +71,6 @@ public class FXMLGameController implements Initializable {
         listChat.getItems().add(textChat.getText());
         textChat.clear();
     }
-
+    
+    
 }
