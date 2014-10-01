@@ -5,12 +5,11 @@ public class Field {
     private int size;
 
     /**
-     *
+     * 
      * @param size
      */
     public Field(int size) {
-        // TODO - implement Field.Field
-        throw new UnsupportedOperationException();
+        this.size = size;
     }
 
     public int getSize() {
