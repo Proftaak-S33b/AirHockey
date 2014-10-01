@@ -2,8 +2,8 @@ package game;
 
 public class Human implements Player {
 
-    private String name;
-    private String password;
+    private final String name;
+    private final String password;
 
     /**
      *
@@ -11,8 +11,8 @@ public class Human implements Player {
      * @param password
      */
     public Human(String name, String password) {
-        // TODO - implement Human.Human
-        throw new UnsupportedOperationException();
+        this.name = name;
+        this.password = password;
     }
 
     @Override

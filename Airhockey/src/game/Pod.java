@@ -2,8 +2,8 @@ package game;
 
 public class Pod {
 
-    private Player player;
-    private Coordinate position;
+    private final Player player;
+    private final Coordinate position;
 
     /**
      *
@@ -11,8 +11,8 @@ public class Pod {
      * @param position
      */
     public Pod(Player player, Coordinate position) {
-        // TODO - implement Pod.Pod
-        throw new UnsupportedOperationException();
+        this.player = player;
+        this.position = position;
     }
 
     public Player getPlayer() {

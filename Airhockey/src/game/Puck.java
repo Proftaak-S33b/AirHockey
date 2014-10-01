@@ -1,20 +1,23 @@
 package game;
 
+import java.util.ArrayList;
+
 public class Puck {
 
-    Pod[] pods;
-    private Coordinate position;
+    private final Coordinate position;
     private int speed;
-    private Coordinate direction;
-    private Pod[] touched;
+    private final Coordinate direction;
+    private final ArrayList<Pod> touched;
 
     /**
      *
      * @param speed
      */
     public Puck(int speed) {
-        // TODO - implement Puck.Puck
-        throw new UnsupportedOperationException();
+        this.speed = speed;
+        position = new Coordinate(Math.random() * 100 + 200, Math.random() * 100 + 200);
+        direction = new Coordinate(Math.random() * 100 + 200, Math.random() * 100 + 200);
+        touched = new ArrayList<>();
     }
 
     public Coordinate getPosition() {
@@ -43,8 +46,7 @@ public class Puck {
     }
 
     public Pod getLastTouched() {
-        // TODO - implement Puck.getLastTouched
-        throw new UnsupportedOperationException();
+        return this.touched.get(0);
     }
 
     /**
@@ -52,8 +54,7 @@ public class Puck {
      * @param touched
      */
     public void addTouched(Pod touched) {
-        // TODO - implement Puck.addTouched
-        throw new UnsupportedOperationException();
+        this.touched.add(0, touched);
     }
 
 }

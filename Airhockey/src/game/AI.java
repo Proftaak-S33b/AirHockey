@@ -2,19 +2,19 @@ package game;
 
 public class AI implements Player {
 
+    private final String name;
+    
     /**
      *
      * @param name
      */
     public AI(String name) {
-        // TODO - implement AI.AI
-        throw new UnsupportedOperationException();
+        this.name = name;
     }
 
     @Override
     public String getName() {
-        // TODO - implement AI.getName
-        throw new UnsupportedOperationException();
+        return this.name;
     }
 
 }
