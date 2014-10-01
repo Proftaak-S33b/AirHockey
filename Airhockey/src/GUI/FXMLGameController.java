@@ -5,8 +5,7 @@
  */
 package GUI;
 
-import game.Coordinate;
-import static java.lang.Math.*;
+import game.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -52,10 +51,6 @@ public class FXMLGameController implements Initializable {
 
     private game.GameWorld world;
 
-    //TEMPORARY FOR TESTING PURPOSES
-    private final int marge = 25;
-    private final int fieldSize = 500;
-
     /**
      * Initializes the controller class.
      *
@@ -64,38 +59,46 @@ public class FXMLGameController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //columnPlayer.setCellValueFactory(new );
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Human("Henk", "fiets"));
+        players.add(new AI("Player 2"));
+        players.add(new AI("Player 3"));
+        world = new GameWorld(players);
 
+        //Get data for drawing
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
-        ArrayList<Coordinate> corners;
-
+        ArrayList<Coordinate> corners = world.getField().getFieldCorners();
+        ArrayList<Coordinate> goal;
+        ArrayList<Coordinate> puck = world.getField().getStartPositions();
+        
         //Blue side
         gc.setStroke(Color.BLUE);
-        gc.strokeLine(fieldSize / 2 + marge, 67 + marge, 0, fieldSize + marge);
-        corners = getGoalCorners(fieldSize / 2 + marge, 67 + marge, 0, fieldSize + marge, -20, -14);
-        gc.strokePolygon(new double[]{corners.get(0).x, corners.get(1).x, corners.get(2).x, corners.get(3).x},
-                new double[]{corners.get(0).y, corners.get(1).y, corners.get(2).y, corners.get(3).y}, 4);
+        gc.strokeLine(corners.get(0).x, corners.get(0).y, corners.get(1).x, corners.get(1).y);
+        goal = world.getField().getGoalCorners(corners.get(0).x, corners.get(0).y, corners.get(1).x, corners.get(1).y, -18, -12);
+        gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
+                new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
+        gc.fillOval(puck.get(0).x , puck.get(0).y, world.getField().getPodSize(), world.getField().getPodSize());
 
         //Green side
         gc.setStroke(Color.GREEN);
-        gc.strokeLine(fieldSize / 2 + marge, 67 + marge, fieldSize + marge, fieldSize + marge);
-        corners = getGoalCorners(fieldSize / 2 + marge, 67 + marge, fieldSize + marge, fieldSize + marge, 20, -14);
-        gc.strokePolygon(new double[]{corners.get(0).x, corners.get(1).x, corners.get(2).x, corners.get(3).x},
-                new double[]{corners.get(0).y, corners.get(1).y, corners.get(2).y, corners.get(3).y}, 4);
+        gc.strokeLine(corners.get(1).x, corners.get(1).y, corners.get(2).x, corners.get(2).y);
+        goal = world.getField().getGoalCorners(corners.get(1).x, corners.get(1).y, corners.get(2).x, corners.get(2).y, 18, -12);
+        gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
+                new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
+        gc.fillOval(puck.get(1).x, puck.get(1).y, 500 * 0.08, 500 * 0.08);
 
         //Red side
         gc.setStroke(Color.RED);
-        gc.strokeLine(0, fieldSize + marge, fieldSize + marge, fieldSize + marge);
-        corners = getGoalCorners(0, fieldSize + marge, fieldSize + marge, fieldSize + marge, 0, 20);
-        gc.strokePolygon(new double[]{corners.get(0).x, corners.get(1).x, corners.get(2).x, corners.get(3).x},
-                new double[]{corners.get(0).y, corners.get(1).y, corners.get(2).y, corners.get(3).y}, 4);
-
+        gc.strokeLine(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y);
+        goal = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
+        gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
+                new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
+        gc.fillOval(puck.get(2).x, puck.get(2).y, 500 * 0.08, 500 * 0.08);
     }
 
     public void SetTekst(ActionEvent event) {
         listChat.getItems().add(textChat.getText());
         textChat.clear();
     }
-    
-    
+
 }
