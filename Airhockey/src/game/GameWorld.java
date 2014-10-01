@@ -20,6 +20,7 @@ public class GameWorld {
     /**
      *
      * @param playernr 1-3
+     * @return
      */
     public Player getPlayer(int playernr) {
         // TODO - implement GameWorld.getPlayer

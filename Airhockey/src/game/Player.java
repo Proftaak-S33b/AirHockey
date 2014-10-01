@@ -1,22 +1,7 @@
 package game;
 
-public class Player {
+public interface Player {
 
-    private String name;
-    private String password;
-
-    /**
-     *
-     * @param name
-     * @param password
-     */
-    public Player(String name, String password) {
-        // TODO - implement Player.Player
-        throw new UnsupportedOperationException();
-    }
-
-    public String getName() {
-        return this.name;
-    }
+    public String getName();
 
 }
