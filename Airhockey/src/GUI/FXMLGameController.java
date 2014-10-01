@@ -92,21 +92,6 @@ public class FXMLGameController implements Initializable {
 
     }
 
-    private ArrayList<Coordinate> getGoalCorners(double x1, double y1, double x2, double y2, double margeX, double margeY) {
-        ArrayList<Coordinate> rectangleGoal = new ArrayList<>();
-        double vx = x2 - x1; // x vector
-        double vy = y2 - y1; // y vector
-        double mag = sqrt(vx * vx + vy * vy); //magnitude (also known as length)
-        vx /= mag; //normalize x vector
-        vy /= mag; //normalize y vector
-
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + vx * (mag * 0.3)), (int) ((float) y1 + vy * (mag * 0.3))));
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + margeX + vx * (mag * 0.3)), (int) ((float) y1 + margeY + vy * (mag * 0.3))));
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + margeX + vx * (mag * 0.7)), (int) ((float) y1 + margeY + vy * (mag * 0.7))));
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + vx * (mag * 0.7)), (int) ((float) y1 + vy * (mag * 0.7))));
-        return rectangleGoal;
-    }
-
     public void SetTekst(ActionEvent event) {
         listChat.getItems().add(textChat.getText());
         textChat.clear();
