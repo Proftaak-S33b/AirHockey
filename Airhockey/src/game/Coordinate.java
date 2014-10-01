@@ -2,17 +2,22 @@ package game;
 
 public class Coordinate {
 
-    public int x;
-    public int y;
+    public double x;
+    public double y;
 
     /**
-     *
+     * This class holds a x and y coordinate for use in calculations or drawing.
      * @param x
      * @param y
      */
-    public Coordinate(int x, int y) {
-        // TODO - implement Coordinate.Coordinate
-        throw new UnsupportedOperationException();
+    public Coordinate(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    
+    @Override
+    public String toString(){
+        return x + ", " + y;
     }
 
 }

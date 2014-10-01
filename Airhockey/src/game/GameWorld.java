@@ -1,10 +1,14 @@
 package game;
 
+import java.util.List;
+import javafx.collections.ObservableList;
+
 public class GameWorld {
 
     private Puck puck;
     private Pod[] pods;
-    private Player[] players;
+    private List<Player> players;
+    private transient ObservableList<Player> observablePlayers;
     private int[] scores;
     private Field field;
 
