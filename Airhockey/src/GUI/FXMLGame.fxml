@@ -8,17 +8,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="GUI.FXMLGameController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FXMLGameController">
    <children>
       <Canvas fx:id="gameCanvas" height="550.0" layoutX="25.0" layoutY="25.0" width="550.0" />
       <TitledPane layoutX="14.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" opacity="0.9" prefHeight="201.0" prefWidth="162.0" text="Chat">
          <content>
             <Pane prefHeight="175.0" prefWidth="160.0">
                <children>
-                  <Button fx:id="buttonChat" layoutX="112.0" layoutY="143.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="54.0" text="Send" />
+                  <Button fx:id="buttonChat" layoutX="112.0" layoutY="143.0" mnemonicParsing="false" onAction="#SetTekst" prefHeight="36.0" prefWidth="54.0" text="Send" />
                   <ListView fx:id="listChat" prefHeight="148.0" prefWidth="160.0" />
-                  <TextField fx:id="textChat" layoutY="148.0" prefHeight="26.0" prefWidth="117.0" />
+                  <TextField fx:id="textChat" layoutY="148.0" onAction="#SetTekst" prefHeight="26.0" prefWidth="117.0" />
                </children>
             </Pane>
          </content>
