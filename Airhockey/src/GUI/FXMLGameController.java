@@ -24,7 +24,7 @@ import javafx.scene.paint.Color;
 /**
  * FXML Controller class
  *
- * @author HP user
+ * @author Joris Douven
  */
 public class FXMLGameController implements Initializable {
 
@@ -69,7 +69,7 @@ public class FXMLGameController implements Initializable {
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         ArrayList<Coordinate> corners = world.getField().getFieldCorners();
         ArrayList<Coordinate> goal;
-        ArrayList<Coordinate> puck = world.getField().getStartPositions();
+        ArrayList<Coordinate> pod = world.getField().getStartPositions();
         
         //Blue side
         gc.setStroke(Color.BLUE);
@@ -77,7 +77,7 @@ public class FXMLGameController implements Initializable {
         goal = world.getField().getGoalCorners(corners.get(0).x, corners.get(0).y, corners.get(1).x, corners.get(1).y, -18, -12);
         gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
                 new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
-        gc.fillOval(puck.get(0).x , puck.get(0).y, world.getField().getPodSize(), world.getField().getPodSize());
+        gc.fillOval(pod.get(0).x , pod.get(0).y, world.getField().getPodSize(), world.getField().getPodSize());
 
         //Green side
         gc.setStroke(Color.GREEN);
@@ -85,7 +85,7 @@ public class FXMLGameController implements Initializable {
         goal = world.getField().getGoalCorners(corners.get(1).x, corners.get(1).y, corners.get(2).x, corners.get(2).y, 18, -12);
         gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
                 new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
-        gc.fillOval(puck.get(1).x, puck.get(1).y, 500 * 0.08, 500 * 0.08);
+        gc.fillOval(pod.get(1).x, pod.get(1).y, 500 * 0.08, 500 * 0.08);
 
         //Red side
         gc.setStroke(Color.RED);
@@ -93,7 +93,7 @@ public class FXMLGameController implements Initializable {
         goal = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
         gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
                 new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
-        gc.fillOval(puck.get(2).x, puck.get(2).y, 500 * 0.08, 500 * 0.08);
+        gc.fillOval(pod.get(2).x, pod.get(2).y, 500 * 0.08, 500 * 0.08);
     }
 
     public void SetTekst(ActionEvent event) {
