@@ -20,10 +20,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
 /**
  * FXML Controller class
@@ -54,7 +52,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     private Canvas gameCanvas;
 
     private game.GameWorld world;
-    GraphicsContext gc ;
+    GraphicsContext gc;
     private Double xPod;
     private Double yPod;
     private Double xPuck;
@@ -93,11 +91,10 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         listChat.getItems().add(textChat.getText());
         textChat.clear();
     }
-    
-    public void Draw()
-    {
+
+    public void Draw() {
         gc.setFill(Color.WHITESMOKE);
-        gc.fillRect(0.0,0.0,550,550);
+        gc.fillRect(0.0, 0.0, 550, 550);
 
         //Blue side
         gc.setStroke(Color.BLUE);
@@ -125,29 +122,31 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
         gc.setFill(Color.RED);
         gc.fillOval(xPod, yPod, world.getField().getPodSize(), world.getField().getPodSize());
-        
+
         //puck
         gc.setFill(Color.BLACK);
-        gc.fillOval( xPuck, yPuck , world.getField().getPuckSize(), world.getField().getPuckSize());
-        
+        gc.fillOval(xPuck, yPuck, world.getField().getPuckSize(), world.getField().getPuckSize());
+
     }
+
     @Override
     public void handle(KeyEvent e) {
         goal = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
-        if (e.getCharacter().equals("s")) {
-            gc.setFill(Color.RED);
-            if(xPod > goal.get(2).x)
-            {
-                xPod -= 5;
-            }
-            Draw();
-        } else if (e.getCharacter().equals("d")) {
-            gc.setFill(Color.RED);
-            if(xPod < goal.get(0).x - world.getField().getPodSize())
-            {
-                xPod += 5;
-            }
-            Draw();
+        switch (e.getCharacter()) {
+            case "s":
+                gc.setFill(Color.RED);
+                if (xPod > goal.get(2).x) {
+                    xPod -= 5;
+                    Draw();
+                }
+                break;
+            case "d":
+                gc.setFill(Color.RED);
+                if (xPod < goal.get(0).x - world.getField().getPodSize()) {
+                    xPod += 5;
+                    Draw();
+                }
+                break;
         }
     }
 
