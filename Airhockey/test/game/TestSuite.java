@@ -13,7 +13,6 @@ public class TestSuite {
     
     private CoordinateTest coordinate;
     private AdministratorTest administrator;
-    private PlayerTest player;
     private PuckTest puck;
     private PodTest pod;
     private HumanTest human;
@@ -25,7 +24,6 @@ public class TestSuite {
     public TestSuite(){
         coordinate = new CoordinateTest();
         administrator = new AdministratorTest();
-        player = new PlayerTest();
         puck = new PuckTest();
         pod = new PodTest();
         human = new HumanTest();

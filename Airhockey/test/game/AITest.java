@@ -19,12 +19,6 @@ public class AITest {
     
     private AI ai;
     
-    public AITest() {
-        ai = new AI("CPU1");
-        
-        this.testGetName();
-    }
-    
     @BeforeClass
     public static void setUpClass() {        
     }
@@ -34,7 +28,8 @@ public class AITest {
     }
     
     @Before
-    public void setUp() {        
+    public void setUp() {
+        ai = new AI("CPU1");
     }
     
     @After

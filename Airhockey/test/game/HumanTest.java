@@ -19,12 +19,6 @@ public class HumanTest {
     
     private Human human;
     
-    public HumanTest() {
-        human = new Human("name", "password");
-        
-        this.testGetName();
-    }
-    
     @BeforeClass
     public static void setUpClass() {
     }
@@ -35,6 +29,7 @@ public class HumanTest {
     
     @Before
     public void setUp() {
+        human = new Human("name", "password");
     }
     
     @After

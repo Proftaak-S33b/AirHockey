@@ -21,14 +21,6 @@ public class FieldTest {
     
     private Field field;
     
-    public FieldTest() {
-        field = new Field(500);
-        
-        this.testGetGoalCorners();
-        this.testGetSize();
-        this.testSetSize();
-    }
-    
     @BeforeClass
     public static void setUpClass() {
     }
@@ -39,6 +31,7 @@ public class FieldTest {
     
     @Before
     public void setUp() {
+        field = new Field(500);
     }
     
     @After
@@ -78,7 +71,7 @@ public class FieldTest {
         double y2 = 0.0;
         double sizeX = 0.0;
         double sizeY = 0.0;
-        Field instance = null;
+        Field instance = new Field(500);
         ArrayList expResult = null;
         ArrayList result = instance.getGoalCorners(x1, y1, x2, y2, sizeX, sizeY);
         assertEquals(expResult, result);

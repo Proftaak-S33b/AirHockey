@@ -19,15 +19,6 @@ public class DifficultyTest {
 
     private Difficulty diff;
     
-    public DifficultyTest() {
-        diff = Difficulty.NORMAL;
-        
-        this.testGetOmschr();
-        this.testToString();
-        this.testValueOf();
-        this.testValues();
-    }
-    
     @BeforeClass
     public static void setUpClass() {
     }
@@ -38,30 +29,12 @@ public class DifficultyTest {
     
     @Before
     public void setUp() {
+        diff = Difficulty.NORMAL;
     }
     
     @After
     public void tearDown() {
         System.out.println("Finished testing " + this.toString() + ".\n");
-    }
-
-    /**
-     * Test of values method, of class Difficulty.
-     */
-    @Test
-    public void testValues() {
-        System.out.println("Testing Difficulty.values():");
-        assertFalse("No constants declared.", diff.values().length == 0);
-        
-    }
-
-    /**
-     * Test of valueOf method, of class Difficulty.
-     */
-    @Test
-    public void testValueOf() {
-        System.out.println("Testing Difficulty.valueOf():");
-        assertNotNull("valueOf() is null.", diff.valueOf("NORMAL"));
     }
 
     /**

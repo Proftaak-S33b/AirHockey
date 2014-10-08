@@ -5,6 +5,7 @@
 package game;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -13,40 +14,39 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests the GameWorld class.
- * Let op: Sommige objecten moeten misschien vervangen worden door mocks.
- *         Hier hebben we nog geen les over gehad dus dit is nog niet toegepast.
+ * Tests the GameWorld class. Let op: Sommige objecten moeten misschien
+ * vervangen worden door mocks. Hier hebben we nog geen les over gehad dus dit
+ * is nog niet toegepast.
+ *
  * @author Etienne
  */
 public class GameWorldTest {
-    
+
     private GameWorld gameworld;
     private Field field;
     private Pod pod;
     private Administrator admin;
-            
-    public GameWorldTest() {
-        field = new Field(500);
-        pod = new Pod(null, null);
-        Player players[] = new Player[] {new Human("A", ""), new Human("B", ""), new Human("B", "")};
-        gameworld = new GameWorld(players);       
-        admin = Administrator.getInstance(players[0]);
-        
-        this.testGetPlayer();
-    }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        field = new Field(500);
+        pod = new Pod(null, null);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Human("A", ""));
+        players.add(new Human("B", ""));
+        players.add(new Human("C", ""));
+        gameworld = new GameWorld(players);
+        admin = Administrator.getInstance(players.get(0));
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -56,7 +56,7 @@ public class GameWorldTest {
      */
     @Test
     public void testGetPlayer() {
-        System.out.println("Testing GameWorld.getPlayer():");        
-        assertNotNull("Gameworld does not contain any players: (Or does your playerlist start at 1?)", gameworld.getPlayer(0));
+        System.out.println("Testing GameWorld.getPlayer():");
+        assertNotNull("Gameworld does not contain any players: (Or does your playerlist start at 1?)", gameworld.getPlayer("A"));
     }
 }

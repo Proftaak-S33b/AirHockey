@@ -17,6 +17,7 @@ public class Administrator {
     /**
      *
      * @param player
+     * @return returns the Administrator instance
      */
     public static Administrator getInstance(Player player) {
         // TODO - implement Administrator.getInstance

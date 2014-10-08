@@ -19,12 +19,6 @@ public class CoordinateTest {
     
     private Coordinate c;
     
-    public CoordinateTest() {
-        c = new Coordinate(0,0);
-        
-        this.testToString();
-    }
-    
     @BeforeClass
     public static void setUpClass() {
     }
@@ -35,6 +29,7 @@ public class CoordinateTest {
     
     @Before
     public void setUp() {
+        c = new Coordinate(0,0);
     }
     
     @After

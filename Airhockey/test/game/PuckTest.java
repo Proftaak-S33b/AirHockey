@@ -13,38 +13,27 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 
 /**
- * Tests the puck class.
- * TODO returnwaardes, getters.
+ * Tests the puck class. TODO returnwaardes, getters.
+ *
  * @author Etienne
  */
 public class PuckTest {
-    
+
     private Puck puck;
-    
-    public PuckTest() {
-        puck = new Puck(10);
-        
-        this.testAddTouched();
-        this.testGetDirection();
-        this.testGetLastTouched();
-        this.testGetPosition();
-        this.testMove();
-        this.testSetSpeed();
-    }
-    
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        puck = new Puck(10);
     }
-    
+
     @After
     public void tearDown() {
         System.out.println("Finished testing " + this.toString() + ".\n");
@@ -55,8 +44,8 @@ public class PuckTest {
      */
     @Test
     public void testGetPosition() {
-        System.out.println("Testing Puck.getPosition():");        
-        assertNotNull("Position is null.", puck.getPosition());        
+        System.out.println("Testing Puck.getPosition():");
+        assertNotNull("Position is null.", puck.getPosition());
     }
 
     /**
@@ -65,7 +54,7 @@ public class PuckTest {
     @Test
     public void testMove() {
         System.out.println("Testing Puck.move():");
-        
+
     }
 
     /**
@@ -93,7 +82,7 @@ public class PuckTest {
     @Test
     public void testGetLastTouched() {
         System.out.println("Testing Puck.getLastTouched():");
-        Pod p = new Pod(new Human("name", "password"), new Coordinate(0,0));                
+        Pod p = new Pod(new Human("name", "password"), new Coordinate(0, 0));
         assertEquals("Pod verkeerd toegevoegd.", puck.getLastTouched(), p);
     }
 
@@ -105,7 +94,7 @@ public class PuckTest {
         System.out.println("Testing Puck.addTouched():");
         puck = null;
         puck = new Puck(10);
-        Pod p = new Pod(new Human("name", "password"), new Coordinate(0,0));                
+        Pod p = new Pod(new Human("name", "password"), new Coordinate(0, 0));
         puck.addTouched(p);
         assertEquals("Toucher not added.", puck.getLastTouched(), p);
     }

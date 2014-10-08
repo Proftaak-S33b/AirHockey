@@ -13,33 +13,28 @@ import static org.junit.Assert.*;
 
 /**
  * Tests the administrator singleton class.
+ *
  * @author Etienne
  */
 public class AdministratorTest {
-    
+
     public Administrator admin;
     public Player player;
-    
-    public AdministratorTest() {
-        player = new Human("username", "password");
-        admin = Administrator.getInstance(player);
-        
-        this.testGetInstance();
-        this.testGetPlayer();
-    }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        player = new Human("username", "password");
+        admin = Administrator.getInstance(player);
     }
-    
+
     @After
     public void tearDown() {
         System.out.println("Finished testing " + this.toString() + ".\n");
@@ -50,7 +45,7 @@ public class AdministratorTest {
      */
     @Test
     public void testGetInstance() {
-        System.out.println("Testing Administrator.getInstance:");     
+        System.out.println("Testing Administrator.getInstance:");
         assertNotNull("Admin.getInstance() returned an empty instance.", Administrator.getInstance(player));
         assertEquals("Wrong instance returned.", player, Administrator.getInstance(player));
     }

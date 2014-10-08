@@ -13,36 +13,30 @@ import static org.junit.Assert.*;
 
 /**
  * Tests the pod class.
+ *
  * @author Etienne
  */
 public class PodTest {
-    
-    private Pod pod;    
-    private Player player;    
+
+    private Pod pod;
+    private Player player;
     private Coordinate position;
-    
-    public PodTest() {
-        player = new Human("name", "password");
-        position = new Coordinate(0, 0);
-        pod = new Pod(player, position);
-        
-        this.testGetPlayer();
-        this.testGetPosition();
-        this.testMove();
-    }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        player = new Human("name", "password");
+        position = new Coordinate(0, 0);
+        pod = new Pod(player, position);
     }
-    
+
     @After
     public void tearDown() {
         System.out.println("Finished testing " + this.toString() + ".\n");
@@ -73,7 +67,7 @@ public class PodTest {
      */
     @Test
     public void testMove() {
-        System.out.println("Testing Pod.Move():");        
+        System.out.println("Testing Pod.Move():");
         pod.move(new Coordinate(5, 5));
         assertEquals("Pod moved but position not the equalling.", position, pod.getPosition());
     }

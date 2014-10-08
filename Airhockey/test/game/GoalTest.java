@@ -13,36 +13,30 @@ import static org.junit.Assert.*;
 
 /**
  * TODO
+ *
  * @author Etienne
  */
 public class GoalTest {
-    
+
     private Goal goal;
     private Player player;
     private Coordinate position;
-    
-    public GoalTest() {
-        position = new Coordinate(0,0);
-        player = new Human("name", "password");
-        goal = new Goal(position, 275, player);
-        
-        this.testGetPlayer();
-        this.testGetPosition();
-        this.testGetSize();
-    }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
+        position = new Coordinate(0, 0);
+        player = new Human("name", "password");
+        goal = new Goal(position, 275, player);
     }
-    
+
     @After
     public void tearDown() {
         System.out.println("Finished testing " + this.toString() + ".\n");
@@ -54,7 +48,7 @@ public class GoalTest {
     @Test
     public void testGetPosition() {
         System.out.println("Testing Goal.getPosition():");
-        Coordinate check = new Coordinate(0,0);
+        Coordinate check = new Coordinate(0, 0);
         assertEquals("Incorrect coordinates.", goal.getPosition(), check);
     }
 
@@ -74,6 +68,6 @@ public class GoalTest {
     public void testGetPlayer() {
         System.out.println("Testing goal.getPlayer():");
         assertNotNull("Player is null.", goal.getPlayer());
-        assertEquals("Player isn't set correctly.", goal.getPlayer(), player);        
+        assertEquals("Player isn't set correctly.", goal.getPlayer(), player);
     }
 }
