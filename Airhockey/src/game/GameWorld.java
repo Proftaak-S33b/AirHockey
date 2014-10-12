@@ -3,9 +3,12 @@ package game;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.World;
 
 public class GameWorld {
 
+    World world = new World(new Vec2(0.0f, 10.0f));
     private final Puck puck;
     private final ArrayList<Pod> pods;
     private final transient ObservableList<Pod> observablePods;
@@ -83,8 +86,8 @@ public class GameWorld {
         }
         return scores[index];
     }
-    
-    public Field getField(){
+
+    public Field getField() {
         return field;
     }
 }
