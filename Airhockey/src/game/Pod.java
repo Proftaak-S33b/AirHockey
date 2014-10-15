@@ -3,7 +3,7 @@ package game;
 public class Pod {
 
     private final Player player;
-    private final Coordinate position;
+    private Coordinate position;
 
     /**
      *
@@ -28,8 +28,7 @@ public class Pod {
      * @param position
      */
     public void move(Coordinate position) {
-        // TODO - implement Pod.move
-        throw new UnsupportedOperationException();
+        this.position = position;
     }
 
 }
