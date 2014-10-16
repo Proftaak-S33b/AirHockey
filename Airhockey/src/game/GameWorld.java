@@ -8,7 +8,6 @@ import org.jbox2d.dynamics.World;
 
 public class GameWorld {
 
-    World world = new World(new Vec2(0.0f, 10.0f));
     private final Puck puck;
     private final ArrayList<Pod> pods;
     private final transient ObservableList<Pod> observablePods;
