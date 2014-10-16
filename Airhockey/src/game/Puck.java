@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Puck {
 
-    private final Coordinate position;
+    private Coordinate position;
     private int speed;
     private final Coordinate direction;
     private final ArrayList<Pod> touched;
@@ -29,8 +29,7 @@ public class Puck {
      * @param position
      */
     public void move(Coordinate position) {
-        // TODO - implement Puck.move
-        throw new UnsupportedOperationException();
+        this.position = position;
     }
 
     /**

@@ -33,9 +33,9 @@ public class GameWorld {
             this.players.add(players.get(i));
         }
         ArrayList<Coordinate> corners = field.getFieldCorners();
-        pods.add(new Pod(this.players.get(0), corners.get(0)));
-        pods.add(new Pod(this.players.get(1), corners.get(1)));
-        pods.add(new Pod(this.players.get(2), corners.get(2)));
+        pods.add(new Pod(this.players.get(0), getField().getStartPositions().get(2)));
+        pods.add(new Pod(this.players.get(1), getField().getStartPositions().get(0)));
+        pods.add(new Pod(this.players.get(2), getField().getStartPositions().get(1)));
         scores = new int[]{20, 20, 20};
 
         observablePlayers = FXCollections.observableArrayList(this.players);
