@@ -25,7 +25,6 @@ import org.jbox2d.dynamics.contacts.Contact;
 public class Physics implements ContactListener{
 
     //Game objects
-    private final World world;
     private final Puck puck;
     private final Pod pod1;
     private final Pod pod2;
@@ -33,6 +32,7 @@ public class Physics implements ContactListener{
     private final Field field;
 
     //Physics objects
+    private final World world;
     private Body bodyPuck;
     private Body bodyPod1;
     private Body bodyPod2;

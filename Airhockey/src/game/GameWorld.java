@@ -16,6 +16,9 @@ public class GameWorld {
     private final int[] scores;
     private final Field field;
 
+    //Physics object
+    private final World world;
+
     /**
      * Creates a new GameWorld object which keeps track of all the objects in
      * the game. Puck, 3 Pods, 3 Players,
@@ -24,6 +27,7 @@ public class GameWorld {
      * game. Only the first 3 will be used.
      */
     public GameWorld(ArrayList<Player> players) {
+        world = new World(new Vec2(0.0f, 0.0f));
         field = new Field(500);
         puck = new Puck(5);
         pods = new ArrayList<>();
@@ -32,10 +36,9 @@ public class GameWorld {
         for (int i = 0; i < 3; i++) {
             this.players.add(players.get(i));
         }
-        ArrayList<Coordinate> corners = field.getFieldCorners();
-        pods.add(new Pod(this.players.get(0), getField().getStartPositions().get(2)));
-        pods.add(new Pod(this.players.get(1), getField().getStartPositions().get(0)));
-        pods.add(new Pod(this.players.get(2), getField().getStartPositions().get(1)));
+        pods.add(new Pod(this, this.players.get(0), field.getStartPositions().get(2)));
+        pods.add(new Pod(this, this.players.get(1), field.getStartPositions().get(0)));
+        pods.add(new Pod(this, this.players.get(2), field.getStartPositions().get(1)));
         scores = new int[]{20, 20, 20};
 
         observablePlayers = FXCollections.observableArrayList(this.players);
@@ -56,6 +59,14 @@ public class GameWorld {
             }
         }
         return null;
+    }
+
+    /**
+     * Get the physics World object.
+     * @return jBox2D World object
+     */
+    public World getWorld() {
+        return world;
     }
 
     /**
