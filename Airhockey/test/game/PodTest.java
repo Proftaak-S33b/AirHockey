@@ -4,6 +4,7 @@
  */
 package game;
 
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,6 +22,7 @@ public class PodTest {
     private Pod pod;
     private Player player;
     private Coordinate position;
+    private GameWorld world;
 
     @BeforeClass
     public static void setUpClass() {
@@ -34,7 +36,12 @@ public class PodTest {
     public void setUp() {
         player = new Human("name", "password");
         position = new Coordinate(0, 0);
-        pod = new Pod(player, position);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Human("A", ""));
+        players.add(new Human("B", ""));
+        players.add(new Human("C", ""));
+        world = new GameWorld(players);
+        pod = new Pod(world, player, position);
     }
 
     @After

@@ -2,21 +2,96 @@ package game;
 
 import static java.lang.Math.*;
 import java.util.ArrayList;
+import org.jbox2d.collision.shapes.EdgeShape;
+import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.BodyDef;
+import org.jbox2d.dynamics.BodyType;
+import org.jbox2d.dynamics.FixtureDef;
 
 public class Field {
 
+    //Class variables
     private int size;
+    private final int margin;
 
-    private final int marge;
+    //Physics objects
+    private final Body bodyRedSide;
+    private final Body bodyBlueSide;
+    private final Body bodyGreenSide;
 
     /**
      * Creates a new field object with specified size.
      *
+     * @param world
      * @param size
      */
-    public Field(int size) {
+    public Field(GameWorld world, int size) {
         this.size = size;
-        marge = 25;
+        margin = 25;
+
+        /**
+         * **Red side**
+         */
+        //body definition
+        BodyDef bdSide = new BodyDef();
+        bdSide.position.set((float) (getFieldCorners().get(2).x - getFieldCorners().get(0).x),
+                ((float) (getFieldCorners().get(2).y - getFieldCorners().get(0).y)));
+        bdSide.type = BodyType.STATIC;
+        //define shape of the body.
+        EdgeShape esSide = new EdgeShape();
+        esSide.set(new Vec2(getFieldCorners().get(2).x, getFieldCorners().get(2).y),
+                new Vec2(getFieldCorners().get(0).x, getFieldCorners().get(0).y));
+        //define fixture of the body.
+        FixtureDef fdSide = new FixtureDef();
+        fdSide.shape = esSide;
+        fdSide.friction = 0.3f;
+        fdSide.restitution = 1f;
+        //create the body and add fixture to it
+        bodyRedSide = world.getPhysWorld().createBody(bdSide);
+        bodyRedSide.createFixture(fdSide);
+
+        /**
+         * **Blue side**
+         */
+        //body definition
+        bdSide = new BodyDef();
+        bdSide.position.set(getFieldCorners().get(0).x - getFieldCorners().get(1).x,
+                (getFieldCorners().get(0).y - getFieldCorners().get(1).y));
+        bdSide.type = BodyType.STATIC;
+        //define shape of the body.
+        esSide = new EdgeShape();
+        esSide.set(new Vec2(getFieldCorners().get(0).x, getFieldCorners().get(0).y),
+                new Vec2(getFieldCorners().get(1).x, getFieldCorners().get(1).y));
+        //define fixture of the body.
+        fdSide = new FixtureDef();
+        fdSide.shape = esSide;
+        fdSide.friction = 0.3f;
+        fdSide.restitution = 1f;
+        //create the body and add fixture to it
+        bodyBlueSide = world.getPhysWorld().createBody(bdSide);
+        bodyBlueSide.createFixture(fdSide);
+
+        /**
+         * **Green side**
+         */
+        //body definition
+        bdSide = new BodyDef();
+        bdSide.position.set(getFieldCorners().get(1).x - getFieldCorners().get(2).x,
+                (getFieldCorners().get(1).y - getFieldCorners().get(2).y));
+        bdSide.type = BodyType.STATIC;
+        //define shape of the body.
+        esSide = new EdgeShape();
+        esSide.set(new Vec2(getFieldCorners().get(1).x, getFieldCorners().get(1).y),
+                new Vec2(getFieldCorners().get(2).x, getFieldCorners().get(2).y));
+        //define fixture of the body.
+        fdSide = new FixtureDef();
+        fdSide.shape = esSide;
+        fdSide.friction = 0.3f;
+        fdSide.restitution = 1f;
+        //create the body and add fixture to it
+        bodyGreenSide = world.getPhysWorld().createBody(bdSide);
+        bodyGreenSide.createFixture(fdSide);
     }
 
     /**
@@ -25,11 +100,11 @@ public class Field {
      *
      * @return An ArrayList with 3 Coordinate objects with the 3 points.
      */
-    public ArrayList<Coordinate> getFieldCorners() {
-        ArrayList<Coordinate> corners = new ArrayList<>();
-        corners.add(new Coordinate(marge, size + marge));
-        corners.add(new Coordinate(size / 2 + marge, (size - size * sqrt(0.75)) + marge));
-        corners.add(new Coordinate(size + marge, size + marge));
+    public ArrayList<Vec2> getFieldCorners() {
+        ArrayList<Vec2> corners = new ArrayList<>();
+        corners.add(new Vec2(margin, size + margin));
+        corners.add(new Vec2(size / 2 + margin, (float) ((size - size * sqrt(0.75)) + margin)));
+        corners.add(new Vec2(size + margin, size + margin));
         return corners;
     }
 
@@ -41,12 +116,12 @@ public class Field {
     public int getSize() {
         return this.size;
     }
-    
-    public double getPodSize(){
+
+    public double getPodSize() {
         return size * 0.08;
     }
-    
-    public double getPuckSize(){
+
+    public double getPuckSize() {
         return size * 0.04;
     }
 
@@ -75,37 +150,37 @@ public class Field {
      * @return An ArrayList with 4 coordinates representing the corners of the
      * rectangle.
      */
-    public ArrayList<Coordinate> getGoalCorners(double x1, double y1, double x2, double y2, double sizeX, double sizeY) {
-        ArrayList<Coordinate> rectangleGoal = new ArrayList<>();
+    public ArrayList<Vec2> getGoalCorners(double x1, double y1, double x2, double y2, double sizeX, double sizeY) {
+        ArrayList<Vec2> rectangleGoal = new ArrayList<>();
         double vx = x2 - x1; // x vector
         double vy = y2 - y1; // y vector
         double mag = sqrt(vx * vx + vy * vy); //magnitude (also known as length)
         vx /= mag; //normalize x vector
         vy /= mag; //normalize y vector
 
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + vx * (mag * 0.3)), (int) ((float) y1 + vy * (mag * 0.3))));
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + sizeX + vx * (mag * 0.3)), (int) ((float) y1 + sizeY + vy * (mag * 0.3))));
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + sizeX + vx * (mag * 0.7)), (int) ((float) y1 + sizeY + vy * (mag * 0.7))));
-        rectangleGoal.add(new Coordinate((int) ((float) x1 + vx * (mag * 0.7)), (int) ((float) y1 + vy * (mag * 0.7))));
+        rectangleGoal.add(new Vec2((int) ((float) x1 + vx * (mag * 0.3)), (int) ((float) y1 + vy * (mag * 0.3))));
+        rectangleGoal.add(new Vec2((int) ((float) x1 + sizeX + vx * (mag * 0.3)), (int) ((float) y1 + sizeY + vy * (mag * 0.3))));
+        rectangleGoal.add(new Vec2((int) ((float) x1 + sizeX + vx * (mag * 0.7)), (int) ((float) y1 + sizeY + vy * (mag * 0.7))));
+        rectangleGoal.add(new Vec2((int) ((float) x1 + vx * (mag * 0.7)), (int) ((float) y1 + vy * (mag * 0.7))));
         return rectangleGoal;
     }
 
-    private Coordinate getCenterOfLine(Coordinate a, Coordinate b) {
-        return new Coordinate((a.x + b.x) / 2, (a.y + b.y) / 2);
+    private Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
+        return new Vec2((a.x + b.x) / 2, (a.y + b.y) / 2);
     }
 
-    public ArrayList<Coordinate> getStartPositions() {
-        ArrayList<Coordinate> positions = new ArrayList<>();
-        ArrayList<Coordinate> corners = getFieldCorners();
-        Coordinate a = getCenterOfLine(corners.get(0), corners.get(1));
-        a.x -= getPodSize()/2;
-        a.y -= getPodSize()/2;
-        Coordinate b = getCenterOfLine(corners.get(1), corners.get(2));
-        b.x -= getPodSize()/2;
-        b.y -= getPodSize()/2;
-        Coordinate c = getCenterOfLine(corners.get(2), corners.get(0));
-        c.x -= getPodSize()/2;
-        c.y -= getPodSize()/2;
+    public ArrayList<Vec2> getStartPositions() {
+        ArrayList<Vec2> positions = new ArrayList<>();
+        ArrayList<Vec2> corners = getFieldCorners();
+        Vec2 a = getCenterOfLine(corners.get(0), corners.get(1));
+        a.x -= getPodSize() / 2;
+        a.y -= getPodSize() / 2;
+        Vec2 b = getCenterOfLine(corners.get(1), corners.get(2));
+        b.x -= getPodSize() / 2;
+        b.y -= getPodSize() / 2;
+        Vec2 c = getCenterOfLine(corners.get(2), corners.get(0));
+        c.x -= getPodSize() / 2;
+        c.y -= getPodSize() / 2;
         positions.add(a);
         positions.add(b);
         positions.add(c);

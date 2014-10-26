@@ -8,6 +8,7 @@ import org.jbox2d.dynamics.World;
 
 public class GameWorld {
 
+    //Game objects
     private final Puck puck;
     private final ArrayList<Pod> pods;
     private final transient ObservableList<Pod> observablePods;
@@ -28,8 +29,8 @@ public class GameWorld {
      */
     public GameWorld(ArrayList<Player> players) {
         world = new World(new Vec2(0.0f, 0.0f));
-        field = new Field(500);
-        puck = new Puck(5);
+        field = new Field(this, 500);
+        puck = new Puck(this, 5);
         pods = new ArrayList<>();
         //Make sure only the first 3 players in the array get added
         this.players = new ArrayList<>();
@@ -65,8 +66,16 @@ public class GameWorld {
      * Get the physics World object.
      * @return jBox2D World object
      */
-    public World getWorld() {
-        return world;
+    public World getPhysWorld() {
+        return this.world;
+    }
+    
+    /**
+     * Get the puck object
+     * @return the Puck object
+     */
+    public Puck getPuck(){
+        return this.puck;
     }
 
     /**

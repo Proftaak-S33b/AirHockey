@@ -38,7 +38,7 @@ public class GameWorldTest {
     @Before
     public void setUp() {
         field = new Field(500);
-        pod = new Pod(null, null);
+        pod = new Pod(null, null, null);
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Human("A", ""));
         players.add(new Human("B", ""));

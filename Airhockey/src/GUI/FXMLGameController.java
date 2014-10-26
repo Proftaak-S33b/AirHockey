@@ -23,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import org.jbox2d.common.Vec2;
 
 /**
  * FXML Controller class
@@ -54,9 +55,8 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
     private game.GameWorld world;
     GraphicsContext gc;
-    ArrayList<Coordinate> corners;
-    ArrayList<Coordinate> goal;
-    Puck puck;
+    ArrayList<Vec2> corners;
+    ArrayList<Vec2> goal;
 
     /**
      * Initializes the controller class.
@@ -73,17 +73,15 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         world = new GameWorld(players);
         gc = gameCanvas.getGraphicsContext2D();
         corners = world.getField().getFieldCorners();
-        puck = new Puck(1);
         Draw();
         
         AnimationTimer at = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
-                puck.move(new Coordinate(puck.getPosition().x + 1, puck.getPosition().y));
                 Draw();
                gc.setFill(Color.BLACK);
-                gc.fillOval(puck.getPosition().x, puck.getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
+                gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
             }
         };
         at.start();
@@ -127,27 +125,26 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
         //puck
         gc.setFill(Color.BLACK);
-        gc.fillOval(puck.getPosition().x, puck.getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
+        gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
 
     }
 
     @Override
     public void handle(KeyEvent e) {
         goal = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
-        System.out.println(e.getCharacter().toString());
         switch (e.getCharacter()) {
             case "s":
                 gc.setFill(Color.RED);
                 System.out.println(goal.get(2).x);
                 System.out.println(world.getPod("Henk").getPosition().x);
                 if (world.getPod("Henk").getPosition().x > goal.get(2).x) {
-                    world.getPod("Henk").move(new Coordinate(world.getPod("Henk").getPosition().x -=5, world.getPod("Henk").getPosition().y));
+                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x -=5, world.getPod("Henk").getPosition().y));
                 }
                 break;
             case "d":
                 gc.setFill(Color.RED);
                 if (world.getPod("Henk").getPosition().x < goal.get(0).x - world.getField().getPodSize()) {
-                    world.getPod("Henk").move(new Coordinate(world.getPod("Henk").getPosition().x +=5, world.getPod("Henk").getPosition().y));
+                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x +=5, world.getPod("Henk").getPosition().y));
                 }
                 break;
         }

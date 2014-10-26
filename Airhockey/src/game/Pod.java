@@ -1,16 +1,19 @@
 package game;
 
 import org.jbox2d.collision.shapes.CircleShape;
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
-import org.jbox2d.dynamics.World;
 
 public class Pod {
 
+    //Game objects
     private final Player player;
-    private Coordinate position;
+    private Vec2 position;
+    
+    //Physics objects
     private final Body body;
 
     /**
@@ -19,7 +22,7 @@ public class Pod {
      * @param player The player this pod belongs to.
      * @param startPosition The starting position of this pod.
      */
-    public Pod(GameWorld world, Player player, Coordinate startPosition) {
+    public Pod(GameWorld world, Player player, Vec2 startPosition) {
         this.player = player;
         this.position = startPosition;
         //body definition
@@ -36,7 +39,7 @@ public class Pod {
         fd.friction = 0.3f;
         fd.restitution = 1f;
         //create the body and add fixture to it
-        body = world.getWorld().createBody(bd);
+        body = world.getPhysWorld().createBody(bd);
         body.createFixture(fd);
     }
 
@@ -44,7 +47,7 @@ public class Pod {
         return this.player;
     }
 
-    public Coordinate getPosition() {
+    public Vec2 getPosition() {
         return this.position;
     }
 
@@ -52,7 +55,7 @@ public class Pod {
      *
      * @param position
      */
-    public void move(Coordinate position) {
+    public void move(Vec2 position) {
         this.position = position;
     }
 

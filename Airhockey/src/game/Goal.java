@@ -1,8 +1,10 @@
 package game;
 
+import org.jbox2d.common.Vec2;
+
 public class Goal {
 
-    private Coordinate position;
+    private Vec2 position;
     private int size;
     private Player player;
 
@@ -12,12 +14,12 @@ public class Goal {
      * @param size
      * @param player
      */
-    public Goal(Coordinate position, int size, Player player) {
+    public Goal(Vec2 position, int size, Player player) {
         // TODO - implement Goal.Goal
         throw new UnsupportedOperationException();
     }
 
-    public Coordinate getPosition() {
+    public Vec2 getPosition() {
         return this.position;
     }
 

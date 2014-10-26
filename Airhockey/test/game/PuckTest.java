@@ -4,6 +4,7 @@
  */
 package game;
 
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,6 +21,7 @@ import org.junit.Ignore;
 public class PuckTest {
 
     private Puck puck;
+    private GameWorld world;
 
     @BeforeClass
     public static void setUpClass() {
@@ -31,6 +33,11 @@ public class PuckTest {
 
     @Before
     public void setUp() {
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Human("A", ""));
+        players.add(new Human("B", ""));
+        players.add(new Human("C", ""));
+        world = new GameWorld(players);
         puck = new Puck(10);
     }
 
@@ -58,16 +65,6 @@ public class PuckTest {
     }
 
     /**
-     * Test of setSpeed method, of class Puck.
-     */
-    @Ignore(value = "Speed valt nergens uit af te leiden.")
-    @Test
-    public void testSetSpeed() {
-        System.out.println("Testing Puck.setSpeed():");
-        //TODO
-    }
-
-    /**
      * Test of getDirection method, of class Puck.
      */
     @Test
@@ -82,7 +79,7 @@ public class PuckTest {
     @Test
     public void testGetLastTouched() {
         System.out.println("Testing Puck.getLastTouched():");
-        Pod p = new Pod(new Human("name", "password"), new Coordinate(0, 0));
+        Pod p = new Pod(world, new Human("name", "password"), new Coordinate(0, 0));
         assertEquals("Pod verkeerd toegevoegd.", puck.getLastTouched(), p);
     }
 
@@ -94,7 +91,7 @@ public class PuckTest {
         System.out.println("Testing Puck.addTouched():");
         puck = null;
         puck = new Puck(10);
-        Pod p = new Pod(new Human("name", "password"), new Coordinate(0, 0));
+        Pod p = new Pod(world, new Human("name", "password"), new Coordinate(0, 0));
         puck.addTouched(p);
         assertEquals("Toucher not added.", puck.getLastTouched(), p);
     }
