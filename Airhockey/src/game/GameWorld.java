@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
-public class GameWorld {
+public class GameWorld{
 
     //Game objects
     private final Puck puck;
@@ -30,7 +30,7 @@ public class GameWorld {
     public GameWorld(ArrayList<Player> players) {
         world = new World(new Vec2(0.0f, 0.0f));
         field = new Field(this, 500);
-        puck = new Puck(this, 5);
+        puck = new Puck(this, 70);
         pods = new ArrayList<>();
         //Make sure only the first 3 players in the array get added
         this.players = new ArrayList<>();

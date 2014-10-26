@@ -9,6 +9,8 @@ import game.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,14 +25,18 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.contacts.Contact;
 
 /**
  * FXML Controller class
  *
  * @author Joris Douven
  */
-public class FXMLGameController implements Initializable, EventHandler<KeyEvent> {
+public class FXMLGameController implements Initializable, EventHandler<KeyEvent>, ContactListener {
 
     @FXML
     private Button buttonChat;
@@ -71,20 +77,34 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         players.add(new AI("Player 2"));
         players.add(new AI("Player 3"));
         world = new GameWorld(players);
+        world.getPhysWorld().setContactListener(this);
         gc = gameCanvas.getGraphicsContext2D();
         corners = world.getField().getFieldCorners();
         Draw();
-        
-        AnimationTimer at = new AnimationTimer() {
+
+        new AnimationTimer() {
 
             @Override
             public void handle(long now) {
                 Draw();
-               gc.setFill(Color.BLACK);
+                gc.setFill(Color.BLACK);
                 gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
             }
-        };
-        at.start();
+        }.start();
+
+        try {
+            Timer physTimer = new Timer("Simulate Physics");
+            physTimer.scheduleAtFixedRate(new TimerTask() {
+
+                @Override
+                public void run() {
+                    world.getPhysWorld().step(1 / 60.0f, 8, 3);
+                    world.getPuck().setSpeed(speed);
+                }
+            }, 0, (long) (1 / 0.06));
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
     }
 
     public void SetTekst(ActionEvent event) {
@@ -135,19 +155,33 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         switch (e.getCharacter()) {
             case "s":
                 gc.setFill(Color.RED);
-                System.out.println(goal.get(2).x);
-                System.out.println(world.getPod("Henk").getPosition().x);
                 if (world.getPod("Henk").getPosition().x > goal.get(2).x) {
-                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x -=5, world.getPod("Henk").getPosition().y));
+                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x -= 5, world.getPod("Henk").getPosition().y));
                 }
                 break;
             case "d":
                 gc.setFill(Color.RED);
                 if (world.getPod("Henk").getPosition().x < goal.get(0).x - world.getField().getPodSize()) {
-                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x +=5, world.getPod("Henk").getPosition().y));
+                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x += 5, world.getPod("Henk").getPosition().y));
                 }
                 break;
         }
+    }
+
+    @Override
+    public void beginContact(Contact contact) {
+    }
+
+    @Override
+    public void endContact(Contact contact) {
+    }
+
+    @Override
+    public void preSolve(Contact contact, Manifold oldManifold) {
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse impulse) {
     }
 
 }

@@ -11,8 +11,7 @@ public class Pod {
 
     //Game objects
     private final Player player;
-    private Vec2 position;
-    
+
     //Physics objects
     private final Body body;
 
@@ -24,14 +23,14 @@ public class Pod {
      */
     public Pod(GameWorld world, Player player, Vec2 startPosition) {
         this.player = player;
-        this.position = startPosition;
+
         //body definition
         BodyDef bd = new BodyDef();
-        bd.position.set((float) position.x, (float) position.y);
-        bd.type = BodyType.DYNAMIC;
+        bd.position.set(startPosition.x, startPosition.y);
+        bd.type = BodyType.KINEMATIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
-        cs.m_radius = (float) world.getField().getPodSize();
+        cs.m_radius = (float) world.getField().getPodSize() / 2;
         //define fixture of the body.
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
@@ -43,12 +42,20 @@ public class Pod {
         body.createFixture(fd);
     }
 
+    /**
+     *
+     * @return The player this object belongs to
+     */
     public Player getPlayer() {
         return this.player;
     }
 
+    /**
+     *
+     * @return The position of this object
+     */
     public Vec2 getPosition() {
-        return this.position;
+        return body.getPosition();
     }
 
     /**
@@ -56,7 +63,7 @@ public class Pod {
      * @param position
      */
     public void move(Vec2 position) {
-        this.position = position;
+        body.setTransform(position, 0);
     }
 
 }
