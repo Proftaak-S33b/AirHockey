@@ -8,6 +8,8 @@ package GUI;
 import game.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,7 +38,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author Joris Douven
  */
-public class FXMLGameController implements Initializable, EventHandler<KeyEvent>, ContactListener {
+public class FXMLGameController implements Initializable, EventHandler<KeyEvent>, ContactListener, Observer {
 
     @FXML
     private Button buttonChat;
@@ -63,7 +65,12 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     GraphicsContext gc;
     ArrayList<Vec2> corners;
     ArrayList<Vec2> goal;
-
+    
+    /**
+     * AI Mediator
+     */
+    private AI_Mediator mediator;
+    
     /**
      * Initializes the controller class.
      *
@@ -80,8 +87,15 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         world.getPhysWorld().setContactListener(this);
         gc = gameCanvas.getGraphicsContext2D();
         corners = world.getField().getFieldCorners();
-        Draw();
 
+        /**
+         * Initializes the mediator with the current controller, players, and puck.
+         */
+        mediator = new AI_Mediator(this, players, world.getPuck());
+        
+        Draw();        
+
+                
         new AnimationTimer() {
 
             @Override
@@ -99,7 +113,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 @Override
                 public void run() {
                     world.getPhysWorld().step(1 / 60.0f, 8, 3);
-                    world.getPuck().setSpeed(speed);
+                    world.getPuck().setSpeed(1);
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
@@ -182,6 +196,29 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
+    }
+    
+    /**
+     * Updates the position of the AI's pods.
+     * TODO: Heavy refactoring; only redraw what needs to be redrawn(eg. puck and pods).
+     */
+    public void updatePodPositions(Object arg){        
+        ArrayList<AI> AI_List = (ArrayList<AI>)arg;
+        for (AI ai : AI_List){
+            Pod p = this.world.getPod(ai.getName());
+            p.move(ai.getDirection());
+        }
+        Draw();
+    }
+    
+    /**
+     * TODO: replace updatePodPositions.
+     * @param o 
+     * @param arg 
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        updatePodPositions(arg);
     }
 
 }

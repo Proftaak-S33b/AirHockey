@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Observable;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
@@ -8,7 +9,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-public class Puck {
+public class Puck extends Observable{
 
     //Game objects
     private int speed;
@@ -60,6 +61,9 @@ public class Puck {
      */
     public void move(Vec2 position) {
         body.setTransform(position, 0);
+        setChanged(); System.out.println("1/2: puck set to changed.");
+        notifyObservers(position);
+        clearChanged(); System.out.println("2/2: puck change cleared.");
     }
 
     /**
@@ -85,6 +89,6 @@ public class Puck {
      */
     public void addTouched(Pod touched) {
         this.touched.add(0, touched);
-    }
+    }        
 
 }
