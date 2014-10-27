@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
 import game.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -32,6 +28,7 @@ import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.contacts.Contact;
+//</editor-fold>
 
 /**
  * FXML Controller class
@@ -126,43 +123,73 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         textChat.clear();
     }
 
+    /**
+     * Draws the sides and puck on the field.
+     */
     public void Draw() {
         gc.setFill(Color.WHITESMOKE);
         gc.fillRect(0.0, 0.0, 550, 550);
-
+        
         //Blue side
-        gc.setStroke(Color.BLUE);
-        gc.strokeLine(corners.get(0).x, corners.get(0).y, corners.get(1).x, corners.get(1).y);
-        goal = world.getField().getGoalCorners(corners.get(0).x, corners.get(0).y, corners.get(1).x, corners.get(1).y, -18, -12);
-        gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
-                new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
-        gc.setFill(Color.BLUE);
-        gc.fillOval(world.getPod("Player 2").getPosition().x, world.getPod("Player 2").getPosition().y, world.getField().getPodSize(), world.getField().getPodSize());
-
+        drawSide(Color.BLUE, "Player 2", 0, 1, -18, -12);
+        
         //Green side
-        gc.setStroke(Color.GREEN);
-        gc.strokeLine(corners.get(1).x, corners.get(1).y, corners.get(2).x, corners.get(2).y);
-        goal = world.getField().getGoalCorners(corners.get(1).x, corners.get(1).y, corners.get(2).x, corners.get(2).y, 18, -12);
-        gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
-                new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
-        gc.setFill(Color.GREEN);
-        gc.fillOval(world.getPod("Player 3").getPosition().x, world.getPod("Player 3").getPosition().y, world.getField().getPodSize(), world.getField().getPodSize());
-
+        drawSide(Color.GREEN, "Player 3", 1, 2, 18, -12);
+        
         //Red side
-        gc.setStroke(Color.RED);
-        gc.strokeLine(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y);
-        goal = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
-        gc.strokePolygon(new double[]{goal.get(0).x, goal.get(1).x, goal.get(2).x, goal.get(3).x},
-                new double[]{goal.get(0).y, goal.get(1).y, goal.get(2).y, goal.get(3).y}, 4);
-        gc.setFill(Color.RED);
-        gc.fillOval(world.getPod("Henk").getPosition().x, world.getPod("Henk").getPosition().y, world.getField().getPodSize(), world.getField().getPodSize());
-
-        //puck
-        gc.setFill(Color.BLACK);
-        gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
+        drawSide(Color.RED, "Henk", 2, 0, 0, 20);        
+        
+        drawPuck();
 
     }
+    
+    /**
+     * Draws a given side. Refactored from Draw(). 
+     * TODO: check naming of vars.
+     * @param color a Color enum indicating the color of the lines.
+     * @param playername a String with the name of the player.
+     * @param a an int representing the first intersecting corner of the field.
+     * @param b an int representing the second intersecting corner of the field.
+     * @param sizeX a double representing the width of the goal.
+     * @param sizeY a double representing the length of the goal.
+     */
+    public void drawSide(Color color, String playername, int a, int b, double sizeX, double sizeY){       
+        gc.setStroke(color);
+        
+        // strokePolygon is done undynamically so a loop suffices.
+        double[] goalXcoords = new double[4];
+        double[] goalYcoords = new double[4];
+        
+        for (int i = 0; i < 4; i++) {
+            goalXcoords[i] = goal.get(i).x;
+            goalYcoords[i] = goal.get(i).y;
+        }
+        
+        float aX = corners.get(a).x;
+        float aY = corners.get(a).y;
+        float bX= corners.get(b).x;
+        float bY= corners.get(b).y;
+                        
+        gc.strokeLine(aX, aY, bX, bY);
+        goal = world.getField().getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
+        gc.strokePolygon(goalXcoords, goalYcoords, 4);        
+        gc.setFill(color);
+        gc.fillOval(
+                world.getPod(playername).getPosition().x, 
+                world.getPod(playername).getPosition().y,
+                world.getField().getPodSize(),
+                world.getField().getPodSize()
+        );
+    }
 
+    /**
+     * Draws the puck. Refactored from Draw().
+     */
+    public void drawPuck(){
+        gc.setFill(Color.BLACK);
+        gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());        
+    }
+    
     @Override
     public void handle(KeyEvent e) {
         goal = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
