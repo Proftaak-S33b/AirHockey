@@ -127,20 +127,24 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * Draws the sides and puck on the field.
      */
     public void Draw() {
-        gc.setFill(Color.WHITESMOKE);
-        gc.fillRect(0.0, 0.0, 550, 550);
-        
-        //Blue side
-        drawSide(Color.BLUE, "Player 2", 0, 1, -18, -12);
-        
-        //Green side
-        drawSide(Color.GREEN, "Player 3", 1, 2, 18, -12);
-        
-        //Red side
-        drawSide(Color.RED, "Henk", 2, 0, 0, 20);        
-        
-        drawPuck();
+        try {
+            
+            gc.setFill(Color.WHITESMOKE);
+            gc.fillRect(0.0, 0.0, 550, 550);
 
+            //Blue side
+            drawSide(Color.BLUE, "Player 2", 0, 1, -18, -12);
+
+            //Green side
+            drawSide(Color.GREEN, "Player 3", 1, 2, 18, -12);
+
+            //Red side
+            drawSide(Color.RED, "Henk", 2, 0, 0, 20);            
+            
+            //drawPuck();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
     
     /**
@@ -154,24 +158,26 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * @param sizeY a double representing the length of the goal.
      */
     public void drawSide(Color color, String playername, int a, int b, double sizeX, double sizeY){       
-        gc.setStroke(color);
+        gc.setStroke(color);        
+        
+        float aX = corners.get(a).x;
+        float aY = corners.get(a).y;
+        float bX = corners.get(b).x;
+        float bY = corners.get(b).y;
+                        
+        gc.strokeLine(aX, aY, bX, bY);
+        goal = world.getField().getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
         
         // strokePolygon is done undynamically so a loop suffices.
         double[] goalXcoords = new double[4];
         double[] goalYcoords = new double[4];
         
         for (int i = 0; i < 4; i++) {
+            System.out.println("" + goal.get(i).x);
             goalXcoords[i] = goal.get(i).x;
             goalYcoords[i] = goal.get(i).y;
         }
         
-        float aX = corners.get(a).x;
-        float aY = corners.get(a).y;
-        float bX= corners.get(b).x;
-        float bY= corners.get(b).y;
-                        
-        gc.strokeLine(aX, aY, bX, bY);
-        goal = world.getField().getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
         gc.strokePolygon(goalXcoords, goalYcoords, 4);        
         gc.setFill(color);
         gc.fillOval(

@@ -10,7 +10,14 @@ package game;
  * @author Etienne
  */
 public class AI_Strategy { 
-//TODO - set strategies, refactor, complain about AI, refactor some more.
+    /*    
+     *   TODO - 
+     *   1. set strategies 
+     *   2. refactor
+     *   3. complain about AI
+     *   4. ???
+     *   5. more refactoring
+     */
     
     public AI_Strategy(){
         
@@ -24,16 +31,33 @@ public class AI_Strategy {
         switch(diff){
             case EASY:
                 System.out.println("AI set to EASY");
+                // Insert difficulty-specific logic here..
                 break;
             case NORMAL:
                 System.out.println("AI set to NORMAL");
+                // and here...
                 break;
             case HARD:
                 System.out.println("AI set to HARD");
+                // oh, and here.
                 break;
             default:
                 System.out.println("AI strategy not set.");
+                // this will never be reached but should stay to prevent errors.
                 break;
         }
     }
+    
+    class AI_Strategy_EASY{
+        
+    }
+    
+    class AI_Strategy_NORMAL{
+        
+    }
+    
+    class AI_Strategy_HARD{
+        
+    }
+    
 }

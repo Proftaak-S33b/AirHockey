@@ -11,6 +11,8 @@ import javafx.application.Application;
  * @author Etienne
  */
 public class AI_Mediator extends Observable implements Observer{
+    //TODO: code refactoring and dependency resolving
+    
     private Puck puck; 
     private ArrayList<AI> AI_List = new ArrayList<>();
     private FXMLGameController controller;

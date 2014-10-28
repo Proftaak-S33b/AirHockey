@@ -60,10 +60,13 @@ public class Puck extends Observable{
      * @param position
      */
     public void move(Vec2 position) {
+        System.out.println("puck moved.");
         body.setTransform(position, 0);
-        setChanged(); System.out.println("1/2: puck set to changed.");
+        setChanged(); 
+        System.out.println("1/2: puck set to changed.");
         notifyObservers(position);
-        clearChanged(); System.out.println("2/2: puck change cleared.");
+        clearChanged(); 
+        System.out.println("2/2: puck change cleared.");
     }
 
     /**
