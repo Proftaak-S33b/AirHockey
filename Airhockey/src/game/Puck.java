@@ -26,7 +26,7 @@ public class Puck extends Observable {
      * @param speed
      */
     public Puck(GameWorld world, int speed) {
-        this.speed = speed;
+        this.speed = speed * 100;
         direction = new Vec2(-0.5f, 1);
         direction.normalize();
         touched = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Puck extends Observable {
         body.createFixture(fd);
         body.setBullet(true);
 
-        body.applyLinearImpulse(new Vec2(direction.x * speed, direction.y * speed), body.getPosition());
+        body.applyLinearImpulse(new Vec2(direction.x * this.speed, direction.y * this.speed), body.getPosition());
     }
 
     public Vec2 getPosition() {
@@ -62,7 +62,7 @@ public class Puck extends Observable {
      * @param speed
      */
     public void setSpeed(int speed) {
-        body.setLinearVelocity(new Vec2(direction.x * speed, direction.y * speed));
+        this.speed = speed;
     }
 
     public Vec2 getVelocity() {
