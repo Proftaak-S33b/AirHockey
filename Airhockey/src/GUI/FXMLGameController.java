@@ -219,22 +219,23 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     public void handle(KeyEvent e) {
         ArrayList<Vec2> corners = pm.getFieldCorners();
 
-        float aX = corners.get(0).x;
-        float aY = corners.get(0).y;
-        float bX = corners.get(1).x;
-        float bY = corners.get(1).y;
+        float aX = corners.get(2).x;
+        float aY = corners.get(2).y;
+        float bX = corners.get(0).x;
+        float bY = corners.get(0).y;
+
         ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, 0, 20);
-        
+
         Vec2 v = pm.getPodPosition(0);
         
         switch (e.getCharacter()) {
             case "a":
-                if (pm.getPodPosition(0).x > 175) {
+                if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
                     pm.movePodLeft(0);
                 }
                 break;
             case "d":
-                if (pm.getPodPosition(0).x < 370 - pm.getPodSize()) {
+                if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize()) {
                     pm.movePodRight(0);
                 }
                 break;
