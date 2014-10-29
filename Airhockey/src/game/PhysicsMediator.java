@@ -50,12 +50,12 @@ public class PhysicsMediator {
      * @return the new position of the pod
      */
     public Vec2 movePodLeft(int podIndex) {
-        world.getPod(podIndex).moveLeft();
+        world.getPod(podIndex).moveLeft(podIndex);
         return getPodPosition(podIndex);
     }
 
     public Vec2 movePodRight(int podIndex) {
-        world.getPod(podIndex).moveRight();
+        world.getPod(podIndex).moveRight(podIndex);
         return getPodPosition(podIndex);
     }
 
