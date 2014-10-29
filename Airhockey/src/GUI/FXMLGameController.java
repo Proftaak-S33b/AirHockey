@@ -109,7 +109,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 @Override
                 public void run() {
                     pm.step(1 / 60f, 10, 5);
-                    pm.DEBUG_printPuckSpeed();
+                    pm.DEBUG_printPuckData();
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {

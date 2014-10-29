@@ -63,7 +63,7 @@ public class Pod {
      */
     public void moveLeft() {
         //TODO
-        body.setTransform(new Vec2(body.getPosition().x + 5, body.getPosition().y), 0);
+        body.setTransform(new Vec2(body.getPosition().x + 0.5f, body.getPosition().y), 0);
     }
     
     /**
@@ -71,7 +71,7 @@ public class Pod {
      */
     public void moveRight(){
         //TODO
-        body.setTransform(new Vec2(body.getPosition().x - 5, body.getPosition().y), 0);
+        body.setTransform(new Vec2(body.getPosition().x - 0.5f, body.getPosition().y), 0);
     }
 
 }

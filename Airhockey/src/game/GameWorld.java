@@ -29,17 +29,17 @@ public class GameWorld {
      */
     public GameWorld(ArrayList<Player> players) {
         world = new World(new Vec2(0.0f, 0.0f));
-        field = new Field(this, 500);
-        puck = new Puck(this, 100);
+        field = new Field(this, 50);
+        puck = new Puck(this, 10);
         pods = new ArrayList<>();
         //Make sure only the first 3 players in the array get added
         this.players = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             this.players.add(players.get(i));
         }
-        pods.add(new Pod(this, this.players.get(0), field.getStartPositions().get(2)));
-        pods.add(new Pod(this, this.players.get(1), field.getStartPositions().get(0)));
-        pods.add(new Pod(this, this.players.get(2), field.getStartPositions().get(1)));
+        pods.add(new Pod(this, this.players.get(0), field.getStartPositions().get(0)));
+        pods.add(new Pod(this, this.players.get(1), field.getStartPositions().get(1)));
+        pods.add(new Pod(this, this.players.get(2), field.getStartPositions().get(2)));
         scores = new int[]{20, 20, 20};
 
         observablePlayers = FXCollections.observableArrayList(this.players);

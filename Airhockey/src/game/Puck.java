@@ -26,7 +26,7 @@ public class Puck extends Observable {
      * @param speed
      */
     public Puck(GameWorld world, int speed) {
-        this.speed = speed * 100;
+        this.speed = speed;
         direction = new Vec2(-0.5f, 1);
         direction.normalize();
         touched = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Puck extends Observable {
 
         //body definition
         BodyDef bd = new BodyDef();
-        bd.position.set((float) Math.random() * 100 + 200, (float) (Math.random() * 100 + 200));
+        bd.position.set((float) Math.random() + 20, (float) (Math.random() + 20));
         bd.type = BodyType.DYNAMIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
@@ -44,7 +44,7 @@ public class Puck extends Observable {
         fd.shape = cs;
         fd.density = 0.5f;
         fd.friction = 0.0f;
-        fd.restitution = 1.1f;
+        fd.restitution = 1.0f;
         //create the body and add fixture to it
         body = world.getPhysWorld().createBody(bd);
         body.createFixture(fd);

@@ -14,6 +14,7 @@ public class Field {
     //Class variables
     private int size;
     private int margin;
+    private float marginPhys;
 
     //Physics objects
     private final Body bodyRedSide;
@@ -29,6 +30,7 @@ public class Field {
     public Field(GameWorld world, int size) {
         this.size = size;
         margin = 25;
+        marginPhys = 2.5f;
 
         /**
          * **Red side**
@@ -42,7 +44,7 @@ public class Field {
             bdSide.angle = 0;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(500, 0),
+            esSide.set(new Vec2(50, 0),
                     new Vec2(0, 0));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
@@ -64,7 +66,7 @@ public class Field {
             bdSide.type = BodyType.STATIC;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(250, 433 / 2), new Vec2(0, -433 / 2));
+            esSide.set(new Vec2(25.0f, 43.3f / 2), new Vec2(0, -43.3f / 2));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;
@@ -85,8 +87,8 @@ public class Field {
             bdSide.type = BodyType.STATIC;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(0, 433 / 2),
-                    new Vec2(250, -433 / 2));
+            esSide.set(new Vec2(0, 43.3f / 2),
+                    new Vec2(25.0f, -43.3f / 2));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;
@@ -106,26 +108,30 @@ public class Field {
      */
     public ArrayList<Vec2> getFieldCorners() {
         ArrayList<Vec2> corners = new ArrayList<>();
-        corners.add(new Vec2(margin, size + margin));
-        corners.add(new Vec2(size / 2 + margin, (float) ((size - size * sqrt(0.75)) + margin)));
-        corners.add(new Vec2(size + margin, size + margin));
+        float s = size * 10f;
+        corners.add(new Vec2(margin, s + margin));
+        corners.add(new Vec2(s / 2 + margin, (float) ((s - s * sqrt(0.75)) + margin)));
+        corners.add(new Vec2(s + margin, s + margin));
         return corners;
     }
 
-    public ArrayList<Vec2> getFieldCornersPhysx() {
+    public final ArrayList<Vec2> getFieldCornersPhysx() {
         ArrayList<Vec2> corners = new ArrayList<>();
-        margin = 37;
-        corners.add(new Vec2(margin , margin));
-        corners.add(new Vec2(size / 2 + margin, (float) ((size * sqrt(0.75)) / 2 + margin)));
-        corners.add(new Vec2(size + margin, margin));
-        margin = 25;
+        corners.add(new Vec2(marginPhys, marginPhys));
+        corners.add(new Vec2(size / 2 + marginPhys, (float) ((size * sqrt(0.75)) / 2 + marginPhys)));
+        corners.add(new Vec2(size + marginPhys, marginPhys));
         return corners;
     }
 
     public Vec2 RotateVector2(Vec2 v, float angle) {
         Vec2 newVector;
-        newVector = new Vec2((v.x - (size / 2 + margin)) * (float) Math.cos(angle) - (v.y - (size / 2 + margin)) * (float) Math.sin(angle) + (size / 2 + margin),
-                (v.x - (size / 2 + margin)) * (float) Math.sin(angle) + (v.y - (size / 2 + margin)) * (float) Math.cos(angle) + (size / 2 + margin));
+        if (v.x > 10 && v.y > 10) {
+            newVector = new Vec2((v.x - (size / 0.2f + margin)) * (float) Math.cos(angle) - (v.y - (size / 0.2f + margin)) * (float) Math.sin(angle) + (size / 0.2f + margin),
+                    (v.x - (size / 0.2f + margin)) * (float) Math.sin(angle) + (v.y - (size / 0.2f + margin)) * (float) Math.cos(angle) + (size / 0.2f + margin));
+        } else {
+            newVector = new Vec2((v.x - (size / 2 + marginPhys)) * (float) Math.cos(angle) - (v.y - (size / 2 + marginPhys)) * (float) Math.sin(angle) + (size / 2 + marginPhys),
+                    (v.x - (size / 2 + marginPhys)) * (float) Math.sin(angle) + (v.y - (size / 2 + marginPhys)) * (float) Math.cos(angle) + (size / 2 + marginPhys));
+        }
         return newVector;
     }
 
@@ -193,18 +199,21 @@ public class Field {
     public ArrayList<Vec2> getStartPositions() {
         ArrayList<Vec2> positions = new ArrayList<>();
         ArrayList<Vec2> corners = getFieldCorners();
-        Vec2 a = getCenterOfLine(corners.get(0), corners.get(1));
+        Vec2 a = getCenterOfLine(corners.get(2), corners.get(0));
         a.x -= getPodSize() / 2;
         a.y -= getPodSize() / 2;
-        Vec2 b = getCenterOfLine(corners.get(1), corners.get(2));
+        Vec2 b = getCenterOfLine(corners.get(0), corners.get(1));
         b.x -= getPodSize() / 2;
         b.y -= getPodSize() / 2;
-        Vec2 c = getCenterOfLine(corners.get(2), corners.get(0));
+        Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
         c.x -= getPodSize() / 2;
         c.y -= getPodSize() / 2;
-        positions.add(RotateVector2(a, (float) Math.PI));
-        positions.add(RotateVector2(b, (float) Math.PI));
-        positions.add(RotateVector2(c, (float) Math.PI));
+        a = RotateVector2(a, (float) Math.PI);
+        b = RotateVector2(b, (float) Math.PI);
+        c = RotateVector2(c, (float) Math.PI);
+        positions.add(new Vec2(a.x / 10, a.y / 10));
+        positions.add(new Vec2(b.x / 10, b.y / 10));
+        positions.add(new Vec2(c.x / 10, c.y / 10));
         return positions;
     }
 
