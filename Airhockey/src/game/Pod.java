@@ -69,11 +69,11 @@ public class Pod {
         }
         else if (index == 1)
         {
-            
+            body.setTransform(new Vec2(body.getPosition().x + 2.5f , body.getPosition().y + 4.33f ), 0);
         }
         else if (index == 2)
         {
-            
+            body.setTransform(new Vec2(body.getPosition().x - 2.5f , body.getPosition().y + 4.33f ), 0);
         }
     }
     
@@ -88,11 +88,11 @@ public class Pod {
         }
         else if (index == 1)
         {
-            
+            body.setTransform(new Vec2(body.getPosition().x - 2.5f , body.getPosition().y - 4.33f ), 0);
         }
         else if (index == 2)
         {
-            
+            body.setTransform(new Vec2(body.getPosition().x + 2.5f , body.getPosition().y - 4.33f ), 0);
         }
     }
 

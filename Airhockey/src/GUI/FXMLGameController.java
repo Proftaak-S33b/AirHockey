@@ -207,7 +207,27 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * Draws an individual pod.
      */
     public void drawPod() {
+             //temp, note-to-self: avoid hardcoding     // AI #1     // AI #2
+        Vec2 p1pos = pm.getPodPosition(1);
+        Vec2 p2pos = pm.getPodPosition(2);
+        Vec2 puckpos = pm.getPuckPosition();
 
+        
+        
+            //apply force is dependent on gravity
+        //apply linearvelocity is one-time only
+        //apply impuls doesnt update anything.
+        //p1.body.setTransform(puckpos, 0);
+        //p2.body.setTransform(puckpos, 0);
+        /*  legacy code
+         p1.body.applyForce(new Vec2(100,0), puckpos);//todo: set global speed
+         //p1.body.applyLinearImpulse(p1.body.getWorldCenter(), puckpos);           
+         p2.body.applyForce(new Vec2(0,100), puckpos); //todo: set global speed
+         //p2.body.applyLinearImpulse(p2.body.getWorldCenter(), puckpos);           
+         System.out.println(puck.getPosition());
+         //System.out.println(p1.getPosition());
+         //
+         */
         //(make sure intial position is initialized before starting this)
         // 1 lookup current position
         // 2 lookup puck position
