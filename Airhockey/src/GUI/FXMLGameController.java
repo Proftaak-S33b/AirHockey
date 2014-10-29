@@ -229,12 +229,12 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         
         switch (e.getCharacter()) {
             case "a":
-                if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
+                if (pm.getPodPosition(0).x > 175) {
                     pm.movePodLeft(0);
                 }
                 break;
             case "d":
-                if (pm.getPodPosition(0).x < 400 - pm.getPodSize()) {
+                if (pm.getPodPosition(0).x < 370 - pm.getPodSize()) {
                     pm.movePodRight(0);
                 }
                 break;
