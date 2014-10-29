@@ -1,6 +1,7 @@
 package GUI;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
+import com.sun.media.jfxmedia.logging.Logger;
 import game.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 //</editor-fold>
 
@@ -98,8 +100,10 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
             @Override
             public void handle(long now) {
                 Draw();
-                gc.setFill(Color.BLACK);
-                gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
+                //gc.setFill(Color.BLACK);
+                //gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
+                //drawPuck(); can replace this - needs to be tested 
+                //Redundant code - Draw() now includes puck.
             }
         }.start();
 
@@ -110,7 +114,8 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 @Override
                 public void run() {
                     world.getPhysWorld().step(1 / 60.0f, 8, 3);
-                    world.getPuck().setSpeed(1);
+                    //Puckspeed gets set everywhere but this one is the only one that counts it seems.
+                    world.getPuck().setSpeed(100);  
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
@@ -141,7 +146,9 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
             //Red side
             drawSide(Color.RED, "Henk", 2, 0, 0, 20);            
             
-            //drawPuck();
+            drawPuck();
+            
+            drawPod();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -149,7 +156,6 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     
     /**
      * Draws a given side. Refactored from Draw(). 
-     * TODO: check naming of vars.
      * @param color a Color enum indicating the color of the lines.
      * @param playername a String with the name of the player.
      * @param a an int representing the first intersecting corner of the field.
@@ -173,7 +179,6 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         double[] goalYcoords = new double[4];
         
         for (int i = 0; i < 4; i++) {
-            System.out.println("" + goal.get(i).x);
             goalXcoords[i] = goal.get(i).x;
             goalYcoords[i] = goal.get(i).y;
         }
@@ -194,6 +199,44 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     public void drawPuck(){
         gc.setFill(Color.BLACK);
         gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());        
+    }
+    
+    /**
+     * Draws an individual pod. 
+     * @param p the Pod object that needs to be drawn.
+     * @param c the Color enum of the pod.
+     */
+    public void drawPod(){
+        //temp, note-to-self: avoid hardcoding
+            Pod p1 = world.getPod("Player 2");     // AI #1
+            Pod p2 = world.getPod("Player 3");     // AI #2
+            Body puck = world.getPuck().getBody(); // Puck
+            Vec2 p1pos = p1.getPosition();
+            Vec2 p2pos = p2.getPosition();
+            Vec2 puckpos = puck.getPosition();
+            
+            //apply force is dependent on gravity
+            //apply linearvelocity is one-time only
+            //apply impuls doesnt update anything.
+            p1.body.setTransform(puckpos, puck.getAngle());
+            p2.body.setTransform(puckpos, puck.getAngle());
+            
+            
+            /*  legacy code
+            p1.body.applyForce(new Vec2(100,0), puckpos);//todo: set global speed
+            //p1.body.applyLinearImpulse(p1.body.getWorldCenter(), puckpos);           
+            p2.body.applyForce(new Vec2(0,100), puckpos); //todo: set global speed
+            //p2.body.applyLinearImpulse(p2.body.getWorldCenter(), puckpos);           
+            System.out.println(puck.getPosition());
+            //System.out.println(p1.getPosition());
+        //
+            */
+        //(make sure intial position is initialized before starting this)
+        // 1 lookup current position
+        // 2 lookup puck position
+        // 3 move towards puck.
+            // 3.1 involve strategy
+        // 4 repeat continously.
     }
     
     @Override
@@ -238,7 +281,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     public void updatePodPositions(Object arg){        
         ArrayList<AI> AI_List = (ArrayList<AI>)arg;
         for (AI ai : AI_List){
-            Pod p = this.world.getPod(ai.getName());
+            Pod p = world.getPod(ai.getName());
             p.move(ai.getDirection());
         }
         Draw();
@@ -251,7 +294,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      */
     @Override
     public void update(Observable o, Object arg) {
-        updatePodPositions(arg);
+        //updatePodPositions(arg);
     }
 
 }

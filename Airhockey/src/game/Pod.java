@@ -13,7 +13,7 @@ public class Pod {
     private final Player player;
 
     //Physics objects
-    private final Body body;
+    public final Body body;
 
     /**
      *
