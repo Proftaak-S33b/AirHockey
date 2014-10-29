@@ -108,7 +108,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         }.start();
 
         try {
-            Timer physTimer = new Timer("Simulate Physics");
+            Timer physTimer = new Timer("Simulate Physics", true);
             physTimer.scheduleAtFixedRate(new TimerTask() {
 
                 @Override
