@@ -61,17 +61,39 @@ public class Pod {
     /**
      *
      */
-    public void moveLeft() {
+    public void moveLeft(int index) {
         //TODO
-        body.setTransform(new Vec2(body.getPosition().x + 5, body.getPosition().y), 0);
+        if (index == 0)
+        {
+            body.setTransform(new Vec2(body.getPosition().x + 5, body.getPosition().y), 0);
+        }
+        else if (index == 1)
+        {
+            
+        }
+        else if (index == 2)
+        {
+            
+        }
     }
     
     /**
      * 
      */
-    public void moveRight(){
+    public void moveRight(int index){
         //TODO
-        body.setTransform(new Vec2(body.getPosition().x - 5, body.getPosition().y), 0);
+        if (index == 0)
+        {
+            body.setTransform(new Vec2(body.getPosition().x - 5, body.getPosition().y), 0);
+        }
+        else if (index == 1)
+        {
+            
+        }
+        else if (index == 2)
+        {
+            
+        }
     }
 
 }
