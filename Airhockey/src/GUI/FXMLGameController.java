@@ -1,7 +1,6 @@
 package GUI;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
-import com.sun.media.jfxmedia.logging.Logger;
 import game.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -203,23 +202,20 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     
     /**
      * Draws an individual pod. 
-     * @param p the Pod object that needs to be drawn.
-     * @param c the Color enum of the pod.
      */
     public void drawPod(){
         //temp, note-to-self: avoid hardcoding
             Pod p1 = world.getPod("Player 2");     // AI #1
             Pod p2 = world.getPod("Player 3");     // AI #2
-            Body puck = world.getPuck().getBody(); // Puck
             Vec2 p1pos = p1.getPosition();
             Vec2 p2pos = p2.getPosition();
-            Vec2 puckpos = puck.getPosition();
+            Vec2 puckpos = world.getPuck().getPosition();
             
             //apply force is dependent on gravity
             //apply linearvelocity is one-time only
             //apply impuls doesnt update anything.
-            p1.body.setTransform(puckpos, puck.getAngle());
-            p2.body.setTransform(puckpos, puck.getAngle());
+            p1.body.setTransform(puckpos, 0);
+            p2.body.setTransform(puckpos, 0);
             
             
             /*  legacy code
@@ -277,6 +273,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     /**
      * Updates the position of the AI's pods.
      * TODO: Heavy refactoring; only redraw what needs to be redrawn(eg. puck and pods).
+     * @param arg
      */
     public void updatePodPositions(Object arg){        
         ArrayList<AI> AI_List = (ArrayList<AI>)arg;

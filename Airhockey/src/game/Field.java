@@ -3,7 +3,6 @@ package game;
 import static java.lang.Math.*;
 import java.util.ArrayList;
 import org.jbox2d.collision.shapes.EdgeShape;
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -31,7 +30,7 @@ public class Field {
     public Field(GameWorld world, int size) {
         this.size = size;
         margin = 25;
-        margin1= 50;
+        margin1 = 50;
 
         /**
          * **Red side**
@@ -114,15 +113,15 @@ public class Field {
         corners.add(new Vec2(size + margin, size + margin));
         return corners;
     }
-
+    
     public ArrayList<Vec2> getFieldCornersPhysx() {
         ArrayList<Vec2> corners = new ArrayList<>();
-        corners.add(new Vec2(margin1 , margin1));
-        corners.add(new Vec2(size / 2 + margin1, (float) ((size * sqrt(0.75)) / 2 + margin1)));
-        corners.add(new Vec2(size + margin1, margin1));
+        corners.add(RotateVector2(getFieldCorners().get(0), (float) Math.PI));
+        corners.add(RotateVector2(getFieldCorners().get(1), (float) Math.PI));
+        corners.add(RotateVector2(getFieldCorners().get(2), (float) Math.PI));
         return corners;
     }
-
+    
     public Vec2 RotateVector2(Vec2 v, float angle) {
         Vec2 newVector;
         newVector = new Vec2((v.x - 275f) * (float) Math.cos(angle) - (v.y - 275f) * (float) Math.sin(angle) + 275f,
@@ -138,11 +137,11 @@ public class Field {
     public int getSize() {
         return this.size;
     }
-
+    
     public double getPodSize() {
         return size * 0.08;
     }
-
+    
     public double getPuckSize() {
         return size * 0.04;
     }
@@ -186,11 +185,11 @@ public class Field {
         rectangleGoal.add(new Vec2((int) ((float) x1 + vx * (mag * 0.7)), (int) ((float) y1 + vy * (mag * 0.7))));
         return rectangleGoal;
     }
-
+    
     private Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
         return new Vec2((a.x + b.x) / 2, (a.y + b.y) / 2);
     }
-
+    
     public ArrayList<Vec2> getStartPositions() {
         ArrayList<Vec2> positions = new ArrayList<>();
         ArrayList<Vec2> corners = getFieldCorners();
@@ -208,5 +207,5 @@ public class Field {
         positions.add(c);
         return positions;
     }
-
+    
 }

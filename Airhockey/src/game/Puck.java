@@ -90,15 +90,6 @@ public class Puck extends Observable{
     public Pod getLastTouched() {
         return this.touched.get(0);
     }
-    
-    /**
-     * Returns the body of the puck for direction calculation.
-     * @return the pucks Body object.
-     */
-    public Body getBody(){
-        //Maybe this can be done differently.
-        return this.body;
-    }
 
     /**
      *
