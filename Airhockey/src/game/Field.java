@@ -14,7 +14,6 @@ public class Field {
     //Class variables
     private int size;
     private final int margin;
-    private final int margin1;
 
     //Physics objects
     private final Body bodyRedSide;
@@ -30,7 +29,6 @@ public class Field {
     public Field(GameWorld world, int size) {
         this.size = size;
         margin = 25;
-        margin1 = 50;
 
         /**
          * **Red side**
@@ -104,7 +102,7 @@ public class Field {
      * Gets 3 coordinates of the 3 corners of the equilateral triangle that will
      * make up the playing field.
      *
-     * @return An ArrayList with 3 Coordinate objects with the 3 points.
+     * @return An ArrayList with 3 Vec2 objects with the 3 points.
      */
     public ArrayList<Vec2> getFieldCorners() {
         ArrayList<Vec2> corners = new ArrayList<>();
@@ -113,7 +111,7 @@ public class Field {
         corners.add(new Vec2(size + margin, size + margin));
         return corners;
     }
-    
+
     public ArrayList<Vec2> getFieldCornersPhysx() {
         ArrayList<Vec2> corners = new ArrayList<>();
         corners.add(RotateVector2(getFieldCorners().get(0), (float) Math.PI));
@@ -121,7 +119,7 @@ public class Field {
         corners.add(RotateVector2(getFieldCorners().get(2), (float) Math.PI));
         return corners;
     }
-    
+
     public Vec2 RotateVector2(Vec2 v, float angle) {
         Vec2 newVector;
         newVector = new Vec2((v.x - 275f) * (float) Math.cos(angle) - (v.y - 275f) * (float) Math.sin(angle) + 275f,
@@ -137,11 +135,11 @@ public class Field {
     public int getSize() {
         return this.size;
     }
-    
+
     public double getPodSize() {
         return size * 0.08;
     }
-    
+
     public double getPuckSize() {
         return size * 0.04;
     }
@@ -185,11 +183,11 @@ public class Field {
         rectangleGoal.add(new Vec2((int) ((float) x1 + vx * (mag * 0.7)), (int) ((float) y1 + vy * (mag * 0.7))));
         return rectangleGoal;
     }
-    
+
     private Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
         return new Vec2((a.x + b.x) / 2, (a.y + b.y) / 2);
     }
-    
+
     public ArrayList<Vec2> getStartPositions() {
         ArrayList<Vec2> positions = new ArrayList<>();
         ArrayList<Vec2> corners = getFieldCorners();
@@ -207,5 +205,5 @@ public class Field {
         positions.add(c);
         return positions;
     }
-    
+
 }
