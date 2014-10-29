@@ -62,7 +62,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     private game.GameWorld world;
     GraphicsContext gc;
     ArrayList<Vec2> corners;
-    ArrayList<Vec2> goal;
+    ArrayList<Vec2> goalCoordinate;
     
     /**
      * AI Mediator
@@ -171,15 +171,15 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         float bY = corners.get(b).y;
                         
         gc.strokeLine(aX, aY, bX, bY);
-        goal = world.getField().getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
+        goalCoordinate = world.getField().getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
         
         // strokePolygon is done undynamically so a loop suffices.
         double[] goalXcoords = new double[4];
         double[] goalYcoords = new double[4];
         
         for (int i = 0; i < 4; i++) {
-            goalXcoords[i] = goal.get(i).x;
-            goalYcoords[i] = goal.get(i).y;
+            goalXcoords[i] = goalCoordinate.get(i).x;
+            goalYcoords[i] = goalCoordinate.get(i).y;
         }
         
         gc.strokePolygon(goalXcoords, goalYcoords, 4);        
@@ -237,17 +237,17 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     
     @Override
     public void handle(KeyEvent e) {
-        goal = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
+        goalCoordinate = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
         switch (e.getCharacter()) {
             case "s":
                 gc.setFill(Color.RED);
-                if (world.getPod("Henk").getPosition().x > goal.get(2).x) {
+                if (world.getPod("Henk").getPosition().x > goalCoordinate.get(2).x) {
                     world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x -= 5, world.getPod("Henk").getPosition().y));
                 }
                 break;
             case "d":
                 gc.setFill(Color.RED);
-                if (world.getPod("Henk").getPosition().x < goal.get(0).x - world.getField().getPodSize()) {
+                if (world.getPod("Henk").getPosition().x < goalCoordinate.get(0).x - world.getField().getPodSize()) {
                     world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x += 5, world.getPod("Henk").getPosition().y));
                 }
                 break;
