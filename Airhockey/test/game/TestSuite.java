@@ -11,7 +11,7 @@ package game;
  */
 public class TestSuite {
     
-    private CoordinateTest coordinate;
+    private GameWorldTest gameworld;
     private AdministratorTest administrator;
     private PuckTest puck;
     private PodTest pod;
@@ -22,7 +22,7 @@ public class TestSuite {
     private FieldTest field;
     
     public TestSuite(){
-        coordinate = new CoordinateTest();
+        gameworld = new GameWorldTest();
         administrator = new AdministratorTest();
         puck = new PuckTest();
         pod = new PodTest();

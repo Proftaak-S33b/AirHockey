@@ -5,6 +5,7 @@
 package game;
 
 import java.util.ArrayList;
+import org.jbox2d.common.Vec2;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,7 +22,7 @@ public class PodTest {
 
     private Pod pod;
     private Player player;
-    private Coordinate position;
+    private Vec2 position;
     private GameWorld world;
 
     @BeforeClass
@@ -35,7 +36,7 @@ public class PodTest {
     @Before
     public void setUp() {
         player = new Human("name", "password");
-        position = new Coordinate(0, 0);
+        position = new Vec2(0, 0);
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Human("A", ""));
         players.add(new Human("B", ""));
@@ -75,7 +76,7 @@ public class PodTest {
     @Test
     public void testMove() {
         System.out.println("Testing Pod.Move():");
-        pod.move(new Coordinate(5, 5));
+        pod.move(new Vec2(5, 5));
         assertEquals("Pod moved but position not the equalling.", position, pod.getPosition());
     }
 }

@@ -37,13 +37,14 @@ public class GameWorldTest {
 
     @Before
     public void setUp() {
-        field = new Field(500);
+        
         pod = new Pod(null, null, null);
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Human("A", ""));
         players.add(new Human("B", ""));
         players.add(new Human("C", ""));
         gameworld = new GameWorld(players);
+        field = new Field(gameworld,500);
         admin = Administrator.getInstance(players.get(0));
     }
 

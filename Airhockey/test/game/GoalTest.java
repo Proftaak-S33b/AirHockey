@@ -4,6 +4,7 @@
  */
 package game;
 
+import org.jbox2d.common.Vec2;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class GoalTest {
 
     private Goal goal;
     private Player player;
-    private Coordinate position;
+    private Vec2 position;
 
     @BeforeClass
     public static void setUpClass() {
@@ -32,7 +33,7 @@ public class GoalTest {
 
     @Before
     public void setUp() {
-        position = new Coordinate(0, 0);
+        position = new Vec2(0, 0);
         player = new Human("name", "password");
         goal = new Goal(position, 275, player);
     }
@@ -48,7 +49,7 @@ public class GoalTest {
     @Test
     public void testGetPosition() {
         System.out.println("Testing Goal.getPosition():");
-        Coordinate check = new Coordinate(0, 0);
+        Vec2 check = new Vec2(0, 0);
         assertEquals("Incorrect coordinates.", goal.getPosition(), check);
     }
 

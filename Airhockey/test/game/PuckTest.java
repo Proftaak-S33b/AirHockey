@@ -5,6 +5,7 @@
 package game;
 
 import java.util.ArrayList;
+import org.jbox2d.common.Vec2;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -38,7 +39,7 @@ public class PuckTest {
         players.add(new Human("B", ""));
         players.add(new Human("C", ""));
         world = new GameWorld(players);
-        puck = new Puck(10);
+        puck = new Puck(world, 10);
     }
 
     @After
@@ -70,7 +71,7 @@ public class PuckTest {
     @Test
     public void testGetDirection() {
         System.out.println("Testing Puck.getDirection():");
-        assertTrue("getDirection returned geen coordinate.", puck.getDirection() instanceof Coordinate);
+        assertTrue("getDirection returned geen coordinate.", puck.getVelocity() instanceof Vec2);
     }
 
     /**
@@ -79,7 +80,7 @@ public class PuckTest {
     @Test
     public void testGetLastTouched() {
         System.out.println("Testing Puck.getLastTouched():");
-        Pod p = new Pod(world, new Human("name", "password"), new Coordinate(0, 0));
+        Pod p = new Pod(world, new Human("name", "password"), new Vec2(0, 0));
         assertEquals("Pod verkeerd toegevoegd.", puck.getLastTouched(), p);
     }
 
@@ -90,8 +91,8 @@ public class PuckTest {
     public void testAddTouched() {
         System.out.println("Testing Puck.addTouched():");
         puck = null;
-        puck = new Puck(10);
-        Pod p = new Pod(world, new Human("name", "password"), new Coordinate(0, 0));
+        puck = new Puck(world, 10);
+        Pod p = new Pod(world, new Human("name", "password"), new Vec2(0, 0));
         puck.addTouched(p);
         assertEquals("Toucher not added.", puck.getLastTouched(), p);
     }

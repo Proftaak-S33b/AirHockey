@@ -20,6 +20,7 @@ import static org.junit.Assert.*;
 public class FieldTest {
     
     private Field field;
+    private GameWorld gw;
     
     @BeforeClass
     public static void setUpClass() {
@@ -31,7 +32,12 @@ public class FieldTest {
     
     @Before
     public void setUp() {
-        field = new Field(500);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Human("Henk", "fiets"));
+        players.add(new AI("Player 2"));
+        players.add(new AI("Player 3"));
+        gw = new GameWorld(players);
+        field = new Field(gw, 500);
     }
     
     @After
@@ -71,7 +77,7 @@ public class FieldTest {
         double y2 = 0.0;
         double sizeX = 0.0;
         double sizeY = 0.0;
-        Field instance = new Field(500);
+        Field instance = new Field(gw,500);
         ArrayList expResult = null;
         ArrayList result = instance.getGoalCorners(x1, y1, x2, y2, sizeX, sizeY);
         assertEquals(expResult, result);
