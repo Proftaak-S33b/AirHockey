@@ -3,3 +3,6 @@
 /Airhockey/dist/
 /Airhockey/nbproject/project.properties
 *.properties
+Airhockey/nbproject/configs/Run_as_WebStart.properties
+Airhockey/nbproject/configs/Run_in_Browser.properties
+Airhockey/src/GUI/FXMLGameController.java
