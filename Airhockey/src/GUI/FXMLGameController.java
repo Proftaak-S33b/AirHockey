@@ -37,38 +37,38 @@ import org.jbox2d.dynamics.contacts.Contact;
  * @author Joris Douven
  */
 public class FXMLGameController implements Initializable, EventHandler<KeyEvent>, ContactListener, Observer {
-
+    
     @FXML
     private Button buttonChat;
-
+    
     @FXML
     private TextField textChat;
-
+    
     @FXML
     private ListView listChat;
-
+    
     @FXML
     private TableView tableScore;
-
+    
     @FXML
     private TableColumn columnPlayer;
-
+    
     @FXML
     private TableColumn columnScore;
-
+    
     @FXML
     private Canvas gameCanvas;
-
+    
     private game.GameWorld world;
     GraphicsContext gc;
     ArrayList<Vec2> corners;
     ArrayList<Vec2> goal;
-    
+
     /**
      * AI Mediator
      */
     private AI_Mediator mediator;
-    
+
     /**
      * Initializes the controller class.
      *
@@ -87,15 +87,15 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         corners = world.getField().getFieldCorners();
 
         /**
-         * Initializes the mediator with the current controller, players, and puck.
+         * Initializes the mediator with the current controller, players, and
+         * puck.
          */
         mediator = new AI_Mediator(this, players, world.getPuck());
         
         Draw();        
-
-                
+        
         new AnimationTimer() {
-
+            
             @Override
             public void handle(long now) {
                 Draw();
@@ -105,23 +105,23 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 //Redundant code - Draw() now includes puck.
             }
         }.start();
-
+        
         try {
             Timer physTimer = new Timer("Simulate Physics", true);
             physTimer.scheduleAtFixedRate(new TimerTask() {
-
+                
                 @Override
                 public void run() {
                     world.getPhysWorld().step(1 / 60.0f, 8, 3);
                     //Puckspeed gets set everywhere but this one is the only one that counts it seems.
-                    world.getPuck().setSpeed(100);  
+                    //world.getPuck().setSpeed(100);  
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
-
+    
     public void SetTekst(ActionEvent event) {
         listChat.getItems().add(textChat.getText());
         textChat.clear();
@@ -152,9 +152,10 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
             System.out.println("Error: " + e.getMessage());
         }
     }
-    
+
     /**
-     * Draws a given side. Refactored from Draw(). 
+     * Draws a given side. Refactored from Draw().
+     *
      * @param color a Color enum indicating the color of the lines.
      * @param playername a String with the name of the player.
      * @param a an int representing the first intersecting corner of the field.
@@ -162,17 +163,17 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * @param sizeX a double representing the width of the goal.
      * @param sizeY a double representing the length of the goal.
      */
-    public void drawSide(Color color, String playername, int a, int b, double sizeX, double sizeY){       
+    public void drawSide(Color color, String playername, int a, int b, double sizeX, double sizeY) {        
         gc.setStroke(color);        
         
         float aX = corners.get(a).x;
         float aY = corners.get(a).y;
         float bX = corners.get(b).x;
         float bY = corners.get(b).y;
-                        
+        
         gc.strokeLine(aX, aY, bX, bY);
         goal = world.getField().getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
-        
+
         // strokePolygon is done undynamically so a loop suffices.
         double[] goalXcoords = new double[4];
         double[] goalYcoords = new double[4];
@@ -185,7 +186,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         gc.strokePolygon(goalXcoords, goalYcoords, 4);        
         gc.setFill(color);
         gc.fillOval(
-                world.getPod(playername).getPosition().x, 
+                world.getPod(playername).getPosition().x,
                 world.getPod(playername).getPosition().y,
                 world.getField().getPodSize(),
                 world.getField().getPodSize()
@@ -195,43 +196,41 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     /**
      * Draws the puck. Refactored from Draw().
      */
-    public void drawPuck(){
+    public void drawPuck() {
         gc.setFill(Color.BLACK);
         gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());        
     }
-    
+
     /**
-     * Draws an individual pod. 
+     * Draws an individual pod.
      */
-    public void drawPod(){
+    public void drawPod() {
         //temp, note-to-self: avoid hardcoding
-            Pod p1 = world.getPod("Player 2");     // AI #1
-            Pod p2 = world.getPod("Player 3");     // AI #2
-            Vec2 p1pos = p1.getPosition();
-            Vec2 p2pos = p2.getPosition();
-            Vec2 puckpos = world.getPuck().getPosition();
-            
+        Pod p1 = world.getPod("Player 2");     // AI #1
+        Pod p2 = world.getPod("Player 3");     // AI #2
+        Vec2 p1pos = p1.getPosition();
+        Vec2 p2pos = p2.getPosition();
+        Vec2 puckpos = world.getPuck().getPosition();
+
             //apply force is dependent on gravity
-            //apply linearvelocity is one-time only
-            //apply impuls doesnt update anything.
-            p1.body.setTransform(puckpos, 0);
-            p2.body.setTransform(puckpos, 0);
-            
-            
-            /*  legacy code
-            p1.body.applyForce(new Vec2(100,0), puckpos);//todo: set global speed
-            //p1.body.applyLinearImpulse(p1.body.getWorldCenter(), puckpos);           
-            p2.body.applyForce(new Vec2(0,100), puckpos); //todo: set global speed
-            //p2.body.applyLinearImpulse(p2.body.getWorldCenter(), puckpos);           
-            System.out.println(puck.getPosition());
-            //System.out.println(p1.getPosition());
-        //
-            */
+        //apply linearvelocity is one-time only
+        //apply impuls doesnt update anything.
+        //p1.body.setTransform(puckpos, 0);
+        //p2.body.setTransform(puckpos, 0);
+        /*  legacy code
+         p1.body.applyForce(new Vec2(100,0), puckpos);//todo: set global speed
+         //p1.body.applyLinearImpulse(p1.body.getWorldCenter(), puckpos);           
+         p2.body.applyForce(new Vec2(0,100), puckpos); //todo: set global speed
+         //p2.body.applyLinearImpulse(p2.body.getWorldCenter(), puckpos);           
+         System.out.println(puck.getPosition());
+         //System.out.println(p1.getPosition());
+         //
+         */
         //(make sure intial position is initialized before starting this)
         // 1 lookup current position
         // 2 lookup puck position
         // 3 move towards puck.
-            // 3.1 involve strategy
+        // 3.1 involve strategy
         // 4 repeat continously.
     }
     
@@ -253,45 +252,47 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 break;
         }
     }
-
+    
     @Override
     public void beginContact(Contact contact) {
     }
-
+    
     @Override
     public void endContact(Contact contact) {
     }
-
+    
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
     }
-
+    
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
     }
-    
+
     /**
-     * Updates the position of the AI's pods.
-     * TODO: Heavy refactoring; only redraw what needs to be redrawn(eg. puck and pods).
+     * Updates the position of the AI's pods. TODO: Heavy refactoring; only
+     * redraw what needs to be redrawn(eg. puck and pods).
+     *
      * @param arg
      */
-    public void updatePodPositions(Object arg){        
-        ArrayList<AI> AI_List = (ArrayList<AI>)arg;
-        for (AI ai : AI_List){
+    public void updatePodPositions(Object arg) {        
+        ArrayList<AI> AI_List = (ArrayList<AI>) arg;
+        for (AI ai : AI_List) {
             Pod p = world.getPod(ai.getName());
             p.move(ai.getDirection());
         }
         Draw();
     }
-    
+
     /**
      * TODO: replace updatePodPositions.
-     * @param o 
-     * @param arg 
+     *
+     * @param o
+     * @param arg
      */
     @Override
     public void update(Observable o, Object arg) {
         //updatePodPositions(arg);
     }
-
+    
 }
