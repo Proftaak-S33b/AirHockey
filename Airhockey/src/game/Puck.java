@@ -54,11 +54,7 @@ public class Puck extends Observable {
     }
 
     public Vec2 getPosition() {
-        return world.getField().RotateVector2(body.getPosition(), (float) Math.PI);
-    }
-
-    public Vec2 rotateVector(Body b) {
-        return world.getField().RotateVector2(b.getPosition(), (float) Math.PI);
+        return body.getPosition();
     }
 
     /**

@@ -60,10 +60,18 @@ public class Pod {
 
     /**
      *
-     * @param position
      */
-    public void move(Vec2 position) {
-        body.setTransform(position, 0);
+    public void moveLeft() {
+        //TODO
+        body.setTransform(new Vec2(body.getPosition().x + 5, body.getPosition().y), 0);
+    }
+    
+    /**
+     * 
+     */
+    public void moveRight(){
+        //TODO
+        body.setTransform(new Vec2(body.getPosition().x - 5, body.getPosition().y), 0);
     }
 
 }

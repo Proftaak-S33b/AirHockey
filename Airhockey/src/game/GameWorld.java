@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
-public class GameWorld{
+public class GameWorld {
 
     //Game objects
     private final Puck puck;
@@ -64,17 +64,19 @@ public class GameWorld{
 
     /**
      * Get the physics World object.
+     *
      * @return jBox2D World object
      */
     public World getPhysWorld() {
         return this.world;
     }
-    
+
     /**
      * Get the puck object
+     *
      * @return the Puck object
      */
-    public Puck getPuck(){
+    public Puck getPuck() {
         return this.puck;
     }
 
@@ -83,17 +85,21 @@ public class GameWorld{
      * player with the specified name is taking part in this game, null is
      * returned.
      *
-     * @param playerName The name of the player the pod belongs to.
+     * @param index
      * @return Returns the pod object that belongs to the player with the
      * specified name.
      */
-    public Pod getPod(String playerName) {
-        for (Pod p : pods) {
-            if (p.getPlayer().getName().equals(playerName)) {
-                return p;
+    public Pod getPod(int index) {
+        return pods.get(index);
+    }
+
+    public int findPlayerIndex(String name) throws NoSuchFieldException {
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getName().equals(name)) {
+                return i;
             }
         }
-        return null;
+        throw new NoSuchFieldException("No such player");
     }
 
     public int getScore(String playerName) {

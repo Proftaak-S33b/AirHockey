@@ -37,32 +37,31 @@ import org.jbox2d.dynamics.contacts.Contact;
  * @author Joris Douven
  */
 public class FXMLGameController implements Initializable, EventHandler<KeyEvent>, ContactListener, Observer {
-    
+
     @FXML
     private Button buttonChat;
-    
+
     @FXML
     private TextField textChat;
-    
+
     @FXML
     private ListView listChat;
-    
+
     @FXML
     private TableView tableScore;
-    
+
     @FXML
     private TableColumn columnPlayer;
-    
+
     @FXML
     private TableColumn columnScore;
-    
+
     @FXML
     private Canvas gameCanvas;
-    
-    private game.GameWorld world;
+
+    private PhysicsMediator pm;
+
     GraphicsContext gc;
-    ArrayList<Vec2> corners;
-    ArrayList<Vec2> goalCoordinate;
 
     /**
      * AI Mediator
@@ -77,51 +76,46 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        GameWorld world;
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Human("Henk", "fiets"));
         players.add(new AI("Player 2"));
         players.add(new AI("Player 3"));
         world = new GameWorld(players);
-        world.getPhysWorld().setContactListener(this);
+        pm = new PhysicsMediator(world, this);
+
         gc = gameCanvas.getGraphicsContext2D();
-        corners = world.getField().getFieldCorners();
 
         /**
          * Initializes the mediator with the current controller, players, and
          * puck.
          */
         mediator = new AI_Mediator(this, players, world.getPuck());
-        
-        Draw();        
-        
+
+        Draw();
+
         new AnimationTimer() {
-            
+
             @Override
             public void handle(long now) {
                 Draw();
-                //gc.setFill(Color.BLACK);
-                //gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());
-                //drawPuck(); can replace this - needs to be tested 
-                //Redundant code - Draw() now includes puck.
             }
         }.start();
-        
+
         try {
             Timer physTimer = new Timer("Simulate Physics", true);
             physTimer.scheduleAtFixedRate(new TimerTask() {
-                
+
                 @Override
                 public void run() {
-                    world.getPhysWorld().step(1 / 60.0f, 8, 3);
-                    //Puckspeed gets set everywhere but this one is the only one that counts it seems.
-                    //world.getPuck().setSpeed(100);  
+                    pm.step(1 / 60f, 8, 3);
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
             System.out.println(e.toString());
         }
     }
-    
+
     public void SetTekst(ActionEvent event) {
         listChat.getItems().add(textChat.getText());
         textChat.clear();
@@ -132,7 +126,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      */
     public void Draw() {
         try {
-            
+
             gc.setFill(Color.WHITESMOKE);
             gc.fillRect(0.0, 0.0, 550, 550);
 
@@ -143,10 +137,10 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
             drawSide(Color.GREEN, "Player 3", 1, 2, 18, -12);
 
             //Red side
-            drawSide(Color.RED, "Henk", 2, 0, 0, 20);            
-            
+            drawSide(Color.RED, "Henk", 2, 0, 0, 20);
+
             drawPuck();
-            
+
             drawPod();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -163,34 +157,41 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * @param sizeX a double representing the width of the goal.
      * @param sizeY a double representing the length of the goal.
      */
-    public void drawSide(Color color, String playername, int a, int b, double sizeX, double sizeY) {        
-        gc.setStroke(color);        
-        
+    public void drawSide(Color color, String playername, int a, int b, double sizeX, double sizeY) {
+        gc.setStroke(color);
+
+        ArrayList<Vec2> corners = pm.getFieldCorners();
+
         float aX = corners.get(a).x;
         float aY = corners.get(a).y;
         float bX = corners.get(b).x;
         float bY = corners.get(b).y;
-        
+
         gc.strokeLine(aX, aY, bX, bY);
-        goalCoordinate = world.getField().getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
+        ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
 
         // strokePolygon is done undynamically so a loop suffices.
         double[] goalXcoords = new double[4];
         double[] goalYcoords = new double[4];
-        
+
         for (int i = 0; i < 4; i++) {
-            goalXcoords[i] = goalCoordinate.get(i).x;
-            goalYcoords[i] = goalCoordinate.get(i).y;
+            goalXcoords[i] = goalCoordinates.get(i).x;
+            goalYcoords[i] = goalCoordinates.get(i).y;
         }
-        
-        gc.strokePolygon(goalXcoords, goalYcoords, 4);        
+
+        gc.strokePolygon(goalXcoords, goalYcoords, 4);
         gc.setFill(color);
-        gc.fillOval(
-                world.getPod(playername).getPosition().x,
-                world.getPod(playername).getPosition().y,
-                world.getField().getPodSize(),
-                world.getField().getPodSize()
-        );
+
+        try {
+            gc.fillOval(
+                    pm.getPodPosition(pm.getPodIndex(playername)).x,
+                    pm.getPodPosition(pm.getPodIndex(playername)).y,
+                    pm.getPodSize(),
+                    pm.getPodSize()
+            );
+        } catch (NoSuchFieldException ex) {
+            System.out.println("Playername not found" + ex.getMessage());
+        }
     }
 
     /**
@@ -198,34 +199,14 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      */
     public void drawPuck() {
         gc.setFill(Color.BLACK);
-        gc.fillOval(world.getPuck().getPosition().x, world.getPuck().getPosition().y, world.getField().getPuckSize(), world.getField().getPuckSize());        
+        gc.fillOval(pm.getPuckPosition().x, pm.getPuckPosition().y, pm.getPuckSize(), pm.getPuckSize());
     }
 
     /**
      * Draws an individual pod.
      */
     public void drawPod() {
-        //temp, note-to-self: avoid hardcoding
-        Pod p1 = world.getPod("Player 2");     // AI #1
-        Pod p2 = world.getPod("Player 3");     // AI #2
-        Vec2 p1pos = p1.getPosition();
-        Vec2 p2pos = p2.getPosition();
-        Vec2 puckpos = world.getPuck().getPosition();
 
-            //apply force is dependent on gravity
-        //apply linearvelocity is one-time only
-        //apply impuls doesnt update anything.
-        //p1.body.setTransform(puckpos, 0);
-        //p2.body.setTransform(puckpos, 0);
-        /*  legacy code
-         p1.body.applyForce(new Vec2(100,0), puckpos);//todo: set global speed
-         //p1.body.applyLinearImpulse(p1.body.getWorldCenter(), puckpos);           
-         p2.body.applyForce(new Vec2(0,100), puckpos); //todo: set global speed
-         //p2.body.applyLinearImpulse(p2.body.getWorldCenter(), puckpos);           
-         System.out.println(puck.getPosition());
-         //System.out.println(p1.getPosition());
-         //
-         */
         //(make sure intial position is initialized before starting this)
         // 1 lookup current position
         // 2 lookup puck position
@@ -233,38 +214,45 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         // 3.1 involve strategy
         // 4 repeat continously.
     }
-    
+
     @Override
     public void handle(KeyEvent e) {
-        goalCoordinate = world.getField().getGoalCorners(corners.get(2).x, corners.get(2).y, corners.get(0).x, corners.get(0).y, 0, 20);
+        ArrayList<Vec2> corners = pm.getFieldCorners();
+
+        float aX = corners.get(0).x;
+        float aY = corners.get(0).y;
+        float bX = corners.get(1).x;
+        float bY = corners.get(1).y;
+        ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, 0, 20);
+        
+        Vec2 v = pm.getPodPosition(0);
+        
         switch (e.getCharacter()) {
-            case "s":
-                gc.setFill(Color.RED);
-                if (world.getPod("Henk").getPosition().x > goalCoordinate.get(2).x) {
-                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x -= 5, world.getPod("Henk").getPosition().y));
+            case "a":
+                if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
+                    pm.movePodLeft(0);
                 }
                 break;
             case "d":
-                gc.setFill(Color.RED);
-                if (world.getPod("Henk").getPosition().x < goalCoordinate.get(0).x - world.getField().getPodSize()) {
-                    world.getPod("Henk").move(new Vec2(world.getPod("Henk").getPosition().x += 5, world.getPod("Henk").getPosition().y));
+                if (pm.getPodPosition(0).x < 400 - pm.getPodSize()) {
+                    pm.movePodRight(0);
                 }
                 break;
         }
     }
-    
+
     @Override
     public void beginContact(Contact contact) {
     }
-    
+
     @Override
     public void endContact(Contact contact) {
     }
-    
+
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
     }
-    
+
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
     }
@@ -275,13 +263,12 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      *
      * @param arg
      */
-    public void updatePodPositions(Object arg) {        
+    public void updatePodPositions(Object arg) {
         ArrayList<AI> AI_List = (ArrayList<AI>) arg;
         for (AI ai : AI_List) {
-            Pod p = world.getPod(ai.getName());
-            p.move(ai.getDirection());
+            //Pod p = world.getPod(ai.getName());
+            //p.move(ai.getDirection());
         }
-        Draw();
     }
 
     /**
@@ -294,5 +281,5 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     public void update(Observable o, Object arg) {
         //updatePodPositions(arg);
     }
-    
+
 }

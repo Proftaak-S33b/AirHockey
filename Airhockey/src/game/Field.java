@@ -122,8 +122,8 @@ public class Field {
 
     public Vec2 RotateVector2(Vec2 v, float angle) {
         Vec2 newVector;
-        newVector = new Vec2((v.x - 275f) * (float) Math.cos(angle) - (v.y - 275f) * (float) Math.sin(angle) + 275f,
-                (v.x - 275) * (float) Math.sin(angle) + (v.y - 275) * (float) Math.cos(angle) + 275);
+        newVector = new Vec2((v.x - (size / 2 + margin)) * (float) Math.cos(angle) - (v.y - (size / 2 + margin)) * (float) Math.sin(angle) + (size / 2 + margin),
+                (v.x - (size / 2 + margin)) * (float) Math.sin(angle) + (v.y - (size / 2 + margin)) * (float) Math.cos(angle) + (size / 2 + margin));
         return newVector;
     }
 
@@ -200,9 +200,9 @@ public class Field {
         Vec2 c = getCenterOfLine(corners.get(2), corners.get(0));
         c.x -= getPodSize() / 2;
         c.y -= getPodSize() / 2;
-        positions.add(a);
-        positions.add(b);
-        positions.add(c);
+        positions.add(RotateVector2(a, (float) Math.PI));
+        positions.add(RotateVector2(b, (float) Math.PI));
+        positions.add(RotateVector2(c, (float) Math.PI));
         return positions;
     }
 
