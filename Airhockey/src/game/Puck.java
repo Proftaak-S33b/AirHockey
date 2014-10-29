@@ -43,14 +43,14 @@ public class Puck extends Observable {
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
         fd.density = 0.5f;
-        fd.friction = 0.3f;
-        fd.restitution = 0.5f;
+        fd.friction = 0.0f;
+        fd.restitution = 1.1f;
         //create the body and add fixture to it
         body = world.getPhysWorld().createBody(bd);
         body.createFixture(fd);
         body.setBullet(true);
 
-        body.applyLinearImpulse(new Vec2(direction.x * this.speed, direction.y * this.speed), body.getPosition());
+        body.setLinearVelocity(new Vec2(direction.x * this.speed, direction.y * this.speed));
     }
 
     public Vec2 getPosition() {

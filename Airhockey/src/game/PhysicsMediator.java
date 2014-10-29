@@ -83,4 +83,9 @@ public class PhysicsMediator {
     private Vec2 rotateVector(Vec2 v) {
         return world.getField().RotateVector2(v, (float) Math.PI);
     }
+    
+    public void DEBUG_printPuckSpeed(){
+        Vec2 v = world.getPuck().getVelocity().clone();
+        System.out.println(v.normalize());
+    }
 }

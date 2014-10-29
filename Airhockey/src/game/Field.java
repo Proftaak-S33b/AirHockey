@@ -13,7 +13,7 @@ public class Field {
 
     //Class variables
     private int size;
-    private final int margin;
+    private int margin;
 
     //Physics objects
     private final Body bodyRedSide;
@@ -114,9 +114,11 @@ public class Field {
 
     public ArrayList<Vec2> getFieldCornersPhysx() {
         ArrayList<Vec2> corners = new ArrayList<>();
-        corners.add(RotateVector2(getFieldCorners().get(0), (float) Math.PI));
-        corners.add(RotateVector2(getFieldCorners().get(1), (float) Math.PI));
-        corners.add(RotateVector2(getFieldCorners().get(2), (float) Math.PI));
+        margin = 37;
+        corners.add(new Vec2(margin , margin));
+        corners.add(new Vec2(size / 2 + margin, (float) ((size * sqrt(0.75)) / 2 + margin)));
+        corners.add(new Vec2(size + margin, margin));
+        margin = 25;
         return corners;
     }
 
