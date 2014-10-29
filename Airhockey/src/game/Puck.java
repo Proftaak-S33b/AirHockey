@@ -9,7 +9,7 @@ import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
-public class Puck extends Observable{
+public class Puck extends Observable {
 
     //Game objects
     private int speed;
@@ -28,6 +28,7 @@ public class Puck extends Observable{
     public Puck(GameWorld world, int speed) {
         this.speed = speed;
         direction = new Vec2(-0.5f, 1);
+        direction.normalize();
         touched = new ArrayList<>();
         this.world = world;
 
@@ -48,30 +49,16 @@ public class Puck extends Observable{
         body = world.getPhysWorld().createBody(bd);
         body.createFixture(fd);
         body.setBullet(true);
-        setSpeed(speed);
+
+        body.applyLinearImpulse(new Vec2(direction.x * speed, direction.y * speed), body.getPosition());
     }
 
     public Vec2 getPosition() {
         return world.getField().RotateVector2(body.getPosition(), (float) Math.PI);
-        //return this.body.getPosition();
     }
 
-    public Vec2 rotateVector(Body b){
+    public Vec2 rotateVector(Body b) {
         return world.getField().RotateVector2(b.getPosition(), (float) Math.PI);
-    }
-    
-    /**
-     *
-     * @param position
-     */
-    public void move(Vec2 position) {
-        System.out.println("puck moved.");
-        body.setTransform(position, 0);
-        setChanged(); 
-        System.out.println("1/2: puck set to changed.");
-        notifyObservers(position);
-        clearChanged(); 
-        System.out.println("2/2: puck change cleared.");
     }
 
     /**
@@ -79,7 +66,6 @@ public class Puck extends Observable{
      * @param speed
      */
     public void setSpeed(int speed) {
-        direction.normalize();
         body.setLinearVelocity(new Vec2(direction.x * speed, direction.y * speed));
     }
 
@@ -97,6 +83,6 @@ public class Puck extends Observable{
      */
     public void addTouched(Pod touched) {
         this.touched.add(0, touched);
-    }        
+    }
 
 }
