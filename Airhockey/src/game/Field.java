@@ -30,7 +30,7 @@ public class Field {
     public Field(GameWorld world, int size) {
         this.size = size;
         margin = 25;
-        marginPhys = 2.5f;
+        marginPhys = 3.5f;
 
         /**
          * **Red side**
