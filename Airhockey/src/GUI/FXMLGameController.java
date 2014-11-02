@@ -208,7 +208,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * Draws an individual pod.
      */
     public void drawPod() {
-        //temp, note-to-self: avoid hardcoding     
+        // temp | note-to-self: avoid hardcoding     
         float p1Y = pm.getPodPosition(1).y; // AI #1     
         float p2Y = pm.getPodPosition(2).y; // AI #2
         float puckY = pm.getPuckPosition().y;
@@ -222,21 +222,55 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
         ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, -18, -12);
 
+        
         // AI    ///////////////////////////////////////////////////////////////
-        if (puckY < p1Y) {
-            if (pm.getPodPosition(1).x < goalCoordinates.get(2).x /*+ pm.getPodSize()*/) {
+        
+        // Measure distance - whether y is lower or higher, the distance will 
+        // always be a positive number.
+        float distance = puckY - p2Y;
+        if (distance < 0) {
+            distance -= distance + distance;
+        }
+        
+        // Create deadzone to prevent flickering.
+        float personalspace = (float)pm.getPodSize() / 2;
+        
+        // Where is the puck?
+        if (puckY < p1Y & puckY < p2Y) {
+            if (distance > 25) {
+                AI_moveUp(goalCoordinates);
+            }
+            // Does the AI respect the puck's personal space?                
+        }
+        if (puckY > p1Y & puckY > p2Y) {
+            if (distance > 25) {
+                AI_moveDown(goalCoordinates); 
+            }                
+        }
+        
+        System.out.println("Distance: " + distance + ", puck.y: " + puckY + ", pod.y: " + p2Y);
+    }
+    
+    /**
+     * Moves the AI up from player viewpoints.
+     * @param goalCoordinates 
+     */
+    private void AI_moveUp(ArrayList<Vec2> goalCoordinates){
+            if (pm.getPodPosition(1).y > goalCoordinates.get(2).y + pm.getPodSize() / 2) {
                 pm.movePodLeft(1);
                 pm.movePodRight(2);
-                //System.out.println("MOVING BLUE LEFT");
             }
-        }
-        if (puckY > p1Y) {
-            if (pm.getPodPosition(1).x > goalCoordinates.get(0).x/* - pm.getPodSize() / 2*/) {
+    }
+    
+    /**
+     * Moves the AI down from player viewpoint.
+     * @param goalCoordinates 
+     */
+    private void AI_moveDown(ArrayList<Vec2> goalCoordinates){
+            if (pm.getPodPosition(1).y < goalCoordinates.get(0).y - pm.getPodSize()) {
                 pm.movePodLeft(2);
                 pm.movePodRight(1);
-                //System.out.println("MOVING BLUE RIGHT");
             }
-        }
     }
 
     @Override
