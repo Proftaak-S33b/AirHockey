@@ -29,10 +29,19 @@ public class AI extends Observable implements Player, Observer{
         return this.name;
     }
     
+    /**
+     * Deprecated.
+     * @return 
+     */
     public Vec2 getDirection(){
         return this.direction;
     }
 
+    /**
+     * Deprecated.
+     * @param o
+     * @param arg 
+     */
     @Override
     public void update(Observable o, Object arg) {
         System.out.println("Updated AI.");        

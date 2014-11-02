@@ -207,12 +207,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     /**
      * Draws an individual pod.
      */
-    public void drawPod() {
-        // temp | note-to-self: avoid hardcoding     
-        float p1Y = pm.getPodPosition(1).y; // AI #1     
-        float p2Y = pm.getPodPosition(2).y; // AI #2
-        float puckY = pm.getPuckPosition().y;
-
+    public void drawPod() {                                
         ArrayList<Vec2> corners = pm.getFieldCorners();
 
         float aX = corners.get(0).x;
@@ -221,34 +216,50 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         float bY = corners.get(1).y;
 
         ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, -18, -12);
-
         
         // AI    ///////////////////////////////////////////////////////////////
+        AI_CalculateMovement(goalCoordinates);
+    }
+    
+    /**
+     * Part of slowly phasing out the AI from the Controller to the AI classes.
+     * @param goalCoordinates a list of coordinates for the pods to stay within.
+     */
+    private void AI_CalculateMovement(ArrayList<Vec2> goalCoordinates){
         
-        // Measure distance - whether y is lower or higher, the distance will 
-        // always be a positive number.
+        // temp | note-to-self: avoid hardcoding     
+        float p1Y = pm.getPodPosition(1).y; // AI #1     
+        float p2Y = pm.getPodPosition(2).y; // AI #2
+        float puckY = pm.getPuckPosition().y;
+        
+        /* Measure distance - whether y is lower or higher, the distance will 
+         * always be a positive number.
+         */
         float distance = puckY - p2Y;
         if (distance < 0) {
             distance -= distance + distance;
         }
         
         // Create deadzone to prevent flickering.
+        //When in doubt, set to 25. jus werks.
         float personalspace = (float)pm.getPodSize() / 2;
         
         // Where is the puck?
         if (puckY < p1Y & puckY < p2Y) {
-            if (distance > 25) {
+            // Does the AI respect the puck's personal space?                
+            if (distance > personalspace) {
                 AI_moveUp(goalCoordinates);
             }
-            // Does the AI respect the puck's personal space?                
+            
         }
         if (puckY > p1Y & puckY > p2Y) {
-            if (distance > 25) {
+            // Does the AI respect the puck's personal space?                
+            if (distance > personalspace) {
                 AI_moveDown(goalCoordinates); 
             }                
         }
         
-        System.out.println("Distance: " + distance + ", puck.y: " + puckY + ", pod.y: " + p2Y);
+        //System.out.println("Distance: " + distance + ", puck.y: " + puckY + ", pod.y: " + p2Y);        
     }
     
     /**

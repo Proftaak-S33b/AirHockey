@@ -16,10 +16,12 @@ public class AI_Mediator extends Observable implements Observer{
     private Puck puck; 
     private ArrayList<AI> AI_List = new ArrayList<>();
     private FXMLGameController controller;
+    private PhysicsMediator pm;
     
     public AI_Mediator(FXMLGameController controller, ArrayList<Player> players, Puck puck){
         this.puck = puck;        
         this.controller = controller;
+        this.pm = null;
         
         //Initializes the AI.
         initAI(players);
