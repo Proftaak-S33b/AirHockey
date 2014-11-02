@@ -211,9 +211,9 @@ public class Field {
         a = RotateVector2(a, (float) Math.PI);
         b = RotateVector2(b, (float) Math.PI);
         c = RotateVector2(c, (float) Math.PI);
-        positions.add(new Vec2(a.x / 10, a.y / 10));
-        positions.add(new Vec2(b.x / 10, b.y / 10));
-        positions.add(new Vec2(c.x / 10, c.y / 10));
+        positions.add(new Vec2((a.x + 18) / 10 , (a.y + 18) / 10));
+        positions.add(new Vec2((b.x + 18) / 10, (b.y + 18) / 10));
+        positions.add(new Vec2((c.x + 18) / 10, (c.y + 18) / 10));
         return positions;
     }
 
