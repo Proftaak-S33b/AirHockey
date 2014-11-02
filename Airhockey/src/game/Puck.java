@@ -51,6 +51,7 @@ public class Puck extends Observable {
         body.setBullet(true);
 
         body.setLinearVelocity(new Vec2(direction.x * this.speed, direction.y * this.speed));
+        body.setUserData(this);
     }
 
     public Vec2 getPosition() {

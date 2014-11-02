@@ -49,8 +49,9 @@ public class GameWorld {
 
     public void score(Player scoredAgainst) {
         createPuck();
+        int i = 0;
         try {
-            int i = 0;
+
             while (puck.getTouched(i).getPlayer() == scoredAgainst) {
                 i++;
             }
@@ -63,10 +64,11 @@ public class GameWorld {
         } catch (IndexOutOfBoundsException ex) {
             System.out.println("No player other than the loser touched the pod... Score unchanged");
         }
+        System.out.println(puck.getTouched(i).getPlayer().getName() + "scored!!!");
     }
 
     private void createPuck() {
-        this.puck = new Puck(this, 10);
+        this.puck = new Puck(this, 20);
     }
 
     /**

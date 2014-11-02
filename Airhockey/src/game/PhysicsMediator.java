@@ -87,4 +87,45 @@ public class PhysicsMediator {
         return world.getField().RotateVector2(v, (float) Math.PI);
     }
 
+    public Player hitGoal(Vec2 position) {
+        //Check if red side was hit
+        ArrayList<Vec2> corners = world.getField().getFieldCornersPhysx();
+
+        float aX = corners.get(2).x;
+        float aY = corners.get(2).y;
+        float bX = corners.get(0).x;
+        float bY = corners.get(0).y;
+        corners = getGoalCorners(aX, aY, bX, bY, 0, 2.0);
+        if (position.x > corners.get(2).x && position.x < corners.get(0).x) {
+            return world.getPod(0).getPlayer();
+        }
+        //Check if blue side was hit
+        corners = world.getField().getFieldCornersPhysx();
+
+        aX = corners.get(0).x;
+        aY = corners.get(0).y;
+        bX = corners.get(1).x;
+        bY = corners.get(1).y;
+        corners = getGoalCorners(aX, aY, bX, bY, -1.8, -1.2);
+        if ((position.x > corners.get(0).x && position.y > corners.get(0).y)
+                && (position.x < corners.get(3).x && position.y < corners.get(3).y)) {
+            return world.getPod(1).getPlayer();
+        }
+
+        //Check if green side was hit
+        corners = world.getField().getFieldCornersPhysx();
+
+        aX = corners.get(1).x;
+        aY = corners.get(1).y;
+        bX = corners.get(2).x;
+        bY = corners.get(2).y;
+        corners = getGoalCorners(aX, aY, bX, bY, 1.8, -1.2);
+        if ((position.x > corners.get(0).x && position.y > corners.get(0).y)
+                && (position.x < corners.get(3).x && position.y < corners.get(3).y)) {
+            return world.getPod(2).getPlayer();
+        }
+
+        //No goal hit
+        return null;
+    }
 }

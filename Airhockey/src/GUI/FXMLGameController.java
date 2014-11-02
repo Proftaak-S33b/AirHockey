@@ -27,6 +27,7 @@ import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 //</editor-fold>
 
@@ -82,6 +83,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         players.add(new AI("Player 3"));
         world = new GameWorld(players);
         pm = new PhysicsMediator(world, this);
+        pm.addContactListener(this);
 
         gc = gameCanvas.getGraphicsContext2D();
 
@@ -141,7 +143,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
             drawPuck();
 
             drawPod();
-            
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -209,8 +211,8 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         //temp, note-to-self: avoid hardcoding     
         float p1Y = pm.getPodPosition(1).y; // AI #1     
         float p2Y = pm.getPodPosition(2).y; // AI #2
-        float puckY = pm.getPuckPosition().y;                       
-        
+        float puckY = pm.getPuckPosition().y;
+
         ArrayList<Vec2> corners = pm.getFieldCorners();
 
         float aX = corners.get(0).x;
@@ -219,12 +221,11 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         float bY = corners.get(1).y;
 
         ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, -18, -12);
-        
+
         // AI    ///////////////////////////////////////////////////////////////
-        
         if (puckY < p1Y) {
             if (pm.getPodPosition(1).x < goalCoordinates.get(2).x /*+ pm.getPodSize()*/) {
-                pm.movePodLeft(1); 
+                pm.movePodLeft(1);
                 pm.movePodRight(2);
                 //System.out.println("MOVING BLUE LEFT");
             }
@@ -250,7 +251,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, 0, 20);
 
         Vec2 v = pm.getPodPosition(0);
-        
+
         switch (e.getCharacter()) {
             case "a":
                 if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
@@ -267,7 +268,21 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
     @Override
     public void beginContact(Contact contact) {
-        
+        Body bodyA = contact.getFixtureA().getBody();
+        Body bodyB = contact.getFixtureB().getBody();
+        if (bodyA.getUserData() instanceof Puck) {
+            Player p = pm.hitGoal(bodyA.getPosition());
+            if (p != null) {
+                //pm.score(null);
+                System.out.println(p.getName());
+            }
+        } else if (bodyB.getUserData() instanceof Puck) {
+            Player p = pm.hitGoal(bodyB.getPosition());
+            if (p != null) {
+                //pm.score(null);
+                System.out.println(p.getName());
+            }
+        }
     }
 
     @Override
