@@ -5,7 +5,7 @@
  */
 package game;
 
-import GUI.FXMLGameController;
+import GUI.FXMLGameView;
 import java.util.ArrayList;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.common.Vec2;
@@ -17,9 +17,9 @@ import org.jbox2d.common.Vec2;
 public class PhysicsMediator {
 
     private final GameWorld world;
-    private final FXMLGameController controller;
+    private final FXMLGameView controller;
 
-    public PhysicsMediator(GameWorld world, FXMLGameController controller) {
+    public PhysicsMediator(GameWorld world, FXMLGameView controller) {
         this.world = world;
         this.controller = controller;
     }

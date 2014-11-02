@@ -1,10 +1,9 @@
 package game;
 
-import GUI.FXMLGameController;
+import GUI.FXMLGameView;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import javafx.application.Application;
 
 /**
  * Mediator design pattern for interaction of Puck > AI > Controller.
@@ -15,9 +14,9 @@ public class AI_Mediator extends Observable implements Observer{
     
     private Puck puck; 
     private ArrayList<AI> AI_List = new ArrayList<>();
-    private FXMLGameController controller;
+    private FXMLGameView controller;
     
-    public AI_Mediator(FXMLGameController controller, ArrayList<Player> players, Puck puck){
+    public AI_Mediator(FXMLGameView controller, ArrayList<Player> players, Puck puck){
         this.puck = puck;        
         this.controller = controller;
         
@@ -53,6 +52,6 @@ public class AI_Mediator extends Observable implements Observer{
         System.out.println("MEDIATOR UPDATED.");
         this.AI_List = (ArrayList<AI>)arg;
         
-        controller.updatePodPositions((Object)AI_List);
+        //controller.updatePodPositions((Object)AI_List);
     }
 }

@@ -41,7 +41,7 @@ public class FXMLMainMenuController implements Initializable {
             Node node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
             Parent root;
-            root = FXMLLoader.load(getClass().getResource("FXMLGame.fxml"));
+            root = FXMLLoader.load(getClass().getResource("FXMLGameView.fxml"));
             Scene scene = new Scene(root);
             stage.setTitle("Airhockey - In singleplayer game");
             stage.setScene(scene);
