@@ -15,10 +15,10 @@ public class Puck extends Observable {
     private int speed;
     private final Vec2 direction;
     private final ArrayList<Pod> touched;
-    private GameWorld world;
+    private final GameWorld world;
 
     //Physics objects
-    private Body body;
+    private final Body body;
 
     /**
      *
@@ -69,8 +69,13 @@ public class Puck extends Observable {
         return body.getLinearVelocity();
     }
 
-    public Pod getLastTouched() {
-        return this.touched.get(0);
+    /**
+     * Gets the pod that last touched the Puck
+     * @param howLongAgo 0 will get the last touched, 1 will get the 2nd last touched, etc.
+     * @return 
+     */
+    public Pod getTouched(int howLongAgo) {
+        return this.touched.get(howLongAgo);
     }
 
     /**

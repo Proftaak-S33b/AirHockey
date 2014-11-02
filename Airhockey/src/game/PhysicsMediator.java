@@ -24,6 +24,10 @@ public class PhysicsMediator {
         this.controller = controller;
     }
 
+    public void score(Player scoredAgainst) {
+        world.score(scoredAgainst);
+    }
+
     public void addContactListener(ContactListener cl) {
         world.getPhysWorld().setContactListener(cl);
     }
@@ -83,9 +87,4 @@ public class PhysicsMediator {
         return world.getField().RotateVector2(v, (float) Math.PI);
     }
 
-    public void DEBUG_printPuckData() {
-        Vec2 v = world.getPuck().getVelocity().clone();
-        System.out.println(v.normalize());
-        System.out.println(getPuckPosition());
-    }
 }

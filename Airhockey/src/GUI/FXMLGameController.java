@@ -27,7 +27,6 @@ import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 //</editor-fold>
 
@@ -109,7 +108,6 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 @Override
                 public void run() {
                     pm.step(1 / 60f, 10, 5);
-                    pm.DEBUG_printPuckData();
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
@@ -269,6 +267,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
     @Override
     public void beginContact(Contact contact) {
+        
     }
 
     @Override
