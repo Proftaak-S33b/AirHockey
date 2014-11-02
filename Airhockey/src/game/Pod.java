@@ -63,13 +63,13 @@ public class Pod {
      */
     public void moveLeft(int index) {
         //TODO
-        body.setTransform(new Vec2(body.getPosition().x + 0.5f, body.getPosition().y), 0);
+        //body.setTransform(new Vec2(body.getPosition().x + 0.05f, body.getPosition().y), 0);
         if (index == 0) {
-            body.setTransform(new Vec2(body.getPosition().x + 5, body.getPosition().y), 0);
+            body.setTransform(new Vec2(body.getPosition().x + 0.5f, body.getPosition().y), 0);
         } else if (index == 1) {
-            body.setTransform(new Vec2(body.getPosition().x + 2.5f, body.getPosition().y + 4.33f), 0);
+            body.setTransform(new Vec2(body.getPosition().x + 0.25f, body.getPosition().y + 0.433f), 0);
         } else if (index == 2) {
-            body.setTransform(new Vec2(body.getPosition().x - 2.5f, body.getPosition().y + 4.33f), 0);
+            body.setTransform(new Vec2(body.getPosition().x - 0.25f, body.getPosition().y + 0.433f), 0);
         }
     }
 
@@ -79,13 +79,13 @@ public class Pod {
      */
     public void moveRight(int index) {
         //TODO        
-        body.setTransform(new Vec2(body.getPosition().x - 0.5f, body.getPosition().y), 0);
+        //body.setTransform(new Vec2(body.getPosition().x - 0.5f, body.getPosition().y), 0);
         if (index == 0) {
-            body.setTransform(new Vec2(body.getPosition().x - 5, body.getPosition().y), 0);
+            body.setTransform(new Vec2(body.getPosition().x - 0.5f, body.getPosition().y), 0);
         } else if (index == 1) {
-            body.setTransform(new Vec2(body.getPosition().x - 2.5f, body.getPosition().y - 4.33f), 0);
+            body.setTransform(new Vec2(body.getPosition().x - 0.25f, body.getPosition().y - 0.433f), 0);
         } else if (index == 2) {
-            body.setTransform(new Vec2(body.getPosition().x + 2.5f, body.getPosition().y - 4.33f), 0);
+            body.setTransform(new Vec2(body.getPosition().x + 0.25f, body.getPosition().y - 0.433f), 0);
         }
     }
 
