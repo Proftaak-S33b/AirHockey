@@ -15,6 +15,10 @@ public class Pod {
     //Physics objects
     public final Body body;
 
+    //Coordinates
+    private float x = 2.5f;     // X-coordinate change for Pod.
+    private float y = 4.33f;    // Y-coordinate change for Pod.
+    
     /**
      *
      * @param world GameWorld object this Pod is child of.
@@ -61,15 +65,31 @@ public class Pod {
     /**
      *
      */
-    public void moveLeft(int index) {
-        //TODO
-        body.setTransform(new Vec2(body.getPosition().x + 0.5f, body.getPosition().y), 0);
-        if (index == 0) {
-            body.setTransform(new Vec2(body.getPosition().x + 5, body.getPosition().y), 0);
-        } else if (index == 1) {
-            body.setTransform(new Vec2(body.getPosition().x + 2.5f, body.getPosition().y + 4.33f), 0);
-        } else if (index == 2) {
-            body.setTransform(new Vec2(body.getPosition().x - 2.5f, body.getPosition().y + 4.33f), 0);
+    public void moveLeft(int index) {        
+            
+        // 0 = red, 1 = blue, 2 = green
+        switch (index) {
+            case 0:
+                body.setTransform(
+                        new Vec2(
+                                body.getPosition().x + 5,
+                                body.getPosition().y),
+                        0);
+                break;
+            case 1:
+                body.setTransform(
+                        new Vec2(
+                                body.getPosition().x - x,
+                                body.getPosition().y + y),
+                        0);
+                break;
+            case 2:
+                body.setTransform(
+                        new Vec2(
+                                body.getPosition().x - x,
+                                body.getPosition().y - y),
+                        0);
+                break;            
         }
     }
 
@@ -78,15 +98,30 @@ public class Pod {
      * @param index
      */
     public void moveRight(int index) {
-        //TODO        
-        body.setTransform(new Vec2(body.getPosition().x - 0.5f, body.getPosition().y), 0);
-        if (index == 0) {
-            body.setTransform(new Vec2(body.getPosition().x - 5, body.getPosition().y), 0);
-        } else if (index == 1) {
-            body.setTransform(new Vec2(body.getPosition().x - 2.5f, body.getPosition().y - 4.33f), 0);
-        } else if (index == 2) {
-            body.setTransform(new Vec2(body.getPosition().x + 2.5f, body.getPosition().y - 4.33f), 0);
-        }
+            
+        // 0 = red, 1 = blue, 2 = green
+        switch (index) {
+            case 0:
+                body.setTransform(
+                        new Vec2(
+                            body.getPosition().x - 5,
+                            body.getPosition().y),
+                        0);
+                break;
+            case 1:
+                body.setTransform(
+                        new Vec2(
+                            body.getPosition().x + x,
+                            body.getPosition().y - y),
+                        0);
+                break;
+            case 2:
+                body.setTransform(
+                        new Vec2(
+                            body.getPosition().x + x,
+                            body.getPosition().y + y),
+                        0);
+                break;            
+        }        
     }
-
 }

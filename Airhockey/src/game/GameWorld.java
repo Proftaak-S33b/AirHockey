@@ -30,7 +30,7 @@ public class GameWorld {
     public GameWorld(ArrayList<Player> players) {
         world = new World(new Vec2(0.0f, 0.0f));
         field = new Field(this, 50);
-        puck = new Puck(this, 10);
+        puck = new Puck(this, 100);
         pods = new ArrayList<>();
         //Make sure only the first 3 players in the array get added
         this.players = new ArrayList<>();

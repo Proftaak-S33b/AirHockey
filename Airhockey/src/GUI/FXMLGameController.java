@@ -143,6 +143,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
             drawPuck();
 
             drawPod();
+            
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -207,33 +208,36 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * Draws an individual pod.
      */
     public void drawPod() {
-             //temp, note-to-self: avoid hardcoding     // AI #1     // AI #2
-        Vec2 p1pos = pm.getPodPosition(1);
-        Vec2 p2pos = pm.getPodPosition(2);
-        Vec2 puckpos = pm.getPuckPosition();
+        //temp, note-to-self: avoid hardcoding     
+        float p1Y = pm.getPodPosition(1).y; // AI #1     
+        float p2Y = pm.getPodPosition(2).y; // AI #2
+        float puckY = pm.getPuckPosition().y;                       
+        
+        ArrayList<Vec2> corners = pm.getFieldCorners();
 
+        float aX = corners.get(0).x;
+        float aY = corners.get(0).y;
+        float bX = corners.get(1).x;
+        float bY = corners.get(1).y;
+
+        ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, -18, -12);
         
+        // AI    ///////////////////////////////////////////////////////////////
         
-            //apply force is dependent on gravity
-        //apply linearvelocity is one-time only
-        //apply impuls doesnt update anything.
-        //p1.body.setTransform(puckpos, 0);
-        //p2.body.setTransform(puckpos, 0);
-        /*  legacy code
-         p1.body.applyForce(new Vec2(100,0), puckpos);//todo: set global speed
-         //p1.body.applyLinearImpulse(p1.body.getWorldCenter(), puckpos);           
-         p2.body.applyForce(new Vec2(0,100), puckpos); //todo: set global speed
-         //p2.body.applyLinearImpulse(p2.body.getWorldCenter(), puckpos);           
-         System.out.println(puck.getPosition());
-         //System.out.println(p1.getPosition());
-         //
-         */
-        //(make sure intial position is initialized before starting this)
-        // 1 lookup current position
-        // 2 lookup puck position
-        // 3 move towards puck.
-        // 3.1 involve strategy
-        // 4 repeat continously.
+        if (puckY < p1Y) {
+            if (pm.getPodPosition(1).x < goalCoordinates.get(2).x /*+ pm.getPodSize()*/) {
+                pm.movePodLeft(1); 
+                pm.movePodRight(2);
+                //System.out.println("MOVING BLUE LEFT");
+            }
+        }
+        if (puckY > p1Y) {
+            if (pm.getPodPosition(1).x > goalCoordinates.get(0).x/* - pm.getPodSize() / 2*/) {
+                pm.movePodLeft(2);
+                pm.movePodRight(1);
+                //System.out.println("MOVING BLUE RIGHT");
+            }
+        }
     }
 
     @Override
@@ -286,11 +290,6 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      * @param arg
      */
     public void updatePodPositions(Object arg) {
-        ArrayList<AI> AI_List = (ArrayList<AI>) arg;
-        for (AI ai : AI_List) {
-            //Pod p = world.getPod(ai.getName());
-            //p.move(ai.getDirection());
-        }
     }
 
     /**
@@ -301,7 +300,6 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      */
     @Override
     public void update(Observable o, Object arg) {
-        //updatePodPositions(arg);
     }
 
 }
