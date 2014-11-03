@@ -10,5 +10,8 @@ package game;
  * @author Joris
  */
 public interface IPlayer {
+
+    public String getName();
     
+    public int getScore();
 }
