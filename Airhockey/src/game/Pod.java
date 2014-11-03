@@ -73,22 +73,22 @@ public class Pod {
             case 0: //  Pod 0 [Player]
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x + 2.5f,
+                                body.getPosition().x + 0.5f,
                                 body.getPosition().y),
                         0);
                 break;
             case 1: //  Pod 1 [Blue]
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x - 1/*- x*/,
-                                body.getPosition().y + rc/*+ y*/),
+                                body.getPosition().x - 0.1f/*- x*/,
+                                body.getPosition().y + (rc/10)/*+ y*/),
                         0);
                 break;
             case 2: //  Pod 2 [Green]
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x - 1 /*- x*/,
-                                body.getPosition().y - rc /*- y*/),
+                                body.getPosition().x - 0.1f /*- x*/,
+                                body.getPosition().y - (rc/10) /*- y*/),
                         0);
                 break;
         }
@@ -103,22 +103,22 @@ public class Pod {
             case 0:
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x - 2.5f,
+                                body.getPosition().x - 0.5f,
                                 body.getPosition().y),
                         0);
                 break;
             case 1:
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x + 1 /*+ x*/,
-                                body.getPosition().y - rc /*- y*/),
+                                body.getPosition().x + 0.1f /*+ x*/,
+                                body.getPosition().y - (rc/10) /*- y*/),
                         0);
                 break;
             case 2:
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x + 1 /*+ x*/,
-                                body.getPosition().y + rc /*+ y*/),
+                                body.getPosition().x + 0.1f /*+ x*/,
+                                body.getPosition().y + (rc/10) /*+ y*/),
                         0);
                 break;
         }
