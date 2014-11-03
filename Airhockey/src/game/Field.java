@@ -54,6 +54,7 @@ public class Field {
             //create the body and add fixture to it
             bodyRedSide = world.getPhysWorld().createBody(bdSide);
             bodyRedSide.createFixture(fdSide);
+            bodyRedSide.setUserData("side");
         }
         /**
          * **Blue side**
@@ -75,6 +76,7 @@ public class Field {
             //create the body and add fixture to it
             bodyBlueSide = world.getPhysWorld().createBody(bdSide);
             bodyBlueSide.createFixture(fdSide);
+            bodyBlueSide.setUserData("side");
         }
         /**
          * **Green side**
@@ -97,6 +99,7 @@ public class Field {
             //create the body and add fixture to it
             bodyGreenSide = world.getPhysWorld().createBody(bdSide);
             bodyGreenSide.createFixture(fdSide);
+            bodyGreenSide.setUserData("side");
         }
     }
 
