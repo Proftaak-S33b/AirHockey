@@ -22,21 +22,8 @@
                 </Pane>
             </content>
         </TitledPane>
-        <TitledPane collapsible="false" focusTraversable="false" layoutX="424.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" opacity="0.9" prefHeight="201.0" prefWidth="162.0" text="Score">
-            <content>
-                <Pane prefHeight="200.0" prefWidth="200.0">
-                    <children>
-                        <TableView fx:id="tableScore" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="175.0" prefWidth="160.0">
-                            <columns>
-                                <TableColumn fx:id="columnPlayer" editable="false" prefWidth="102.0" resizable="false" sortable="false" text="Players" />
-                                <TableColumn fx:id="columnScore" editable="false" prefWidth="56.0" resizable="false" sortable="false" text="Score" />
-                            </columns>
-                            <columnResizePolicy>
-                            </columnResizePolicy>
-                        </TableView>
-                    </children>
-                </Pane>
-            </content>
-        </TitledPane>
+      <Label layoutX="450.0" layoutY="25.0" text="Henk : 20 points" />
+      <Label layoutX="448.0" layoutY="42.0" text="Com1 : 20 points" />
+      <Label layoutX="448.0" layoutY="59.0" text="Com2 : 20 points" />
     </children>
 </AnchorPane>
