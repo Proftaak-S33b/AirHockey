@@ -73,7 +73,7 @@ public class Pod {
             case 0: //  Pod 0 [Player]
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x + 5,
+                                body.getPosition().x + 2.5f,
                                 body.getPosition().y),
                         0);
                 break;
@@ -103,7 +103,7 @@ public class Pod {
             case 0:
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x - 5,
+                                body.getPosition().x - 2.5f,
                                 body.getPosition().y),
                         0);
                 break;

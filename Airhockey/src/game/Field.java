@@ -196,18 +196,28 @@ public class Field {
         return new Vec2((a.x + b.x) / 2, (a.y + b.y) / 2);
     }
 
+    /**
+     * TODO - getPodSize does not equal drawn podsize.
+     * @return 
+     */
     public ArrayList<Vec2> getStartPositions() {
         ArrayList<Vec2> positions = new ArrayList<>();
         ArrayList<Vec2> corners = getFieldCorners();
+        
+        //Red
         Vec2 a = getCenterOfLine(corners.get(2), corners.get(0));
-        a.x -= getPodSize() / 2;
-        a.y -= getPodSize() / 2;
-        Vec2 b = getCenterOfLine(corners.get(0), corners.get(1));
-        b.x -= getPodSize() / 2;
-        b.y -= getPodSize() / 2;
+        a.x -= 20/*getPodSize() / 2*/;
+        a.y -= 20/*getPodSize() / 2*/;
+        
+        //Blue
+        Vec2 b = getCenterOfLine(corners.get(0), corners.get(1));        
+        b.x -= 20/*getPodSize() / 2*/;
+        b.y -= 20/*getPodSize() / 2*/;
+        
+        //Green
         Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
-        c.x -= getPodSize() / 2;
-        c.y -= getPodSize() / 2;
+        c.x -= 20/*getPodSize() / 2*/;
+        c.y -= 20/*getPodSize() / 2*/;
         a = RotateVector2(a, (float) Math.PI);
         b = RotateVector2(b, (float) Math.PI);
         c = RotateVector2(c, (float) Math.PI);

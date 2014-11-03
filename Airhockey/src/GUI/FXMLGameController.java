@@ -64,7 +64,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     GraphicsContext gc;
 
     /**
-     * AI Mediator
+     * AI Mediator to communicate the AI with the controller.
      */
     private AI_Mediator mediator;
 
@@ -91,10 +91,13 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
          * Initializes the mediator with the current controller, players, and
          * puck.
          */
-        mediator = new AI_Mediator(this, players, world.getPuck());
+        mediator = new AI_Mediator(this, pm, players, world.getPuck());
 
         Draw();
-
+        print_stats(0);
+        print_stats(1);
+        print_stats(2);
+        
         new AnimationTimer() {
 
             @Override
@@ -263,7 +266,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     }
     
     /**
-     * Moves the AI up from player viewpoints.
+     * Moves the AI up from player viewpoint.
      * @param goalCoordinates 
      */
     private void AI_moveUp(ArrayList<Vec2> goalCoordinates){
@@ -284,6 +287,39 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
             }
     }
 
+    /**
+     * Prints different sets of data.
+     * Made to get an overview of any changes within the environment without having to debug everything.
+     * Warning: This might impact performance. This WILL impact performance.
+     * @param data an int from 0 to 2, the number indicates what data is printed.
+     * 0 pod/puckpositions
+     * 1 pod/pucksize
+     * 2 fieldcoordinates 
+     */
+    private void print_stats(int data){
+        switch(data){
+            case 0:
+                System.out.println("Pod / Puck -positions:");
+                System.out.println("Position of Pod 0 / RED: " + pm.getPodPosition(0));
+                System.out.println("Position of Pod 1 / BLUE: " + pm.getPodPosition(1));
+                System.out.println("Position of Pod 2 / GREEN: " + pm.getPodPosition(2));
+                System.out.println("Position of Puck: " + pm.getPuckPosition());                
+                break;
+            case 1:
+                System.out.println("Pod size / Puck size:");
+                System.out.println("Size of Pod:" + pm.getPodSize());
+                System.out.println("Size of Puck:" + pm.getPuckSize());
+                break;
+            case 2:
+                System.out.println("Fieldcoordinates:");
+                System.out.println(pm.getFieldCorners());
+                break;
+            default:
+                System.out.println("int not recognized. \n 0: pod/puckpositions1: \n pod/pucksize \n 2:fieldcoordinates");
+                break;
+        }
+    }
+    
     @Override
     public void handle(KeyEvent e) {
         ArrayList<Vec2> corners = pm.getFieldCorners();
@@ -299,12 +335,12 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
         switch (e.getCharacter()) {
             case "a":
-                if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
+                if (pm.getPodPosition(0).x > goalCoordinates.get(2).x /*+ pm.getPodSize() * 0.5*/) {
                     pm.movePodLeft(0);
                 }
                 break;
             case "d":
-                if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize()) {
+                if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() * 0.5) {
                     pm.movePodRight(0);
                 }
                 break;
