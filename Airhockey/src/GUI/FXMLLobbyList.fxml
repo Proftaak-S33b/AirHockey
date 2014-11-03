@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FXMLLobbyListController">
+   <children>
+      <BorderPane layoutX="96.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <TableView fx:id="lobbyTable" editable="true" onMouseClicked="#selectGame" prefHeight="500.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn fx:id="columnGameName" editable="false" prefWidth="318.0" text="Game Name" />
+                <TableColumn fx:id="columnPlayers" editable="false" minWidth="0.0" prefWidth="89.0" text="#Players" />
+                  <TableColumn fx:id="columnHostRank" editable="false" minWidth="0.0" prefWidth="92.0" text="Host Rank" />
+              </columns>
+            </TableView>
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>

@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
+package game;
 
 /**
- * Controller for managing game logic
  *
  * @author Joris
  */
-public class gameController {
-
-    public gameController() {
-        
-    }
+public class Goal {
+    
 }
