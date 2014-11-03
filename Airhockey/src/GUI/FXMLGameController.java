@@ -340,7 +340,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 }
                 break;
             case "d":
-                if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() * 0.5) {
+                if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() ) {
                     pm.movePodRight(0);
                 }
                 break;
