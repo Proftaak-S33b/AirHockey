@@ -4,6 +4,7 @@
  */
 package game;
 
+import z_OLD_game.Human;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

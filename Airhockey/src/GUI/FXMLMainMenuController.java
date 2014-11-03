@@ -5,7 +5,7 @@
  */
 package GUI;
 
-import game.Difficulty;
+import z_OLD_game.Difficulty;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;

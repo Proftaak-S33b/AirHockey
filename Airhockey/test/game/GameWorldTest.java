@@ -4,6 +4,12 @@
  */
 package game;
 
+import z_OLD_game.Human;
+import z_OLD_game.Field;
+import z_OLD_game.Pod;
+import z_OLD_game.Administrator;
+import z_OLD_game.Player;
+import z_OLD_game.GameWorld;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import org.junit.After;

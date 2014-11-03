@@ -4,6 +4,10 @@
  */
 package game;
 
+import z_OLD_game.Human;
+import z_OLD_game.Pod;
+import z_OLD_game.Player;
+import z_OLD_game.GameWorld;
 import java.util.ArrayList;
 import org.jbox2d.common.Vec2;
 import org.junit.After;

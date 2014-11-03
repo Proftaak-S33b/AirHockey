@@ -4,6 +4,9 @@
  */
 package game;
 
+import z_OLD_game.Human;
+import z_OLD_game.Administrator;
+import z_OLD_game.Player;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

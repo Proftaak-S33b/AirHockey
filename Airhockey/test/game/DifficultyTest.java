@@ -4,6 +4,7 @@
  */
 package game;
 
+import z_OLD_game.Difficulty;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

@@ -4,6 +4,8 @@
  */
 package game;
 
+import z_OLD_game.Human;
+import z_OLD_game.Player;
 import org.jbox2d.common.Vec2;
 import org.junit.After;
 import org.junit.AfterClass;
