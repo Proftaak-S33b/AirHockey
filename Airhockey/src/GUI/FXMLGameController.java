@@ -246,7 +246,8 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
         // Create deadzone to prevent flickering.
         //When in doubt, set to 25. jus werks.
-        float personalspace = (float) pm.getPodSize() / 2;
+
+        float personalspace = (float)3 /*pm.getPodSize() / 2*/;
 
         // Where is the puck?
         if (puckY < p1Y & puckY < p2Y) {
@@ -271,11 +272,12 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
      *
      * @param goalCoordinates
      */
-    private void AI_moveUp(ArrayList<Vec2> goalCoordinates) {
-        if (pm.getPodPosition(1).y > goalCoordinates.get(2).y + pm.getPodSize() / 2) {
-            pm.movePodLeft(1);
-            pm.movePodRight(2);
-        }
+    private void AI_moveUp(ArrayList<Vec2> goalCoordinates){
+            if (pm.getPodPosition(1).y > goalCoordinates.get(2).y /*+ 10*/ + pm.getPodSize() / 4) {
+                pm.movePodLeft(1);
+                pm.movePodRight(2);
+            }
+
     }
 
     /**
@@ -337,12 +339,14 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
 
         switch (e.getCharacter()) {
             case "a":
+            case "A":
                 if (pm.getPodPosition(0).x > goalCoordinates.get(2).x /*+ pm.getPodSize() * 0.5*/) {
                     pm.movePodLeft(0);
                 }
                 break;
             case "d":
-                if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() * 0.5) {
+            case "D":
+                if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() ) {
                     pm.movePodRight(0);
                 }
                 break;
