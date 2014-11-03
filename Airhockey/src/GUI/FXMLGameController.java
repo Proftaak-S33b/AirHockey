@@ -21,6 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import org.jbox2d.callbacks.ContactImpulse;
@@ -332,14 +333,15 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, 0, 20);
 
         Vec2 v = pm.getPodPosition(0);
-
-        switch (e.getCharacter()) {
-            case "a":
+        switch (e.getCode()) {
+            case LEFT:
+            case A:
                 if (pm.getPodPosition(0).x > goalCoordinates.get(2).x /*+ pm.getPodSize() * 0.5*/) {
                     pm.movePodLeft(0);
                 }
                 break;
-            case "d":
+            case RIGHT:
+            case D:
                 if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() ) {
                     pm.movePodRight(0);
                 }
