@@ -96,8 +96,8 @@ public class PhysicsMediator {
         float bX = corners.get(0).x;
         float bY = corners.get(0).y;
         corners = getGoalCorners(aX, aY, bX, bY, 0, 2.0);
-        if ((position.x > corners.get(2).x && position.y > corners.get(2).y)
-                && (position.x < corners.get(0).x && position.y + 2.0f < corners.get(0).y)) {
+        if ((position.x < corners.get(3).x && position.y > corners.get(0).y)
+                && (position.x > corners.get(0).x && position.y < corners.get(3).y)) {
             return world.getPod(0).getPlayer();
         }
         //Check if blue side was hit

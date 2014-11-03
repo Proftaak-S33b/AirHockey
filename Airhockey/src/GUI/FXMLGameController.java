@@ -97,7 +97,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         print_stats(0);
         print_stats(1);
         print_stats(2);
-        
+
         new AnimationTimer() {
 
             @Override
@@ -210,7 +210,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     /**
      * Draws an individual pod.
      */
-    public void drawPod() {                                
+    public void drawPod() {
         ArrayList<Vec2> corners = pm.getFieldCorners();
 
         float aX = corners.get(0).x;
@@ -219,22 +219,23 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         float bY = corners.get(1).y;
 
         ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, -18, -12);
-        
+
         // AI    ///////////////////////////////////////////////////////////////
         AI_CalculateMovement(goalCoordinates);
     }
-    
+
     /**
      * Part of slowly phasing out the AI from the Controller to the AI classes.
+     *
      * @param goalCoordinates a list of coordinates for the pods to stay within.
      */
-    private void AI_CalculateMovement(ArrayList<Vec2> goalCoordinates){
-        
+    private void AI_CalculateMovement(ArrayList<Vec2> goalCoordinates) {
+
         // temp | note-to-self: avoid hardcoding     
         float p1Y = pm.getPodPosition(1).y; // AI #1     
         float p2Y = pm.getPodPosition(2).y; // AI #2
         float puckY = pm.getPuckPosition().y;
-        
+
         /* Measure distance - whether y is lower or higher, the distance will 
          * always be a positive number.
          */
@@ -242,68 +243,69 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
         if (distance < 0) {
             distance -= distance + distance;
         }
-        
+
         // Create deadzone to prevent flickering.
         //When in doubt, set to 25. jus werks.
-        float personalspace = (float)pm.getPodSize() / 2;
-        
+        float personalspace = (float) pm.getPodSize() / 2;
+
         // Where is the puck?
         if (puckY < p1Y & puckY < p2Y) {
             // Does the AI respect the puck's personal space?                
             if (distance > personalspace) {
                 AI_moveUp(goalCoordinates);
             }
-            
+
         }
         if (puckY > p1Y & puckY > p2Y) {
             // Does the AI respect the puck's personal space?                
             if (distance > personalspace) {
-                AI_moveDown(goalCoordinates); 
-            }                
+                AI_moveDown(goalCoordinates);
+            }
         }
-        
+
         //System.out.println("Distance: " + distance + ", puck.y: " + puckY + ", pod.y: " + p2Y);        
-    }
-    
-    /**
-     * Moves the AI up from player viewpoint.
-     * @param goalCoordinates 
-     */
-    private void AI_moveUp(ArrayList<Vec2> goalCoordinates){
-            if (pm.getPodPosition(1).y > goalCoordinates.get(2).y + pm.getPodSize() / 2) {
-                pm.movePodLeft(1);
-                pm.movePodRight(2);
-            }
-    }
-    
-    /**
-     * Moves the AI down from player viewpoint.
-     * @param goalCoordinates 
-     */
-    private void AI_moveDown(ArrayList<Vec2> goalCoordinates){
-            if (pm.getPodPosition(1).y < goalCoordinates.get(0).y - pm.getPodSize()) {
-                pm.movePodLeft(2);
-                pm.movePodRight(1);
-            }
     }
 
     /**
-     * Prints different sets of data.
-     * Made to get an overview of any changes within the environment without having to debug everything.
-     * Warning: This might impact performance. This WILL impact performance.
-     * @param data an int from 0 to 2, the number indicates what data is printed.
-     * 0 pod/puckpositions
-     * 1 pod/pucksize
-     * 2 fieldcoordinates 
+     * Moves the AI up from player viewpoint.
+     *
+     * @param goalCoordinates
      */
-    private void print_stats(int data){
-        switch(data){
+    private void AI_moveUp(ArrayList<Vec2> goalCoordinates) {
+        if (pm.getPodPosition(1).y > goalCoordinates.get(2).y + pm.getPodSize() / 2) {
+            pm.movePodLeft(1);
+            pm.movePodRight(2);
+        }
+    }
+
+    /**
+     * Moves the AI down from player viewpoint.
+     *
+     * @param goalCoordinates
+     */
+    private void AI_moveDown(ArrayList<Vec2> goalCoordinates) {
+        if (pm.getPodPosition(1).y < goalCoordinates.get(0).y - pm.getPodSize()) {
+            pm.movePodLeft(2);
+            pm.movePodRight(1);
+        }
+    }
+
+    /**
+     * Prints different sets of data. Made to get an overview of any changes
+     * within the environment without having to debug everything. Warning: This
+     * might impact performance. This WILL impact performance.
+     *
+     * @param data an int from 0 to 2, the number indicates what data is
+     * printed. 0 pod/puckpositions 1 pod/pucksize 2 fieldcoordinates
+     */
+    private void print_stats(int data) {
+        switch (data) {
             case 0:
                 System.out.println("Pod / Puck -positions:");
                 System.out.println("Position of Pod 0 / RED: " + pm.getPodPosition(0));
                 System.out.println("Position of Pod 1 / BLUE: " + pm.getPodPosition(1));
                 System.out.println("Position of Pod 2 / GREEN: " + pm.getPodPosition(2));
-                System.out.println("Position of Puck: " + pm.getPuckPosition());                
+                System.out.println("Position of Puck: " + pm.getPuckPosition());
                 break;
             case 1:
                 System.out.println("Pod size / Puck size:");
@@ -319,7 +321,7 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
                 break;
         }
     }
-    
+
     @Override
     public void handle(KeyEvent e) {
         ArrayList<Vec2> corners = pm.getFieldCorners();
@@ -351,13 +353,13 @@ public class FXMLGameController implements Initializable, EventHandler<KeyEvent>
     public void beginContact(Contact contact) {
         Body bodyA = contact.getFixtureA().getBody();
         Body bodyB = contact.getFixtureB().getBody();
-        if (bodyA.getUserData() instanceof Puck) {
+        if (bodyA.getUserData() instanceof Puck && bodyB.getUserData().equals("side")) {
             Player p = pm.hitGoal(bodyA.getPosition());
             if (p != null) {
                 //pm.score(null);
                 System.out.println(p.getName());
             }
-        } else if (bodyB.getUserData() instanceof Puck) {
+        } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData().equals("side")) {
             Player p = pm.hitGoal(bodyB.getPosition());
             if (p != null) {
                 //pm.score(null);
