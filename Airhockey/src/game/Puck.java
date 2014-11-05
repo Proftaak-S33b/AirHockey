@@ -68,7 +68,7 @@ public class Puck extends Observable{
     }
 
     public void setPosition(Vec2 position) {
-        //TODO
+        body.setTransform(position, body.getAngle());
     }
     
     /**
