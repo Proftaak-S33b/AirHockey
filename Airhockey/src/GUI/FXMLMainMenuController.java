@@ -53,6 +53,12 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void handleMultiplayer(ActionEvent event) {
-        throw new UnsupportedOperationException("Multiplayer not yet implemented");
+        /*try 
+        //http://stackoverflow.com/questions/14187963/passing-parameters-javafx-fxml
+        {
+            
+        } catch (IOException ex) {
+            System.out.println("Error changing scene from Main menu to Game " + ex.toString());
+        }*/
     }
 }
