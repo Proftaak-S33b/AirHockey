@@ -21,16 +21,18 @@ public class Pod {
     private final IPlayer player;
     
     private final Body body;
-    private World world;
+    private GameWorld world;
     
     private final float rc = 1.74f;
     
     
      /**
      *
+     * @param world
      * @param player The player this pod belongs to.
+     * @param startPosition
      */
-    public Pod(World world, IPlayer player, Vec2 startPosition) {
+    public Pod(GameWorld world, IPlayer player, Vec2 startPosition) {
         this.player = player;
 
         //body definition
@@ -39,7 +41,7 @@ public class Pod {
         bd.type = BodyType.KINEMATIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
-        cs.m_radius = (float) world.getField().getPodSize() / 2;
+        cs.m_radius = (float) world.getPodSize() / 2;
         //define fixture of the body.
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
