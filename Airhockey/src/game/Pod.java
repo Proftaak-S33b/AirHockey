@@ -41,7 +41,7 @@ public class Pod {
         bd.type = BodyType.KINEMATIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
-        cs.m_radius = (float) world.getField().getPodSize() / 2;
+        cs.m_radius = (float) world.getPodSize() / 2;
         //define fixture of the body.
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;

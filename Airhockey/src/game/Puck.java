@@ -47,7 +47,7 @@ public class Puck extends Observable{
         bd.type = BodyType.DYNAMIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
-        cs.m_radius = (float) world.getField().getPuckSize() / 2;
+        cs.m_radius = (float) world.getPuckSize() / 2;
         //define fixture of the body.
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
