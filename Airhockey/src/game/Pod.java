@@ -21,7 +21,6 @@ public class Pod {
     private final IPlayer player;
     private final Vec2 position;
     private final Body body;
-    private GameWorld world;
     
     private final float rc = 1.74f;
     
@@ -41,7 +40,7 @@ public class Pod {
         bd.type = BodyType.KINEMATIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
-        cs.m_radius = (float) world.getPodSize() / 2;
+        cs.m_radius = (float) MathUtillities.getPodSize() / 2;
         //define fixture of the body.
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
