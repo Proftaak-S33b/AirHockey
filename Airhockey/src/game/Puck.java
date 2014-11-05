@@ -23,7 +23,7 @@ public class Puck extends Observable{
     private int speed;
     private final Vec2 direction;
     private final ArrayList<Pod> touched;
-    private final World world;
+    private final GameWorld world;
     
     //Physics objects
     private final Body body;
@@ -33,7 +33,7 @@ public class Puck extends Observable{
      * @param world
      * @param speed
      */
-    public Puck(World world, int speed)
+    public Puck(GameWorld world, int speed)
     {
         this.speed = speed;
         direction = new Vec2(-0.5f, 1);

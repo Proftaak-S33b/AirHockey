@@ -21,16 +21,18 @@ public class Pod {
     private final IPlayer player;
     
     private final Body body;
-    private World world;
+    private GameWorld world;
     
     private final float rc = 1.74f;
     
     
      /**
      *
+     * @param world
      * @param player The player this pod belongs to.
+     * @param startPosition
      */
-    public Pod(World world, IPlayer player, Vec2 startPosition) {
+    public Pod(GameWorld world, IPlayer player, Vec2 startPosition) {
         this.player = player;
 
         //body definition
