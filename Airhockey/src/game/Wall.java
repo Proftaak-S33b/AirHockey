@@ -10,27 +10,23 @@ import org.jbox2d.dynamics.Body;
 
 /**
  *
- * @author Joris
+ * @author maikel
  */
-public class Goal {
+public class Wall {
     private final Body body;
     private final GameWorld world;
-    private final IPlayer player;
+    private final WallID wallid;
     
-    public Goal(Vec2 point1, Vec2 point2, IPlayer player, GameWorld world)
+    public Wall(WallID wallid, Vec2 point1, Vec2 point2, GameWorld world )
     {
+        this.wallid = wallid;
         this.world = world;
-        this.player = player;
-        
-        
-        
-        
         
         body = world.getPhysWorld().createBody(bd);
     }
     
-    public IPlayer getPlayer()
+    public WallID getWallID()
     {
-        return player;
+        return this.wallid;
     }
 }

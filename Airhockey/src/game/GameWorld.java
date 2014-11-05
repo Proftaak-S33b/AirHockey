@@ -80,7 +80,7 @@ public class GameWorld {
     }
     
     private void createPuck() {
-        this.puck = new Puck(this, 20);
+        this.puck = new Puck(20, this);
     }
 
     /**
