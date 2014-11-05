@@ -33,7 +33,7 @@ public class Puck extends Observable{
      * @param world
      * @param speed
      */
-    public Puck(GameWorld world, int speed)
+    public Puck(int speed, GameWorld world)
     {
         this.speed = speed;
         direction = new Vec2(-0.5f, 1);
@@ -47,7 +47,7 @@ public class Puck extends Observable{
         bd.type = BodyType.DYNAMIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
-        cs.m_radius = (float) world.getPuckSize() / 2;
+        cs.m_radius = (float) MathUtillities.getPuckSize() / 2;
         //define fixture of the body.
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
@@ -67,16 +67,16 @@ public class Puck extends Observable{
         return body.getPosition();
     }
 
+    public void setPosition(Vec2 position) {
+        body.setTransform(position, body.getAngle());
+    }
+    
     /**
      *
      * @param speed
      */
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-
-    public Vec2 getVelocity() {
-        return body.getLinearVelocity();
     }
     
     /**

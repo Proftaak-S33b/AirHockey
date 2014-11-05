@@ -41,6 +41,7 @@ public class FXMLLobbyListController implements Initializable {
         columnPlayers.setCellValueFactory(new PropertyValueFactory("playersAmount"));
         columnHostRank.setCellValueFactory(new PropertyValueFactory("hostScore"));
         lobbyTable.setItems(controller.getLobbies());
+
     }
 
     public void selectGame(Event evt) {
@@ -48,7 +49,7 @@ public class FXMLLobbyListController implements Initializable {
     }
 
     public void createLobby(Event evt) {
-        
+
     }
 
     public void joinLobby(Event evt) {

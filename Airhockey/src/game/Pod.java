@@ -14,14 +14,13 @@ import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
- * @author Joris
+ * @author Maikel
  */
 public class Pod {
     //Game objects
     private final IPlayer player;
-    
+    private final Vec2 position;
     private final Body body;
-    private GameWorld world;
     
     private final float rc = 1.74f;
     
@@ -32,16 +31,16 @@ public class Pod {
      * @param player The player this pod belongs to.
      * @param startPosition
      */
-    public Pod(GameWorld world, IPlayer player, Vec2 startPosition) {
+    public Pod(GameWorld world, IPlayer player, Vec2 Position) {
         this.player = player;
-
+        this.position = Position;
         //body definition
         BodyDef bd = new BodyDef();
-        bd.position.set(startPosition.x, startPosition.y);
+        bd.position.set(Position.x, Position.y);
         bd.type = BodyType.KINEMATIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
-        cs.m_radius = (float) world.getPodSize() / 2;
+        cs.m_radius = (float) MathUtillities.getPodSize() / 2;
         //define fixture of the body.
         FixtureDef fd = new FixtureDef();
         fd.shape = cs;
@@ -128,5 +127,10 @@ public class Pod {
                         0);
                 break;
         }
+    }
+    
+    public void setPosition(Vec2 position)
+    {
+        //TODO
     }
 }
