@@ -33,7 +33,7 @@ public class Puck extends Observable{
      * @param world
      * @param speed
      */
-    public Puck(GameWorld world, int speed)
+    public Puck(int speed, GameWorld world)
     {
         this.speed = speed;
         direction = new Vec2(-0.5f, 1);
@@ -67,16 +67,16 @@ public class Puck extends Observable{
         return body.getPosition();
     }
 
+    public void setPosition(Vec2 position) {
+        //TODO
+    }
+    
     /**
      *
      * @param speed
      */
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-
-    public Vec2 getVelocity() {
-        return body.getLinearVelocity();
     }
     
     /**

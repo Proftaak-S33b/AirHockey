@@ -32,7 +32,7 @@ public class FXMLLobbyListController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        columnGameName.
+        //columnGameName.
     }
 
     public void selectGame(Event evt) {
