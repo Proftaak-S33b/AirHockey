@@ -40,8 +40,7 @@ public class Puck extends Observable{
         direction.normalize();
         touched = new ArrayList<>();
         this.world = world;
-        
-        
+
         //body definition
         BodyDef bd = new BodyDef();
         bd.position.set((float) Math.random() + 20, (float) (Math.random() + 20));
@@ -56,7 +55,12 @@ public class Puck extends Observable{
         fd.friction = 0.0f;
         fd.restitution = 1.0f;
         //create the body and add fixture to it
-        world.getPhysWorld().createBody(bd);
+        body = world.getPhysWorld().createBody(bd);
+        body.createFixture(fd);
+        body.setBullet(true);
+
+        body.setLinearVelocity(new Vec2(direction.x * this.speed, direction.y * this.speed));
+        body.setUserData(this);
     }
     
     public Vec2 getPosition() {

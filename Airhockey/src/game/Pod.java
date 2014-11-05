@@ -30,8 +30,9 @@ public class Pod {
      *
      * @param player The player this pod belongs to.
      */
-    public Pod(IPlayer player) {
+    public Pod(World world, IPlayer player, Vec2 startPosition) {
         this.player = player;
+
         //body definition
         BodyDef bd = new BodyDef();
         bd.position.set(startPosition.x, startPosition.y);
@@ -46,7 +47,9 @@ public class Pod {
         fd.friction = 0.3f;
         fd.restitution = 1f;
         //create the body and add fixture to it
-        world.getPhysWorld().createBody(bd); 
+        body = world.getPhysWorld().createBody(bd);
+        body.createFixture(fd);
+        body.setUserData(this);
     }
     
      /**
