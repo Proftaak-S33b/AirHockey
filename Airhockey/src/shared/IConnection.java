@@ -5,16 +5,13 @@
  */
 package shared;
 
+import java.rmi.Remote;
+
 /**
  *
  * @author Joris
  */
-public class IConnection {
-    private float xRedPod;
-    private float yRedPod;
-    
-    public void setRedPod(float x, float y) {
-        xRedPod = x;
-        yRedPod = y;
-    }
+public interface IConnection extends Remote{
+
+    public void update();
 }
