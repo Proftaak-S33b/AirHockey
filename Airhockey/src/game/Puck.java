@@ -41,7 +41,22 @@ public class Puck extends Observable{
         touched = new ArrayList<>();
         this.world = world;
         
-        body = world.getPhysWorld();
+        
+        //body definition
+        BodyDef bd = new BodyDef();
+        bd.position.set((float) Math.random() + 20, (float) (Math.random() + 20));
+        bd.type = BodyType.DYNAMIC;
+        //define shape of the body.
+        CircleShape cs = new CircleShape();
+        cs.m_radius = (float) world.getField().getPuckSize() / 2;
+        //define fixture of the body.
+        FixtureDef fd = new FixtureDef();
+        fd.shape = cs;
+        fd.density = 0.5f;
+        fd.friction = 0.0f;
+        fd.restitution = 1.0f;
+        //create the body and add fixture to it
+        world.getPhysWorld().createBody(bd);
     }
     
     public Vec2 getPosition() {
