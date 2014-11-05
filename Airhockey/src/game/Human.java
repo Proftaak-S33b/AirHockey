@@ -10,15 +10,30 @@ package game;
  * @author Joris
  */
 public class Human implements IPlayer{
+    
+    private final String name;
+    private final String password;
+    private final int score;
+    
+    /**
+     *
+     * @param name
+     * @param password
+     */
+    public Human(String name, String password, int score) {
+        this.name = name;
+        this.password = password;
+        this.score = score;
+    }
 
     @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.name;
     }
 
     @Override
     public int getScore() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.score;
     }
     
 }
