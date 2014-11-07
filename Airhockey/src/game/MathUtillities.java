@@ -89,18 +89,14 @@ public class MathUtillities {
      * @return An ArrayList with 4 coordinates representing the corners of the
      * rectangle.
      */
-    public static ArrayList<Vec2> getGoalCorners(double x1, double y1, double x2, double y2, double sizeX, double sizeY) {
+    public static ArrayList<Vec2> getGoalCorners() {
         ArrayList<Vec2> rectangleGoal = new ArrayList<>();
-        double vx = x2 - x1; // x vector
-        double vy = y2 - y1; // y vector
-        double mag = sqrt(vx * vx + vy * vy); //magnitude (also known as length)
-        vx /= mag; //normalize x vector
-        vy /= mag; //normalize y vector
-
-        rectangleGoal.add(new Vec2((int) ((float) x1 + vx * (mag * 0.3)), (int) ((float) y1 + vy * (mag * 0.3))));
-        rectangleGoal.add(new Vec2((int) ((float) x1 + sizeX + vx * (mag * 0.3)), (int) ((float) y1 + sizeY + vy * (mag * 0.3))));
-        rectangleGoal.add(new Vec2((int) ((float) x1 + sizeX + vx * (mag * 0.7)), (int) ((float) y1 + sizeY + vy * (mag * 0.7))));
-        rectangleGoal.add(new Vec2((int) ((float) x1 + vx * (mag * 0.7)), (int) ((float) y1 + vy * (mag * 0.7))));
+        rectangleGoal.add(new Vec2(17, 5));
+        rectangleGoal.add(new Vec2(33, 5));
+        rectangleGoal.add(new Vec2(19, 29.248f));
+        rectangleGoal.add(new Vec2(11, 15.392f));
+        rectangleGoal.add(new Vec2(39, 15.392f));
+        rectangleGoal.add(new Vec2(31, 29.248f));
         return rectangleGoal;
     }
 

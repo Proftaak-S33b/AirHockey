@@ -17,7 +17,11 @@ import org.jbox2d.dynamics.FixtureDef;
  * @author Joris
  */
 public class Goal {
-    private final Body body;
+        //Physics objects
+    private final Body bodyRedGoal;
+    private final Body bodyBlueGoal;
+    private final Body bodyGreenGoal;
+    
     private final GameWorld world;
     private final IPlayer player;
     
@@ -32,7 +36,7 @@ public class Goal {
         //body definition
         {
             BodyDef bdSide = new BodyDef();
-            bdSide.position.set(MathUtillities.getGoalCorners().get(1).x - MathUtillities.getGoalCorners().get(0).x,
+            bdSide.position.set((MathUtillities.getGoalCorners().get(1).x + MathUtillities.getGoalCorners().get(0).x) /2,
                     MathUtillities.getGoalCorners().get(0).y);
             bdSide.type = BodyType.STATIC;
             bdSide.angle = 0;
@@ -46,8 +50,8 @@ public class Goal {
             fdSide.friction = 0.3f;
             fdSide.restitution = 1f;
             //create the body and add fixture to it
-            bodyRedSide = world.getPhysWorld().createBody(bdSide);
-            bodyRedSide.createFixture(fdSide);
+            bodyRedGoal = world.getPhysWorld().createBody(bdSide);
+            bodyRedGoal.createFixture(fdSide);
         }
         /**
          * **Blue side**
@@ -55,20 +59,21 @@ public class Goal {
         //body definition
         {
             BodyDef bdSide = new BodyDef();
-            bdSide.position.set(getFieldCornersPhysx().get(0).x,
-                    getFieldCornersPhysx().get(1).y);
+            bdSide.position.set((MathUtillities.getGoalCorners().get(2).x + MathUtillities.getGoalCorners().get(3).x) /2,
+                    (MathUtillities.getGoalCorners().get(2).y + MathUtillities.getGoalCorners().get(3).y) /2);
             bdSide.type = BodyType.STATIC;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(25.0f, 43.3f / 2), new Vec2(0, -43.3f / 2));
+            esSide.set(new Vec2(MathUtillities.getGoalCorners().get(2).x, MathUtillities.getGoalCorners().get(2).y),
+                    new Vec2(MathUtillities.getGoalCorners().get(3).x, MathUtillities.getGoalCorners().get(3).y));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;
             fdSide.friction = 0.3f;
             fdSide.restitution = 1f;
             //create the body and add fixture to it
-            bodyBlueSide = world.getPhysWorld().createBody(bdSide);
-            bodyBlueSide.createFixture(fdSide);
+            bodyBlueGoal = world.getPhysWorld().createBody(bdSide);
+            bodyBlueGoal.createFixture(fdSide);
         }
         /**
          * **Green side**
@@ -76,21 +81,21 @@ public class Goal {
         //body definition
         {
             BodyDef bdSide = new BodyDef();
-            bdSide.position.set(getFieldCornersPhysx().get(1).x,
-                    getFieldCornersPhysx().get(1).y);
+            bdSide.position.set((MathUtillities.getGoalCorners().get(4).x + MathUtillities.getGoalCorners().get(5).x) /2,
+                    (MathUtillities.getGoalCorners().get(4).y + MathUtillities.getGoalCorners().get(5).y) /2);
             bdSide.type = BodyType.STATIC;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(0, 43.3f / 2),
-                    new Vec2(25.0f, -43.3f / 2));
+            esSide.set(new Vec2(MathUtillities.getGoalCorners().get(4).x, MathUtillities.getGoalCorners().get(4).y),
+                    new Vec2(MathUtillities.getGoalCorners().get(5).x, MathUtillities.getGoalCorners().get(5).y));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;
             fdSide.friction = 0.3f;
             fdSide.restitution = 1f;
             //create the body and add fixture to it
-            bodyGreenSide = world.getPhysWorld().createBody(bdSide);
-            bodyGreenSide.createFixture(fdSide);
+            bodyGreenGoal = world.getPhysWorld().createBody(bdSide);
+            bodyGreenGoal.createFixture(fdSide);
         }
     }
     
