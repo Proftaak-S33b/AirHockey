@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import shared.Lobby;
+import networking.Lobby;
 
 /**
  * Controller for managing the multiplayer lobby with multiple games
