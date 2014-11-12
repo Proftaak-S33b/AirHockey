@@ -65,9 +65,9 @@ public class FXMLMainMenuController implements Initializable {
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             FXMLLobbyListController controller = loader.<FXMLLobbyListController>getController();
-            controller.initData(currentPlayer);
             stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
             stage.show();
+            controller.initData(currentPlayer);
         } catch (IOException ex) {
             System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
         }
