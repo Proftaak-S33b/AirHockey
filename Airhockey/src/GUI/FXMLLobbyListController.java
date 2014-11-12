@@ -11,6 +11,7 @@ import game.Human;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -102,8 +103,11 @@ public class FXMLLobbyListController implements Initializable {
         
     }
     
-    public void sendChat(Event evt) {
-        chat.addMessage(chatMessage.getText(), currentPlayer);
-        chatMessage.clear();
+    public void sendChat(ActionEvent event) {
+        if(!chatMessage.getText().equals(""))
+        {
+            chat.addMessage(chatMessage.getText(), currentPlayer);
+            chatMessage.clear();
+        }
     }
 }
