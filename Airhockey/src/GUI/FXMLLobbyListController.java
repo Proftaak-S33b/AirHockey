@@ -5,12 +5,8 @@
  */
 package GUI;
 
-<<<<<<< HEAD
 import controllers.ChatController;
 import controllers.LobbyController;
-=======
-import controllers.lobbyController;
->>>>>>> parent of c93b228... snelle push
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
@@ -32,64 +28,57 @@ import javafx.stage.Stage;
  * @author Joris
  */
 public class FXMLLobbyListController implements Initializable {
-
+    
     @FXML
     public TableView lobbyTable;
-
+    
     @FXML
     public TableColumn columnGameName;
-
+    
     @FXML
     public TableColumn columnPlayers;
-
+    
     @FXML
     public TableColumn columnHostRank;
-
+    
     @FXML
     public TextField newLobbyName;
-
+    
     @FXML
     public TextField chatMessage;
-
+    
+    @FXML
+    public ListView chatBox;
+    
     @FXML
     Parent root;
-<<<<<<< HEAD
     
     private LobbyController controller;
     private ChatController chat;
     
-=======
-
-    private lobbyController controller;
-
->>>>>>> parent of c93b228... snelle push
     private Human currentPlayer;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-<<<<<<< HEAD
         controller = new LobbyController();
         chat = new ChatController();
-=======
-        controller = new lobbyController();
->>>>>>> parent of c93b228... snelle push
         columnGameName.setCellValueFactory(new PropertyValueFactory("gameName"));
         columnPlayers.setCellValueFactory(new PropertyValueFactory("playersAmount"));
         columnHostRank.setCellValueFactory(new PropertyValueFactory("hostRank"));
         lobbyTable.setItems(controller.getLobbies());
         controller.addLobby("Test1", new Human("henk", "test", 50));
     }
-
+    
     public void initData(Human currentPlayer) {
         this.currentPlayer = currentPlayer;
         Stage stage = (Stage) root.getScene().getWindow();
         stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
     }
-
+    
     public void selectGame(Event evt) {
-
+        
     }
-
+    
     public void createLobby(Event evt) {
         controller.addLobby(newLobbyName.getText(), currentPlayer);
         try {
@@ -104,16 +93,17 @@ public class FXMLLobbyListController implements Initializable {
             System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
         }
     }
-
+    
     public void joinLobby(Event evt) {
-
+        
     }
-
+    
     public void spectLobby(Event evt) {
-
+        
     }
-
+    
     public void sendChat(Event evt) {
+        chat.addMessage(chatMessage.getText(), currentPlayer);
         chatMessage.clear();
     }
 }
