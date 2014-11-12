@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import shared.Message;
+import networking.Message;
 
 /**
  * Controller for managing the chat in games

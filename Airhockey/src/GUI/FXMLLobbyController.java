@@ -16,7 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import shared.Lobby;
+import networking.Lobby;
 
 /**
  * FXML Controller class
