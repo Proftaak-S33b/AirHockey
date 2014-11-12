@@ -8,8 +8,6 @@ package GUI;
 import game.Human;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,9 +22,6 @@ import networking.Lobby;
  * @author Joris
  */
 public class FXMLLobbyController implements Initializable {
-
-    @FXML
-    Parent root;
 
     @FXML
     public Label labelHostName;
@@ -63,21 +58,21 @@ public class FXMLLobbyController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     public void initData(Human player, Lobby lobby) {
         currentPlayer = player;
         currentLobby = lobby;
-        Stage stage = (Stage) root.getScene().getWindow();
+        Stage stage = (Stage) tablePlayers.getScene().getWindow();
         stage.setTitle(currentLobby.getGameName());
     }
 
     public void sendMessage(ActionEvent evt) {
-        
+
     }
 
     public void startGame(ActionEvent evt) {
-        
+
     }
 }
