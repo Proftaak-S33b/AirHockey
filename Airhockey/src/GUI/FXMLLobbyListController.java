@@ -5,8 +5,8 @@
  */
 package GUI;
 
-import controllers.chatController;
-import controllers.lobbyController;
+import controllers.ChatController;
+import controllers.LobbyController;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
@@ -55,15 +55,15 @@ public class FXMLLobbyListController implements Initializable {
     @FXML
     Parent root;
     
-    private lobbyController controller;
-    private chatController chat;
+    private LobbyController controller;
+    private ChatController chat;
     
     private Human currentPlayer;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        controller = new lobbyController();
-        chat = new chatController();
+        controller = new LobbyController();
+        chat = new ChatController();
         columnGameName.setCellValueFactory(new PropertyValueFactory("gameName"));
         columnPlayers.setCellValueFactory(new PropertyValueFactory("playersAmount"));
         columnHostRank.setCellValueFactory(new PropertyValueFactory("hostRank"));

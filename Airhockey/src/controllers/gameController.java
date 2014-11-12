@@ -10,9 +10,9 @@ package controllers;
  *
  * @author Joris
  */
-public class gameController {
+public class GameController {
 
-    public gameController() {
+    public GameController() {
         
     }
 }

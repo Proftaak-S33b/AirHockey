@@ -18,7 +18,7 @@ import shared.Message;
  *
  * @author Joris
  */
-public class chatController implements Serializable{
+public class ChatController implements Serializable{
 
     private transient ObservableList<Message> messagesObservable;
     private final ArrayList<Message> messages;
@@ -26,7 +26,7 @@ public class chatController implements Serializable{
     /**
      * Instantiates a new chatController
      */
-    public chatController() {
+    public ChatController() {
         messages = new ArrayList<>();
         messagesObservable = FXCollections.observableArrayList(messages);
     }
