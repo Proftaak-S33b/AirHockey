@@ -106,5 +106,6 @@ public class FXMLLobbyListController implements Initializable {
         {
             chat.addMessage(chatMessage.getText(), currentPlayer);
             chatMessage.clear();
+        }
     }
 }
