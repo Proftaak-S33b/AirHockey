@@ -18,12 +18,12 @@ import networking.Lobby;
  *
  * @author Joris
  */
-public class LobbyController implements Serializable{
+public class lobbyController implements Serializable{
 
     private transient ObservableList<Lobby> lobbiesObservable;
     private final ArrayList<Lobby> lobbies;
 
-    public LobbyController() {
+    public lobbyController() {
         lobbies = new ArrayList<>();
         lobbiesObservable = FXCollections.observableArrayList(lobbies);
     }

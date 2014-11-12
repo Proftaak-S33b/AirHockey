@@ -78,6 +78,8 @@ public class MathUtillities {
      * on a playing field by taking the 2 points of the line which the goal has
      * to be placed on.
      *
+     * @param x1 The x coordinate of the first point of the line
+     * @param y1 The y coordinate of the first point of the line
      * @param x2 The x coordinate of the second point of the line
      * @param y2 The y coordinate of the second point of the line
      * @param sizeX The length the goal should be away from the line in X

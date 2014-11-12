@@ -22,8 +22,8 @@ public class Lobby implements Serializable {
     /**
      * Instantiates a new Lobby with specified game name and host IPlayer
      *
-     * @param gameName the name of this lobby
-     * @param host the player who started this lobby
+     * @param gameName
+     * @param host
      */
     public Lobby(String gameName, IPlayer host) {
         this.gameName = gameName;

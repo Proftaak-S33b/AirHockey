@@ -10,9 +10,9 @@ package controllers;
  *
  * @author Joris
  */
-public class DatabaseController {
+public class databaseController {
 
-    public DatabaseController() {
+    public databaseController() {
 
     }
 }
