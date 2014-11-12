@@ -64,7 +64,7 @@ public class FXMLGameView implements Initializable, EventHandler<KeyEvent> {
      * @param event
      */
     public void SetTekst(ActionEvent event) {
-        if(textChat.getText().equals(""))
+        if(!textChat.getText().equals(""))
         {
             listChat.getItems().add(textChat.getText());
             textChat.clear();
