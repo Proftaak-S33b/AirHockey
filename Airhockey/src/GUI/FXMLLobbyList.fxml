@@ -54,7 +54,7 @@
                   </ListView>
                   <HBox prefHeight="23.0" prefWidth="227.0">
                      <children>
-                        <TextField fx:id="chatMessage" prefHeight="25.0" prefWidth="172.0" />
+                        <TextField fx:id="chatMessage" onAction="#sendChat" prefHeight="25.0" prefWidth="172.0" />
                         <Button mnemonicParsing="false" onAction="#sendChat" prefHeight="25.0" prefWidth="57.0" text="Send" />
                      </children>
                   </HBox>
