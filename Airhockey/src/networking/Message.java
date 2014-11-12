@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author Joris
  */
-public class Message implements Serializable{
+public class Message implements Serializable {
 
     public class MessageLengthException extends Exception {
 
@@ -56,5 +56,10 @@ public class Message implements Serializable{
      */
     public String getSenderName() {
         return sender.getName();
+    }
+
+    @Override
+    public String toString() {
+        return sender.getName() + ": " + text;
     }
 }
