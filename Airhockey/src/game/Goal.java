@@ -43,7 +43,7 @@ public class Goal {
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
             esSide.set(new Vec2(MathUtillities.getGoalCorners().get(0).x, MathUtillities.getGoalCorners().get(0).y),
-                    new Vec2(MathUtillities.getGoalCorners().get(1).x, MathUtillities.getGoalCorners().get(2).y));
+                    new Vec2(MathUtillities.getGoalCorners().get(1).x, MathUtillities.getGoalCorners().get(1).y));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;
