@@ -29,7 +29,7 @@ public class Message implements Serializable{
      *
      * @param text The text of this message
      * @param sender
-     * @throws shared.Message.MessageLengthException
+     * @throws networking.Message.MessageLengthException
      */
     public Message(String text, IPlayer sender) throws MessageLengthException {
         if (text.length() <= 144) {
