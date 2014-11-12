@@ -97,6 +97,6 @@ public class FXMLLobbyListController implements Initializable {
     }
 
     public void sendChat(Event evt) {
-
+        chatMessage.clear();
     }
 }
