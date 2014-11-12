@@ -34,7 +34,7 @@ public class AI extends Observable implements IPlayer, Observer{
     }
 
     @Override
-    public int getScore() {
+    public int getRanking() {
         return this.score;
     }
     

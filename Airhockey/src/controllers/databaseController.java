@@ -7,8 +7,12 @@ package controllers;
 
 /**
  * Controller for managing database connections
+ *
  * @author Joris
  */
 public class databaseController {
-    
+
+    public databaseController() {
+
+    }
 }

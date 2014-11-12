@@ -7,10 +7,8 @@ package controllers;
 
 import game.IPlayer;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import shared.Lobby;
 
@@ -26,21 +24,31 @@ public class lobbyController {
 
     public lobbyController() {
         lobbies = new ArrayList<>();
-        lobbiesObservable = FXCollections.observableList(lobbies);
+        lobbiesObservable = FXCollections.observableArrayList(lobbies);
     }
 
-    private void readObject(ObjectInputStream ois)
+    private void readObject(java.io.ObjectInputStream stream)
             throws IOException, ClassNotFoundException {
-        ois.defaultReadObject();
-        lobbiesObservable = FXCollections.observableList(lobbies);
+        stream.defaultReadObject();
+        lobbiesObservable = FXCollections.observableArrayList(lobbies);
+    }
+
+    private void writeObject(java.io.ObjectOutputStream stream)
+            throws IOException {
+        stream.defaultWriteObject();
+        lobbies.clear();
+        for(Lobby l : lobbiesObservable){
+            lobbies.add(l);
+        }
     }
 
     public void addLobby(String gameName, IPlayer host) {
-        lobbies.add(new Lobby(gameName, host));
+        Lobby l = new Lobby(gameName, host);
+        lobbiesObservable.add(l);
     }
 
     public Lobby getLobby(String gameName) {
-        for (Lobby l : lobbies) {
+        for (Lobby l : lobbiesObservable) {
             if (l.getGameName().equals(gameName)) {
                 return l;
             }

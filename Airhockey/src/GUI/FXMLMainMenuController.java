@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import game.Human;
 import z_OLD_game.Difficulty;
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -27,6 +29,8 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private ComboBox AIDifficulty;
+
+    private Human currentPlayer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -53,12 +57,19 @@ public class FXMLMainMenuController implements Initializable {
 
     @FXML
     private void handleMultiplayer(ActionEvent event) {
-        /*try 
         //http://stackoverflow.com/questions/14187963/passing-parameters-javafx-fxml
-        {
-            
+        currentPlayer = new Human("Henk", "test", 400);
+        try {
+            Node node = (Node) event.getSource();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLLobbyList.fxml"));
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setScene(new Scene((Pane) loader.load()));
+            FXMLLobbyListController controller = loader.<FXMLLobbyListController>getController();
+            controller.initData(currentPlayer);
+            stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
+            stage.show();
         } catch (IOException ex) {
-            System.out.println("Error changing scene from Main menu to Game " + ex.toString());
-        }*/
+            System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
+        }
     }
 }

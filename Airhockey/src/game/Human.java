@@ -32,7 +32,7 @@ public class Human implements IPlayer{
     }
 
     @Override
-    public int getScore() {
+    public int getRanking() {
         return this.score;
     }
     

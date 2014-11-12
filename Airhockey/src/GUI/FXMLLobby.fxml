@@ -8,8 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="GUI.FXMLLobbyController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.FXMLLobbyController">
    <children>
       <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -59,7 +58,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </TableView>
-                  <Button fx:id="startGame" mnemonicParsing="false" prefHeight="42.0" prefWidth="154.0" text="Start game">
+                  <Button fx:id="startGame" mnemonicParsing="false" onAction="#startGame" prefHeight="42.0" prefWidth="154.0" text="Start game">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
@@ -84,7 +83,7 @@
                               <Font size="18.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="sendMessage" mnemonicParsing="false" prefHeight="46.0" prefWidth="73.0" text="Send">
+                        <Button fx:id="sendMessage" mnemonicParsing="false" onAction="#sendMessage" prefHeight="46.0" prefWidth="73.0" text="Send">
                            <font>
                               <Font size="18.0" />
                            </font>

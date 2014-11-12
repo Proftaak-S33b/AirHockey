@@ -5,13 +5,15 @@
  */
 package GUI;
 
+import game.Human;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -19,6 +21,9 @@ import javafx.scene.control.*;
  * @author Joris
  */
 public class FXMLLobbyController implements Initializable {
+
+    @FXML
+    Parent root;
 
     @FXML
     public Label labelHostName;
@@ -42,13 +47,9 @@ public class FXMLLobbyController implements Initializable {
     public Label labelPlayerCount;
 
     @FXML
-    public Button sendMessage;
-
-    @FXML
     public TextField tfChatMessage;
 
-    @FXML
-    public Button startGame;
+    private Human currentPlayer;
 
     /**
      * Initializes the controller class.
@@ -58,19 +59,20 @@ public class FXMLLobbyController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        startGame.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
-        sendMessage.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                throw new UnsupportedOperationException("Not supported yet.");
-            }
-        });
+        
     }
 
+    public void initData(Human currentplayer) {
+        this.currentPlayer = currentplayer;
+        Stage stage = (Stage) root.getScene().getWindow();
+        stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
+    }
+
+    public void sendMessage(ActionEvent evt) {
+        
+    }
+
+    public void startGame(ActionEvent evt) {
+        
+    }
 }
