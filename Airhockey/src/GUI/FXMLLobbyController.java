@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import networking.Lobby;
 
@@ -66,6 +67,11 @@ public class FXMLLobbyController implements Initializable {
         currentLobby = lobby;
         Stage stage = (Stage) tablePlayers.getScene().getWindow();
         stage.setTitle(currentLobby.getGameName());
+        labelGameName.setText(currentLobby.getGameName());
+        labelPlayerCount.setText(lobby.getPlayersAmount() + "/3");
+        labelHostName.setText(lobby.getPlayer(0).getName());
+        columnPlayers.setCellValueFactory(new PropertyValueFactory("name"));
+        columnRanking.setCellValueFactory(new PropertyValueFactory("ranking"));
     }
 
     public void sendMessage(ActionEvent evt) {
