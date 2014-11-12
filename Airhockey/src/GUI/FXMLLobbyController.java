@@ -8,12 +8,15 @@ package GUI;
 import game.Human;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import shared.Lobby;
 
 /**
  * FXML Controller class
@@ -50,6 +53,7 @@ public class FXMLLobbyController implements Initializable {
     public TextField tfChatMessage;
 
     private Human currentPlayer;
+    private Lobby currentLobby;
 
     /**
      * Initializes the controller class.
@@ -62,10 +66,11 @@ public class FXMLLobbyController implements Initializable {
         
     }
 
-    public void initData(Human currentplayer) {
-        this.currentPlayer = currentplayer;
+    public void initData(Human player, Lobby lobby) {
+        currentPlayer = player;
+        currentLobby = lobby;
         Stage stage = (Stage) root.getScene().getWindow();
-        stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
+        stage.setTitle(currentLobby.getGameName());
     }
 
     public void sendMessage(ActionEvent evt) {

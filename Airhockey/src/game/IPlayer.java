@@ -5,11 +5,13 @@
  */
 package game;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Joris
  */
-public interface IPlayer {
+public interface IPlayer extends Serializable{
 
     public String getName();
     

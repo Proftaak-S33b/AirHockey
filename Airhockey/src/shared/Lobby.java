@@ -6,19 +6,16 @@
 package shared;
 
 import game.IPlayer;
+import java.io.Serializable;
 import java.util.ArrayList;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
  * @author Joris
  */
-public class Lobby {
+public class Lobby implements Serializable {
 
-    private final SimpleStringProperty gameName;
-    private final SimpleIntegerProperty playersAmount;
-    private final SimpleIntegerProperty hostScore;
+    private String gameName;
 
     private final ArrayList<IPlayer> players;
 
@@ -29,9 +26,7 @@ public class Lobby {
      * @param host
      */
     public Lobby(String gameName, IPlayer host) {
-        this.gameName = new SimpleStringProperty(gameName);
-        this.playersAmount = new SimpleIntegerProperty(1);
-        this.hostScore = new SimpleIntegerProperty(host.getRanking());
+        this.gameName = gameName;
         players = new ArrayList<>();
         players.add(host);
     }
@@ -47,8 +42,9 @@ public class Lobby {
 
     /**
      * Gets the ranking of the specified player
+     *
      * @param player
-     * @return 
+     * @return
      */
     public int getRanking(IPlayer player) {
         for (IPlayer p : players) {
@@ -65,7 +61,7 @@ public class Lobby {
      * @return
      */
     public String getGameName() {
-        return gameName.get();
+        return gameName;
     }
 
     /**
@@ -75,12 +71,15 @@ public class Lobby {
      */
     public void setGameName(String gameName) {
 
-        this.gameName.set(gameName);
+        this.gameName = gameName;
     }
 
     /**
-     * Adds a player if a) the name is not already used by another player in the
-     * lobby b) the amount of players in the lobby is < 3
+     * Adds a player if
+     * <ul>
+     * <li>a) the name is not already used by another player in the lobby </li>
+     * <li>b) the amount of players in the lobby is {@code < 3} </li>
+     * </ul>
      *
      * @param player
      * @return true: succeeded in adding, false: adding failed.
@@ -107,7 +106,8 @@ public class Lobby {
     /**
      * Gets the IPlayer with the specified index
      *
-     * @param i i < 3 or will return null @return
+     * @param i i {@code < 3} or will return null
+     * @return
      */
     public IPlayer getPlayer(int i) {
         if (i < 3) {

@@ -58,7 +58,7 @@ public class FXMLLobbyListController implements Initializable {
         controller = new lobbyController();
         columnGameName.setCellValueFactory(new PropertyValueFactory("gameName"));
         columnPlayers.setCellValueFactory(new PropertyValueFactory("playersAmount"));
-        columnHostRank.setCellValueFactory(new PropertyValueFactory("hostScore"));
+        columnHostRank.setCellValueFactory(new PropertyValueFactory("hostRank"));
         lobbyTable.setItems(controller.getLobbies());
         controller.addLobby("Test1", new Human("henk", "test", 50));
     }
@@ -77,12 +77,11 @@ public class FXMLLobbyListController implements Initializable {
         controller.addLobby(newLobbyName.getText(), currentPlayer);
         try {
             Node node = (Node) evt.getSource();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLLobbyList.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLLobby.fxml"));
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             FXMLLobbyController lobbyFXML = loader.<FXMLLobbyController>getController();
-            lobbyFXML.initData(currentPlayer);
-            stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
+            lobbyFXML.initData(currentPlayer, controller.getLobby(newLobbyName.getText()));
             stage.show();
         } catch (IOException ex) {
             System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
