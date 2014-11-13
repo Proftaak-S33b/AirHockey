@@ -5,13 +5,15 @@
  */
 package networking;
 
-import java.rmi.Remote;
+import java.io.Serializable;
 
 /**
  *
  * @author Joris
  */
-public interface IConnection extends Remote{
+public interface IPlayer extends Serializable{
 
-    public void update();
+    public String getName();
+    
+    public int getRanking();
 }

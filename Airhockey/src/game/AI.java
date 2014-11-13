@@ -5,6 +5,7 @@
  */
 package game;
 
+import networking.IPlayer;
 import java.util.Observable;
 import java.util.Observer;
 import org.jbox2d.common.Vec2;

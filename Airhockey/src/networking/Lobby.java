@@ -5,7 +5,6 @@
  */
 package networking;
 
-import game.IPlayer;
 import java.io.Serializable;
 import java.util.ArrayList;
 

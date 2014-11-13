@@ -5,6 +5,8 @@
  */
 package game;
 
+import networking.IPlayer;
+
 /**
  *
  * @author Joris

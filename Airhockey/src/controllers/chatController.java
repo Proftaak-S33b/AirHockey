@@ -5,7 +5,7 @@
  */
 package controllers;
 
-import game.IPlayer;
+import networking.IPlayer;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import networking.Message;
  *
  * @author Joris
  */
-public class chatController implements Serializable{
+public class chatController {
 
     private transient ObservableList<Message> messagesObservable;
     private final ArrayList<Message> messages;

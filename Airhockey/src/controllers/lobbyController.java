@@ -5,9 +5,8 @@
  */
 package controllers;
 
-import game.IPlayer;
+import networking.IPlayer;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +17,7 @@ import networking.Lobby;
  *
  * @author Joris
  */
-public class lobbyController implements Serializable{
+public class lobbyController {
 
     private transient ObservableList<Lobby> lobbiesObservable;
     private final ArrayList<Lobby> lobbies;

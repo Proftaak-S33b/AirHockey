@@ -5,6 +5,7 @@
  */
 package game;
 
+import networking.IPlayer;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
