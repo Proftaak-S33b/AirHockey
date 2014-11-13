@@ -58,6 +58,55 @@ public class FXMLGameView implements Initializable, EventHandler<KeyEvent> {
 
     }
 
+       /**
+     * Draws the sides and puck on the field.
+     */
+    public void Draw() {
+        
+    } 
+    
+    /**
+     * Draws a given side. Refactored from Draw().
+     */
+     public void drawSide(){
+         
+     }
+     
+    /**
+     * Draws the puck. Refactored from Draw().
+     */
+    public void drawPuck() {
+        
+    }
+    
+     /**
+     * Draws an individual pod.
+     */
+    public void drawPod() {
+        
+    }
+    
+     /**
+     * Part of slowly phasing out the AI from the Controller to the AI classes.
+     */
+     private void AI_CalculateMovement(){
+         
+     }
+     
+    /**
+    * Moves the AI up from player viewpoint.
+    */
+    private void AI_moveUp(){
+        
+    }
+    
+     /**
+     * Moves the AI down from player viewpoint.
+     */
+    private void AI_moveDown(){
+        
+    }
+            
     /**
      * Method for handling send chat button click
      *
@@ -73,6 +122,18 @@ public class FXMLGameView implements Initializable, EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
-        System.out.println(event.getCharacter());
+        
+            switch (event.getCode()) {
+            case LEFT:
+                //if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
+                //    pm.movePodLeft(0);
+                //}
+                break;
+            case RIGHT:
+                //if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() ) {
+                //    pm.movePodRight(0);
+                //}
+                break;
+        }
     }
 }

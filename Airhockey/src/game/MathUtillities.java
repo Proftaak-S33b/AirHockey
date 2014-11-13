@@ -78,27 +78,29 @@ public class MathUtillities {
      * on a playing field by taking the 2 points of the line which the goal has
      * to be placed on.
      *
-     * @param x1 The x coordinate of the first point of the line
-     * @param y1 The y coordinate of the first point of the line
-     * @param x2 The x coordinate of the second point of the line
-     * @param y2 The y coordinate of the second point of the line
-     * @param sizeX The length the goal should be away from the line in X
-     * direction
-     * @param sizeY The length the goal should be away from the line in Y
-     * direction
-     * @return An ArrayList with 4 coordinates representing the corners of the
+     * @return An ArrayList with 6 coordinates representing the corners of the
      * rectangle.
      */
     public static ArrayList<Vec2> getGoalCorners() {
         ArrayList<Vec2> rectangleGoal = new ArrayList<>();
-        rectangleGoal.add(new Vec2(17, 5));
-        rectangleGoal.add(new Vec2(33, 5));
-        rectangleGoal.add(new Vec2(19, 29.248f));
-        rectangleGoal.add(new Vec2(11, 15.392f));
-        rectangleGoal.add(new Vec2(39, 15.392f));
-        rectangleGoal.add(new Vec2(31, 29.248f));
+        rectangleGoal.add(new Vec2(redXLeft, bottomY));
+        rectangleGoal.add(new Vec2(redXRight, bottomY));
+        rectangleGoal.add(new Vec2(blueXRight, topYtop));
+        rectangleGoal.add(new Vec2(blueXLeft, topYbottom));
+        rectangleGoal.add(new Vec2(greenXLeft, topYbottom));
+        rectangleGoal.add(new Vec2(greenXRight, topYtop));
         return rectangleGoal;
     }
+    private static final int bottomY = 5;
+    private static final float topYtop = 29.248f;
+    private static final float topYbottom = 15.392f;
+    private static final int redXLeft = 17;
+    private static final int redXRight = 33;
+    private static final int blueXLeft = 11;
+    private static final int blueXRight = 19;
+    private static final int greenXRight = 31;
+    private static final int greenXLeft = 39;
+    
 
     private static Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
         return new Vec2((a.x + b.x) / 2, (a.y + b.y) / 2);
