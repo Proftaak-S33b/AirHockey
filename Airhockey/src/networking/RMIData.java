@@ -7,8 +7,7 @@ import java.rmi.registry.Registry;
 import java.util.HashMap;
 
 /**
- * <<<<<<< HEAD:Airhockey/src/networking/RMIData.java RMI RMIData class.
- * Connects to a Server.
+ * RMI RMIData class. Connects to a Server.
  *
  * @author Etienne
  */
@@ -111,7 +110,7 @@ public class RMIData {
      *
      * @return
      */
-    public static LobbyData getLobbyData() {
+    public static ILobbyData getLobbyData() {
         //There can be only one!
         return new LobbyData();
     }

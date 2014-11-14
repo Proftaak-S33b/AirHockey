@@ -5,16 +5,19 @@
  */
 package controllers;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import networking.ILobbyData;
 import networking.Lobby;
-import networking.LobbyData;
 import networking.RMIData;
 
 /**
@@ -24,7 +27,7 @@ import networking.RMIData;
  */
 public class LobbyManager {
 
-    private final LobbyData lobbyData;
+    private final ILobbyData lobbyData;
     private final ObservableList<Lobby> lobbies;
     private final Timer timer;
 
@@ -40,7 +43,12 @@ public class LobbyManager {
             @Override
             public void run() {
                 Platform.runLater(() -> {
-                    List<Lobby> lobs = lobbyData.getAll();
+                    List<Lobby> lobs = new ArrayList<>();
+                    try {
+                        lobs = lobbyData.getAll();
+                    } catch (RemoteException ex) {
+                        System.out.println(ex.getMessage());
+                    }
                     for (Lobby lobby1 : lobs) {
                         if (!lobbies.contains(lobby1)) {
                             lobbies.add(lobby1);
@@ -65,7 +73,12 @@ public class LobbyManager {
      * @return True if success, false if failed.
      */
     public boolean addLobby(String gameName, IPlayer host) {
-        return lobbyData.add(gameName, host);
+        try {
+            return lobbyData.add(gameName, host);
+        } catch (RemoteException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
 
     /**
