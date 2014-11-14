@@ -7,6 +7,8 @@ package networking;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -114,6 +116,10 @@ public class Lobby implements Serializable {
         } else {
             return null;
         }
+    }
+
+    public List<IPlayer> getAllPlayers() {
+        return Collections.unmodifiableList(players);
     }
 
     /**

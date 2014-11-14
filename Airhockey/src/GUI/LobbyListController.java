@@ -73,6 +73,18 @@ public class LobbyListController implements Initializable {
         stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
     }
 
+    public void backButton(ActionEvent evt) {
+        try {
+            Node node = (Node) evt.getSource();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setScene(new Scene((Pane) loader.load()));
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Error changing scene from LobbyList to MainMenu " + ex.toString());
+        }
+    }
+
     public void selectGame(Event evt) {
 
     }
@@ -99,10 +111,9 @@ public class LobbyListController implements Initializable {
     public void spectLobby(Event evt) {
 
     }
-    
+
     public void sendChat(ActionEvent event) {
-        if(!chatMessage.getText().equals(""))
-        {
+        if (!chatMessage.getText().equals("")) {
             chat.addMessage(chatMessage.getText(), currentPlayer);
             chatMessage.clear();
         }

@@ -19,7 +19,7 @@ public class AirHockey extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent mainMenu = FXMLLoader.load(getClass().getResource("FXMLMainMenu.fxml"));
+        Parent mainMenu = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         
         Scene scene = new Scene(mainMenu);
         

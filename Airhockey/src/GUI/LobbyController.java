@@ -19,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.Lobby;
 
@@ -52,6 +53,9 @@ public class LobbyController implements Initializable {
 
     @FXML
     public TextField chatMessage;
+
+    @FXML
+    public Button readyButton;
 
     private Human currentPlayer;
     private Lobby currentLobby;
@@ -101,7 +105,17 @@ public class LobbyController implements Initializable {
      * @param evt
      */
     public void backButton(ActionEvent evt) {
-
+        try {
+            Node node = (Node) evt.getSource();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setScene(new Scene((Pane) loader.load()));
+            LobbyListController controller = loader.<LobbyListController>getController();
+            stage.show();
+            controller.initData(currentPlayer);
+        } catch (IOException ex) {
+            System.out.println("Error changing scene from Lobby to LobbyList " + ex.toString());
+        }
     }
 
     /**
@@ -134,8 +148,11 @@ public class LobbyController implements Initializable {
      */
     public void readyButton(ActionEvent evt) {
         if (ready) {
-            
+            readyButton.getStyleClass().clear();
+        } else {
+            readyButton.getStyleClass().add("ready");
         }
+        ready = !ready;
     }
 
     /**

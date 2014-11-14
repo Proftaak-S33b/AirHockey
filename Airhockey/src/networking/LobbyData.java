@@ -7,6 +7,7 @@ package networking;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -30,8 +31,9 @@ public class LobbyData implements Serializable {
      */
     public boolean add(String name, IPlayer host) {
         for (Lobby l : lobbies) {
-            for (int i = 0; i < 3; i++) {
-                if (l.getPlayer(i) == host) {
+            for(IPlayer p : l.getAllPlayers()){
+                if(p.getName().equals(host.getName()) || p.equals(host))
+                {
                     return false;
                 }
             }
@@ -55,7 +57,7 @@ public class LobbyData implements Serializable {
      *
      * @return An ArrayList{@code<Lobby>} containing all known Lobby objects
      */
-    public ArrayList<Lobby> getAll() {
+    public List<Lobby> getAll() {
         return lobbies;
     }
 }

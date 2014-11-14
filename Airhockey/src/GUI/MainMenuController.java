@@ -39,8 +39,7 @@ public class MainMenuController implements Initializable {
         AIDifficulty.setEditable(false);
     }
 
-    @FXML
-    private void handleSingleplayer(ActionEvent event) {
+    public void handleSingleplayer(ActionEvent event) {
         try {
             Node node = (Node) event.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
@@ -55,8 +54,7 @@ public class MainMenuController implements Initializable {
         }
     }
 
-    @FXML
-    private void handleMultiplayer(ActionEvent event) {
+    public void handleMultiplayer(ActionEvent event) {
         currentPlayer = new Human("Henk", "test", 400);
         try {
             Node node = (Node) event.getSource();
@@ -64,7 +62,6 @@ public class MainMenuController implements Initializable {
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             LobbyListController controller = loader.<LobbyListController>getController();
-            stage.setTitle("Lobbies - Hello, " + currentPlayer.getName());
             stage.show();
             controller.initData(currentPlayer);
         } catch (IOException ex) {

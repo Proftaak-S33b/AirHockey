@@ -5,11 +5,12 @@
  */
 package controllers;
 
-import networking.IPlayer;
-import java.io.IOException;
 import java.util.ArrayList;
+import networking.IPlayer;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.Lobby;
@@ -23,8 +24,8 @@ import networking.RMIData;
  */
 public class LobbyManager {
 
-    private LobbyData lobbyData;
-    private ObservableList<Lobby> lobbies;
+    private final LobbyData lobbyData;
+    private final ObservableList<Lobby> lobbies;
     private final Timer timer;
 
     /**
@@ -38,11 +39,22 @@ public class LobbyManager {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                ArrayList<Lobby> lobs = lobbyData.getAll();
-                lobbies.clear();
-                lobbies.addAll(lobs);
+                Platform.runLater(() -> {
+                    List<Lobby> lobs = lobbyData.getAll();
+                    for (Lobby lobby1 : lobs) {
+                        if (!lobbies.contains(lobby1)) {
+                            lobbies.add(lobby1);
+                        }
+                    }
+                    for (Lobby lobby2 : lobbies) {
+                        if (!lobs.contains(lobby2)) {
+                            lobbies.remove(lobby2);
+                        }
+                    }
+                });
             }
-        }, 0, 100);
+        }, 0, 200);
+
     }
 
     /**

@@ -13,7 +13,7 @@
 
 <AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainMenuController">
     <stylesheets>
-        <URL value="@MainMenu.css"/>
+        <URL value="@MainMenu.css" />
     </stylesheets>
     <children>
         <Label prefHeight="35.0" prefWidth="700.0" text="Main Menu">
@@ -30,7 +30,7 @@
                     </font>
                 </Label>
                 <Label layoutX="102.0" layoutY="116.0" prefHeight="17.0" prefWidth="98.0" text="Select difficulty:" />
-                <Button fx:id="startSingleplayer" layoutX="63.0" layoutY="283.0" mnemonicParsing="false" onAction="#handleSingleplayer" prefHeight="73.0" prefWidth="227.0" text="Start Game">
+                <Button layoutX="63.0" layoutY="283.0" mnemonicParsing="false" onAction="#handleSingleplayer" prefHeight="73.0" prefWidth="227.0" text="Start Game">
                     <font>
                         <Font size="32.0" />
                     </font>
@@ -48,7 +48,7 @@
                 <TextField layoutX="99.0" layoutY="132.0" promptText="Username" />
                 <Label layoutX="99.0" layoutY="179.0" prefHeight="17.0" prefWidth="98.0" text="Password:" />
                 <PasswordField layoutX="99.0" layoutY="196.0" promptText="Password" />
-                <Button fx:id="startMultiplayer" layoutX="66.0" layoutY="283.0" mnemonicParsing="false" onAction="#handleMultiplayer" prefHeight="73.0" prefWidth="227.0" text="Start Game">
+                <Button layoutX="66.0" layoutY="283.0" mnemonicParsing="false" onAction="#handleMultiplayer" prefHeight="73.0" prefWidth="227.0" text="Start Game">
                     <font>
                         <Font size="32.0" />
                     </font>

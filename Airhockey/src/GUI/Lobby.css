@@ -2,6 +2,10 @@
  * Empty Stylesheet file.
  */
 
-.mainFxmlClass {
+.ready {
+    -fx-background-color: #7DED05;
+}
 
+.ready:hover {
+    -fx-background-color: #6FD106;
 }
