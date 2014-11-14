@@ -28,15 +28,34 @@ public class LobbyData implements Serializable {
      * @param host The player who started this lobby
      * @return True if adding succeeded, false if adding failed.
      */
-    public boolean addLobby(String name, IPlayer host) {
+    public boolean add(String name, IPlayer host) {
         for (Lobby l : lobbies) {
-            for(int i = 0; i < 3; i++){
-                if(l.getPlayer(i) == host){
+            for (int i = 0; i < 3; i++) {
+                if (l.getPlayer(i) == host) {
                     return false;
                 }
             }
         }
         lobbies.add(new Lobby(name, host));
         return true;
+    }
+
+    /**
+     * Removes a lobby
+     *
+     * @param lobby the lobby object to be removed
+     * @return true if success, false if failed.
+     */
+    public boolean remove(Lobby lobby) {
+        return lobbies.remove(lobby);
+    }
+
+    /**
+     * Gets all lobbies known by this object
+     *
+     * @return An ArrayList{@code<Lobby>} containing all known Lobby objects
+     */
+    public ArrayList<Lobby> getAll() {
+        return lobbies;
     }
 }

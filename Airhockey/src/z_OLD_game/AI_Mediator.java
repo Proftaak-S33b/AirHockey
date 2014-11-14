@@ -1,6 +1,6 @@
 package z_OLD_game;
 
-import GUI.FXMLGameView;
+import GUI.GameView;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,9 +14,9 @@ public class AI_Mediator extends Observable implements Observer{
     
     private Puck puck; 
     private ArrayList<AI> AI_List = new ArrayList<>();
-    private FXMLGameView controller;
+    private GameView controller;
     
-    public AI_Mediator(FXMLGameView controller, ArrayList<Player> players, Puck puck){
+    public AI_Mediator(GameView controller, ArrayList<Player> players, Puck puck){
         this.puck = puck;        
         this.controller = controller;
         
