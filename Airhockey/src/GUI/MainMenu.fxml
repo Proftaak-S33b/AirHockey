@@ -54,6 +54,7 @@
                     </font>
                 </Button>
                 <Separator layoutX="-10.0" orientation="VERTICAL" prefHeight="464.0" prefWidth="18.0" />
+            <Label layoutX="66.0" layoutY="368.0" textFill="RED" />
             </children>
         </Pane>
     </children>

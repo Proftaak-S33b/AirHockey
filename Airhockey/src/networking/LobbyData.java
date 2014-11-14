@@ -25,15 +25,17 @@ public class LobbyData implements Serializable {
      * Adds a lobby, if the host has already been registered in a lobby, the
      * creating will fail
      *
-     * @param name The string representation of the Lobby
+     * @param name The string representation of the Lobby, has to be unique
      * @param host The player who started this lobby
      * @return True if adding succeeded, false if adding failed.
      */
     public boolean add(String name, IPlayer host) {
         for (Lobby l : lobbies) {
-            for(IPlayer p : l.getAllPlayers()){
-                if(p.getName().equals(host.getName()) || p.equals(host))
-                {
+            if (l.getGameName().equals(name)) {
+                return false;
+            }
+            for (IPlayer p : l.getAllPlayers()) {
+                if (p.getName().equals(host.getName()) || p.equals(host)) {
                     return false;
                 }
             }

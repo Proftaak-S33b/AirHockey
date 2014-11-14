@@ -61,17 +61,10 @@ public class LobbyManager {
      * Adds a new Lobby with specified name and host player
      *
      * @param gameName The name the new lobby will be identified as. Unique
-     * @param host The IPlayer who created this lobby
+     * @param host The IPlayer who created this lobby, cant be in another lobby
      * @return True if success, false if failed.
      */
     public boolean addLobby(String gameName, IPlayer host) {
-        lobbies.clear();
-        lobbies.addAll(lobbyData.getAll());
-        for (Lobby l : lobbies) {
-            if (l.getGameName().equals(gameName)) {
-                return false;
-            }
-        }
         return lobbyData.add(gameName, host);
     }
 

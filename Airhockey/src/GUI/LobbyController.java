@@ -10,6 +10,7 @@ import game.Human;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,38 +30,38 @@ import networking.Lobby;
  * @author Joris
  */
 public class LobbyController implements Initializable {
-
+    
     @FXML
     public TextField textHostName;
-
+    
     @FXML
     public TextField textGameName;
-
+    
     @FXML
     public TextField textPlayerCount;
-
+    
     @FXML
     public ListView chatBox;
-
+    
     @FXML
     public TableView tablePlayers;
-
+    
     @FXML
     public TableColumn columnPlayers;
-
+    
     @FXML
     public TableColumn columnRanking;
-
+    
     @FXML
     public TextField chatMessage;
-
+    
     @FXML
     public Button readyButton;
-
+    
     private Human currentPlayer;
     private Lobby currentLobby;
     private boolean ready = false;
-
+    
     private ChatManager chat;
 
     /**
@@ -126,6 +127,7 @@ public class LobbyController implements Initializable {
             textGameName.setText(currentLobby.getGameName());
             textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
             textHostName.setText(currentLobby.getPlayer(0).getName());
+            tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
         }
     }
 

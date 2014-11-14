@@ -10,7 +10,9 @@ import controllers.LobbyManager;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import networking.Lobby;
 
 /**
  *
@@ -64,7 +67,12 @@ public class LobbyListController implements Initializable {
         columnPlayers.setCellValueFactory(new PropertyValueFactory("playersAmount"));
         columnHostRank.setCellValueFactory(new PropertyValueFactory("hostRank"));
         lobbyTable.setItems(controller.getLobbies());
-        controller.addLobby("Test1", new Human("henk", "test", 50));
+        controller.addLobby("Join me for a challenge!", new Human("bignoob93", "test", 50));
+        controller.addLobby("I will beat you!", new Human("2Stronk4U", "test", 1337));
+        controller.addLobby("For narnia!", new Human("superman23", "test", 100));
+        Platform.runLater(() -> {
+            controller.getLobby("For narnia!").addPlayer(new Human("Kiko", "test", 200));
+        });
     }
 
     public void initData(Human currentPlayer) {
@@ -85,10 +93,6 @@ public class LobbyListController implements Initializable {
         }
     }
 
-    public void selectGame(Event evt) {
-
-    }
-
     public void createLobby(Event evt) {
         controller.addLobby(newLobbyName.getText(), currentPlayer);
         try {
@@ -105,7 +109,19 @@ public class LobbyListController implements Initializable {
     }
 
     public void joinLobby(Event evt) {
-
+        if (lobbyTable.getSelectionModel().getSelectedItem() instanceof Lobby) {
+            try {
+                Node node = (Node) evt.getSource();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
+                Stage stage = (Stage) node.getScene().getWindow();
+                stage.setScene(new Scene((Pane) loader.load()));
+                LobbyController lobbyFXML = loader.<LobbyController>getController();
+                lobbyFXML.initData(currentPlayer, (Lobby) lobbyTable.getSelectionModel().getSelectedItem());
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("Error changing scene from LobbyList to Lobby " + ex.toString());
+            }
+        }
     }
 
     public void spectLobby(Event evt) {

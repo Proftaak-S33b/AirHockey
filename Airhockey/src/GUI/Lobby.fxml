@@ -16,9 +16,13 @@
     <children>
         <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
-                <VBox prefHeight="400.0" prefWidth="166.0" BorderPane.alignment="CENTER">
+                <VBox prefHeight="400.0" prefWidth="211.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#backButton" prefHeight="25.0" prefWidth="58.0" text="&lt; Back" />
+                  <ToolBar prefHeight="40.0" prefWidth="200.0">
+                     <items>
+                              <Button mnemonicParsing="false" onAction="#backButton" prefHeight="25.0" prefWidth="58.0" text="&lt; Back" />
+                     </items>
+                  </ToolBar>
                         <Label text="Game Info">
                             <font>
                                 <Font size="20.0" />
@@ -32,58 +36,64 @@
                                 <Font size="14.0" />
                             </font>
                             <VBox.margin>
-                                <Insets />
+                                <Insets left="10.0" right="10.0" top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <TextField fx:id="textGameName" />
+                        <TextField fx:id="textGameName">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin></TextField>
                         <Label text="#Players">
                             <font>
                                 <Font size="14.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="10.0" />
+                                <Insets left="10.0" right="10.0" top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <TextField fx:id="textPlayerCount" editable="false" />
+                        <TextField fx:id="textPlayerCount" editable="false">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin></TextField>
                         <Label text="Host">
                             <font>
                                 <Font size="14.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="10.0" />
+                                <Insets left="10.0" right="10.0" top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <TextField fx:id="textHostName" editable="false" />
-                        <TableView fx:id="tablePlayers" prefHeight="119.0" prefWidth="145.0">
+                        <TextField fx:id="textHostName" editable="false">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </VBox.margin></TextField>
+                        <TableView fx:id="tablePlayers">
                             <columns>
-                                <TableColumn fx:id="columnPlayers" prefWidth="90.0" text="Players" />
-                                <TableColumn fx:id="columnRanking" prefWidth="60.0" text="Rank" />
+                                <TableColumn fx:id="columnPlayers" prefWidth="118.0" text="Players" />
+                                <TableColumn fx:id="columnRanking" prefWidth="52.0" text="Rank" />
                             </columns>
                             <VBox.margin>
-                                <Insets top="10.0" />
+                                <Insets left="20.0" right="20.0" top="10.0" />
                             </VBox.margin>
                         </TableView>
-                        <Button fx:id="readyButton" mnemonicParsing="false" onAction="#readyButton" prefHeight="42.0" prefWidth="154.0" styleClass="readyButton" text="Ready">
+                        <Button fx:id="readyButton" mnemonicParsing="false" onAction="#readyButton" prefHeight="25.0" prefWidth="191.0" styleClass="readyButton" text="Ready">
                             <VBox.margin>
-                                <Insets top="20.0" />
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </VBox.margin>
                             <font>
                                 <Font size="14.0" />
                             </font>
                         </Button>
                     </children>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
                 </VBox>
             </left>
             <center>
                 <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                     <children>
-                        <ListView fx:id="chatBox" prefHeight="407.0" prefWidth="434.0" />
-                        <HBox prefHeight="100.0" prefWidth="200.0">
+                        <ListView fx:id="chatBox" prefHeight="354.0" prefWidth="415.0" />
+                        <HBox prefHeight="47.0" prefWidth="389.0">
                             <children>
-                                <TextField fx:id="chatMessage" prefHeight="46.0" prefWidth="364.0">
+                                <TextField fx:id="chatMessage" onAction="#sendMessage" prefHeight="46.0" prefWidth="320.0">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
