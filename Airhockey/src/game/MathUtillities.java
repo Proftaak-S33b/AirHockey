@@ -85,6 +85,7 @@ public class MathUtillities {
     private static Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
         //Is deze nodig?
         //Volgens mij niet
+        //Bij wall kun je deze gebruiken en je moet ook nog de coordinaten getten uit getGoalCorners
         return new Vec2((a.x + b.x) / 2, (a.y + b.y) / 2);
     }
 
