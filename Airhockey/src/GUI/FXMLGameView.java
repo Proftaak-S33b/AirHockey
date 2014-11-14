@@ -15,6 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 
 /**
  * FXML Controller class
@@ -62,7 +63,27 @@ public class FXMLGameView implements Initializable, EventHandler<KeyEvent> {
      * Draws the sides and puck on the field.
      */
     public void Draw() {
-        
+         try {
+
+            gc.setFill(Color.WHITESMOKE);
+            gc.fillRect(0.0, 0.0, 550, 550);
+
+            //Blue side
+            drawSide(/*Color.BLUE, "Player 2", 0, 1, -18, -12*/);
+
+            //Green side
+            drawSide(/*Color.GREEN, "Player 3", 1, 2, 18, -12*/);
+
+            //Red side
+            drawSide(/*Color.RED, "Henk", 2, 0, 0, 20*/);
+
+            drawPuck();
+
+            drawPod();
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     } 
     
     /**
@@ -76,14 +97,25 @@ public class FXMLGameView implements Initializable, EventHandler<KeyEvent> {
      * Draws the puck. Refactored from Draw().
      */
     public void drawPuck() {
-        
+        gc.setFill(Color.BLACK);
+        //gc.fillOval(pm.getPuckPosition().x, pm.getPuckPosition().y, pm.getPuckSize(), pm.getPuckSize());
     }
     
      /**
      * Draws an individual pod.
      */
     public void drawPod() {
-        
+        //ArrayList<Vec2> corners = pm.getFieldCorners();
+
+//        float aX = corners.get(0).x;
+//        float aY = corners.get(0).y;
+//        float bX = corners.get(1).x;
+//        float bY = corners.get(1).y;
+
+        //ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, -18, -12);
+
+        // AI
+        AI_CalculateMovement(/*goalCoordinates*/);
     }
     
      /**
