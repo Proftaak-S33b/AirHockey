@@ -15,6 +15,16 @@ import org.jbox2d.common.Vec2;
 public class MathUtillities {
 
     //Coordinates of field.
+    //         ^i 
+    //      e/    \g
+    //     f/      \h
+    //     <___  ___>
+    //     a   b c   d
+    //
+    //a = (5, 5)     e = (19, 29.248)    i = (25, 39.64)
+    //b = (17, 5)    f = (11, 15.392)
+    //c = (33, 5)    g = (31, 29.248)
+    //d = (45, 5)    h = (39, 15.392)
     private static final int bottomY = 5;
     private static final float topYtop = 29.248f;
     private static final float topYbottom = 15.392f;
@@ -74,6 +84,7 @@ public class MathUtillities {
      */
     private static Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
         //Is deze nodig?
+        //Volgens mij niet
         return new Vec2((a.x + b.x) / 2, (a.y + b.y) / 2);
     }
 
