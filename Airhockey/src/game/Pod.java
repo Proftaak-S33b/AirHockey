@@ -30,7 +30,7 @@ public class Pod {
      *
      * @param world
      * @param player The player this pod belongs to.
-     * @param startPosition
+     * @param Position
      */
     public Pod(GameWorld world, IPlayer player, Vec2 Position) {
         this.player = player;
