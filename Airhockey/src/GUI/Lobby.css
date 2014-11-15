@@ -3,9 +3,6 @@
  */
 
 .ready {
-    -fx-background-color: #7DED05;
-}
-
-.ready:hover {
-    -fx-background-color: #6FD106;
+    -fx-base: #78E60E;
+    -fx-background: #70C600;
 }

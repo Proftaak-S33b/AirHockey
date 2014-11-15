@@ -2,6 +2,64 @@
  * Empty Stylesheet file.
  */
 
-.mainFxmlClass {
+.settingsButton {
+    -fx-graphic: url(settings.png);
+}
 
+@font-face {
+    font-family: "Aldo the Apache";
+    src: url(AldotheApache.ttf);
+}
+
+.headerTitle {
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 70;
+    -fx-text-fill: linear-gradient(to right, #FA6900, #69D2E7);
+}
+
+.singleButton {
+    -fx-background-color: #A7DBD8;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 20;
+}
+
+.singleButton:hover {
+    -fx-background-color: #B1E8E5;
+}
+
+.singleButton:armed {
+    -fx-background-color: #6EC4C4;
+}
+
+.multiButton {
+    -fx-background-color: #F38630;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 20;
+}
+
+.multiButton:hover {
+    -fx-background-color: #f39a38;
+}
+
+.multiButton:armed {
+    -fx-background-color: #ff7513;
+}
+
+.mainText {
+    -fx-text-fill: white;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian , rgba(50 ,50 ,50 ,0.5), 1, 1, 1, 2);
+}
+
+.singlePanel {
+    -fx-background-color: #69D2E7;
+}
+
+.multiPanel {
+    -fx-background-color: #FA6900;
+}
+
+.headerPanel {
+    -fx-background-color: #E0E4CC;
 }

@@ -1,0 +1,34 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-nov-2014, 18:38:58
+    Author     : Joris
+*/
+
+.darkBlue {
+    -fx-base: #69D2E7;
+    //-fx-background: #70C600;
+}
+
+.lightBlue {
+    -fx-base: #A7DBD8;
+    //-fx-background: #70C600;
+}
+
+.lightGrey {
+    -fx-base: #E0E4CC;
+    //-fx-background: #70C600;
+}
+
+.lightOrange {
+    -fx-base: #F38630;
+    //-fx-background: #70C600;
+}
+
+.darkOrange {
+    -fx-base: #FA6900;
+    //-fx-background: #70C600;
+}

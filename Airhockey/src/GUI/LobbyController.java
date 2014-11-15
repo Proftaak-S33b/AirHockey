@@ -30,38 +30,38 @@ import networking.Lobby;
  * @author Joris
  */
 public class LobbyController implements Initializable {
-    
+
     @FXML
     public TextField textHostName;
-    
+
     @FXML
     public TextField textGameName;
-    
+
     @FXML
     public TextField textPlayerCount;
-    
+
     @FXML
     public ListView chatBox;
-    
+
     @FXML
     public TableView tablePlayers;
-    
+
     @FXML
     public TableColumn columnPlayers;
-    
+
     @FXML
     public TableColumn columnRanking;
-    
+
     @FXML
     public TextField chatMessage;
-    
+
     @FXML
     public Button readyButton;
-    
+
     private Human currentPlayer;
     private Lobby currentLobby;
     private boolean ready = false;
-    
+
     private ChatManager chat;
 
     /**
@@ -150,7 +150,7 @@ public class LobbyController implements Initializable {
      */
     public void readyButton(ActionEvent evt) {
         if (ready) {
-            readyButton.getStyleClass().clear();
+            readyButton.getStyleClass().remove("ready");
         } else {
             readyButton.getStyleClass().add("ready");
         }
