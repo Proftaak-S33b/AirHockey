@@ -11,6 +11,11 @@
     src: url(AldotheApache.ttf);
 }
 
+@font-face {
+    font-family: "Imagine Font";
+    src: url(imagine_font.ttf);
+}
+
 .headerTitle {
     -fx-font-family: "Aldo the Apache";
     -fx-font-size: 70;
@@ -20,7 +25,7 @@
 .singleButton {
     -fx-background-color: #A7DBD8;
     -fx-font-family: "Aldo the Apache";
-    -fx-font-size: 20;
+    -fx-font-size: 32;
 }
 
 .singleButton:hover {
@@ -34,7 +39,7 @@
 .multiButton {
     -fx-background-color: #F38630;
     -fx-font-family: "Aldo the Apache";
-    -fx-font-size: 20;
+    -fx-font-size: 32;
 }
 
 .multiButton:hover {
@@ -47,9 +52,15 @@
 
 .mainText {
     -fx-text-fill: white;
-    -fx-font-size: 30px;
+    -fx-font-size: 40px;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(gaussian , rgba(50 ,50 ,50 ,0.5), 1, 1, 1, 2);
+    -fx-font-family: "Aldo the Apache";
+}
+
+.normalText {
+    -fx-font-family: "Imagine Font";
+    -fx-font-size: 14px;
 }
 
 .singlePanel {
