@@ -1,10 +1,14 @@
 package networking;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,21 +24,57 @@ public class Server {
     private static final String DEFAULT_HOSTNAME = "local";
     private static final int DEFAULT_PORT = 1099;    
     
+    private InetAddress serverip;
     private Registry registry;
+        
+    /**
+     * Returns the ip-address of the server.
+     * @return InetAddress with the ip. 
+     * Can be converted to a String using toString().
+     */
+    public InetAddress getServerIP(){
+        return serverip;
+    }
     
     /**
-     * Creates a new Server on default port 1099.
+     * Gets a complete Key-Value copy of the registry.
+     * @return an HashMap (a.k.a Dictionary(C#) / associative array(PHP)) 
+     * with the keys (binded objects' names) + values (remote objects themselves).
+     * @throws RemoteException thrown when the remotes' shit hits the fan.
+     * @throws NotBoundException thrown when the key is not bound in the registry.
      */
-    public Server(){
+    public HashMap getRegistryValues() throws RemoteException, NotBoundException{
+        
+        HashMap values = new HashMap<String, Remote>();
+        
+        // Get all the names registered. (Keys)
+        String[] array = registry.list();
+        
+        // Now put the keys with their remotes in the map.
+        for (String s : array) {
+            values.put(s, registry.lookup(s));            
+        }
+        
+        return values;
+    }
+    
+    /**
+     * Creates a new Server with a registry on default port 1099.
+     * @throws UnknownHostException thrown when the host isn't found.
+     */
+    public Server() throws UnknownHostException{
         CreateRegistry();
+        serverip = InetAddress.getLocalHost();
     }
     
     /**
      * Creates a new Server on a given portnumber.
      * @param port an int with the number of the port to connect to.
+     * @throws UnknownHostException thrown when the host isn't found.
      */
-    public Server(int port){
+    public Server(int port) throws UnknownHostException{
         CreateRegistry(port);
+        serverip = InetAddress.getLocalHost();
     }
     
     /**
@@ -82,6 +122,7 @@ public class Server {
  ////////////////////////////////////////////////////////////////////////////
     
     //Old code, i need this to remember the mechanics. pls dont remove ;_;
+    //<editor-fold defaultstate="collapsed" desc="main">
     /**
      * Include a main() method so we can launch the server and client seperately.
      * @param args 
@@ -106,14 +147,16 @@ public class Server {
             Registry registry = LocateRegistry.createRegistry(DEFAULT_PORT);
 
             // Instantiate the implementation class.
-            Interface i = new InterfaceImpl();
+            // Interface is deprecated.
+            //Interface i = new InterfaceImpl();
             
             // bind it to the registry.
-            registry.bind("write", i);
+            //registry.bind("write", i);
             
         // Catches exception by printing error.
         } catch (Exception e) { 
             System.out.println(e.getMessage());
         }        
     }  
+    //</editor-fold>
 }

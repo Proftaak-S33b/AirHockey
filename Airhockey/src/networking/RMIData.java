@@ -1,33 +1,25 @@
 package networking;
 
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashMap;
+
+// Waarom rename? Dit is de client toch? En waarom die static methods?
+// (Als je een client nodig hebt voor je lobbymanager, maak er dan daar een?)
+
+
 
 /**
  * RMI RMIData class. Connects to a Server.
- *
+ * Interesting read / todo? :
+ * http://www.javaworld.com/article/2076234/soa/get-smart-with-proxies-and-rmi.html 
  * @author Etienne
  */
 public class RMIData {
 
     private Registry registry;
-
-    //<editor-fold defaultstate="collapsed" desc="hashmap">
-    /**
-     * Associative array containing all data concerning networking.
-     */
-    private HashMap data = new HashMap();
-
-    private void sethashmap() {
-        data.put("DEFAULT_HOST", "localhost");
-        data.put("DEFAULT_PROTOCOL", "rmi");
-        data.put("DEFAULT_HOSTNAME", "local");
-        data.put("DEFAULT_PORT", 1099);
-    }
-    //</editor-fold>
 
     /**
      * Initializes a new Client with no setup done: data can be specified later.
@@ -46,7 +38,7 @@ public class RMIData {
     public RMIData(String host, int port) {
         LocateRegistry(host, port);
     }
-
+    
     /**
      * Locates the registry on the given host and portnumber.
      *
@@ -62,47 +54,22 @@ public class RMIData {
     }
 
     /**
-     * Does a lookup of an object with the given name in the registry.
+     * Does a lookup for an object under the given name in the registry.
      *
-     * @param objectname a string with the name of the object you want to look
-     * up.
+     * @param key a string with the name of the object key you want to 
+     * look up.
+     * @return a Remote object or null if not found.
      */
-    public void Lookup(String objectname) {
+    public Remote Lookup(String key) {
         try {
-            Interface i = (Interface) registry.lookup(objectname);
+            
+            Remote remoteobject = registry.lookup(key);
+            return remoteobject;
+            
         } catch (RemoteException | NotBoundException ex) {
             System.out.println(ex.getMessage());
+            return null;
         }
-    }
-
-    ////////////////////////////////////////////////////////////////////////////
-    //Old code, i need this to remember the mechanics. pls dont remove ;_;
-    public static void main(String[] args) {
-        // Set Security Manager.
-        // For RMI to download classes, a security manager must be in force.        
-                /*  This will cause errors if you don't have the right policies. disabled.
-         Currently disabled.
-         if (System.getSecurityManager() == null) {
-         System.setSecurityManager(new SecurityManager());
-         }        
-         */ // The following code can throw a RemoteException.
-        /*
-         try {
-         RMIData data = new RMIData();
-         // Connect to the server's registry.
-         Registry registry = LocateRegistry.getRegistry(DEFAULT_HOST, DEFAULT_PORT);
-
-         // Get the object from the server's registry.
-         Interface i = (Interface) registry.lookup("");
-
-         // Print output of the writer to see if everything works.
-         System.out.println("Client: " + i.interfaceMethod());
-
-         // Catches exception by printing error.
-         } catch (RemoteException | NotBoundException e) {
-         System.out.println(e.getMessage());
-         }
-         */
     }
 
     /**
@@ -110,7 +77,7 @@ public class RMIData {
      *
      * @return
      */
-    public static ILobbyData getLobbyData() {
+    public /*static*/ ILobbyData getLobbyData() {
         //There can be only one!
         return new LobbyData();
     }
@@ -120,20 +87,22 @@ public class RMIData {
      *
      * @return
      */
-    public static ChatData getChatData() {
+    public /*static*/ ChatData getChatData() {
         //Params for IP or which ChatData object to retrieve?
-        return null;
+        //nah, registry is initialized, no need to reconnect.
+        //if we want different objects, make more client/rmidata objects?
+        return (ChatData) Lookup("chatdata");
     }
 
     /**
      * Gets the GameData object through RMI
      *
-     * @param IPAdress The IP-address to connect to
+     * @param IPAddress The IP-address to connect to
      * @param portNumber The portnumber to use with the IP-address
      * @return The GameData object at this network location, if none found,
      * returns null
      */
-    public static GameData getGameData(String IPAdress, int portNumber) {
-        return null;
+    public /*static*/ GameData getGameData(String IPAddress, int portNumber) {        
+        return (GameData) Lookup("gamedata");
     }
 }
