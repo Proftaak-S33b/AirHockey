@@ -2,6 +2,6 @@
  * Empty Stylesheet file.
  */
 
-.mainFxmlClass {
-
+.loadPanel {
+    -fx-background-color: #E0E4CC;
 }
