@@ -7,6 +7,7 @@ package GUI;
 
 import controllers.ChatManager;
 import controllers.LobbyManager;
+import game.AI;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;

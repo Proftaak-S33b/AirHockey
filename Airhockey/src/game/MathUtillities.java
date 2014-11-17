@@ -55,6 +55,18 @@ public class MathUtillities {
     }
 
     /**
+     * Calculates a new vector to draw the shapes
+     * y = 50 - old y
+     * @param vector
+     * @return a vector to draw a shape
+     */
+    public Vec2 rotateVector(Vec2 vector)
+    {
+        float yVector = 50 - vector.y;
+        return new Vec2(vector.x, yVector);
+    }
+    
+    /**
      * Calculates the 4 coordinates of the rectangle that will represent a goal
      * on a playing field by taking the 2 points of the line which the goal has
      * to be placed on.
