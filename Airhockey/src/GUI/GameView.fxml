@@ -23,9 +23,9 @@
             <content>
                 <Pane prefHeight="175.0" prefWidth="160.0">
                     <children>
-                        <Button fx:id="buttonChat" layoutX="112.0" layoutY="143.0" mnemonicParsing="false" onAction="#SetTekst" prefHeight="36.0" prefWidth="54.0" text="Send" />
+                        <Button fx:id="buttonChat" layoutX="112.0" layoutY="143.0" mnemonicParsing="false" onAction="#setTekst" prefHeight="36.0" prefWidth="54.0" text="Send" />
                         <ListView fx:id="listChat" focusTraversable="false" prefHeight="148.0" prefWidth="160.0" />
-                        <TextField fx:id="textChat" focusTraversable="false" layoutY="148.0" onAction="#SetTekst" prefHeight="26.0" prefWidth="117.0" />
+                        <TextField fx:id="textChat" focusTraversable="false" layoutY="148.0" onAction="#setTekst" prefHeight="26.0" prefWidth="117.0" />
                     </children>
                 </Pane>
             </content>

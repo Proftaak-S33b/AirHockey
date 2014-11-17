@@ -34,6 +34,11 @@ public class MathUtillities {
     private static final int blueXRight = 19;
     private static final int greenXRight = 31;
     private static final int greenXLeft = 39;
+    
+    private static final int rightCornerX = 45;
+    private static final int topCornerX = 25;
+    private static final float topCornerY = 39.64f;
+    
 
     //Size of the playing field
     private static final int fieldSize = 40;
@@ -86,7 +91,19 @@ public class MathUtillities {
         rectangleGoal.add(new Vec2(greenXRight, topYtop));
         return rectangleGoal;
     }
-
+    
+    /**
+     * 
+     * @return An ArrayList with 3 coordinates representing the corners of the field
+     */
+    public static ArrayList<Vec2> getFieldCorners() {
+        ArrayList<Vec2> rectangleField = new ArrayList<>();
+        rectangleField.add(new Vec2(bottomY, bottomY));
+        rectangleField.add(new Vec2(rightCornerX, bottomY));
+        rectangleField.add(new Vec2(topCornerX, topCornerY));
+        return rectangleField;
+    }
+    
     /**
      * Gets the center of vector 'a' and 'b'
      *
