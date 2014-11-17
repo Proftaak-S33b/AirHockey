@@ -30,13 +30,15 @@ public class LobbyManager {
     private final ILobbyData lobbyData;
     private final ObservableList<Lobby> lobbies;
     private final Timer timer;
+    private final RMIData rmiclient;
 
     /**
      * Instantiates the lobbyController and sets a timer that will regularly
      * fetch the lobbies from the RMI server
      */
     public LobbyManager() {
-        lobbyData = RMIData.getLobbyData();
+        rmiclient = new RMIData("localhost", 1337);
+        lobbyData = rmiclient.getLobbyData();
         lobbies = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);
         timer.scheduleAtFixedRate(new TimerTask() {
