@@ -6,17 +6,12 @@
 package GUI;
 
 import controllers.PropertiesController;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URL;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -65,7 +60,8 @@ public class SettingsController implements Initializable {
     }
 
     public void backButton(ActionEvent evt) {
-        Stage stage = (Stage) rmiIPAddress.getScene().getWindow();
+        Node node = (Node) evt.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
     }
 }

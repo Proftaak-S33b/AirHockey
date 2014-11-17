@@ -19,8 +19,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -67,6 +67,17 @@ public class MainMenuController implements Initializable {
             controller.initData(currentPlayer);
         } catch (IOException ex) {
             System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
+        }
+    }
+
+    public void handleSettings(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Settings.fxml"));
+            Stage stage = new Stage(StageStyle.UNDECORATED);
+            stage.setScene(new Scene((Pane) loader.load()));
+            stage.showAndWait();
+        } catch (IOException ex) {
+            System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
         }
     }
 }

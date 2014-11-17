@@ -11,12 +11,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="300.0" prefWidth="400.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SettingsController">
+<AnchorPane id="AnchorPane" prefHeight="310.0" prefWidth="410.0" style="-fx-background-color: grey;" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.SettingsController">
     <stylesheets>
         <URL value="@Settings.css" />
     </stylesheets>
    <children>
-      <ToolBar prefHeight="40.0" prefWidth="400.0" styleClass="lightGrey" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <ToolBar prefHeight="40.0" prefWidth="400.0" styleClass="lightGrey" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <Button mnemonicParsing="false" onAction="#backButton" text="&lt; Back" />
         </items>
@@ -25,9 +25,9 @@
         <tabs>
           <Tab closable="false" styleClass="lightOrange" text="Connectivity">
                <content>
-                  <HBox prefHeight="101.0" prefWidth="260.0">
+                  <HBox prefHeight="101.0" prefWidth="260.0" style="-fx-background-color: #E0E4CC;">
                      <children>
-                        <VBox prefHeight="181.0" prefWidth="200.0" style="-fx-background-color: #69D2E7;">
+                        <VBox prefHeight="181.0" prefWidth="200.0">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
@@ -41,7 +41,7 @@
                               <TextField fx:id="rmiRegistry" promptText="myregname" styleClass="root" />
                            </children>
                         </VBox>
-                        <VBox prefHeight="181.0" prefWidth="200.0" style="-fx-background-color: #FA6900;">
+                        <VBox prefHeight="181.0" prefWidth="200.0">
                            <children>
                               <Label text="Database" />
                               <Label text="IP-Address/URL" />
@@ -63,9 +63,9 @@
           </Tab>
           <Tab closable="false" styleClass="lightOrange" text="About">
                <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="darkBlue">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #E0E4CC;" styleClass="darkBlue">
                      <children>
-                        <VBox layoutX="30.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #F38630;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
+                        <VBox layoutX="30.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <Label text="Created by">
                                  <font>
@@ -88,7 +88,7 @@
                               <Label text="Netgames © 2014" />
                            </children>
                         </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #A7DBD8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -96,4 +96,7 @@
         </tabs>
       </TabPane>
    </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
 </AnchorPane>

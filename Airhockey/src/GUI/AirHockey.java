@@ -23,6 +23,7 @@ public class AirHockey extends Application {
         
         Scene scene = new Scene(mainMenu);
         
+        stage.resizableProperty().set(false);
         stage.setTitle("Airhockey - Main Menu");
         
         stage.setScene(scene);
