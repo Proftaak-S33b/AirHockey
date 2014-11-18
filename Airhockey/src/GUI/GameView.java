@@ -4,6 +4,7 @@ package GUI;
 import game.Human;
 import game.MathUtillities;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,6 +21,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import networking.IPlayer;
 import networking.Lobby;
+import org.jbox2d.common.Vec2;
 
 /**
  * FXML Controller class
@@ -70,6 +72,7 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
+        draw();
 
     }
 
@@ -115,9 +118,42 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
 
     /**
      * Draws a given side. Refactored from Draw().
+     * @param color
+     * @param playername
      */
     public void drawSide(Color color, String playername) {
-
+        gc.setStroke(color);
+        gc.setFill(color);
+        if(color == Color.RED){
+        gc.strokeLine(MathUtillities.getFieldCorners().get(0).x * 10,
+                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(0)).y * 10, 
+                MathUtillities.getGoalCorners().get(0).x * 10, 
+                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(0)).y* 10) ;
+        gc.strokeLine(MathUtillities.getFieldCorners().get(2).x * 10,
+                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(2)).y * 10, 
+                MathUtillities.getGoalCorners().get(1).x * 10, 
+                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(1)).y* 10) ;
+        }
+        if(color == Color.BLUE){
+        gc.strokeLine(MathUtillities.getFieldCorners().get(0).x * 10,
+                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(0)).y * 10, 
+                MathUtillities.getGoalCorners().get(3).x * 10, 
+                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(3)).y* 10) ;
+        gc.strokeLine(MathUtillities.getFieldCorners().get(1).x * 10,
+                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(1)).y * 10, 
+                MathUtillities.getGoalCorners().get(2).x * 10, 
+                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(2)).y* 10) ;
+        }
+        if(color == Color.GREEN){
+        gc.strokeLine(MathUtillities.getFieldCorners().get(1).x * 10,
+                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(1)).y * 10, 
+                MathUtillities.getGoalCorners().get(5).x * 10, 
+                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(5)).y* 10) ;
+        gc.strokeLine(MathUtillities.getFieldCorners().get(2).x * 10,
+                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(2)).y * 10, 
+                MathUtillities.getGoalCorners().get(4).x * 10, 
+                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(4)).y* 10) ;
+        }
     }
 
     /**
@@ -132,15 +168,14 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
      * Draws an individual pod.
      */
     public void drawPod() {
-        //ArrayList<Vec2> corners = pm.getFieldCorners();
+        ArrayList<Vec2> corners = MathUtillities.getGoalCorners();
 
-//        float aX = corners.get(0).x;
-//        float aY = corners.get(0).y;
-//        float bX = corners.get(1).x;
-//        float bY = corners.get(1).y;
-        //ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, -18, -12);
+        float aX = corners.get(0).x;
+        float aY = corners.get(0).y;
+        float bX = corners.get(1).x;
+        float bY = corners.get(1).y;
         // AI
-        AI_CalculateMovement(/*goalCoordinates*/);
+        //AI_CalculateMovement(corners);
     }
 
     /**
