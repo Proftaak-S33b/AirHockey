@@ -62,6 +62,10 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
     //Multiplayer
     private Lobby currentLobby;
     private GameType gametype;
+    
+    //Movement commands
+    private boolean playerMoveRight;
+    private boolean playerMoveLeft;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -101,6 +105,8 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
             drawPuck();
 
             drawPod();
+            
+            player_Move();
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -173,20 +179,59 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
     public void exit(ActionEvent event) {
 
     }
-
-    @Override
-    public void handle(KeyEvent event) {
-
+    
+    /**
+     * Checks which buttons are pressed and moves the player
+     */
+    private void player_Move() {
+        if (playerMoveRight)
+        {
+            //if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
+            //    pm.movePodLeft(0);
+            //}
+        }
+        if(playerMoveLeft){
+            //if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() ) {
+            //    pm.movePodRight(0);
+            //}
+        }
+    }
+    /**
+     * Checks if a key is pressed and adjusts the player movement.
+     * @param event the keyevent that happened
+     */
+    public void keyPressed(KeyEvent event) {
         switch (event.getCode()) {
             case LEFT:
-                //if (pm.getPodPosition(0).x > goalCoordinates.get(2).x) {
-                //    pm.movePodLeft(0);
-                //}
+                if (playerMoveRight) {
+                    playerMoveRight = false;
+                }
+                playerMoveLeft = true;
                 break;
             case RIGHT:
-                //if (pm.getPodPosition(0).x < goalCoordinates.get(0).x - 5 - pm.getPodSize() ) {
-                //    pm.movePodRight(0);
-                //}
+                if(playerMoveLeft) {
+                    playerMoveLeft = false;
+                }
+                playerMoveRight = true;
+                break;
+        }
+    }
+    
+    /**
+     * Checks if a key is released and adjusts the player movement.
+     * @param event the keyevent that happened
+     */
+    public void keyReleased(KeyEvent event) {
+        switch (event.getCode()) {
+            case LEFT:
+                if(playerMoveLeft) {
+                    playerMoveLeft = false;
+                }
+                break;
+            case RIGHT:
+                if(playerMoveRight) {
+                    playerMoveRight = false;
+                }
                 break;
         }
     }

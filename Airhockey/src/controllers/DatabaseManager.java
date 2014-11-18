@@ -5,14 +5,75 @@
  */
 package controllers;
 
+import java.sql.*;
+
 /**
- * Controller for managing database connections
- *
- * @author Joris
+ * Static class for the database connection.
+ * @author Jur
  */
-public class DatabaseManager {
-
-    public DatabaseManager() {
-
+public final class DatabaseManager {
+    public static Connection connection;
+    
+    /**
+     * Opens the connection to the database
+     * @return Returns true if succesfull,
+     * else returns false
+     */
+    private static boolean openConnection()
+    {
+        boolean result;
+        try{
+            connection = DriverManager.getConnection("a-chan.nl:3306", "deb82648_air", "airhockey");
+            result = true;
+        }
+        catch(Exception e){
+            connection = null;
+            System.out.println(e.getMessage());
+            result = false;
+        }
+        return result;
+    }
+    
+    /**
+     * Closes the database connection
+     */
+    private static void closeConnection(){
+        try{
+            connection.close();
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    /**
+     * Checks if the username and password the user entered are correct.
+     * @param username The username of the user
+     * @param password The password of the user
+     * @return Returns a boolean if the password and username match or not
+     */
+    public static boolean authenticateUser(String username, String password){
+        boolean result = false;
+        //Open connection
+        if(openConnection()){
+            try{
+                //Try to execute sql statment
+                Statement stmnt = connection.createStatement();
+                String SQL = "SELECT playerName, playerPassword FROM Player =";
+                SQL += username + " AND playerPassword = " + password + ";";
+                ResultSet rs = stmnt.executeQuery(SQL);
+                //Check if password and username match
+                if(rs.next())
+                {
+                    result = true;
+                }
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            closeConnection();
+        }
+        return result;
     }
 }
+
