@@ -59,7 +59,7 @@ public final class DatabaseManager {
             try{
                 //Try to execute sql statment
                 Statement stmnt = connection.createStatement();
-                String SQL = "SELECT playerName, playerPassword FROM Player =";
+                String SQL = "SELECT playerName, playerPassword FROM Player WHERE =";
                 SQL += username + " AND playerPassword = " + password + ";";
                 ResultSet rs = stmnt.executeQuery(SQL);
                 //Check if password and username match
