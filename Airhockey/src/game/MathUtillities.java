@@ -99,8 +99,8 @@ public class MathUtillities {
     public static ArrayList<Vec2> getFieldCorners() {
         ArrayList<Vec2> rectangleField = new ArrayList<>();
         rectangleField.add(new Vec2(bottomY, bottomY));
-        rectangleField.add(new Vec2(rightCornerX, bottomY));
         rectangleField.add(new Vec2(topCornerX, topCornerY));
+        rectangleField.add(new Vec2(rightCornerX, bottomY));
         return rectangleField;
     }
     
