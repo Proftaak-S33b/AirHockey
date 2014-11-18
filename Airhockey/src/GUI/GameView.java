@@ -28,7 +28,7 @@ import org.jbox2d.common.Vec2;
  *
  * @author Joris Douven
  */
-public class GameView implements Initializable, EventHandler<KeyEvent> {
+public class GameView implements Initializable {
 
     private enum GameType {
 
