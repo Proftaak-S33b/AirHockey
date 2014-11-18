@@ -90,10 +90,10 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
             gc.fillRect(0.0, 0.0, 550, 550);
 
             //Blue side
-            //drawSide(/*Color.BLUE, "Player 2", 0, 1, -18, -12*/);
+            drawSide(Color.BLUE, "Player 2");
 
             //Green side
-            //drawSide(/*Color.GREEN, "Player 3", 1, 2, 18, -12*/);
+            drawSide(Color.GREEN, "Player 3");
 
             //Red side
             drawSide(Color.RED, "Henk");
@@ -111,53 +111,7 @@ public class GameView implements Initializable, EventHandler<KeyEvent> {
      * Draws a given side. Refactored from Draw().
      */
     public void drawSide(Color color, String playername) {
-        double[] goalXcoords = new double[4];
-        double[] goalYcoords = new double[4];
-            goalXcoords[0] = MathUtillities.getFieldCorners().get(0).x * 10;
-            goalXcoords[1] = MathUtillities.getGoalCorners().get(0).x * 10;
-            goalYcoords[0] = MathUtillities.getFieldCorners().get(0).y * 10;
-            goalYcoords[1] = MathUtillities.getGoalCorners().get(0).y * 10;
-            goalXcoords[2] = MathUtillities.getFieldCorners().get(0).x * 10;
-            goalXcoords[3] = MathUtillities.getGoalCorners().get(0).x * 10;
-            goalYcoords[2] = (MathUtillities.getFieldCorners().get(0).y - 3) * 10;
-            goalYcoords[3] = (MathUtillities.getGoalCorners().get(0).y - 3) * 10;
-        if (color == Color.RED)
-        {
-            gc.strokePolygon(goalXcoords, goalYcoords, 4);
-            gc.setFill(color);
-        }
-        /*ArrayList<Vec2> corners = pm.getFieldCorners();
 
-        float aX = corners.get(a).x;
-        float aY = corners.get(a).y;
-        float bX = corners.get(b).x;
-        float bY = corners.get(b).y;
-
-        gc.strokeLine(aX, aY, bX, bY);
-        ArrayList<Vec2> goalCoordinates = pm.getGoalCorners(aX, aY, bX, bY, sizeX, sizeY);
-
-        // strokePolygon is done undynamically so a loop suffices.
-        double[] goalXcoords = new double[4];
-        double[] goalYcoords = new double[4];
-
-        for (int i = 0; i < 4; i++) {
-            goalXcoords[i] = goalCoordinates.get(i).x;
-            goalYcoords[i] = goalCoordinates.get(i).y;
-        }
-
-        gc.strokePolygon(goalXcoords, goalYcoords, 4);
-        gc.setFill(color);
-
-        try {
-            gc.fillOval(
-                    pm.getPodPosition(pm.getPodIndex(playername)).x,
-                    pm.getPodPosition(pm.getPodIndex(playername)).y,
-                    pm.getPodSize(),
-                    pm.getPodSize()
-            );
-        } catch (NoSuchFieldException ex) {
-            System.out.println("Playername not found" + ex.getMessage());
-        }*/
     }
 
     /**
