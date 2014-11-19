@@ -17,7 +17,7 @@ import org.jbox2d.dynamics.World;
 public class GameWorld {
 
     //Game objects
-    private Puck puck;
+    private final Puck puck;
     private final ArrayList<Pod> pods;
     private final ArrayList<IPlayer> players;
 
@@ -40,10 +40,10 @@ public class GameWorld {
         for (int i = 0; i < 3; i++) {
             this.players.add(players.get(i));
         }
-        //final ArrayList<Vec2> startPositions = MathUtillities.getStartPositions();
-        //pods.add(new Pod(this, this.players.get(0), startPositions.get(0)));
-        //pods.add(new Pod(this, this.players.get(1), startPositions.get(1)));
-        //pods.add(new Pod(this, this.players.get(2), startPositions.get(2)));
+        final ArrayList<Vec2> startPositions = MathUtillities.getStartPositions();
+        pods.add(new Pod(this, this.players.get(0), startPositions.get(0)));
+        pods.add(new Pod(this, this.players.get(1), startPositions.get(1)));
+        pods.add(new Pod(this, this.players.get(2), startPositions.get(2)));
     }
 
     public void score(IPlayer scoredAgainst) {

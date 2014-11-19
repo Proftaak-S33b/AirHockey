@@ -123,7 +123,7 @@ public class MathUtillities {
      * @return
      */
     //Deze heeft heel wat werk nodig
-    /*
+    
      public static ArrayList<Vec2> getStartPositions() {
      ArrayList<Vec2> positions = new ArrayList<>();
      ArrayList<Vec2> corners = getFieldCorners();
@@ -136,13 +136,10 @@ public class MathUtillities {
      Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
      c.x -= getPodSize() / 2;
      c.y -= getPodSize() / 2;
-     a = RotateVector2(a, (float) Math.PI);
-     b = RotateVector2(b, (float) Math.PI);
-     c = RotateVector2(c, (float) Math.PI);
      positions.add(new Vec2(a.x / 10, a.y / 10));
      positions.add(new Vec2(b.x / 10, b.y / 10));
      positions.add(new Vec2(c.x / 10, c.y / 10));
      return positions;
      }
-     */
+     
 }
