@@ -22,6 +22,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.controlsfx.control.action.Action;
+import org.controlsfx.dialog.*;
+import org.controlsfx.*;
 
 /**
  *
@@ -77,6 +80,13 @@ public class MainMenuController implements Initializable {
                 System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
             }
         }
+        else{
+            Action response = Dialogs.create()
+                .owner( false ? this : null)                    
+                .title("ERROR!")
+                .masthead(false ? "Just Checkin'" : null)
+                .message( "Username or password are incorrect!")
+                .showError();}
     }
 
     public void handleSettings(ActionEvent event) {
