@@ -6,6 +6,9 @@
 package controllers;
 
 import java.sql.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import networking.Player_Leaderboard;
 
 /**
  * Static class for the database connection.
@@ -106,5 +109,33 @@ public final class DatabaseManager {
         closeConnection();
         return result;
     }
+    
+    /**
+     * Gets the list of all players, ordered by score.
+     * @return The table that was found
+     */
+    public static ObservableList<Player_Leaderboard> getTopPlayers()
+    {
+        ObservableList<Player_Leaderboard> result = FXCollections.observableArrayList();
+        //Open connection
+        if(openConnection()){
+            try{
+                //Try to execute sql statment
+                Statement stmnt = connection.createStatement();
+                String SQL = "SELECT playerName, playerRating FROM PLAYER ORDER BY playerRating;"; 
+                ResultSet rs = stmnt.executeQuery(SQL);
+                //Put all the records in a table
+                int i = 0;
+                while(rs.next()){
+                    i++;
+                    result.add(new Player_Leaderboard(i, rs.getString(1), rs.getString(2)));
+                }
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            closeConnection();
+        }
+        return result;
+    }
 }
-

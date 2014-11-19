@@ -23,6 +23,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import networking.Lobby;
 
 /**
@@ -160,6 +161,21 @@ public class LobbyListController implements Initializable {
         if (!chatMessage.getText().equals("")) {
             chat.addMessage(chatMessage.getText(), currentPlayer);
             chatMessage.clear();
+        }
+    }
+    
+    /**
+     * Opens the leaderboard window
+     * @param event 
+     */
+    public void buttonLeaderboard (ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Leaderboards.fxml"));
+            Stage stage = new Stage(StageStyle.UNDECORATED);
+            stage.setScene(new Scene((Pane) loader.load()));
+            stage.showAndWait();
+        } catch (IOException ex) {
+            System.out.println("Error changing scene from lobby to leaderboards " + ex.toString());
         }
     }
 }
