@@ -1,8 +1,11 @@
 package GUI;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
+import game.GameWorld;
 import game.Human;
 import game.MathUtillities;
+import game.Pod;
+import game.Puck;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -64,6 +67,11 @@ public class GameView implements Initializable {
     private Lobby currentLobby;
     private GameType gametype;
     
+    private GameWorld gameworld;
+    
+    // Scales the physics to the drawing.
+    final int scale = 10;
+        
     //Movement commands
     private boolean playerMoveRight;
     private boolean playerMoveLeft;
@@ -71,6 +79,11 @@ public class GameView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
+        ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+        players.add(currentPlayer);
+        players.add(currentPlayer);
+        players.add(currentPlayer);
+        gameworld = new GameWorld(players);
         draw();
 
     }
@@ -104,9 +117,7 @@ public class GameView implements Initializable {
             //Red side
             drawSide(Color.RED);
 
-            drawPuck();
-
-            drawPod();
+            drawPuck();            
             
             player_Move();
 
@@ -204,16 +215,15 @@ public class GameView implements Initializable {
                 goal_righttop.x,
                 goal_righttop.y);
         }
+        
+        drawPod();
     }
 
     /**
      * Scales the vector and rotates the Y-coordinate.
      * @param vector a Vec2 object to convert.
      */
-    private Vec2 Convert(Vec2 vector){
-        
-        // Scales the physics to the drawing.
-        final int scale = 10;
+    private Vec2 Convert(Vec2 vector){        
         
         vector.x *= scale;
         vector.y = MathUtillities.rotateVector(vector).y * scale;
@@ -226,19 +236,41 @@ public class GameView implements Initializable {
      */
     public void drawPuck() {
         gc.setFill(Color.BLACK);
-        //gc.fillOval(pm.getPuckPosition().x, pm.getPuckPosition().y, pm.getPuckSize(), pm.getPuckSize());
+                
+        Puck puck = gameworld.getPuck();                
+        Vec2 position = Convert(puck.getPosition());                
+        double pucksize = MathUtillities.getPuckSize() * scale;
+        
+        gc.fillOval(position.x, position.y, pucksize, pucksize);
     }
 
     /**
      * Draws an individual pod.
      */
     public void drawPod() {
-        ArrayList<Vec2> corners = MathUtillities.getGoalCorners();
+        Pod playerone = gameworld.getPod(0);
+        Pod playertwo = gameworld.getPod(1);
+        Pod playerthree = gameworld.getPod(2);
+        
+        System.out.println(playerone.toString());
+        
+        double size = MathUtillities.getPodSize() * 10;
+        Vec2 vector = Convert(playerone.getPosition());
+        System.out.println(vector.toString());
+        Vec2 vector2 = Convert(playertwo.getPosition());
+        System.out.println(vector2.toString());
+        Vec2 vector3 = Convert(playerthree.getPosition());
+        System.out.println(vector3.toString());
+        
+        gc.setFill(Color.RED);
+        gc.fillOval(vector.x, vector.y, size, size);
+        
+        gc.setFill(Color.BLUE);
+        gc.fillOval(vector2.x, vector2.y, size, size);
+        
+        gc.setFill(Color.GREEN);
+        gc.fillOval(vector3.x, vector3.y, size, size);
 
-        float aX = corners.get(0).x;
-        float aY = corners.get(0).y;
-        float bX = corners.get(1).x;
-        float bY = corners.get(1).y;
         // AI
         //AI_CalculateMovement(corners);
     }
