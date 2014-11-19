@@ -129,16 +129,16 @@ public class MathUtillities {
      ArrayList<Vec2> corners = getFieldCorners();
      Vec2 a = getCenterOfLine(corners.get(2), corners.get(0));
      a.x -= getPodSize() / 2;
-     a.y -= getPodSize() / 2;
+     a.y += getPodSize() / 2;
      Vec2 b = getCenterOfLine(corners.get(0), corners.get(1));
      b.x -= getPodSize() / 2;
-     b.y -= getPodSize() / 2;
+     b.y += getPodSize() / 2;
      Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
      c.x -= getPodSize() / 2;
-     c.y -= getPodSize() / 2;
-     positions.add(new Vec2(a.x / 10, a.y / 10));
-     positions.add(new Vec2(b.x / 10, b.y / 10));
-     positions.add(new Vec2(c.x / 10, c.y / 10));
+     c.y += getPodSize() /2;
+     positions.add(new Vec2(a.x, a.y));
+     positions.add(new Vec2(b.x , b.y));
+     positions.add(new Vec2(c.x , c.y));
      return positions;
      }
      

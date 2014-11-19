@@ -1,6 +1,7 @@
 package GUI;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
+import game.AI;
 import game.GameWorld;
 import game.Human;
 import game.MathUtillities;
@@ -81,8 +82,8 @@ public class GameView implements Initializable {
         gc = gameCanvas.getGraphicsContext2D();
         ArrayList<IPlayer> players = new ArrayList<IPlayer>();
         players.add(currentPlayer);
-        players.add(currentPlayer);
-        players.add(currentPlayer);
+        players.add(new AI("kees", 20));
+        players.add(new AI("kees2", 20));
         gameworld = new GameWorld(players);
         draw();
 
@@ -162,12 +163,6 @@ public class GameView implements Initializable {
                 goal_bottomright.x,
                 goal_bottomright.y);
         
-         gc.strokeLine(
-                goal_bottomleft.x,                
-                goal_bottomleft.y,
-                
-                goal_bottomright.x,
-                goal_bottomright.y);
         }
         if(color == Color.BLUE){
         gc.strokeLine(
@@ -185,12 +180,6 @@ public class GameView implements Initializable {
                 goal_leftbottom.x,
                 goal_leftbottom.y);
         
-        gc.strokeLine(
-                goal_lefttop.x,
-                goal_lefttop.y,
-                
-                goal_leftbottom.x,
-                goal_leftbottom.y);
         }
         if(color == Color.GREEN){
         gc.strokeLine(
@@ -207,13 +196,7 @@ public class GameView implements Initializable {
                                 
                 goal_righttop.x,
                 goal_righttop.y);
-        
-        gc.strokeLine(
-                goal_rightbottom.x,
-                goal_rightbottom.y,
-                                
-                goal_righttop.x,
-                goal_righttop.y);
+       
         }
         
         drawPod();
