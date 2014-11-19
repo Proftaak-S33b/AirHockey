@@ -68,9 +68,9 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </Label>
-                            <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="Username" VBox.vgrow="ALWAYS" />
+                            <TextField id="textfieldUsername" fx:id="tfUsername" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="Username" VBox.vgrow="ALWAYS" />
                             <Label styleClass="normalText" text="Password" VBox.vgrow="ALWAYS" />
-                            <PasswordField maxHeight="-Infinity" maxWidth="-Infinity" promptText="Password" VBox.vgrow="ALWAYS" />
+                            <PasswordField id="textfieldPassword" fx:id="tfPassword" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Password" VBox.vgrow="ALWAYS" />
                             <Button mnemonicParsing="false" onAction="#handleMultiplayer" prefHeight="75.0" prefWidth="225.0" styleClass="multiButton" text="Start Game" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets top="40.0" />

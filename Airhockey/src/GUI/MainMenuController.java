@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import controllers.DatabaseManager;
 import game.Human;
 import z_OLD_game.Difficulty;
 import java.io.IOException;
@@ -30,6 +31,12 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private ComboBox AIDifficulty;
+   
+    @FXML
+    private TextField tfUsername;
+    
+    @FXML
+    private TextField tfPassword;
 
     private Human currentPlayer;
 
@@ -57,16 +64,18 @@ public class MainMenuController implements Initializable {
 
     public void handleMultiplayer(ActionEvent event) {
         currentPlayer = new Human("Henk", "test", 400);
-        try {
-            Node node = (Node) event.getSource();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
-            Stage stage = (Stage) node.getScene().getWindow();
-            stage.setScene(new Scene((Pane) loader.load()));
-            LobbyListController controller = loader.<LobbyListController>getController();
-            stage.show();
-            controller.initData(currentPlayer);
-        } catch (IOException ex) {
-            System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
+        if (DatabaseManager.authenticateUser(tfUsername.getText(), tfPassword.getText())) {
+            try {
+                Node node = (Node) event.getSource();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
+                Stage stage = (Stage) node.getScene().getWindow();
+                stage.setScene(new Scene((Pane) loader.load()));
+                LobbyListController controller = loader.<LobbyListController>getController();
+                stage.show();
+                controller.initData(currentPlayer);
+            } catch (IOException ex) {
+                System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
+            }
         }
     }
 
