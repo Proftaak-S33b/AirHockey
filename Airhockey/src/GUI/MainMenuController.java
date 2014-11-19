@@ -99,4 +99,19 @@ public class MainMenuController implements Initializable {
             System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
         }
     }
+    
+    /**
+     * For button create user
+     * @param event 
+     */
+    public void handleCreateUser(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateUser.fxml"));
+            Stage stage = new Stage(StageStyle.UNDECORATED);
+            stage.setScene(new Scene((Pane) loader.load()));
+            stage.showAndWait();
+        } catch (IOException ex) {
+            System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
+        }
+    }
 }

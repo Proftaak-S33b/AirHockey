@@ -76,5 +76,35 @@ public final class DatabaseManager {
         }
         return result;
     }
+    
+    /**
+     * Creates a new user with the given variables
+     * @param username Username for the user
+     * @param password Password for the user
+     * @return Boolean. True if succesfull, false if not
+     */
+    public static boolean addUser(String username, String password){
+        boolean result = false;
+        //Open the connection
+        if(openConnection() && !username.trim().isEmpty() && !password.trim().isEmpty()){
+            try{
+                //Try to execute sql statment
+                Statement stmnt = connection.createStatement();
+                String SQL = "INSERT INTO PLAYER VALUES(";
+                SQL += "'" + username + "'";
+                SQL += ",'" + password + "'";
+                SQL += ", 0);";
+                if(stmnt.executeUpdate(SQL) > 0){
+                    result = true;
+                }
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+        //Close connection
+        closeConnection();
+        return result;
+    }
 }
 

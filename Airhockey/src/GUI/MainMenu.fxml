@@ -76,6 +76,7 @@
                               <Insets top="40.0" />
                            </VBox.margin>
                         </Button>
+                        <Button mnemonicParsing="false" onAction="#handleCreateUser" text="Create User" />
                      </children>
                   </VBox>
                </children>
