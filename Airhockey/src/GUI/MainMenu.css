@@ -50,6 +50,20 @@
     -fx-background-color: #ff7513;
 }
 
+.createButton {
+    -fx-background-color: #E0E4CC;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 20;
+}
+
+.createButton:hover {
+    -fx-background-color: #ecefe0;
+}
+
+.createButton:armed {
+    -fx-background-color: #d0d6b2;
+}
+
 .mainText {
     -fx-text-fill: white;
     -fx-font-size: 40px;

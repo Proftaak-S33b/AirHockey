@@ -1,0 +1,46 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+@font-face {
+    font-family: "Aldo the Apache";
+    src: url(AldotheApache.ttf);
+}
+
+@font-face {
+    font-family: "Imagine Font";
+    src: url(imagine_font.ttf);
+}
+
+.headerTitle {
+    -fx-font-family: "Imagine Font";
+    -fx-font-size: 40;
+}
+
+.createButton {
+    -fx-background-color: #A7DBD8;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 20;
+}
+
+.createButton:hover {
+    -fx-background-color: #B1E8E5;
+}
+
+.createButton:armed {
+    -fx-background-color: #6EC4C4;
+}
+
+.cancelButton {
+    -fx-background-color: #F38630;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 20;
+}
+
+.cancelButton:hover {
+    -fx-background-color: #f39a38;
+}
+
+.cancelButton:armed {
+    -fx-background-color: #ff7513;
+}

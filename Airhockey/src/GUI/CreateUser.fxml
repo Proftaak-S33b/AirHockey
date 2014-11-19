@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
+<?import java.net.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="231.0" prefWidth="297.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CreateUserController">
-   <children>
-      <AnchorPane prefHeight="285.0" prefWidth="380.0">
-         <children>
-            <TextField fx:id="tfUsername" layoutX="116.0" layoutY="58.0" promptText="Username" />
-            <TextField fx:id="tfPassword" layoutX="116.0" layoutY="118.0" promptText="Password" />
-            <Button layoutX="152.0" layoutY="179.0" mnemonicParsing="false" onAction="#buttonCreateUser" text="Create User" />
-            <Button layoutX="165.0" layoutY="224.0" mnemonicParsing="false" onAction="#buttonCancel" text="Cancel" />
-         </children>
-      </AnchorPane>
-   </children>
+<AnchorPane id="AnchorPane" prefHeight="210.0" prefWidth="360.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CreateUserController">
+    <stylesheets>
+        <URL value="@CreateUser.css" />
+    </stylesheets>
+    <children>
+        <AnchorPane layoutX="6.0" prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: #E0E4CC;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+            <children>
+                <TextField fx:id="tfUsername" layoutX="26.0" layoutY="109.0" promptText="Username" />
+                <TextField fx:id="tfPassword" layoutX="26.0" layoutY="147.0" promptText="Password" />
+                <Button layoutX="207.0" layoutY="106.0" mnemonicParsing="false" onAction="#buttonCreateUser" styleClass="createButton" text="Create User" />
+                <Button layoutX="228.0" layoutY="144.0" mnemonicParsing="false" onAction="#buttonCancel" styleClass="cancelButton" text="Cancel" />
+                <Label alignment="CENTER" layoutX="124.0" layoutY="38.0" styleClass="headerTitle" text="Create User" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
+            </children>
+        </AnchorPane>
+    </children>
 </AnchorPane>
