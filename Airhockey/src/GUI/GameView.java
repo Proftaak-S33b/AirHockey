@@ -123,38 +123,85 @@ public class GameView implements Initializable {
     public void drawSide(Color color, String playername) {
         gc.setStroke(color);
         gc.setFill(color);
+        
+        // fieldcorners
+        Vec2 field_bottomleft = Convert(MathUtillities.getFieldCorners().get(0));
+        Vec2 field_top = Convert(MathUtillities.getFieldCorners().get(1));
+        Vec2 field_bottomright = Convert(MathUtillities.getFieldCorners().get(2));
+        
+        // goalcorners / sides
+        Vec2 goal_bottomleft = Convert(MathUtillities.getGoalCorners().get(0));
+        Vec2 goal_bottomright = Convert(MathUtillities.getGoalCorners().get(1));
+        Vec2 goal_lefttop = Convert(MathUtillities.getGoalCorners().get(2));
+        Vec2 goal_leftbottom = Convert(MathUtillities.getGoalCorners().get(3));
+        Vec2 goal_rightbottom = Convert(MathUtillities.getGoalCorners().get(4));
+        Vec2 goal_righttop = Convert(MathUtillities.getGoalCorners().get(5));
+        
         if(color == Color.RED){
-        gc.strokeLine(MathUtillities.getFieldCorners().get(0).x * 10,
-                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(0)).y * 10, 
-                MathUtillities.getGoalCorners().get(0).x * 10, 
-                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(0)).y* 10) ;
-        gc.strokeLine(MathUtillities.getFieldCorners().get(2).x * 10,
-                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(2)).y * 10, 
-                MathUtillities.getGoalCorners().get(1).x * 10, 
-                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(1)).y* 10) ;
+        gc.strokeLine(
+                field_bottomleft.x,                
+                field_bottomleft.y,
+                                
+                goal_bottomleft.x,                
+                goal_bottomleft.y);
+        
+        gc.strokeLine(
+                field_bottomright.x,
+                field_bottomright.y,
+                
+                goal_bottomright.x,
+                goal_bottomright.y);
         }
         if(color == Color.BLUE){
-        gc.strokeLine(MathUtillities.getFieldCorners().get(0).x * 10,
-                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(0)).y * 10, 
-                MathUtillities.getGoalCorners().get(3).x * 10, 
-                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(3)).y* 10) ;
-        gc.strokeLine(MathUtillities.getFieldCorners().get(1).x * 10,
-                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(1)).y * 10, 
-                MathUtillities.getGoalCorners().get(2).x * 10, 
-                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(2)).y* 10) ;
+        gc.strokeLine(
+                
+                field_top.x,
+                field_top.y,
+                
+                goal_lefttop.x,
+                goal_lefttop.y);
+                
+        gc.strokeLine(
+                field_bottomleft.x,
+                field_bottomleft.y,
+                
+                goal_leftbottom.x,
+                goal_leftbottom.y);
         }
         if(color == Color.GREEN){
-        gc.strokeLine(MathUtillities.getFieldCorners().get(1).x * 10,
-                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(1)).y * 10, 
-                MathUtillities.getGoalCorners().get(5).x * 10, 
-                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(5)).y* 10) ;
-        gc.strokeLine(MathUtillities.getFieldCorners().get(2).x * 10,
-                MathUtillities.rotateVector(MathUtillities.getFieldCorners().get(2)).y * 10, 
-                MathUtillities.getGoalCorners().get(4).x * 10, 
-                MathUtillities.rotateVector(MathUtillities.getGoalCorners().get(4)).y* 10) ;
+        gc.strokeLine(
+                
+                field_bottomright.x,
+                field_bottomright.y,
+                
+                goal_rightbottom.x,
+                goal_rightbottom.y);
+        
+        gc.strokeLine(
+                
+                field_top.x,
+                field_top.y,
+                                
+                goal_righttop.x,
+                goal_righttop.y);
         }
     }
 
+    /**
+     * Scales the vector and rotates the Y-coordinate.
+     * @param vector a Vec2 object to convert.
+     */
+    private Vec2 Convert(Vec2 vector){
+        
+        // Scales the physics to the drawing.
+        final int scale = 10;
+        
+        vector.x *= scale;
+        vector.y = MathUtillities.rotateVector(vector).y * scale;
+        
+        return vector;
+    }
+    
     /**
      * Draws the puck. Refactored from Draw().
      */
