@@ -7,6 +7,7 @@ import game.Human;
 import game.MathUtillities;
 import game.Pod;
 import game.Puck;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -15,7 +16,10 @@ import java.util.TimerTask;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -24,7 +28,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import networking.IPlayer;
 import networking.Lobby;
 import org.jbox2d.common.Vec2;
@@ -413,7 +419,15 @@ public class GameView implements Initializable {
     }
 
     public void exit(ActionEvent event) {
-
+        try {
+            Node node = (Node) event.getSource();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setScene(new Scene((Pane) loader.load()));
+            stage.show();
+        } catch (IOException ex) {
+            System.out.println("Error changing scene from LobbyList to MainMenu " + ex.toString());
+        }
     }
 
     /**
