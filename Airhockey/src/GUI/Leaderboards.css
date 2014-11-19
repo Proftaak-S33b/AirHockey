@@ -2,6 +2,15 @@
  * Empty Stylesheet file.
  */
 
-.mainFxmlClass {
+.clearButton {
+    -fx-background-color: white;
+}
 
+.clearButton:hover {
+    -fx-background-color: #69D2E7, white;
+    -fx-background-insets: 0, 1;
+}
+
+.clearButton:armed {
+    -fx-background-color: #ededed;
 }

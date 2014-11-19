@@ -7,23 +7,20 @@ package GUI;
 
 import controllers.DatabaseManager;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import networking.Player_Leaderboard;
 
 /**
@@ -41,29 +38,32 @@ public class LeaderboardsController implements Initializable {
 
     @FXML
     private TableColumn columnScore;
-    
+
     @FXML
     private TableColumn columnNr;
 
     @FXML
     private TextField searchText;
 
+    private ObservableList<Player_Leaderboard> tableData;
+    private ObservableList<Player_Leaderboard> dbTableData;
+
     /**
-     * Initializes the controllerclass.
-     * Add data to table
+     * Initializes the controllerclass. Add data to table
      *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ObservableList<Player_Leaderboard> players = DatabaseManager.getTopPlayers();
+        dbTableData = DatabaseManager.getTopPlayers();
+        tableData = FXCollections.observableArrayList();
+        tableData.addAll(dbTableData);
         columnNr.setCellValueFactory(new PropertyValueFactory("Nr"));
         columnPlayerName.setCellValueFactory(new PropertyValueFactory("PlayerName"));
         columnScore.setCellValueFactory(new PropertyValueFactory("Ranking"));
-        tablePlayers.setItems(players);
-        
-        
+        tablePlayers.setItems(tableData);
+
     }
 
     /**
@@ -72,15 +72,23 @@ public class LeaderboardsController implements Initializable {
      * @param evt
      */
     public void search(ActionEvent evt) {
+        tableData.clear();
+        tableData = tableData.filtered((Player_Leaderboard t) -> {
+            return t.getPlayerName().toLowerCase().matches(".*" + searchText.getText().trim().toLowerCase() + ".*");
+        });
+    }
 
+    public void clear(ActionEvent evt) {
+        tableData.clear();
+        tableData.addAll(dbTableData);
     }
 
     /**
-     * Is called when the user clicks the mouse in the tablePlayers
-     *n the
+     * Is called when the user clicks the mouse in the tablePlayers n the
+     *
      * @param evt
      */
-    public void selectTable(ActionEvent evt) {
+    public void selectTable(Event evt) {
 
     }
 
