@@ -20,7 +20,6 @@ import org.jbox2d.dynamics.FixtureDef;
 public class Pod {
     //Game objects
     private final IPlayer player;
-    private final Vec2 position;
     private final Body body;
     
     private final float rc = 1.74f;
@@ -34,7 +33,6 @@ public class Pod {
      */
     public Pod(GameWorld world, IPlayer player, Vec2 Position) {
         this.player = player;
-        this.position = Position;
         //body definition
         BodyDef bd = new BodyDef();
         bd.position.set(Position.x, Position.y);
@@ -67,7 +65,7 @@ public class Pod {
      * @return The position of this object
      */
     public Vec2 getPosition() {
-        return body.getPosition();
+        return body.getPosition().clone();
     }
     
      /**
@@ -79,7 +77,7 @@ public class Pod {
             case 0: //  Pod 0 [Player]
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x + 0.5f,
+                                body.getPosition().x + 0.25f,
                                 body.getPosition().y),
                         0);
                 break;
@@ -109,7 +107,7 @@ public class Pod {
             case 0:
                 body.setTransform(
                         new Vec2(
-                                body.getPosition().x - 0.5f,
+                                body.getPosition().x - 0.25f,
                                 body.getPosition().y),
                         0);
                 break;

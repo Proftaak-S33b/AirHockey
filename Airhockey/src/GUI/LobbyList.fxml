@@ -24,6 +24,7 @@
                         <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="lightGrey">
                             <items>
                                 <Button mnemonicParsing="false" onAction="#backButton" text="&lt; Back" />
+                                <Button mnemonicParsing="false" onAction="#buttonLeaderboard" text="Leaderboard" />
                             </items>
                         </ToolBar>
                         <Label styleClass="mainText" text="Create game" VBox.vgrow="ALWAYS">

@@ -5,14 +5,26 @@
  */
 package GUI;
 
+import controllers.DatabaseManager;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import networking.Player_Leaderboard;
 
 /**
  * FXML Controller class
@@ -25,30 +37,33 @@ public class LeaderboardsController implements Initializable {
     private TableView tablePlayers;
 
     @FXML
-    private TableColumn columnNr;
-
-    @FXML
-    private TableColumn columnName;
+    private TableColumn columnPlayerName;
 
     @FXML
     private TableColumn columnScore;
-
+    
     @FXML
-    private TableColumn columnNrGames;
+    private TableColumn columnNr;
 
     @FXML
     private TextField searchText;
 
     /**
-     * Initializes the controller class.
+     * Initializes the controllerclass.
+     * Add data to table
      *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        //Database something something
+        ObservableList<Player_Leaderboard> players = DatabaseManager.getTopPlayers();
+        columnNr.setCellValueFactory(new PropertyValueFactory("Nr"));
+        columnPlayerName.setCellValueFactory(new PropertyValueFactory("PlayerName"));
+        columnScore.setCellValueFactory(new PropertyValueFactory("Ranking"));
+        tablePlayers.setItems(players);
+        
+        
     }
 
     /**
@@ -62,7 +77,7 @@ public class LeaderboardsController implements Initializable {
 
     /**
      * Is called when the user clicks the mouse in the tablePlayers
-     *
+     *n the
      * @param evt
      */
     public void selectTable(ActionEvent evt) {
@@ -72,9 +87,11 @@ public class LeaderboardsController implements Initializable {
     /**
      * Is called when the user presses the {@code "< Back"} button
      *
-     * @param evt
+     * @param e
      */
-    public void back(ActionEvent evt) {
-
+    public void back(ActionEvent e) {
+        Node node = (Node) e.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
     }
 }

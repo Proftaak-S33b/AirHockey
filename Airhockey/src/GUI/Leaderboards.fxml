@@ -36,10 +36,9 @@
          <center>
             <TableView fx:id="tablePlayers" onMousePressed="#selectTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <columns>
-                  <TableColumn fx:id="columnNr" editable="false" prefWidth="23.0" text="#" />
-                <TableColumn fx:id="columnName" editable="false" prefWidth="157.0" text="Name" />
-                <TableColumn fx:id="columnScore" editable="false" prefWidth="163.0" text="Score" />
-                  <TableColumn fx:id="columnNrGames" prefWidth="68.0" text="# Games" />
+                  <TableColumn fx:id="columnNr" prefWidth="57.0" text="#" />
+                  <TableColumn fx:id="columnPlayerName" editable="false" minWidth="0.0" prefWidth="185.0" text="Name" />
+                <TableColumn fx:id="columnScore" editable="false" prefWidth="169.0" text="Score" />
               </columns>
             </TableView>
          </center>
