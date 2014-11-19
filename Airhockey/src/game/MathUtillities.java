@@ -173,10 +173,10 @@ public class MathUtillities {
         corners.add(getFieldCorners(Corner.A));
         corners.add(getFieldCorners(Corner.D));
         corners.add(getFieldCorners(Corner.I));
-        Vec2 a = getCenterOfLine(corners.get(2), corners.get(0));
+        Vec2 a = getCenterOfLine(corners.get(0), corners.get(1));
         a.x -= getPodSize() / 2;
         a.y += getPodSize() / 2;
-        Vec2 b = getCenterOfLine(corners.get(0), corners.get(1));
+        Vec2 b = getCenterOfLine(corners.get(2), corners.get(0));
         b.x -= getPodSize() / 2;
         b.y += getPodSize() / 2;
         Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
