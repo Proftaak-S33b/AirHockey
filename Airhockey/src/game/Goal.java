@@ -26,7 +26,7 @@ public class Goal {
     private final GameWorld world;
     private final IPlayer player;
     
-    public Goal(Vec2 point1, Vec2 point2, IPlayer player, GameWorld world)
+    public Goal(IPlayer player, GameWorld world)
     {
         this.world = world;
         this.player = player;
