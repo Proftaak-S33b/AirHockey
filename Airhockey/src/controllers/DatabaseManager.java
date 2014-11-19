@@ -23,12 +23,13 @@ public final class DatabaseManager {
     {
         boolean result;
         try{
-            connection = DriverManager.getConnection("a-chan.nl:3306", "deb82648_air", "airhockey");
+            connection = DriverManager.getConnection("jdbc:mysql://a-chan.nl:3306/deb82648_pts", "deb82648_air", "airhockey");
             result = true;
         }
         catch(Exception e){
             connection = null;
             System.out.println(e.getMessage());
+            System.out.println("Connection failed");
             result = false;
         }
         return result;
@@ -59,8 +60,8 @@ public final class DatabaseManager {
             try{
                 //Try to execute sql statment
                 Statement stmnt = connection.createStatement();
-                String SQL = "SELECT playerName, playerPassword FROM Player WHERE =";
-                SQL += username + " AND playerPassword = " + password + ";";
+                String SQL = "SELECT playerName, playerPassword FROM PLAYER WHERE playerName = '";
+                SQL += username+ "'" + " AND playerPassword = " + "'" + password + "'" + ";";
                 ResultSet rs = stmnt.executeQuery(SQL);
                 //Check if password and username match
                 if(rs.next())
