@@ -96,13 +96,13 @@ public class GameView implements Initializable {
             gc.fillRect(0.0, 0.0, 550, 550);
 
             //Blue side
-            drawSide(Color.BLUE, "Player 2");
+            drawSide(Color.BLUE);
 
             //Green side
-            drawSide(Color.GREEN, "Player 3");
+            drawSide(Color.GREEN);
 
             //Red side
-            drawSide(Color.RED, "Henk");
+            drawSide(Color.RED);
 
             drawPuck();
 
@@ -118,9 +118,8 @@ public class GameView implements Initializable {
     /**
      * Draws a given side. Refactored from Draw().
      * @param color
-     * @param playername
      */
-    public void drawSide(Color color, String playername) {
+    public void drawSide(Color color) {
         gc.setStroke(color);
         gc.setFill(color);
         
