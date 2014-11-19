@@ -34,7 +34,7 @@ public class GameWorld {
     public GameWorld(ArrayList<IPlayer> players) {
         world = new World(new Vec2(0.0f, 0.0f));
         pods = new ArrayList<>();
-
+        puck = new Puck(50,this);
         //Make sure only the first 3 players in the array get added
         this.players = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
