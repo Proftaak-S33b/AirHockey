@@ -149,56 +149,157 @@ public class GameView implements Initializable {
         Vec2 goal_righttop = Convert(MathUtillities.getGoalCorners().get(5));
         
         if(color == Color.RED){
-        gc.strokeLine(
-                field_bottomleft.x,                
-                field_bottomleft.y,
-                                
-                goal_bottomleft.x,                
-                goal_bottomleft.y);
-        
-        gc.strokeLine(
-                field_bottomright.x,
-                field_bottomright.y,
-                
-                goal_bottomright.x,
-                goal_bottomright.y);
-        
+            
+            //  links onder naar linksonder van goal
+            gc.strokeLine(
+                    field_bottomleft.x,
+                    field_bottomleft.y,
+                    goal_bottomleft.x,
+                    goal_bottomleft.y);
+
+            // omlaag
+            gc.strokeLine(
+                    goal_bottomleft.x,
+                    goal_bottomleft.y,
+                    goal_bottomleft.x,
+                    goal_bottomleft.y + 20 // moet halve pucksize zijn
+            );
+
+            //  verbind twee punten
+            gc.strokeLine(
+                    goal_bottomright.x,
+                    goal_bottomright.y,
+                    goal_bottomright.x,
+                    goal_bottomright.y + 20
+            );
+
+            //  omlaag
+            gc.strokeLine(
+                    goal_bottomright.x,
+                    goal_bottomright.y + 20,
+                    goal_bottomleft.x,
+                    goal_bottomleft.y + 20
+            );
+
+            // schaduw
+            gc.setStroke(Color.GREY);
+            gc.strokeLine(
+                    goal_bottomleft.x,
+                    goal_bottomleft.y,
+                    goal_bottomright.x,
+                    goal_bottomright.y);
+            gc.setStroke(color);
+
+            // rechtsonder naar rechtsonder van goal
+            gc.strokeLine(
+                    field_bottomright.x,
+                    field_bottomright.y,
+                    goal_bottomright.x,
+                    goal_bottomright.y);
         }
+        
         if(color == Color.BLUE){
-        gc.strokeLine(
-                
-                field_top.x,
-                field_top.y,
-                
-                goal_lefttop.x,
-                goal_lefttop.y);
-                
-        gc.strokeLine(
-                field_bottomleft.x,
-                field_bottomleft.y,
-                
-                goal_leftbottom.x,
-                goal_leftbottom.y);
         
+            //
+            gc.strokeLine(
+                    field_top.x,
+                    field_top.y,
+                    goal_lefttop.x,
+                    goal_lefttop.y);
+
+            /* teken goal */
+            //
+            gc.strokeLine(
+                    goal_lefttop.x,
+                    goal_lefttop.y,
+                    goal_lefttop.x - 18,
+                    goal_lefttop.y - 12
+            );
+
+            //
+            gc.strokeLine(
+                    goal_leftbottom.x,
+                    goal_leftbottom.y,
+                    goal_leftbottom.x - 18,
+                    goal_leftbottom.y - 12
+            );
+
+            //
+            gc.strokeLine(
+                    goal_lefttop.x - 18,
+                    goal_lefttop.y - 12,
+                    goal_leftbottom.x - 18,
+                    goal_leftbottom.y - 12
+            );
+
+            // schaduw
+            gc.setStroke(Color.GREY);
+            gc.strokeLine(
+                    goal_lefttop.x,
+                    goal_lefttop.y,
+                    goal_leftbottom.x,
+                    goal_leftbottom.y);
+            gc.setStroke(color);
+
+            //
+            gc.strokeLine(
+                    field_bottomleft.x,
+                    field_bottomleft.y,
+                    goal_leftbottom.x,
+                    goal_leftbottom.y);
+
         }
+
         if(color == Color.GREEN){
-        gc.strokeLine(
-                
-                field_bottomright.x,
-                field_bottomright.y,
-                
-                goal_rightbottom.x,
-                goal_rightbottom.y);
         
-        gc.strokeLine(
-                field_top.x,
-                field_top.y,
-                                
-                goal_righttop.x,
-                goal_righttop.y);
-       
+            //
+            gc.strokeLine(
+                    field_bottomright.x,
+                    field_bottomright.y,
+                    goal_rightbottom.x,
+                    goal_rightbottom.y);
+
+            /* teken goal */
+            gc.strokeLine(
+                    goal_righttop.x,
+                    goal_righttop.y,
+                    goal_righttop.x + 18,
+                    goal_righttop.y - 12
+            );
+
+            //
+            gc.strokeLine(
+                    goal_rightbottom.x,
+                    goal_rightbottom.y,
+                    goal_rightbottom.x + 18,
+                    goal_rightbottom.y - 12
+            );
+
+            //
+            gc.strokeLine(
+                    goal_righttop.x + 18,
+                    goal_righttop.y - 12,
+                    goal_rightbottom.x + 18,
+                    goal_rightbottom.y - 12
+            );
+
+            //
+            gc.setStroke(Color.GRAY);
+            gc.strokeLine(
+                    goal_rightbottom.x,
+                    goal_rightbottom.y,
+                    goal_righttop.x,
+                    goal_righttop.y);
+            gc.setStroke(color);
+
+            //
+            gc.strokeLine(
+                    field_top.x,
+                    field_top.y,
+                    goal_righttop.x,
+                    goal_righttop.y);
         }
-        
+
         drawPod();
     }
 
