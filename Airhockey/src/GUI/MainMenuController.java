@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.*;
-import org.controlsfx.*;
 
 /**
  *
@@ -86,7 +85,8 @@ public class MainMenuController implements Initializable {
                 .title("ERROR!")
                 .masthead(false ? "Just Checkin'" : null)
                 .message( "Username or password are incorrect!")
-                .showError();}
+                .showError();
+        }
     }
 
     public void handleSettings(ActionEvent event) {
