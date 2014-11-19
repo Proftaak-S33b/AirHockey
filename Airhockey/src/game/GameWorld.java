@@ -19,6 +19,7 @@ public class GameWorld {
     //Game objects
     private final Puck puck;
     private final ArrayList<Pod> pods;
+    private Wall wall;
     private final ArrayList<IPlayer> players;
 
     //Physics object
@@ -34,7 +35,13 @@ public class GameWorld {
     public GameWorld(ArrayList<IPlayer> players) {
         world = new World(new Vec2(0.0f, 0.0f));
         pods = new ArrayList<>();
-        puck = new Puck(50,this);
+        puck = new Puck(5, this);
+        wall = new Wall(WallID.BOTTOM_LEFT, this);
+        wall = new Wall(WallID.BOTTOM_RIGHT, this);
+        wall = new Wall(WallID.LEFT_LEFT, this);
+        wall = new Wall(WallID.LEFT_RIGHT, this);
+        wall = new Wall(WallID.RIGHT_LEFT, this);
+        wall = new Wall(WallID.RIGHT_RIGHT, this);
         //Make sure only the first 3 players in the array get added
         this.players = new ArrayList<>();
         for (int i = 0; i < 3; i++) {

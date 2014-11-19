@@ -36,7 +36,7 @@ public class Puck extends Observable{
     public Puck(int speed, GameWorld world)
     {
         this.speed = speed;
-        direction = new Vec2(-0.5f, 1);
+        direction = new Vec2(0,1);
         direction.normalize();
         touched = new ArrayList<>();
         this.world = world;

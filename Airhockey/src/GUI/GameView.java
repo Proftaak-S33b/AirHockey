@@ -70,12 +70,12 @@ public class GameView implements Initializable {
     //Multiplayer
     private Lobby currentLobby;
     private GameType gametype;
-    
+
     private GameWorld gameworld;
-    
+
     // Scales the physics to the drawing.
     final int scale = 10;
-        
+
     //Movement commands
     private boolean playerMoveRight;
     private boolean playerMoveLeft;
@@ -83,13 +83,13 @@ public class GameView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
-        ArrayList<IPlayer> players = new ArrayList<IPlayer>();
+        ArrayList<IPlayer> players = new ArrayList<>();
         players.add(currentPlayer);
         players.add(new AI("kees", 20));
         players.add(new AI("kees2", 20));
         gameworld = new GameWorld(players);
         draw();
-        
+
         new AnimationTimer() {
 
             @Override
@@ -104,7 +104,7 @@ public class GameView implements Initializable {
 
                 @Override
                 public void run() {
-                    //pm.step(1 / 60f, 10, 5);
+                    gameworld.getPhysWorld().step(1 / 60f, 10, 5);
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
@@ -142,9 +142,8 @@ public class GameView implements Initializable {
             //Red side
             drawSide(Color.RED);
 
-            drawPuck(); 
-            
-            
+            drawPuck();
+
             player_Move();
 
         } catch (Exception e) {
@@ -154,27 +153,28 @@ public class GameView implements Initializable {
 
     /**
      * Draws a given side. Refactored from Draw().
+     *
      * @param color
      */
     public void drawSide(Color color) {
         gc.setStroke(color);
         gc.setFill(color);
-        
+
         // fieldcorners
-        Vec2 field_bottomleft = Convert(MathUtillities.getFieldCorners().get(0));
-        Vec2 field_top = Convert(MathUtillities.getFieldCorners().get(1));
-        Vec2 field_bottomright = Convert(MathUtillities.getFieldCorners().get(2));
-        
+        Vec2 field_bottomleft = Convert(MathUtillities.getFieldCorners(MathUtillities.Corner.A));
+        Vec2 field_top = Convert(MathUtillities.getFieldCorners(MathUtillities.Corner.I));
+        Vec2 field_bottomright = Convert(MathUtillities.getFieldCorners(MathUtillities.Corner.D));
+
         // goalcorners / sides
-        Vec2 goal_bottomleft = Convert(MathUtillities.getGoalCorners().get(0));
-        Vec2 goal_bottomright = Convert(MathUtillities.getGoalCorners().get(1));
-        Vec2 goal_lefttop = Convert(MathUtillities.getGoalCorners().get(2));
-        Vec2 goal_leftbottom = Convert(MathUtillities.getGoalCorners().get(3));
-        Vec2 goal_rightbottom = Convert(MathUtillities.getGoalCorners().get(4));
-        Vec2 goal_righttop = Convert(MathUtillities.getGoalCorners().get(5));
-        
-        if(color == Color.RED){
-            
+        Vec2 goal_bottomleft = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.B));
+        Vec2 goal_bottomright = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.C));
+        Vec2 goal_lefttop = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.E));
+        Vec2 goal_leftbottom = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.F));
+        Vec2 goal_rightbottom = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.G));
+        Vec2 goal_righttop = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.H));
+
+        if (color == Color.RED) {
+
             //  links onder naar linksonder van goal
             gc.strokeLine(
                     field_bottomleft.x,
@@ -222,9 +222,9 @@ public class GameView implements Initializable {
                     goal_bottomright.x,
                     goal_bottomright.y);
         }
-        
-        if(color == Color.BLUE){
-        
+
+        if (color == Color.BLUE) {
+
             //
             gc.strokeLine(
                     field_top.x,
@@ -275,8 +275,8 @@ public class GameView implements Initializable {
 
         }
 
-        if(color == Color.GREEN){
-        
+        if (color == Color.GREEN) {
+
             //
             gc.strokeLine(
                     field_bottomright.x,
@@ -330,26 +330,27 @@ public class GameView implements Initializable {
 
     /**
      * Scales the vector and rotates the Y-coordinate.
+     *
      * @param vector a Vec2 object to convert.
      */
-    private Vec2 Convert(Vec2 vector){        
+    private Vec2 Convert(Vec2 vector) {
 
         vector.x = vector.x * scale;
         vector.y = MathUtillities.rotateVector(vector).y * scale;
-        
+
         return vector;
     }
-    
+
     /**
      * Draws the puck. Refactored from Draw().
      */
     public void drawPuck() {
         gc.setFill(Color.BLACK);
-                
-        Puck puck = gameworld.getPuck();                
-        Vec2 position = Convert(puck.getPosition());                
+
+        Puck puck = gameworld.getPuck();
+        Vec2 position = Convert(puck.getPosition());
         double pucksize = MathUtillities.getPuckSize() * scale;
-        
+
         gc.fillOval(position.x, position.y, pucksize, pucksize);
     }
 
@@ -364,13 +365,13 @@ public class GameView implements Initializable {
         Vec2 vector = Convert(playerone.getPosition());
         Vec2 vector2 = Convert(playertwo.getPosition());
         Vec2 vector3 = Convert(playerthree.getPosition());
-        
+
         gc.setFill(Color.RED);
         gc.fillOval(vector.x, vector.y, size, size);
-        
+
         gc.setFill(Color.BLUE);
         gc.fillOval(vector2.x, vector2.y, size, size);
-        
+
         gc.setFill(Color.GREEN);
         gc.fillOval(vector3.x, vector3.y, size, size);
 
@@ -414,25 +415,27 @@ public class GameView implements Initializable {
     public void exit(ActionEvent event) {
 
     }
-    
+
     /**
      * Checks which buttons are pressed and moves the player
      */
     private void player_Move() {
-        if (playerMoveRight)
-        {
-            if(gameworld.getPod(0).getPosition().x > MathUtillities.getGoalCorners().get(0).x){
-            gameworld.getPod(0).moveRight(0);}
+        if (playerMoveRight) {
+            if (gameworld.getPod(0).getPosition().x < MathUtillities.getGoalCorners(MathUtillities.Corner.C).x - MathUtillities.getPodSize()) {
+                gameworld.getPod(0).moveRight(0);
+            }
         }
-        if(playerMoveLeft){
-             if(gameworld.getPod(0).getPosition().x < MathUtillities.getGoalCorners().get(1).x - MathUtillities.getPodSize() ){
-            gameworld.getPod(0).moveLeft(0);
-             }
+        if (playerMoveLeft) {
+            if (gameworld.getPod(0).getPosition().x > MathUtillities.getGoalCorners(MathUtillities.Corner.B).x) {
+                gameworld.getPod(0).moveLeft(0);
+            }
         }
         drawPod();
     }
+
     /**
      * Checks if a key is pressed and adjusts the player movement.
+     *
      * @param event the keyevent that happened
      */
     public void keyPressed(KeyEvent event) {
@@ -445,7 +448,7 @@ public class GameView implements Initializable {
                 playerMoveLeft = true;
                 break;
             case RIGHT:
-                if(playerMoveLeft) {
+                if (playerMoveLeft) {
                     playerMoveLeft = false;
                 }
                 playerMoveRight = true;
@@ -453,21 +456,22 @@ public class GameView implements Initializable {
                 break;
         }
     }
-    
+
     /**
      * Checks if a key is released and adjusts the player movement.
+     *
      * @param event the keyevent that happened
      */
     public void keyReleased(KeyEvent event) {
         switch (event.getCode()) {
             case LEFT:
-                if(playerMoveLeft) {
+                if (playerMoveLeft) {
                     playerMoveLeft = false;
                 }
                 System.out.println("Left released");
                 break;
             case RIGHT:
-                if(playerMoveRight) {
+                if (playerMoveRight) {
                     playerMoveRight = false;
                 }
                 System.out.println("Right released");

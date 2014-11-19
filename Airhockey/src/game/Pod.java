@@ -72,7 +72,7 @@ public class Pod {
      *
      * @param index 0 = red, 1 = blue, 2 = green
      */
-    public void moveLeft(int index) {
+    public void moveRight(int index) {
         switch (index) {
             case 0: //  Pod 0 [Player]
                 body.setTransform(
@@ -102,7 +102,7 @@ public class Pod {
      *
      * @param index 0 = red, 1 = blue, 2 = green
      */
-    public void moveRight(int index) {
+    public void moveLeft(int index) {
         switch (index) {
             case 0:
                 body.setTransform(

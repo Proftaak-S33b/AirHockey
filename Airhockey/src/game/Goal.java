@@ -37,14 +37,14 @@ public class Goal {
         //body definition
         {
             BodyDef bdSide = new BodyDef();
-            bdSide.position.set((MathUtillities.getGoalCorners().get(1).x + MathUtillities.getGoalCorners().get(0).x) /2,
-                    MathUtillities.getGoalCorners().get(0).y);
+            bdSide.position.set((MathUtillities.getGoalCorners(MathUtillities.Corner.C).x + MathUtillities.getGoalCorners(MathUtillities.Corner.B).x) /2,
+                    MathUtillities.getGoalCorners(MathUtillities.Corner.B).y);
             bdSide.type = BodyType.STATIC;
             bdSide.angle = 0;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(MathUtillities.getGoalCorners().get(0).x, MathUtillities.getGoalCorners().get(0).y),
-                    new Vec2(MathUtillities.getGoalCorners().get(1).x, MathUtillities.getGoalCorners().get(1).y));
+            esSide.set(new Vec2(MathUtillities.getGoalCorners(MathUtillities.Corner.B).x, MathUtillities.getGoalCorners(MathUtillities.Corner.B).y),
+                    new Vec2(MathUtillities.getGoalCorners(MathUtillities.Corner.C).x, MathUtillities.getGoalCorners(MathUtillities.Corner.C).y));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;
@@ -60,13 +60,13 @@ public class Goal {
         //body definition
         {
             BodyDef bdSide = new BodyDef();
-            bdSide.position.set((MathUtillities.getGoalCorners().get(2).x + MathUtillities.getGoalCorners().get(3).x) /2,
-                    (MathUtillities.getGoalCorners().get(2).y + MathUtillities.getGoalCorners().get(3).y) /2);
+            bdSide.position.set((MathUtillities.getGoalCorners(MathUtillities.Corner.E).x + MathUtillities.getGoalCorners(MathUtillities.Corner.F).x) /2,
+                    (MathUtillities.getGoalCorners(MathUtillities.Corner.E).y + MathUtillities.getGoalCorners(MathUtillities.Corner.F).y) /2);
             bdSide.type = BodyType.STATIC;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(MathUtillities.getGoalCorners().get(2).x, MathUtillities.getGoalCorners().get(2).y),
-                    new Vec2(MathUtillities.getGoalCorners().get(3).x, MathUtillities.getGoalCorners().get(3).y));
+            esSide.set(new Vec2(MathUtillities.getGoalCorners(MathUtillities.Corner.E).x, MathUtillities.getGoalCorners(MathUtillities.Corner.E).y),
+                    new Vec2(MathUtillities.getGoalCorners(MathUtillities.Corner.F).x, MathUtillities.getGoalCorners(MathUtillities.Corner.F).y));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;
@@ -82,13 +82,13 @@ public class Goal {
         //body definition
         {
             BodyDef bdSide = new BodyDef();
-            bdSide.position.set((MathUtillities.getGoalCorners().get(4).x + MathUtillities.getGoalCorners().get(5).x) /2,
-                    (MathUtillities.getGoalCorners().get(4).y + MathUtillities.getGoalCorners().get(5).y) /2);
+            bdSide.position.set((MathUtillities.getGoalCorners(MathUtillities.Corner.G).x + MathUtillities.getGoalCorners(MathUtillities.Corner.H).x) /2,
+                    (MathUtillities.getGoalCorners(MathUtillities.Corner.G).y + MathUtillities.getGoalCorners(MathUtillities.Corner.H).y) /2);
             bdSide.type = BodyType.STATIC;
             //define shape of the body.
             EdgeShape esSide = new EdgeShape();
-            esSide.set(new Vec2(MathUtillities.getGoalCorners().get(4).x, MathUtillities.getGoalCorners().get(4).y),
-                    new Vec2(MathUtillities.getGoalCorners().get(5).x, MathUtillities.getGoalCorners().get(5).y));
+            esSide.set(new Vec2(MathUtillities.getGoalCorners(MathUtillities.Corner.G).x, MathUtillities.getGoalCorners(MathUtillities.Corner.G).y),
+                    new Vec2(MathUtillities.getGoalCorners(MathUtillities.Corner.H).x, MathUtillities.getGoalCorners(MathUtillities.Corner.H).y));
             //define fixture of the body.
             FixtureDef fdSide = new FixtureDef();
             fdSide.shape = esSide;

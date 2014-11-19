@@ -34,11 +34,10 @@ public class MathUtillities {
     private static final int blueXRight = 19;
     private static final int greenXRight = 31;
     private static final int greenXLeft = 39;
-    
+
     private static final int rightCornerX = 45;
     private static final int topCornerX = 25;
     private static final float topCornerY = 39.64f;
-    
 
     //Size of the playing field
     private static final int fieldSize = 40;
@@ -60,50 +59,95 @@ public class MathUtillities {
     }
 
     /**
-     * Calculates a new vector to draw the shapes
-     * y = 50 - old y
+     * Calculates a new vector to draw the shapes y = 50 - old y
+     *
      * @param vector
      * @return a vector to draw a shape
      */
-    public static Vec2 rotateVector(Vec2 vector)
-    {
+    public static Vec2 rotateVector(Vec2 vector) {
         float yVector = 50 - vector.y;
         return new Vec2(vector.x, yVector);
     }
-    
+
     /**
      * Calculates the 4 coordinates of the rectangle that will represent a goal
      * on a playing field by taking the 2 points of the line which the goal has
      * to be placed on.
      *
+     * @param corner
      * @return An ArrayList with 6 coordinates representing the corners of the
      * rectangle.
      */
-    public static ArrayList<Vec2> getGoalCorners() {
+    public static Vec2 getGoalCorners(Corner corner) {
         //Hernoemen en misschien met enum doorgeven welk coordinaat je wilt getten?
         //Feedback over comments verwerken, = geef aan hoe we aan deze coordinaten komen
-        ArrayList<Vec2> rectangleGoal = new ArrayList<>();
-        rectangleGoal.add(new Vec2(redXLeft, bottomY));
-        rectangleGoal.add(new Vec2(redXRight, bottomY));
-        rectangleGoal.add(new Vec2(blueXRight, topYtop));
-        rectangleGoal.add(new Vec2(blueXLeft, topYbottom));
-        rectangleGoal.add(new Vec2(greenXLeft, topYbottom));
-        rectangleGoal.add(new Vec2(greenXRight, topYtop));
-        return rectangleGoal;
+        Vec2 vector = new Vec2(0, 0);
+        switch (corner) {
+            case B:
+                vector = new Vec2(redXLeft, bottomY);
+                break;
+            case C:
+                vector = new Vec2(redXRight, bottomY);
+                break;
+            case E:
+                vector = new Vec2(blueXRight, topYtop);
+                break;
+            case F:
+                vector = new Vec2(blueXLeft, topYbottom);
+                break;
+            case G:
+                vector = new Vec2(greenXLeft, topYbottom);
+                break;
+            case H:
+                vector = new Vec2(greenXRight, topYtop);
+                break;
+        }
+        return vector;
     }
-    
+
     /**
      * 
-     * @return An ArrayList with 3 coordinates representing the corners of the field
+     *       &nbsp;&nbsp;&nbsp;&nbsp;^i<br>  
+     *    &nbsp;e/&nbsp;&nbsp;&nbsp;\g<br>
+     *   f/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\h<br>
+     *   /___&nbsp;&nbsp;___\<br>
+     *   a&nbsp;&nbsp;&nbsp;b&nbsp;c&nbsp;&nbsp;&nbsp;d<br>
      */
-    public static ArrayList<Vec2> getFieldCorners() {
-        ArrayList<Vec2> rectangleField = new ArrayList<>();
-        rectangleField.add(new Vec2(bottomY, bottomY));
-        rectangleField.add(new Vec2(topCornerX, topCornerY));
-        rectangleField.add(new Vec2(rightCornerX, bottomY));
-        return rectangleField;
+    public enum Corner {
+
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G,
+        H,
+        I
     }
-    
+
+    /**
+     *
+     * @return An ArrayList with 3 coordinates representing the corners of the
+     * field
+     */
+    public static Vec2 getFieldCorners(Corner corner) {
+        Vec2 vector = new Vec2(0, 0);
+        switch (corner) {
+            case A:
+                vector = new Vec2(bottomY, bottomY);
+                break;
+            case D:
+                vector = new Vec2(rightCornerX, bottomY);
+                break;
+            case I:
+                vector = new Vec2(topCornerX, topCornerY);
+                break;
+        }
+        return vector;
+
+    }
+
     /**
      * Gets the center of vector 'a' and 'b'
      *
@@ -123,23 +167,25 @@ public class MathUtillities {
      * @return
      */
     //Deze heeft heel wat werk nodig
-    
-     public static ArrayList<Vec2> getStartPositions() {
-     ArrayList<Vec2> positions = new ArrayList<>();
-     ArrayList<Vec2> corners = getFieldCorners();
-     Vec2 a = getCenterOfLine(corners.get(2), corners.get(0));
-     a.x -= getPodSize() / 2;
-     a.y += getPodSize() / 2;
-     Vec2 b = getCenterOfLine(corners.get(0), corners.get(1));
-     b.x -= getPodSize() / 2;
-     b.y += getPodSize() / 2;
-     Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
-     c.x -= getPodSize() / 2;
-     c.y += getPodSize() /2;
-     positions.add(new Vec2(a.x, a.y));
-     positions.add(new Vec2(b.x , b.y));
-     positions.add(new Vec2(c.x , c.y));
-     return positions;
-     }
-     
+    public static ArrayList<Vec2> getStartPositions() {
+        ArrayList<Vec2> positions = new ArrayList<>();
+        ArrayList<Vec2> corners = new ArrayList<>();
+        corners.add(getFieldCorners(Corner.A));
+        corners.add(getFieldCorners(Corner.D));
+        corners.add(getFieldCorners(Corner.I));
+        Vec2 a = getCenterOfLine(corners.get(2), corners.get(0));
+        a.x -= getPodSize() / 2;
+        a.y += getPodSize() / 2;
+        Vec2 b = getCenterOfLine(corners.get(0), corners.get(1));
+        b.x -= getPodSize() / 2;
+        b.y += getPodSize() / 2;
+        Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
+        c.x -= getPodSize() / 2;
+        c.y += getPodSize() / 2;
+        positions.add(new Vec2(a.x, a.y));
+        positions.add(new Vec2(b.x, b.y));
+        positions.add(new Vec2(c.x, c.y));
+        return positions;
+    }
+
 }
