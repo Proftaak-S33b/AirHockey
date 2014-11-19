@@ -6,3 +6,16 @@
     -fx-base: #78E60E;
     -fx-background: #70C600;
 }
+
+.mainText {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian , rgba(50 ,50 ,50 ,0.5), 1, 1, 1, 2);
+    -fx-font-family: "Aldo the Apache";
+}
+
+.normalText {
+    -fx-font-family: "Imagine Font";
+    -fx-font-size: 14px;
+}

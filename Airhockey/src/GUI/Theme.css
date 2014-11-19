@@ -32,3 +32,55 @@ and open the template in the editor.
     -fx-base: #FA6900;
     //-fx-background: #70C600;
 }
+
+@font-face {
+    font-family: "Aldo the Apache";
+    src: url(AldotheApache.ttf);
+}
+
+@font-face {
+    font-family: "Imagine Font";
+    src: url(imagine_font.ttf);
+}
+
+.lightBlueButton {
+    -fx-background-color: #A7DBD8;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 16;
+}
+
+.lightBlueButton:hover {
+    -fx-background-color: #B1E8E5;
+}
+
+.lightBlueButton:armed {
+    -fx-background-color: #6EC4C4;
+}
+
+.lightOrangeButton {
+    -fx-background-color: #F38630;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 16;
+}
+
+.lightOrangeButton:hover {
+    -fx-background-color: #f39a38;
+}
+
+.lightOrangeButton:armed {
+    -fx-background-color: #ff7513;
+}
+
+.lightGreyButton {
+    -fx-background-color: #E0E4CC;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 16;
+}
+
+.lightGreyButton:hover {
+    -fx-background-color: #ecefe0;
+}
+
+.lightGreyButton:armed {
+    -fx-background-color: #d0d6b2;
+}

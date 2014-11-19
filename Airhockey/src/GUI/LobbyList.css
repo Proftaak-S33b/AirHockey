@@ -8,3 +8,25 @@ and open the template in the editor.
     Author     : Joris
 */
 
+@font-face {
+    font-family: "Aldo the Apache";
+    src: url(AldotheApache.ttf);
+}
+
+@font-face {
+    font-family: "Imagine Font";
+    src: url(imagine_font.ttf);
+}
+
+.mainText {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian , rgba(50 ,50 ,50 ,0.5), 1, 1, 1, 2);
+    -fx-font-family: "Aldo the Apache";
+}
+
+.normalText {
+    -fx-font-family: "Imagine Font";
+    -fx-font-size: 14px;
+}

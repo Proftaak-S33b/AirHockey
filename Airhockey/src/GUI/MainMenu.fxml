@@ -16,6 +16,7 @@
 <AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.MainMenuController">
     <stylesheets>
         <URL value="@MainMenu.css" />
+        <URL value="@Theme.css" />
     </stylesheets>
     <children>
       <HBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="120.0">
@@ -70,7 +71,7 @@
                         </Label>
                             <TextField id="textfieldUsername" fx:id="tfUsername" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="Username" VBox.vgrow="ALWAYS" />
                             <Label styleClass="normalText" text="Password" VBox.vgrow="ALWAYS" />
-                            <PasswordField id="textfieldPassword" fx:id="tfPassword" maxHeight="-Infinity" maxWidth="-Infinity" promptText="Password" VBox.vgrow="ALWAYS" />
+                            <PasswordField id="textfieldPassword" fx:id="tfPassword" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#handleMultiplayer" promptText="Password" VBox.vgrow="ALWAYS" />
                             <Button mnemonicParsing="false" onAction="#handleMultiplayer" prefHeight="75.0" prefWidth="225.0" styleClass="multiButton" text="Start Game" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets top="40.0" />
@@ -85,7 +86,11 @@
       </HBox>
         <Pane prefHeight="120.0" styleClass="headerPanel" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Button contentDisplay="CENTER" layoutX="650.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSettings" prefHeight="35.0" prefWidth="35.0" styleClass="settingsButton" />
+                <Button contentDisplay="CENTER" layoutX="650.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSettings" prefHeight="35.0" prefWidth="35.0">
+               <styleClass>
+                  <String fx:value="settingsButton" />
+                  <String fx:value="lightGrey" />
+               </styleClass></Button>
             <Label alignment="CENTER" layoutX="188.0" layoutY="-1.0" prefHeight="123.0" prefWidth="324.0" styleClass="headerTitle" text="Airhockey">
                <font>
                   <Font size="57.0" />
