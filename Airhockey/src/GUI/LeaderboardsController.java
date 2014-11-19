@@ -46,7 +46,7 @@ public class LeaderboardsController implements Initializable {
     private TextField searchText;
 
     private ObservableList<Player_Leaderboard> tableData;
-    private ObservableList<Player_Leaderboard> dbTableData;
+    private final ObservableList<Player_Leaderboard> dbTableData = DatabaseManager.getTopPlayers();
 
     /**
      * Initializes the controllerclass. Add data to table
@@ -56,7 +56,6 @@ public class LeaderboardsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        dbTableData = DatabaseManager.getTopPlayers();
         tableData = FXCollections.observableArrayList();
         tableData.addAll(dbTableData);
         columnNr.setCellValueFactory(new PropertyValueFactory("Nr"));
@@ -72,14 +71,24 @@ public class LeaderboardsController implements Initializable {
      * @param evt
      */
     public void search(ActionEvent evt) {
+        if(searchText.getText().trim().equals("")){
+            clear(evt);
+        }
         tableData.clear();
-        tableData = tableData.filtered((Player_Leaderboard t) -> {
-            return t.getPlayerName().toLowerCase().matches(".*" + searchText.getText().trim().toLowerCase() + ".*");
-        });
+        /*tableData = tableData.filtered((Player_Leaderboard t) -> {
+         return t.getPlayerName().toLowerCase().matches(searchText.getText().trim().toLowerCase());
+         });
+         */
+        for (Player_Leaderboard p : dbTableData) {
+            if (p.getPlayerName().toLowerCase().matches(searchText.getText().trim().toLowerCase())) {
+                tableData.add(p);
+            }
+        }
     }
 
     public void clear(ActionEvent evt) {
         tableData.clear();
+        searchText.clear();
         tableData.addAll(dbTableData);
     }
 
