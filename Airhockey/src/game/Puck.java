@@ -64,7 +64,7 @@ public class Puck extends Observable{
     }
     
     public Vec2 getPosition() {
-        return body.getPosition();
+        return body.getPosition().clone();
     }
 
     public void setPosition(Vec2 position) {
