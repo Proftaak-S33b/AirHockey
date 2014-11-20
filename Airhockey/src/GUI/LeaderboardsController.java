@@ -64,29 +64,35 @@ public class LeaderboardsController implements Initializable {
         tablePlayers.setItems(tableData);
 
     }
-
-    /**
-     * Is called when the user presses enter in the search field
-     *
-     * @param evt
-     */
-    public void search(ActionEvent evt) {
-        if(searchText.getText().trim().equals("")){
-            clear(evt);
-        }
-        tableData.clear();
-        /*tableData = tableData.filtered((Player_Leaderboard t) -> {
-         return t.getPlayerName().toLowerCase().matches(searchText.getText().trim().toLowerCase());
-         });
-         */
-        for (Player_Leaderboard p : dbTableData) {
-            if (p.getPlayerName().toLowerCase().matches(searchText.getText().trim().toLowerCase())) {
-                tableData.add(p);
-            }
-        }
+    
+   /**
+    * Improvement of searchfield by searchen when the string in the
+    * searchfield has changed
+    * @param e 
+    */
+   public void liveSearch(Event e) {
+       //Check if searchfield has become empty. Ifso display all players.
+       if(searchText.getText().trim().equals("")){
+          resetTable();
+       }
+       //Else check for playernames that contain the searchstring or
+       //the number matches the number of the player.
+       else
+       {
+           tableData.clear();
+           for (Player_Leaderboard p : dbTableData) {
+               if (p.getPlayerName().toLowerCase().contains(searchText.getText().trim().toLowerCase()) 
+                       || ("" + p.getNr()).equals(searchText.getText().trim().toLowerCase())) {
+                   tableData.add(p);
+                   
+               }
+           }
+       }
     }
-
-    public void clear(ActionEvent evt) {
+    /**
+     * Reset the table to display all the players
+     */
+    public void resetTable() {
         tableData.clear();
         searchText.clear();
         tableData.addAll(dbTableData);
