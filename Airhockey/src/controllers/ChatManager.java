@@ -7,7 +7,6 @@ package controllers;
 
 import networking.IPlayer;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
