@@ -6,6 +6,7 @@
 package game;
 
 import org.jbox2d.collision.shapes.EdgeShape;
+import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
@@ -55,6 +56,9 @@ public class Wall {
         
         //Add shape and fixture to the body and dispose
         body.createFixture(fdSide);
+        
+        //Set the angle
+        body.setTransform(body.getPosition(), MathUtils.atan2(pos2.y-pos1.y, pos2.x-pos1.x));
     }
     public WallID getWallID() {
         return this.wallid;
