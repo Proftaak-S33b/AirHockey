@@ -78,16 +78,22 @@ public class MathUtillities {
      * @return An ArrayList with 6 coordinates representing the corners of the
      * rectangle.
      */
-    public static Vec2 getGoalCorners(Corner corner) {
+    public static Vec2 getCoordinates(Corner corner) {
         //Hernoemen en misschien met enum doorgeven welk coordinaat je wilt getten?
         //Feedback over comments verwerken, = geef aan hoe we aan deze coordinaten komen
         Vec2 vector = new Vec2(0, 0);
         switch (corner) {
+            case A:
+                vector = new Vec2(bottomY, bottomY);
+                break;
             case B:
                 vector = new Vec2(redXLeft, bottomY);
                 break;
             case C:
                 vector = new Vec2(redXRight, bottomY);
+                break;
+            case D:
+                vector = new Vec2(rightCornerX, bottomY);
                 break;
             case E:
                 vector = new Vec2(blueXRight, topYtop);
@@ -101,17 +107,20 @@ public class MathUtillities {
             case H:
                 vector = new Vec2(greenXRight, topYtop);
                 break;
+            case I:
+                vector = new Vec2(topCornerX, topCornerY);
+                break;
         }
         return vector;
     }
 
     /**
-     * 
-     *       &nbsp;&nbsp;&nbsp;&nbsp;^i<br>  
-     *    &nbsp;e/&nbsp;&nbsp;&nbsp;\g<br>
-     *   f/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\h<br>
+     *
+     * &nbsp;&nbsp;&nbsp;&nbsp;^i<br>
+     * &nbsp;e/&nbsp;&nbsp;&nbsp;\g<br>
+     * f/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\h<br>
      *   /___&nbsp;&nbsp;___\<br>
-     *   a&nbsp;&nbsp;&nbsp;b&nbsp;c&nbsp;&nbsp;&nbsp;d<br>
+     * a&nbsp;&nbsp;&nbsp;b&nbsp;c&nbsp;&nbsp;&nbsp;d<br>
      */
     public enum Corner {
 
@@ -124,28 +133,6 @@ public class MathUtillities {
         G,
         H,
         I
-    }
-
-    /**
-     *
-     * @return An ArrayList with 3 coordinates representing the corners of the
-     * field
-     */
-    public static Vec2 getFieldCorners(Corner corner) {
-        Vec2 vector = new Vec2(0, 0);
-        switch (corner) {
-            case A:
-                vector = new Vec2(bottomY, bottomY);
-                break;
-            case D:
-                vector = new Vec2(rightCornerX, bottomY);
-                break;
-            case I:
-                vector = new Vec2(topCornerX, topCornerY);
-                break;
-        }
-        return vector;
-
     }
 
     /**
@@ -170,9 +157,9 @@ public class MathUtillities {
     public static ArrayList<Vec2> getStartPositions() {
         ArrayList<Vec2> positions = new ArrayList<>();
         ArrayList<Vec2> corners = new ArrayList<>();
-        corners.add(getFieldCorners(Corner.A));
-        corners.add(getFieldCorners(Corner.D));
-        corners.add(getFieldCorners(Corner.I));
+        corners.add(getCoordinates(Corner.A));
+        corners.add(getCoordinates(Corner.D));
+        corners.add(getCoordinates(Corner.I));
         Vec2 a = getCenterOfLine(corners.get(0), corners.get(1));
         a.x -= getPodSize() / 2;
         a.y += getPodSize() / 2;

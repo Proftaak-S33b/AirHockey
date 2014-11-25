@@ -167,17 +167,17 @@ public class GameView implements Initializable {
         gc.setFill(color);
 
         // fieldcorners
-        Vec2 field_bottomleft = Convert(MathUtillities.getFieldCorners(MathUtillities.Corner.A));
-        Vec2 field_top = Convert(MathUtillities.getFieldCorners(MathUtillities.Corner.I));
-        Vec2 field_bottomright = Convert(MathUtillities.getFieldCorners(MathUtillities.Corner.D));
+        Vec2 field_bottomleft = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.A));
+        Vec2 field_top = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.I));
+        Vec2 field_bottomright = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.D));
 
         // goalcorners / sides
-        Vec2 goal_bottomleft = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.B));
-        Vec2 goal_bottomright = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.C));
-        Vec2 goal_lefttop = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.E));
-        Vec2 goal_leftbottom = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.F));
-        Vec2 goal_rightbottom = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.G));
-        Vec2 goal_righttop = Convert(MathUtillities.getGoalCorners(MathUtillities.Corner.H));
+        Vec2 goal_bottomleft = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.B));
+        Vec2 goal_bottomright = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.C));
+        Vec2 goal_lefttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.E));
+        Vec2 goal_leftbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.F));
+        Vec2 goal_rightbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.G));
+        Vec2 goal_righttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.H));
 
         if (color == Color.RED) {
 
@@ -435,12 +435,12 @@ public class GameView implements Initializable {
      */
     private void player_Move() {
         if (playerMoveRight) {
-            if (gameworld.getPod(0).getPosition().x < MathUtillities.getGoalCorners(MathUtillities.Corner.C).x - MathUtillities.getPodSize()) {
+            if (gameworld.getPod(0).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize()) {
                 gameworld.getPod(0).moveRight(0);
             }
         }
         if (playerMoveLeft) {
-            if (gameworld.getPod(0).getPosition().x > MathUtillities.getGoalCorners(MathUtillities.Corner.B).x) {
+            if (gameworld.getPod(0).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.B).x) {
                 gameworld.getPod(0).moveLeft(0);
             }
         }
