@@ -117,8 +117,8 @@ public class MathUtillities {
     /**
      *
      * &nbsp;&nbsp;&nbsp;&nbsp;^i<br>
-     * &nbsp;e/&nbsp;&nbsp;&nbsp;\g<br>
-     * f/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\h<br>
+     * &nbsp;e/&nbsp;&nbsp;&nbsp;\h<br>
+     * f/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\g<br>
      *   /___&nbsp;&nbsp;___\<br>
      * a&nbsp;&nbsp;&nbsp;b&nbsp;c&nbsp;&nbsp;&nbsp;d<br>
      */
