@@ -122,7 +122,7 @@ public class GameView implements Initializable {
         gametype = GameType.MULTIPLAYER;
     }
 
-   
+
     /**
      * Part of slowly phasing out the AI from the Controller to the AI classes.
      */
