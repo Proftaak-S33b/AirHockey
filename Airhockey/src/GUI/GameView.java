@@ -444,7 +444,6 @@ public class GameView implements Initializable {
                 gameworld.getPod(0).moveLeft(0);
             }
         }
-        drawPod();
     }
 
     /**

@@ -63,16 +63,24 @@ public class Puck extends Observable{
         body.setUserData(this);
     }
     
+    /**
+     * Get's the position of the puck
+     * @return A Vec2 object
+     */
     public Vec2 getPosition() {
         return body.getPosition().clone();
     }
 
+    /**
+     * Sets the position of the puck to the given position
+     * @param position Vec2 object of the new position
+     */
     public void setPosition(Vec2 position) {
         body.setTransform(position, body.getAngle());
     }
     
     /**
-     *
+     * Sets the speed of the puck
      * @param speed
      */
     public void setSpeed(int speed) {

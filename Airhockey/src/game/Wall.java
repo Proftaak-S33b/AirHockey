@@ -18,162 +18,43 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 public class Wall {
 
-    private Body bodyRedLeftSide;
-    private Body bodyRedRightSide;
-    private Body bodyBlueLeftSide;
-    private Body bodyBlueRightSide;
-    private Body bodyGreenLeftSide;
-    private Body bodyGreenRightSide;
+    private Body body;
 
     private final GameWorld world;
     private final WallID wallid;
 
-    public Wall(WallID wallid, GameWorld world) {
-        this.wallid = wallid;
+    public Wall(WallID wallid, GameWorld world, Vec2 pos1, Vec2 pos2) {
         this.world = world;
+        this.wallid = wallid;
+        //Calculate lenght of the wall
+        float len =(float) Math.sqrt((pos1.x-pos2.x)*(pos1.x-pos2.x)+
+                                    (pos1.y-pos2.y)*(pos1.y-pos2.y));
 
-        switch (wallid) {
-            case BOTTOM_LEFT: /*
-             **Red Left side**
-             */ {
-                //body definition
-                BodyDef bdSide = new BodyDef();
-                bdSide.position.set((MathUtillities.getCoordinates(MathUtillities.Corner.A).x + MathUtillities.getCoordinates(MathUtillities.Corner.B).x) / 2,
-                        MathUtillities.getCoordinates(MathUtillities.Corner.B).y);
-                bdSide.type = BodyType.STATIC;
-                bdSide.angle = 0;
-                //define shape of the body.
-                EdgeShape esSide = new EdgeShape();
-                esSide.set(new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.A).x, MathUtillities.getCoordinates(MathUtillities.Corner.A).y),
-                        new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.B).x, MathUtillities.getCoordinates(MathUtillities.Corner.B).y));
-                //define fixture of the body.
-                FixtureDef fdSide = new FixtureDef();
-                fdSide.shape = esSide;
-                fdSide.friction = 0.3f;
-                fdSide.restitution = 1f;
-                //create the body and add fixture to it
-                bodyRedLeftSide = world.getPhysWorld().createBody(bdSide);
-                bodyRedLeftSide.createFixture(fdSide);
-            }
-            break;
-            /*
-             **Red Right side**
-             */
-            case BOTTOM_RIGHT: {
-                //body definition
-                BodyDef bdSide = new BodyDef();
-                bdSide.position.set((MathUtillities.getCoordinates(MathUtillities.Corner.D).x + MathUtillities.getCoordinates(MathUtillities.Corner.C).x) / 2,
-                        MathUtillities.getCoordinates(MathUtillities.Corner.C).y);
-                bdSide.type = BodyType.STATIC;
-                bdSide.angle = 0;
-                //define shape of the body.
-                EdgeShape esSide = new EdgeShape();
-                esSide.set(new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.D).x, MathUtillities.getCoordinates(MathUtillities.Corner.D).y),
-                        new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.C).x, MathUtillities.getCoordinates(MathUtillities.Corner.C).y));
-                //define fixture of the body.
-                FixtureDef fdSide = new FixtureDef();
-                fdSide.shape = esSide;
-                fdSide.friction = 0.3f;
-                fdSide.restitution = 1f;
-                //create the body and add fixture to it
-                bodyRedRightSide = world.getPhysWorld().createBody(bdSide);
-                bodyRedRightSide.createFixture(fdSide);
-            }
-            break;
-            case LEFT_LEFT: /**
-             * **Blue Left side**
-             */
-            {
-                //body definition
-                BodyDef bdSide = new BodyDef();
-                bdSide.position.set((MathUtillities.getCoordinates(MathUtillities.Corner.I).x + MathUtillities.getCoordinates(MathUtillities.Corner.F).x) / 2,
-                        (MathUtillities.getCoordinates(MathUtillities.Corner.I).y + MathUtillities.getCoordinates(MathUtillities.Corner.F).y) / 2);
-                bdSide.type = BodyType.STATIC;
-                //define shape of the body.
-                EdgeShape esSide = new EdgeShape();
-                esSide.set(new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.I).x, MathUtillities.getCoordinates(MathUtillities.Corner.I).y),
-                        new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.F).x, MathUtillities.getCoordinates(MathUtillities.Corner.F).y));
-                //define fixture of the body.
-                FixtureDef fdSide = new FixtureDef();
-                fdSide.shape = esSide;
-                fdSide.friction = 0.3f;
-                fdSide.restitution = 1f;
-                //create the body and add fixture to it
-                bodyBlueLeftSide = world.getPhysWorld().createBody(bdSide);
-                bodyBlueLeftSide.createFixture(fdSide);
-            }
-            break;
-            /*
-             **Blue Right side**
-             */
-            case LEFT_RIGHT: {
-                //body definition
-                BodyDef bdSide = new BodyDef();
-         bdSide.position.set((MathUtillities.getCoordinates(MathUtillities.Corner.A).x + MathUtillities.getCoordinates(MathUtillities.Corner.E).x) / 2,
-         (MathUtillities.getCoordinates(MathUtillities.Corner.A).y + MathUtillities.getCoordinates(MathUtillities.Corner.E).y) / 2);
-         bdSide.type = BodyType.STATIC;
-         //define shape of the body.
-         EdgeShape esSide = new EdgeShape();
-         esSide.set(new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.A).x, MathUtillities.getCoordinates(MathUtillities.Corner.A).y),
-         new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.E).x, MathUtillities.getCoordinates(MathUtillities.Corner.E).y));
-         //define fixture of the body.
-         FixtureDef fdSide = new FixtureDef();
-         fdSide.shape = esSide;
-         fdSide.friction = 0.3f;
-         fdSide.restitution = 1f;
-         //create the body and add fixture to it
-         bodyBlueRightSide = world.getPhysWorld().createBody(bdSide);
-         bodyBlueRightSide.createFixture(fdSide);
-            }
-            break;
-            /*
-             **Green Left side**
-             */
-            case RIGHT_LEFT: {
-                //body definition
-                BodyDef bdSide = new BodyDef();
-                bdSide.position.set((MathUtillities.getCoordinates(MathUtillities.Corner.D).x + MathUtillities.getCoordinates(MathUtillities.Corner.G).x) / 2,
-                        (MathUtillities.getCoordinates(MathUtillities.Corner.D).y + MathUtillities.getCoordinates(MathUtillities.Corner.G).y) / 2);
-                bdSide.type = BodyType.STATIC;
-                //define shape of the body.
-                EdgeShape esSide = new EdgeShape();
-                esSide.set(new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.D).x, MathUtillities.getCoordinates(MathUtillities.Corner.D).y),
-                        new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.G).x, MathUtillities.getCoordinates(MathUtillities.Corner.G).y));
-                //define fixture of the body.
-                FixtureDef fdSide = new FixtureDef();
-                fdSide.shape = esSide;
-                fdSide.friction = 0.3f;
-                fdSide.restitution = 1f;
-                //create the body and add fixture to it
-                bodyGreenLeftSide = world.getPhysWorld().createBody(bdSide);
-                bodyGreenLeftSide.createFixture(fdSide);
-            }
-            break;
-            /*
-             **Green Right side**
-             */
-            case RIGHT_RIGHT: {
-                //body definition
-                BodyDef bdSide = new BodyDef();
-                bdSide.position.set((MathUtillities.getCoordinates(MathUtillities.Corner.I).x + MathUtillities.getCoordinates(MathUtillities.Corner.H).x) / 2,
-                        (MathUtillities.getCoordinates(MathUtillities.Corner.I).y + MathUtillities.getCoordinates(MathUtillities.Corner.H).y) / 2);
-                bdSide.type = BodyType.STATIC;
-                //define shape of the body.
-                EdgeShape esSide = new EdgeShape();
-                esSide.set(new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.I).x, MathUtillities.getCoordinates(MathUtillities.Corner.I).y),
-                        new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.H).x, MathUtillities.getCoordinates(MathUtillities.Corner.H).y));
-                //define fixture of the body.
-                FixtureDef fdSide = new FixtureDef();
-                fdSide.shape = esSide;
-                fdSide.friction = 0.3f;
-                fdSide.restitution = 1f;
-                //create the body and add fixture to it
-                bodyGreenRightSide = world.getPhysWorld().createBody(bdSide);
-                bodyGreenRightSide.createFixture(fdSide);
-            }
-            break;
-
-        }
+        //Create body defenition
+        BodyDef bdSide = new BodyDef();
+        //Set center position of the body
+        bdSide.position.set((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2);
+        //Set body type to static
+        bdSide.type = BodyType.STATIC;
+        //Set the angle of the body
+        bdSide.angle = 0;
+        
+        //Create body
+        body = world.getPhysWorld().createBody(bdSide);
+        
+        //Define fixture for the body
+        FixtureDef fdSide = new FixtureDef();
+        fdSide.friction = 0.3f;
+        fdSide.restitution = 1f;
+        
+        //Define the shape of the body
+        EdgeShape esSide = new EdgeShape();
+        esSide.set(new Vec2(-len/2f, 0)
+                , new Vec2(len/2f, 0));
+        fdSide.shape = esSide;
+        
+        //Add shape and fixture to the body and dispose
+        body.createFixture(fdSide);
     }
 
     public WallID getWallID() {

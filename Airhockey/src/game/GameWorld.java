@@ -37,12 +37,12 @@ public class GameWorld {
         world = new World(new Vec2(0.0f, 0.0f));
         pods = new ArrayList<>();
         puck = new Puck(10, this);
-        wall = new Wall(WallID.BOTTOM_LEFT, this);
-        wall = new Wall(WallID.BOTTOM_RIGHT, this);
-        wall = new Wall(WallID.LEFT_LEFT, this);
-        wall = new Wall(WallID.LEFT_RIGHT, this);
-        wall = new Wall(WallID.RIGHT_LEFT, this);
-        wall = new Wall(WallID.RIGHT_RIGHT, this);
+        wall = new Wall(WallID.BOTTOM_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.A), MathUtillities.getCoordinates(MathUtillities.Corner.B));
+        wall = new Wall(WallID.BOTTOM_RIGHT, this, MathUtillities.getCoordinates(MathUtillities.Corner.C), MathUtillities.getCoordinates(MathUtillities.Corner.D));
+        wall = new Wall(WallID.LEFT_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.D), MathUtillities.getCoordinates(MathUtillities.Corner.H));
+        wall = new Wall(WallID.LEFT_RIGHT, this, MathUtillities.getCoordinates(MathUtillities.Corner.G), MathUtillities.getCoordinates(MathUtillities.Corner.I));
+        wall = new Wall(WallID.RIGHT_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.I), MathUtillities.getCoordinates(MathUtillities.Corner.E));
+        wall = new Wall(WallID.RIGHT_RIGHT, this, MathUtillities.getCoordinates(MathUtillities.Corner.F), MathUtillities.getCoordinates(MathUtillities.Corner.A));
         goal = new Goal(players.get(0), this);
         //Make sure only the first 3 players in the array get added
         this.players = new ArrayList<>();
