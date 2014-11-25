@@ -155,7 +155,7 @@ public class MathUtillities {
      * @param b Vector b
      * @return The center of vector a and b
      */
-    private static Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
+    public static Vec2 getCenterOfLine(Vec2 a, Vec2 b) {
         //Is deze nodig?
         //Volgens mij niet
         //Bij wall kun je deze gebruiken en je moet ook nog de coordinaten getten uit getGoalCorners
