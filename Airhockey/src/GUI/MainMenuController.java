@@ -27,7 +27,7 @@ import org.controlsfx.dialog.*;
 
 /**
  *
- * @author HP user
+ * @author Joris
  */
 public class MainMenuController implements Initializable {
 

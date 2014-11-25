@@ -16,7 +16,7 @@ import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
- * @author Joris
+ * @author Maikel
  */
 public class Puck extends Observable{
     //Game objects

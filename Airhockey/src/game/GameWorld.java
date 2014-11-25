@@ -12,7 +12,7 @@ import org.jbox2d.dynamics.World;
 
 /**
  *
- * @author Joris
+ * @author Maikel
  */
 public class GameWorld {
 

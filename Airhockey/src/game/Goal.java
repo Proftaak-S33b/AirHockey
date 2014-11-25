@@ -15,7 +15,7 @@ import org.jbox2d.dynamics.FixtureDef;
 
 /**
  *
- * @author Joris
+ * @author Maikel
  */
 public class Goal {
         //Physics objects

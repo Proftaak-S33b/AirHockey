@@ -9,7 +9,7 @@ import networking.IPlayer;
 
 /**
  *
- * @author Joris
+ * @author Maikel
  */
 public class Human implements IPlayer{
     

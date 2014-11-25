@@ -12,7 +12,7 @@ import org.jbox2d.common.Vec2;
 
 /**
  *
- * @author Joris
+ * @author Etienne
  */
 public class AI extends Observable implements IPlayer, Observer{
 

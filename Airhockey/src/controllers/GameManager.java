@@ -21,7 +21,7 @@ import org.jbox2d.common.Vec2;
 /**
  * Controller for managing game logic
  *
- * @author Joris
+ * @author Maikel
  */
 public class GameManager {
 

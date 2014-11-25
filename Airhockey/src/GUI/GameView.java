@@ -3,17 +3,11 @@ package GUI;
 //<editor-fold defaultstate="collapsed" desc="imports">
 import controllers.GameManager;
 import game.AI;
-import game.GameWorld;
 import game.Human;
-import game.MathUtillities;
-import game.Pod;
-import game.Puck;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,11 +24,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import networking.IPlayer;
 import networking.Lobby;
-import org.jbox2d.common.Vec2;
 
 /**
  * FXML Controller class
