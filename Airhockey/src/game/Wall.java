@@ -56,7 +56,6 @@ public class Wall {
         //Add shape and fixture to the body and dispose
         body.createFixture(fdSide);
     }
-
     public WallID getWallID() {
         return this.wallid;
     }
