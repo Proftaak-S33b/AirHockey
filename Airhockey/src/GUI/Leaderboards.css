@@ -1,6 +1,3 @@
-/*
- * Empty Stylesheet file.
- */
 
 .clearButton {
     -fx-background-color: white;
@@ -13,4 +10,36 @@
 
 .clearButton:armed {
     -fx-background-color: #ededed;
+}
+
+.mainText {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian , rgba(50 ,50 ,50 ,0.5), 1, 1, 1, 2);
+    -fx-font-family: "Aldo the Apache";
+}
+
+.normalText {
+    -fx-font-family: "Imagine Font";
+    -fx-font-size: 14px;
+}
+
+.table {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 12px;
+}
+
+.table-view .column-header {
+    -fx-base: #E0E4CC;
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 16px;
+}
+
+.table-view:row-selection .table-row-cell:filled:hover {
+    -fx-background-color: #A7DBD8;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: #69D2E7;
 }

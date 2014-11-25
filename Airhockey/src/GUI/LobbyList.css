@@ -18,6 +18,11 @@ and open the template in the editor.
     src: url(imagine_font.ttf);
 }
 
+.table {
+    -fx-font-family: "Aldo the Apache";
+    -fx-font-size: 14px;
+}
+
 .mainText {
     -fx-text-fill: white;
     -fx-font-size: 20px;
@@ -29,4 +34,16 @@ and open the template in the editor.
 .normalText {
     -fx-font-family: "Imagine Font";
     -fx-font-size: 14px;
+}
+
+.table-view .column-header {
+    -fx-base: #E0E4CC;
+}
+
+.table-view:row-selection .table-row-cell:filled:hover {
+    -fx-background-color: #A7DBD8;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: #69D2E7;
 }

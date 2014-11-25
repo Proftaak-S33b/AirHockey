@@ -100,7 +100,7 @@
                 </VBox>
             </left>
             <right>
-                <TableView fx:id="lobbyTable" editable="true" prefHeight="500.0" prefWidth="475.0" styleClass="lightBlueButton" BorderPane.alignment="CENTER">
+                <TableView fx:id="lobbyTable" editable="true" prefHeight="500.0" prefWidth="475.0" styleClass="table" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn fx:id="columnGameName" editable="false" prefWidth="314.0" text="Game Name" />
                         <TableColumn fx:id="columnPlayers" editable="false" minWidth="0.0" prefWidth="70.0" text="#Players" />

@@ -75,9 +75,6 @@ public class LobbyListController implements Initializable {
         controller.addLobby("Join me for a challenge!", new Human("bignoob93", "test", 50));
         controller.addLobby("I will beat you!", new Human("2Stronk4U", "test", 1337));
         controller.addLobby("For narnia!", new Human("superman23", "test", 100));
-        Platform.runLater(() -> {
-            controller.getLobby("For narnia!").addPlayer(new Human("Kiko", "test", 200));
-        });
     }
 
     /**

@@ -21,10 +21,10 @@
             <left>
                 <AnchorPane prefHeight="400.0" prefWidth="188.0" style="-fx-background-color: #FA6900;" BorderPane.alignment="CENTER">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#back" text="&lt; Back" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <Button mnemonicParsing="false" onAction="#back" styleClass="lightGrey" text="&lt; Back" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
                         <VBox layoutY="50.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                             <children>
-                                <Label text="Search player" VBox.vgrow="ALWAYS" />
+                                <Label styleClass="mainText" text="Search player" VBox.vgrow="ALWAYS" />
                                 <HBox prefHeight="27.0" prefWidth="168.0">
                                     <children>
                                         <TextField fx:id="searchText" onKeyReleased="#liveSearch" prefHeight="25.0" prefWidth="144.0" />
@@ -40,7 +40,7 @@
                 </AnchorPane>
             </left>
             <center>
-                <TableView fx:id="tablePlayers" onMousePressed="#selectTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <TableView fx:id="tablePlayers" onMousePressed="#selectTable" prefHeight="200.0" prefWidth="200.0" styleClass="table" BorderPane.alignment="CENTER">
                     <columns>
                         <TableColumn fx:id="columnNr" prefWidth="57.0" text="#" />
                         <TableColumn fx:id="columnPlayerName" editable="false" minWidth="0.0" prefWidth="185.0" text="Name" />
