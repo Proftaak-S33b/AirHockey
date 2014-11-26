@@ -16,7 +16,13 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import networking.IPlayer;
+import org.jbox2d.callbacks.DebugDraw;
+import org.jbox2d.collision.shapes.EdgeShape;
+import org.jbox2d.collision.shapes.ShapeType;
+import org.jbox2d.common.Color3f;
+import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
 
 /**
  * Controller for managing game logic
@@ -49,18 +55,12 @@ public class GameManager {
 
                     //Blue side
                     drawSide(Color.BLUE);
+
+                    drawPuck();
+
+                    player_Move(true, true);
             
-            //Green side
-            drawSide(Color.GREEN);
-
-            //Red side
-            drawSide(Color.RED);
-
-            drawPuck();
-
-            player_Move(true, true);
-            
-            drawPod();
+                    drawPod();
                             }
             });
 
@@ -77,7 +77,24 @@ public class GameManager {
     public void drawSide(Color color) {
         gc.setStroke(color);
         gc.setFill(color);
-
+        
+        Body bodylist = gameworld.getPhysWorld().getBodyList();
+        while(bodylist != null)
+        {
+            Vec2 pos = bodylist.getPosition();
+            ShapeType type = bodylist.getFixtureList().getShape().getType();
+            float angle = bodylist.getAngle();
+            if(type == ShapeType.EDGE)
+            {
+                EdgeShape line = (EdgeShape) bodylist.getFixtureList().getShape();
+                Vec2 point1 = Convert(new Vec2(MathUtillities.rotateVectorAroundPoint(new Vec2(pos.x + line.getRadius()/2, pos.y), pos, angle)));
+                Vec2 point2 = Convert(new Vec2(MathUtillities.rotateVectorAroundPoint(new Vec2(pos.x - line.getRadius()/2, pos.y), pos, angle)));
+                gc.strokeLine(point1.x, point1.y, point2.x, point2.y);
+            }
+            bodylist = bodylist.getNext();
+        }
+        
+        /*
         // fieldcorners
         Vec2 field_bottomleft = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.A));
         Vec2 field_top = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.I));
@@ -89,9 +106,9 @@ public class GameManager {
         Vec2 goal_lefttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.E));
         Vec2 goal_leftbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.F));
         Vec2 goal_rightbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.G));
-        Vec2 goal_righttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.H));
-
-        if (color == Color.RED) {
+        Vec2 goal_righttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.H));*/
+        
+        /*if (color == Color.RED) {
 
             //  links onder naar linksonder van goal
             gc.strokeLine(
@@ -150,7 +167,7 @@ public class GameManager {
                     goal_lefttop.x,
                     goal_lefttop.y);
 
-            /* teken goal */
+            //teken goal
             //
             gc.strokeLine(
                     goal_lefttop.x,
@@ -202,7 +219,7 @@ public class GameManager {
                     goal_rightbottom.x,
                     goal_rightbottom.y);
 
-            /* teken goal */
+            // teken goal
             gc.strokeLine(
                     goal_righttop.x,
                     goal_righttop.y,
@@ -241,9 +258,7 @@ public class GameManager {
                     field_top.y,
                     goal_righttop.x,
                     goal_righttop.y);
-        }
-
-        
+        }*/
     }
 
     /**
@@ -269,7 +284,10 @@ public class GameManager {
         Vec2 position = Convert(puck.getPosition());
         double pucksize = MathUtillities.getPuckSize() * scale;
 
-        gc.fillOval(position.x, position.y, pucksize, pucksize);
+        gc.fillOval(position.x - MathUtillities.getPuckSize() / 2, 
+                    position.y - MathUtillities.getPuckSize() / 2, 
+                    pucksize, 
+                    pucksize);
     }
 
     /**

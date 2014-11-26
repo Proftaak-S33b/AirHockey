@@ -26,7 +26,7 @@ import networking.Player_Leaderboard;
 /**
  * FXML Controller class
  *
- * @author Joris
+ * @author Jur
  */
 public class LeaderboardsController implements Initializable {
 

@@ -174,5 +174,22 @@ public class MathUtillities {
         positions.add(new Vec2(c.x, c.y));
         return positions;
     }
+    
+    /**
+     * Rotates the vector around a certaint point
+     * Calculation used:
+     * x'=(x-h)cos(T)-(y-k)sin(T)+h
+     * y'=(x-h)sin(T)+(y-k)cos(T)+k
+     * @param point The point that has to be rotated
+     * @param center The point that is the center
+     * @param angel The angle of which the point has to be rotated
+     * @return The new vector
+     */
+    public static Vec2 rotateVectorAroundPoint(Vec2 point, Vec2 center, float angel)
+    {
+        float x = (float) ((point.x - center.x) * Math.cos(angel) - (point.y - center.y) * Math.sin(angel) + center.x);
+        float y = (float) ((point.x - center.y) * Math.sin(angel) - (point.y - center.y) * Math.cos(angel) + center.y);
+        return new Vec2(x,y);
+    }
 
 }
