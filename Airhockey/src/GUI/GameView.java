@@ -164,7 +164,7 @@ public class GameView implements Initializable {
      * Checks which buttons are pressed and moves the player
      */
     private void player_Move() {
-        //gamemanager.player_Move(playerMoveRight, playerMoveLeft);
+        gamemanager.player_Move(playerMoveRight, playerMoveLeft);
     }
 
     /**
