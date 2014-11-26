@@ -59,6 +59,7 @@ public class Wall {
         
         //Set the angle
         body.setTransform(body.getPosition(), MathUtils.atan2(pos2.y-pos1.y, pos2.x-pos1.x));
+        body.setUserData(wallid);
     }
     public WallID getWallID() {
         return this.wallid;

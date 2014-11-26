@@ -9,8 +9,6 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * RMI Server class. Connects with Client.
@@ -45,7 +43,7 @@ public class Server {
      */
     public HashMap getRegistryValues() throws RemoteException, NotBoundException{
         
-        HashMap values = new HashMap<String, Remote>();
+        HashMap values = new HashMap<>();
         
         // Get all the names registered. (Keys)
         String[] array = registry.list();
@@ -80,11 +78,11 @@ public class Server {
     /**
      * Creates a new Registry on default port 1099.
      */
-    public void CreateRegistry(){
+    private void CreateRegistry(){
         try {
             registry = LocateRegistry.createRegistry(DEFAULT_PORT);
         } catch (RemoteException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("RemoteException: " + ex.getMessage());
         }
     }
     
@@ -92,11 +90,11 @@ public class Server {
      * Creates a new Registry on a given portnumber.
      * @param portnumber an int with the number of the port a Client needs to connect to.
      */
-    public void CreateRegistry(int portnumber){
+    private void CreateRegistry(int portnumber){
         try {
             registry = LocateRegistry.createRegistry(portnumber);
         } catch (RemoteException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("RemoteException: " + ex.getMessage());
         }
     }
     
@@ -104,16 +102,13 @@ public class Server {
      * Binds a remote object to the registry.
      * @param name a String with the name to bind to.
      * @param obj a remote object to bind to the registry.
+     * @throws java.rmi.AlreadyBoundException this exception is thrown when the name is already in use.
      */
-    public void BindToRegistry(String name, Remote obj){
+    public void BindToRegistry(String name, Remote obj) throws AlreadyBoundException{
         try {
             registry.bind(name, obj);
         } catch (RemoteException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AlreadyBoundException ex) {
-            //Do you want to override the bind instead?
-            //registry.rebind(name, obj);
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("RemoteException: " + ex.getMessage());
         }
     }
     
