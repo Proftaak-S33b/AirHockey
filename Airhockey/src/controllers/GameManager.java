@@ -368,9 +368,7 @@ public class GameManager {
             if (distanceGreen > personalspaceGreen) {
                 AI_moveDown("GREEN");
             }
-        }
-
-        //System.out.println("Distance: " + distance + ", puck.y: " + puckY + ", pod.y: " + p2Y);        
+        }   
     }
 
     /**

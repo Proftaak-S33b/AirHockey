@@ -95,7 +95,6 @@ public class GameView implements Initializable {
         currentPlayer = player;
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;
-        System.out.println(difficulty);
         gamemanager = new GameManager(gc , players, difficulty);
         
                 new AnimationTimer() {
@@ -158,15 +157,13 @@ public class GameView implements Initializable {
                 if (playerMoveRight) {
                     playerMoveRight = false;
                 }
-                System.out.println("Left pressed");
                 playerMoveLeft = true;
                 break;
             case RIGHT:
                 if (playerMoveLeft) {
                     playerMoveLeft = false;
                 }
-                playerMoveRight = true;
-                System.out.println("Right pressed");
+                playerMoveRight = true;;
                 break;
         }
     }
@@ -182,13 +179,11 @@ public class GameView implements Initializable {
                 if (playerMoveLeft) {
                     playerMoveLeft = false;
                 }
-                System.out.println("Left released");
                 break;
             case RIGHT:
                 if (playerMoveRight) {
                     playerMoveRight = false;
                 }
-                System.out.println("Right released");
                 break;
         }
     }
