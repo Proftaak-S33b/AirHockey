@@ -65,9 +65,8 @@ public class MathUtillities {
      * @return a vector to draw a shape
      */
     public static Vec2 rotateVector(Vec2 vector) {
-        float yVector = (50 - vector.y) * 10;
-        float xVector = vector.x * 10;
-        return new Vec2(xVector, yVector);
+        float yVector = 50 - vector.y;
+        return new Vec2(vector.x, yVector);
     }
 
     /**
