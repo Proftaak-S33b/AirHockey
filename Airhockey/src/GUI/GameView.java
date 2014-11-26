@@ -3,6 +3,7 @@ package GUI;
 //<editor-fold defaultstate="collapsed" desc="imports">
 import controllers.GameManager;
 import game.AI;
+import game.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
@@ -70,8 +71,9 @@ public class GameView implements Initializable {
     private Lobby currentLobby;
     private GameType gametype;
     private GameManager gamemanager;
+    private Difficulty difficulty;
 
-
+    private ArrayList<IPlayer> players;
 
     // Scales the physics to the drawing.
 
@@ -83,14 +85,20 @@ public class GameView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
-        ArrayList<IPlayer> players = new ArrayList<>();
+        players = new ArrayList<>();
         players.add(currentPlayer);
         players.add(new AI("kees", 20));
         players.add(new AI("kees2", 20));
-        gamemanager = new GameManager(gc , players);
-        
+    }
 
-        new AnimationTimer() {
+    public void init_Singleplayer(Human player, Difficulty difficulty) {
+        currentPlayer = player;
+        gametype = GameType.SINGLEPLAYER;
+        this.difficulty = difficulty;
+        System.out.println(difficulty);
+        gamemanager = new GameManager(gc , players, difficulty);
+        
+                new AnimationTimer() {
 
             @Override
             public void handle(long now) {
@@ -100,40 +108,12 @@ public class GameView implements Initializable {
         }.start();
 
         gamemanager.update();
-
-    }
-
-    public void init_Singleplayer(Human player) {
-        currentPlayer = player;
-        gametype = GameType.SINGLEPLAYER;
     }
 
     public void init_Multiplayer(Human player, Lobby lobby) {
         currentPlayer = player;
         currentLobby = lobby;
         gametype = GameType.MULTIPLAYER;
-    }
-
-
-    /**
-     * Part of slowly phasing out the AI from the Controller to the AI classes.
-     */
-    private void AI_CalculateMovement() {
-
-    }
-
-    /**
-     * Moves the AI up from player viewpoint.
-     */
-    private void AI_moveUp() {
-
-    }
-
-    /**
-     * Moves the AI down from player viewpoint.
-     */
-    private void AI_moveDown() {
-
     }
 
     /**

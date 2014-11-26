@@ -6,8 +6,8 @@
 package GUI;
 
 import controllers.DatabaseManager;
+import game.Difficulty;
 import game.Human;
-import z_OLD_game.Difficulty;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,10 +33,10 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private ComboBox AIDifficulty;
-   
+
     @FXML
     private TextField tfUsername;
-    
+
     @FXML
     private TextField tfPassword;
 
@@ -50,15 +50,32 @@ public class MainMenuController implements Initializable {
     }
 
     public void handleSingleplayer(ActionEvent event) {
+        String test = AIDifficulty.getSelectionModel().selectedItemProperty().getValue().toString();
+        Difficulty difficulty;
+        switch (test) {
+            case "Normal":
+                difficulty = Difficulty.NORMAL;
+                break;
+            case "Hard":
+                difficulty = Difficulty.HARD;
+                break;
+            case "Easy":
+                difficulty = Difficulty.EASY;
+                break;
+            default:
+                difficulty = Difficulty.EASY;
+                break;
+        }
+        
         try {
-            Node node = (Node) event.getSource();
-            Stage stage = (Stage) node.getScene().getWindow();
-            Parent root;
-            root = FXMLLoader.load(getClass().getResource("GameView.fxml"));
-            Scene scene = new Scene(root);
-            stage.setTitle("Airhockey - In singleplayer game");
-            stage.setScene(scene);
-            stage.show();
+           Node node = (Node) event.getSource();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+                Stage stage = (Stage) node.getScene().getWindow();
+                stage.setScene(new Scene((Pane) loader.load()));
+                GameView controller = loader.<GameView>getController();
+                stage.show();
+                controller.init_Singleplayer(currentPlayer, difficulty);
+            
         } catch (IOException ex) {
             System.out.println("Error changing scene from Main menu to Game " + ex.toString());
         }
@@ -78,14 +95,13 @@ public class MainMenuController implements Initializable {
             } catch (IOException ex) {
                 System.out.println("Error changing scene from Main menu to LobbyList " + ex.toString());
             }
-        }
-        else{
+        } else {
             Action response = Dialogs.create()
-                .owner( false ? this : null)                    
-                .title("ERROR!")
-                .masthead(false ? "Just Checkin'" : null)
-                .message( "Username or password are incorrect!")
-                .showError();
+                    .owner(false ? this : null)
+                    .title("ERROR!")
+                    .masthead(false ? "Just Checkin'" : null)
+                    .message("Username or password are incorrect!")
+                    .showError();
         }
     }
 
@@ -99,10 +115,11 @@ public class MainMenuController implements Initializable {
             System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
         }
     }
-    
+
     /**
      * For button create user
-     * @param event 
+     *
+     * @param event
      */
     public void handleCreateUser(ActionEvent event) {
         try {

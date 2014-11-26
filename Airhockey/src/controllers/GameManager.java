@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import game.Difficulty;
 import game.GameWorld;
 import game.MathUtillities;
 import game.Pod;
@@ -27,12 +28,14 @@ public class GameManager {
 
     private GameWorld gameworld;
     private GraphicsContext gc;
+    private Difficulty difficulty;
 
     final int scale = 10;
 
-    public GameManager(GraphicsContext gc, ArrayList<IPlayer> players) {
+    public GameManager(GraphicsContext gc, ArrayList<IPlayer> players, Difficulty difficulty) {
         this.gc = gc;
         gameworld = new GameWorld(players);
+        this.difficulty = difficulty;
     }
 
     /**
@@ -49,19 +52,19 @@ public class GameManager {
 
                     //Blue side
                     drawSide(Color.BLUE);
-            
-            //Green side
-            drawSide(Color.GREEN);
 
-            //Red side
-            drawSide(Color.RED);
+                    //Green side
+                    drawSide(Color.GREEN);
 
-            drawPuck();
+                    //Red side
+                    drawSide(Color.RED);
 
-            player_Move(true, true);
-            
-            drawPod();
-                            }
+                    drawPuck();
+
+                    player_Move(true, true);
+
+                    drawPod();
+                }
             });
 
         } catch (Exception e) {
@@ -243,7 +246,6 @@ public class GameManager {
                     goal_righttop.y);
         }
 
-        
     }
 
     /**
@@ -294,7 +296,114 @@ public class GameManager {
         gc.fillOval(vector3.x, vector3.y, size, size);
 
         // AI
-        //AI_CalculateMovement(corners);
+        AI_CalculateMovement();
+    }
+
+    /**
+     * Part of slowly phasing out the AI from the Controller to the AI classes.
+     */
+    private void AI_CalculateMovement() {
+        // temp | note-to-self: avoid hardcoding     
+        float p1Y = gameworld.getPod(1).getPosition().y; // AI #1     
+        float p2Y = gameworld.getPod(2).getPosition().y; // AI #2
+        float puckY = gameworld.getPuck().getPosition().y;
+
+        /* Measure distance - whether y is lower or higher, the distance will 
+         * always be a positive number.
+         */
+        float distanceBlue = puckY - p1Y;
+        if (distanceBlue < 0) {
+            distanceBlue -= distanceBlue + distanceBlue;
+        }
+
+        float distanceGreen = puckY - p2Y;
+        if (distanceGreen < 0) {
+            distanceGreen -= distanceGreen + distanceGreen;
+        }
+
+        // Create deadzone to prevent flickering.
+        //When in doubt, set to 25. jus werks.
+        float personalspaceBlue = 0;
+        float personalspaceGreen = 0;
+        System.out.println(difficulty);
+        if(difficulty == Difficulty.EASY)
+        {
+            personalspaceBlue = 5;
+            personalspaceGreen = 6;
+        }
+        else if(difficulty == Difficulty.NORMAL)
+        {
+            personalspaceBlue = 3;
+            personalspaceGreen = 4;
+        }
+        else if (difficulty == Difficulty.HARD)
+        {
+            personalspaceBlue = 1;
+            personalspaceGreen = 2;
+        }
+
+        // Where is the puck?
+        if (puckY < p1Y) {
+            // Does the AI respect the puck's personal space?                
+            if (distanceBlue > personalspaceBlue) {
+                AI_moveUp("BLUE");
+            }
+
+        }
+        if (puckY < p2Y) {
+            if (distanceGreen > personalspaceGreen) {
+                AI_moveUp("GREEN");
+            }
+        }
+
+        // Where is the puck?
+        if (puckY > p1Y) {
+            // Does the AI respect the puck's personal space?                
+            if (distanceBlue > personalspaceBlue) {
+                AI_moveDown("BLUE");
+            }
+
+        }
+        if (puckY > p2Y) {
+            if (distanceGreen > personalspaceGreen) {
+                AI_moveDown("GREEN");
+            }
+        }
+
+        //System.out.println("Distance: " + distance + ", puck.y: " + puckY + ", pod.y: " + p2Y);        
+    }
+
+    /**
+     * Moves the AI up from player viewpoint.
+     */
+    private void AI_moveUp(String kleur) {
+        if (kleur.equals("BLUE")) {
+            if (gameworld.getPod(1).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.F).y + MathUtillities.getPodSize()) {
+                gameworld.getPod(1).moveLeft(1);
+            }
+        }
+        if (kleur.equals("GREEN")) {
+            if (gameworld.getPod(2).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.G).y + MathUtillities.getPodSize()) {
+                gameworld.getPod(2).moveRight(2);
+            }
+        }
+    }
+
+    /**
+     * Moves the AI down from player viewpoint.
+     */
+    private void AI_moveDown(String kleur) {
+        if (kleur.equals("BLUE")) {
+            if (gameworld.getPod(1).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.E).y) {
+                gameworld.getPod(1).moveRight(1);
+            }
+        }
+        if (kleur.equals("GREEN")) {
+            if (gameworld.getPod(2).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.H).y) {
+                gameworld.getPod(2).moveLeft(2);
+            }
+        }
+
     }
 
     public void player_Move(boolean playerMoveRight, boolean playerMoveLeft) {
