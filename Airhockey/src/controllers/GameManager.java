@@ -53,7 +53,7 @@ public class GameManager implements ContactListener{
                 @Override
                 public void run() {
                     gc.setFill(Color.WHITESMOKE);
-                    gc.fillRect(0.0, 0.0, 550, 550);
+                    gc.fillRect(0.0, 0.0, 500, 500);
 
                     //Blue side
                     drawSide(Color.BLUE);
