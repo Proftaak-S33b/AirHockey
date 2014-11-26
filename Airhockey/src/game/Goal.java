@@ -38,7 +38,7 @@ public class Goal {
         //Create body defenition
         BodyDef bdSide = new BodyDef();
         //Set center position of the body
-        bdSide.position.set(((pos1.x) + (pos2.x)) / 2 -0.6f, (((pos1.y) + (pos2.y)) / 2 +0.4f));
+        bdSide.position.set(((pos1.x) + (pos2.x)) / 2 , (((pos1.y) + (pos2.y)) / 2));
         //Set body type to static
         bdSide.type = BodyType.STATIC;
         //Set the angle of the body
@@ -63,7 +63,7 @@ public class Goal {
         
         //Set the angle
         body.setTransform(body.getPosition(), MathUtils.atan2((pos2.y)-(pos1.y), (pos2.x)-(pos1.x)));
-        
+        body.setUserData(player);
     }
     
     public IPlayer getPlayer()

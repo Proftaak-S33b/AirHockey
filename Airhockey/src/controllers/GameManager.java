@@ -17,14 +17,19 @@ import javafx.application.Platform;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import networking.IPlayer;
+import org.jbox2d.callbacks.ContactImpulse;
+import org.jbox2d.callbacks.ContactListener;
+import org.jbox2d.collision.Manifold;
 import org.jbox2d.common.Vec2;
+import org.jbox2d.dynamics.Body;
+import org.jbox2d.dynamics.contacts.Contact;
 
 /**
  * Controller for managing game logic
  *
  * @author Maikel
  */
-public class GameManager {
+public class GameManager implements ContactListener{
 
     private GameWorld gameworld;
     private GraphicsContext gc;
@@ -101,7 +106,7 @@ public class GameManager {
                     field_bottomleft.x,
                     field_bottomleft.y,
                     goal_bottomleft.x,
-                    goal_bottomleft.y);
+                    goal_bottomleft.y );
 
             // omlaag
             gc.strokeLine(
@@ -271,7 +276,7 @@ public class GameManager {
         Vec2 position = Convert(puck.getPosition());
         double pucksize = MathUtillities.getPuckSize() * scale;
 
-        gc.fillOval(position.x, position.y, pucksize, pucksize);
+        gc.fillOval(position.x , position.y, pucksize, pucksize);
     }
 
     /**
@@ -325,7 +330,6 @@ public class GameManager {
         //When in doubt, set to 25. jus werks.
         float personalspaceBlue = 0;
         float personalspaceGreen = 0;
-        System.out.println(difficulty);
         if(difficulty == Difficulty.EASY)
         {
             personalspaceBlue = 5;
@@ -430,6 +434,35 @@ public class GameManager {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+    }
+
+    @Override
+    public void beginContact(Contact cntct) {
+        Body bodyA = cntct.getFixtureA().getBody();
+        Body bodyB = cntct.getFixtureB().getBody();
+        if(bodyA.getUserData() instanceof Puck && bodyB.getUserData().equals("Goal"))
+        {
+            System.out.println(bodyA.getUserData().toString());
+        }
+        else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData().equals("Goal"))
+        {
+            System.out.println(bodyB.getUserData().toString());
+        }
+    }
+
+    @Override
+    public void endContact(Contact cntct) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void preSolve(Contact cntct, Manifold mnfld) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void postSolve(Contact cntct, ContactImpulse ci) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

@@ -36,6 +36,7 @@ import networking.Lobby;
  */
 public class GameView implements Initializable {
 
+  
     private enum GameType {
 
         SINGLEPLAYER,
