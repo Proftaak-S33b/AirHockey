@@ -36,7 +36,7 @@ public class Pod {
         //body definition
         BodyDef bd = new BodyDef();
         bd.position.set(Position.x, Position.y);
-        bd.type = BodyType.KINEMATIC;
+        bd.type = BodyType.STATIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
         cs.m_radius = (float) MathUtillities.getPodSize() / 2;

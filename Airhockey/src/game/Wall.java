@@ -38,7 +38,7 @@ public class Wall {
         //Set body type to static
         bdSide.type = BodyType.STATIC;
         //Set the angle of the body
-        bdSide.angle = MathUtils.atan2(pos2.y-pos1.y, pos2.x-pos1.x);
+        bdSide.angle = 0;
         
         //Create body
         body = world.getPhysWorld().createBody(bdSide);
@@ -58,7 +58,7 @@ public class Wall {
         body.createFixture(fdSide);
         
         //Set the angle
-        body.setTransform(body.getPosition(), body.getAngle());
+        body.setTransform(body.getPosition(), MathUtils.atan2(pos2.y-pos1.y, pos2.x-pos1.x));
     }
     public WallID getWallID() {
         return this.wallid;
