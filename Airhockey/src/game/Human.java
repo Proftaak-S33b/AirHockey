@@ -15,7 +15,7 @@ public class Human implements IPlayer{
     
     private final String name;
     private final String password;
-    private final int score;
+    private int score;
     
     /**
      *
@@ -36,6 +36,11 @@ public class Human implements IPlayer{
     @Override
     public int getRanking() {
         return this.score;
+    }
+
+    @Override
+    public void setRanking() {
+        score--;
     }
     
 }

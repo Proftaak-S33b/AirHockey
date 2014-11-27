@@ -66,7 +66,7 @@ public class MainMenuController implements Initializable {
                 difficulty = Difficulty.EASY;
                 break;
         }
-        
+        currentPlayer = new Human("Ik", "", 20);
         try {
            Node node = (Node) event.getSource();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));

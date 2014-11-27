@@ -16,4 +16,6 @@ public interface IPlayer extends Serializable{
     public String getName();
     
     public int getRanking();
+    
+    public void setRanking();
 }

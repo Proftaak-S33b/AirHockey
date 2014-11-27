@@ -37,6 +37,11 @@ public class GameWorld {
         world = new World(new Vec2(0.0f, 0.0f));
         pods = new ArrayList<>();
         puck = new Puck(10, this);
+                //Make sure only the first 3 players in the array get added
+        this.players = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            this.players.add(players.get(i));
+        }
         wall = new Wall(WallID.BOTTOM_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.A), MathUtillities.getCoordinates(MathUtillities.Corner.B));
         wall = new Wall(WallID.BOTTOM_RIGHT, this, MathUtillities.getCoordinates(MathUtillities.Corner.C), MathUtillities.getCoordinates(MathUtillities.Corner.D));
         wall = new Wall(WallID.LEFT_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.D), MathUtillities.getCoordinates(MathUtillities.Corner.G));
@@ -46,11 +51,7 @@ public class GameWorld {
         goal = new Goal(players.get(0), this, MathUtillities.getCoordinates(MathUtillities.Corner.B), MathUtillities.getCoordinates(MathUtillities.Corner.C));
         goal = new Goal(players.get(1), this, MathUtillities.getCoordinates(MathUtillities.Corner.E), MathUtillities.getCoordinates(MathUtillities.Corner.F));
         goal = new Goal(players.get(2), this, MathUtillities.getCoordinates(MathUtillities.Corner.H), MathUtillities.getCoordinates(MathUtillities.Corner.G));
-        //Make sure only the first 3 players in the array get added
-        this.players = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            this.players.add(players.get(i));
-        }
+
         final ArrayList<Vec2> startPositions = MathUtillities.getStartPositions(); 
         pods.add(new Pod(this, this.players.get(0), startPositions.get(0)));
         pods.add(new Pod(this, this.players.get(1), startPositions.get(1)));

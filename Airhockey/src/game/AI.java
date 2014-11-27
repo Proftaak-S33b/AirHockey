@@ -17,7 +17,7 @@ import org.jbox2d.common.Vec2;
 public class AI extends Observable implements IPlayer, Observer{
 
     private final String name;
-    private final int score;
+    private int score;
     private Vec2 direction; 
     
     /**
@@ -50,6 +50,11 @@ public class AI extends Observable implements IPlayer, Observer{
         setChanged();
         notifyObservers(direction);
         clearChanged();
+    }
+
+    @Override
+    public void setRanking() {
+        score--;
     }
     
 }

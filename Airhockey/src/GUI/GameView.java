@@ -86,14 +86,14 @@ public class GameView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
-        players = new ArrayList<>();
-        players.add(currentPlayer);
-        players.add(new AI("kees", 20));
-        players.add(new AI("kees2", 20));
     }
 
     public void init_Singleplayer(Human player, Difficulty difficulty) {
         currentPlayer = player;
+        players = new ArrayList<>();
+        players.add(currentPlayer);
+        players.add(new AI("Com1", 20));
+        players.add(new AI("Com2", 20));
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;
         gamemanager = new GameManager(gc , players, difficulty);

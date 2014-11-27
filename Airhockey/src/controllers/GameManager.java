@@ -7,6 +7,7 @@ package controllers;
 
 import game.Difficulty;
 import game.GameWorld;
+import game.Goal;
 import game.MathUtillities;
 import game.Pod;
 import game.Puck;
@@ -29,7 +30,7 @@ import org.jbox2d.dynamics.contacts.Contact;
  *
  * @author Maikel
  */
-public class GameManager implements ContactListener{
+public class GameManager implements ContactListener {
 
     private GameWorld gameworld;
     private GraphicsContext gc;
@@ -41,6 +42,7 @@ public class GameManager implements ContactListener{
         this.gc = gc;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
+        addContactListener(this);
     }
 
     /**
@@ -106,7 +108,7 @@ public class GameManager implements ContactListener{
                     field_bottomleft.x,
                     field_bottomleft.y,
                     goal_bottomleft.x,
-                    goal_bottomleft.y );
+                    goal_bottomleft.y);
 
             // omlaag
             gc.strokeLine(
@@ -276,7 +278,7 @@ public class GameManager implements ContactListener{
         Vec2 position = Convert(puck.getPosition());
         double pucksize = MathUtillities.getPuckSize() * scale;
 
-        gc.fillOval(position.x , position.y, pucksize, pucksize);
+        gc.fillOval(position.x, position.y, pucksize, pucksize);
     }
 
     /**
@@ -330,18 +332,13 @@ public class GameManager implements ContactListener{
         //When in doubt, set to 25. jus werks.
         float personalspaceBlue = 0;
         float personalspaceGreen = 0;
-        if(difficulty == Difficulty.EASY)
-        {
+        if (difficulty == Difficulty.EASY) {
             personalspaceBlue = 5;
             personalspaceGreen = 6;
-        }
-        else if(difficulty == Difficulty.NORMAL)
-        {
+        } else if (difficulty == Difficulty.NORMAL) {
             personalspaceBlue = 3;
             personalspaceGreen = 4;
-        }
-        else if (difficulty == Difficulty.HARD)
-        {
+        } else if (difficulty == Difficulty.HARD) {
             personalspaceBlue = 1;
             personalspaceGreen = 2;
         }
@@ -372,7 +369,7 @@ public class GameManager implements ContactListener{
             if (distanceGreen > personalspaceGreen) {
                 AI_moveDown("GREEN");
             }
-        }   
+        }
     }
 
     /**
@@ -436,33 +433,37 @@ public class GameManager implements ContactListener{
         }
     }
 
+    public void addContactListener(ContactListener cl) {
+        gameworld.getPhysWorld().setContactListener(cl);
+    }
+
     @Override
     public void beginContact(Contact cntct) {
         Body bodyA = cntct.getFixtureA().getBody();
         Body bodyB = cntct.getFixtureB().getBody();
-        if(bodyA.getUserData() instanceof Puck && bodyB.getUserData().equals("Goal"))
-        {
-            System.out.println(bodyA.getUserData().toString());
-        }
-        else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData().equals("Goal"))
-        {
-            System.out.println(bodyB.getUserData().toString());
+        if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
+            Goal g = (Goal)bodyB.getUserData();
+            g.getPlayer().setRanking();
+            int score = g.getPlayer().getRanking();
+            System.out.println(g.getPlayer().getName() + " " + score);
+        } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
+            Goal g = (Goal)bodyA.getUserData();
+            g.getPlayer().setRanking();
+            int score = g.getPlayer().getRanking();
+            System.out.println(g.getPlayer().getName() + " " + score);
         }
     }
 
     @Override
     public void endContact(Contact cntct) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void preSolve(Contact cntct, Manifold mnfld) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void postSolve(Contact cntct, ContactImpulse ci) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
