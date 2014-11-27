@@ -40,6 +40,8 @@ public class GameManager implements ContactListener {
 
     final int scale = 10;
 
+    int counter = 0;
+
     public GameManager(GraphicsContext gc, ArrayList<IPlayer> players, Difficulty difficulty) {
         this.gc = gc;
         gameworld = new GameWorld(players);
@@ -271,8 +273,7 @@ public class GameManager implements ContactListener {
      */
     public void drawPuckandPod(Color color) {
         //Set the color
-        gc.setStroke(color);
-        gc.setFill(color);
+
         Body bodylist = gameworld.getPhysWorld().getBodyList();
         //While there are physics items, check if circle
         while (bodylist != null) {
@@ -281,6 +282,23 @@ public class GameManager implements ContactListener {
             ShapeType type = bodylist.getFixtureList().getShape().getType();
             //Draw circles
             if (type == ShapeType.CIRCLE) {
+                if (counter == 0) {
+                    gc.setStroke(Color.GREEN);
+                    gc.setFill(Color.GREEN);
+                    counter++;
+                } else if (counter == 1) {
+                    gc.setStroke(Color.BLUE);
+                    gc.setFill(Color.BLUE);
+                    counter++;
+                } else if (counter == 2) {
+                    gc.setStroke(Color.RED);
+                    gc.setFill(Color.RED);
+                    counter++;
+                } else {
+                    gc.setStroke(color);
+                    gc.setFill(color);
+                    counter = 0;
+                }
                 CircleShape cs = (CircleShape) bodylist.getFixtureList().getShape();
                 float x = pos.x - cs.getRadius();
                 float y = pos.y - cs.getRadius();
