@@ -82,8 +82,8 @@ public class MainMenuController implements Initializable {
     }
 
     public void handleMultiplayer(ActionEvent event) {
-        currentPlayer = new Human("Henk", "test", 400);
         if (DatabaseManager.authenticateUser(tfUsername.getText(), tfPassword.getText())) {
+            currentPlayer = new Human(tfUsername.getText(), tfPassword.getText(), 400);
             try {
                 Node node = (Node) event.getSource();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
