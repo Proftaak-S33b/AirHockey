@@ -161,18 +161,29 @@ public class MathUtillities {
         corners.add(getCoordinates(Corner.D));
         corners.add(getCoordinates(Corner.I));
         Vec2 a = getCenterOfLine(corners.get(0), corners.get(1));
-        a.x -= getPodSize() / 2;
-        a.y += getPodSize() / 2;
         Vec2 b = getCenterOfLine(corners.get(2), corners.get(0));
-        b.x -= getPodSize() / 2;
-        b.y += getPodSize() / 2;
         Vec2 c = getCenterOfLine(corners.get(1), corners.get(2));
-        c.x -= getPodSize() / 2;
-        c.y += getPodSize() / 2;
         positions.add(new Vec2(a.x, a.y));
         positions.add(new Vec2(b.x, b.y));
         positions.add(new Vec2(c.x, c.y));
         return positions;
+    }
+    
+    /**
+     * Rotates the vector around a certaint point
+     * Calculation used:
+     * x'=(x-h)cos(T)-(y-k)sin(T)+h
+     * y'=(x-h)sin(T)+(y-k)cos(T)+k
+     * @param point The point that has to be rotated
+     * @param center The point that is the center
+     * @param angel The angle of which the point has to be rotated
+     * @return The new vector
+     */
+    public static Vec2 rotateVectorAroundPoint(Vec2 point, Vec2 center, float angel)
+    {
+        float x = (float) ((point.x - center.x) * Math.cos(angel) - (point.y - center.y) * Math.sin(angel) + center.x);
+        float y = (float) ((point.x - center.x) * Math.sin(angel) + (point.y - center.y) * Math.cos(angel) + center.y);
+        return new Vec2(x,y);
     }
 
 }

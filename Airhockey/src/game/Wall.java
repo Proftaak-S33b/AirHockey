@@ -59,7 +59,9 @@ public class Wall {
         
         //Set the angle
         body.setTransform(body.getPosition(), MathUtils.atan2(pos2.y-pos1.y, pos2.x-pos1.x));
-        body.setUserData(wallid);
+        
+        //Set the user data so that we can track physics items
+        body.setUserData(this);
     }
     public WallID getWallID() {
         return this.wallid;

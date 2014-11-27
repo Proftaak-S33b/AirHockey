@@ -19,55 +19,51 @@ import org.jbox2d.dynamics.FixtureDef;
  * @author Maikel
  */
 public class Goal {
-        //Physics objects
-    private final Body body;
-    //private final Body bodyBlueGoal;
-    //private final Body bodyGreenGoal;
-    
     private final GameWorld world;
     private final IPlayer player;
-    
-    public Goal(IPlayer player, GameWorld world, Vec2 pos1, Vec2 pos2)
-    {
+
+    //Physics object
+    private Body body;
+
+    public Goal(IPlayer player, GameWorld world, Vec2 pos1, Vec2 pos2) {
         this.world = world;
         this.player = player;
-        
-        float len =(float) Math.sqrt((pos1.x)-(pos2.x)*((pos1.x)-(pos2.x))+
-                                    ((pos1.y)-(pos2.y))*((pos1.y)-(pos2.y)));
+        //Calculate lenght of the goal
+        float len = (float) Math.sqrt((pos1.x - pos2.x) * (pos1.x - pos2.x)
+                + (pos1.y - pos2.y) * (pos1.y - pos2.y));
 
         //Create body defenition
         BodyDef bdSide = new BodyDef();
         //Set center position of the body
-        bdSide.position.set(((pos1.x) + (pos2.x)) / 2 , (((pos1.y) + (pos2.y)) / 2));
+        bdSide.position.set((pos1.x + pos2.x) / 2, (pos1.y + pos2.y) / 2);
         //Set body type to static
         bdSide.type = BodyType.STATIC;
         //Set the angle of the body
         bdSide.angle = 0;
-        
+
         //Create body
         body = world.getPhysWorld().createBody(bdSide);
-        
         //Define fixture for the body
         FixtureDef fdSide = new FixtureDef();
         fdSide.friction = 0.3f;
         fdSide.restitution = 1f;
-        
+
         //Define the shape of the body
         EdgeShape esSide = new EdgeShape();
-        esSide.set(new Vec2(-len/2f, 0)
-                , new Vec2(len/2f, 0));
+        esSide.set(new Vec2(-len / 2f, 0), new Vec2(len / 2f, 0));
         fdSide.shape = esSide;
-        
+
         //Add shape and fixture to the body and dispose
         body.createFixture(fdSide);
-        
+
         //Set the angle
-        body.setTransform(body.getPosition(), MathUtils.atan2((pos2.y)-(pos1.y), (pos2.x)-(pos1.x)));
-        body.setUserData(this);
+        body.setTransform(body.getPosition(), MathUtils.atan2(pos2.y - pos1.y, pos2.x - pos1.x));
+
+        //Set the user data so that we can track physics items
+        bdSide.userData = this;
     }
-    
-    public IPlayer getPlayer()
-    {
+
+    public IPlayer getPlayer() {
         return player;
     }
 }
