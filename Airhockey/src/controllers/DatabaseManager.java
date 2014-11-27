@@ -122,7 +122,7 @@ public final class DatabaseManager {
             try{
                 //Try to execute sql statment
                 Statement stmnt = connection.createStatement();
-                String SQL = "SELECT playerName, playerRating FROM PLAYER ORDER BY playerRating;"; 
+                String SQL = "SELECT playerName, playerRating FROM PLAYER ORDER BY playerRating DESC;"; 
                 ResultSet rs = stmnt.executeQuery(SQL);
                 //Put all the records in a table
                 int i = 0;
