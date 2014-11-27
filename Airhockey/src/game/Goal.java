@@ -60,7 +60,7 @@ public class Goal {
         body.setTransform(body.getPosition(), MathUtils.atan2(pos2.y - pos1.y, pos2.x - pos1.x));
 
         //Set the user data so that we can track physics items
-        bdSide.userData = this;
+        body.setUserData(this);
     }
 
     public IPlayer getPlayer() {
