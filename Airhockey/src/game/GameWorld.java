@@ -88,15 +88,6 @@ public class GameWorld {
         for (int i = 0; i < 3; i++) {
             this.players.add(players.get(i));
         }
-        new Wall(WallID.BOTTOM_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.A), MathUtillities.getCoordinates(MathUtillities.Corner.B));
-        new Wall(WallID.BOTTOM_RIGHT, this, MathUtillities.getCoordinates(MathUtillities.Corner.C), MathUtillities.getCoordinates(MathUtillities.Corner.D));
-        new Wall(WallID.LEFT_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.D), MathUtillities.getCoordinates(MathUtillities.Corner.G));
-        new Wall(WallID.LEFT_RIGHT, this, MathUtillities.getCoordinates(MathUtillities.Corner.H), MathUtillities.getCoordinates(MathUtillities.Corner.I));
-        new Wall(WallID.RIGHT_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.I), MathUtillities.getCoordinates(MathUtillities.Corner.E));
-        new Wall(WallID.RIGHT_RIGHT, this, MathUtillities.getCoordinates(MathUtillities.Corner.F), MathUtillities.getCoordinates(MathUtillities.Corner.A));
-        new Goal(players.get(0), this, MathUtillities.getCoordinates(MathUtillities.Corner.B), MathUtillities.getCoordinates(MathUtillities.Corner.C));
-        new Goal(players.get(1), this, MathUtillities.getCoordinates(MathUtillities.Corner.E), MathUtillities.getCoordinates(MathUtillities.Corner.F));
-        new Goal(players.get(2), this, MathUtillities.getCoordinates(MathUtillities.Corner.H), MathUtillities.getCoordinates(MathUtillities.Corner.G));
         //Create pods
         final ArrayList<Vec2> startPositions = MathUtillities.getStartPositions();
         pods = new ArrayList<>();

@@ -58,6 +58,7 @@ public class GameManager implements ContactListener {
                 public void run() {
                     gc.setFill(Color.WHITESMOKE);
                     gc.fillRect(0.0, 0.0, 500, 500);
+                    AI_CalculateMovement();
                     //Draw field
                     drawField(Color.RED, Color.GREEN, Color.BLUE);
 
@@ -361,12 +362,12 @@ public class GameManager implements ContactListener {
      */
     private void AI_moveUp(String kleur) {
         if (kleur.equals("BLUE")) {
-            if (gameworld.getPod(1).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.F).y + MathUtillities.getPodSize()) {
+            if (gameworld.getPod(1).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.F).y + MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(1).moveLeft(1);
             }
         }
         if (kleur.equals("GREEN")) {
-            if (gameworld.getPod(2).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.G).y + MathUtillities.getPodSize()) {
+            if (gameworld.getPod(2).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.G).y + MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(2).moveRight(2);
             }
         }
@@ -377,12 +378,12 @@ public class GameManager implements ContactListener {
      */
     private void AI_moveDown(String kleur) {
         if (kleur.equals("BLUE")) {
-            if (gameworld.getPod(1).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.E).y) {
+            if (gameworld.getPod(1).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.E).y - MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(1).moveRight(1);
             }
         }
         if (kleur.equals("GREEN")) {
-            if (gameworld.getPod(2).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.H).y) {
+            if (gameworld.getPod(2).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.H).y - MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(2).moveLeft(2);
             }
         }
@@ -425,12 +426,12 @@ public class GameManager implements ContactListener {
         Body bodyA = cntct.getFixtureA().getBody();
         Body bodyB = cntct.getFixtureB().getBody();
         if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
-            Goal g = (Goal)bodyB.getUserData();
+            Goal g = (Goal) bodyB.getUserData();
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
         } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
-            Goal g = (Goal)bodyA.getUserData();
+            Goal g = (Goal) bodyA.getUserData();
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
