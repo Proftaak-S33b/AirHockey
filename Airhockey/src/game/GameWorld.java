@@ -160,7 +160,6 @@ public class GameWorld {
     public int getScore(String playerName) {
         return -1;
     }
-    
     /**
      * Resets the puck to the starting position with random direction
      */
@@ -168,5 +167,4 @@ public class GameWorld {
         getPhysWorld().destroyBody(puck.getBody());
         puck = new Puck(10, this);
     }
-
 }

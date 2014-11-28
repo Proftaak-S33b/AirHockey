@@ -41,7 +41,6 @@ public class GameManager implements ContactListener {
     private GraphicsContext gc;
     private Difficulty difficulty;
     private boolean puckReset = false;
-
     final int scale = 10;
 
     int counter = 0;
@@ -50,7 +49,6 @@ public class GameManager implements ContactListener {
         this.gc = gc;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
-        addContactListener(this);
     }
 
     /**
@@ -458,16 +456,13 @@ public class GameManager implements ContactListener {
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
-
             //Reset puck
             puckReset = true;
-
         } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
             Goal g = (Goal) bodyA.getUserData();
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
-
             //Reset puck
             puckReset = true;
         }
