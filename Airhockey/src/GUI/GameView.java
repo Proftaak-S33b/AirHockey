@@ -112,6 +112,7 @@ public class GameView implements Initializable {
             public void handle(long now) {
                 gamemanager.draw();
                 player_Move();
+                tableScore.setItems((ObservableList) players);
             }
         }.start();
 

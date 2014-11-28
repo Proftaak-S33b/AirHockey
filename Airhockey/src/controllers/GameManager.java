@@ -49,6 +49,7 @@ public class GameManager implements ContactListener {
         this.gc = gc;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
+        addContactListener(this);
     }
 
     /**
