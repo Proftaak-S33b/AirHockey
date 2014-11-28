@@ -5,15 +5,18 @@
  */
 package controllers;
 
+import static com.sun.deploy.util.ReflectionUtil.instanceOf;
 import game.Difficulty;
 import game.GameWorld;
 import game.Goal;
 import game.MathUtillities;
+import game.Pod;
 import game.Puck;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import networking.IPlayer;
@@ -37,12 +40,13 @@ public class GameManager implements ContactListener {
     private GameWorld gameworld;
     private GraphicsContext gc;
     private Difficulty difficulty;
+    private boolean puckReset = false;
 
     final int scale = 10;
 
     int counter = 0;
 
-    public GameManager(GraphicsContext gc, ArrayList<IPlayer> players, Difficulty difficulty) {
+    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty) {
         this.gc = gc;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
@@ -65,6 +69,11 @@ public class GameManager implements ContactListener {
                     drawField(Color.RED, Color.GREEN, Color.BLUE);
 
                     drawPuckandPod(Color.BLACK);
+
+                    if (puckReset) {
+                        gameworld.resetPuck();
+                        puckReset = false;
+                    }
                 }
             });
 
@@ -281,7 +290,7 @@ public class GameManager implements ContactListener {
             Vec2 pos = bodylist.getPosition();
             ShapeType type = bodylist.getFixtureList().getShape().getType();
             //Draw circles
-            if (type == ShapeType.CIRCLE) {
+            if (type == ShapeType.CIRCLE && bodylist.getUserData() instanceof Pod) {
                 if (counter == 0) {
                     gc.setStroke(Color.GREEN);
                     gc.setFill(Color.GREEN);
@@ -293,12 +302,13 @@ public class GameManager implements ContactListener {
                 } else if (counter == 2) {
                     gc.setStroke(Color.RED);
                     gc.setFill(Color.RED);
-                    counter++;
-                } else {
-                    gc.setStroke(color);
-                    gc.setFill(color);
                     counter = 0;
                 }
+            } else if (type == ShapeType.CIRCLE && bodylist.getUserData() instanceof Puck) {
+                gc.setStroke(color);
+                gc.setFill(color);
+            }
+            if (type == ShapeType.CIRCLE) {
                 CircleShape cs = (CircleShape) bodylist.getFixtureList().getShape();
                 float x = pos.x - cs.getRadius();
                 float y = pos.y - cs.getRadius();
@@ -448,11 +458,18 @@ public class GameManager implements ContactListener {
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
+
+            //Reset puck
+            puckReset = true;
+
         } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
             Goal g = (Goal) bodyA.getUserData();
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
+
+            //Reset puck
+            puckReset = true;
         }
     }
 

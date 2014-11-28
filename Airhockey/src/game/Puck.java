@@ -21,7 +21,7 @@ import org.jbox2d.dynamics.FixtureDef;
 public class Puck extends Observable{
     //Game objects
     private int speed;
-    private final Vec2 direction;
+    private Vec2 direction;
     private final ArrayList<Pod> touched;
     private final GameWorld world;
     
@@ -36,14 +36,14 @@ public class Puck extends Observable{
     public Puck(int speed, GameWorld world)
     {
         this.speed = speed;
-        direction = new Vec2(0 , -0.5f);
+        direction = new Vec2((float) Math.random() , (float) Math.random());
         direction.normalize();
         touched = new ArrayList<>();
         this.world = world;
 
         //body definition
         BodyDef bd = new BodyDef();
-        bd.position.set((float) Math.random() + 20, (float) (Math.random() + 20));
+        bd.position.set((float) Math.random()*10 + 20, (float) (Math.random()*10 + 20));
         bd.type = BodyType.DYNAMIC;
         //define shape of the body.
         CircleShape cs = new CircleShape();
@@ -70,22 +70,6 @@ public class Puck extends Observable{
     public Vec2 getPosition() {
         return body.getPosition().clone();
     }
-
-    /**
-     * Sets the position of the puck to the given position
-     * @param position Vec2 object of the new position
-     */
-    public void setPosition(Vec2 position) {
-        body.setTransform(position, body.getAngle());
-    }
-    
-    /**
-     * Sets the speed of the puck
-     * @param speed
-     */
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
     
     /**
      * Gets the pod that last touched the Puck
@@ -104,4 +88,11 @@ public class Puck extends Observable{
         this.touched.add(0, touched);
     }
     
+    /**
+     * Get the physics body of the puck
+     * @return The physics body object of the puck
+     */
+    public Body getBody(){
+        return body;
+    }
 }

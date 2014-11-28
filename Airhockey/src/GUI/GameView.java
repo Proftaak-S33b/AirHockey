@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +25,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -74,7 +77,7 @@ public class GameView implements Initializable {
     private GameManager gamemanager;
     private Difficulty difficulty;
 
-    private ArrayList<IPlayer> players;
+    private ObservableList<IPlayer> players;
 
     // Scales the physics to the drawing.
 
@@ -86,14 +89,19 @@ public class GameView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
+        
+        //Initialize score table
+        columnPlayer.setCellValueFactory(new PropertyValueFactory("Name"));
+        columnScore.setCellValueFactory(new PropertyValueFactory("Ranking"));
     }
 
     public void init_Singleplayer(Human player, Difficulty difficulty) {
         currentPlayer = player;
-        players = new ArrayList<>();
+        players = FXCollections.observableArrayList();
         players.add(currentPlayer);
         players.add(new AI("Com1", 20));
         players.add(new AI("Com2", 20));
+        tableScore.setItems((ObservableList) players);
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;
         gamemanager = new GameManager(gc , players, difficulty);

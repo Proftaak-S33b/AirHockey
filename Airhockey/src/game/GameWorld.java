@@ -7,6 +7,7 @@ package game;
 
 import networking.IPlayer;
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
@@ -17,7 +18,7 @@ import org.jbox2d.dynamics.World;
 public class GameWorld {
 
     //Game objects
-    private final Puck puck;
+    private Puck puck;
     private final ArrayList<Pod> pods;
     private final ArrayList<IPlayer> players;
 
@@ -31,7 +32,7 @@ public class GameWorld {
      * @param players An ArrayList of Player objects that will take part in this
      * game. Only the first 3 will be used.
      */
-    public GameWorld(ArrayList<IPlayer> players) {
+    public GameWorld(ObservableList<IPlayer> players) {
         //Create world
         world = new World(new Vec2(0.0f, 0.0f));
         //Create puck
@@ -158,6 +159,14 @@ public class GameWorld {
 
     public int getScore(String playerName) {
         return -1;
+    }
+    
+    /**
+     * Resets the puck to the starting position with random direction
+     */
+    public void resetPuck(){
+        getPhysWorld().destroyBody(puck.getBody());
+        puck = new Puck(10, this);
     }
 
 }
