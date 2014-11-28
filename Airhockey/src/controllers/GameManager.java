@@ -37,13 +37,14 @@ public class GameManager implements ContactListener {
     private GameWorld gameworld;
     private GraphicsContext gc;
     private Difficulty difficulty;
-
+    private ArrayList<IPlayer> players;
     final int scale = 10;
 
     int counter = 0;
 
     public GameManager(GraphicsContext gc, ArrayList<IPlayer> players, Difficulty difficulty) {
         this.gc = gc;
+        this.players =players;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
         addContactListener(this);
@@ -448,11 +449,15 @@ public class GameManager implements ContactListener {
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
+            gameworld = new GameWorld(players);
+            addContactListener(this);
         } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
             Goal g = (Goal) bodyA.getUserData();
             g.getPlayer().setRanking();
             int score = g.getPlayer().getRanking();
             System.out.println(g.getPlayer().getName() + " " + score);
+            gameworld = new GameWorld(players);
+            addContactListener(this);
         }
     }
 

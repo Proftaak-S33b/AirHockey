@@ -21,7 +21,7 @@ import org.jbox2d.dynamics.FixtureDef;
 public class Puck extends Observable{
     //Game objects
     private int speed;
-    private final Vec2 direction;
+    private  Vec2 direction;
     private final ArrayList<Pod> touched;
     private final GameWorld world;
     
@@ -36,7 +36,7 @@ public class Puck extends Observable{
     public Puck(int speed, GameWorld world)
     {
         this.speed = speed;
-        direction = new Vec2(0 , -0.5f);
+        direction = new Vec2((float)Math.random() ,(float)Math.random());
         direction.normalize();
         touched = new ArrayList<>();
         this.world = world;
@@ -76,7 +76,7 @@ public class Puck extends Observable{
      * @param position Vec2 object of the new position
      */
     public void setPosition(Vec2 position) {
-        body.setTransform(position, body.getAngle());
+
     }
     
     /**

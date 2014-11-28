@@ -17,7 +17,7 @@ import org.jbox2d.dynamics.World;
 public class GameWorld {
 
     //Game objects
-    private final Puck puck;
+    private Puck puck;
     private final ArrayList<Pod> pods;
     private final ArrayList<IPlayer> players;
 
@@ -159,5 +159,4 @@ public class GameWorld {
     public int getScore(String playerName) {
         return -1;
     }
-
 }
