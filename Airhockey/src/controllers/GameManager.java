@@ -5,14 +5,12 @@
  */
 package controllers;
 
-import static com.sun.deploy.util.ReflectionUtil.instanceOf;
 import game.Difficulty;
 import game.GameWorld;
 import game.Goal;
 import game.MathUtillities;
 import game.Pod;
 import game.Puck;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
@@ -23,7 +21,6 @@ import networking.IPlayer;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
-import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 import org.jbox2d.collision.shapes.ShapeType;
 import org.jbox2d.common.Vec2;
@@ -37,14 +34,21 @@ import org.jbox2d.collision.shapes.CircleShape;
  */
 public class GameManager implements ContactListener {
 
-    private GameWorld gameworld;
-    private GraphicsContext gc;
-    private Difficulty difficulty;
+    private final GameWorld gameworld;
+    private final GraphicsContext gc;
+    private final Difficulty difficulty;
     private boolean puckReset = false;
     final int scale = 10;
 
     int counter = 0;
 
+    /**
+     * Creates a new instance of a GameManager
+     *
+     * @param gc The GraphicsContext to draw on.
+     * @param players The players that will be playing this game.
+     * @param difficulty The difficulty of the AI.
+     */
     public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty) {
         this.gc = gc;
         gameworld = new GameWorld(players);
@@ -53,26 +57,22 @@ public class GameManager implements ContactListener {
     }
 
     /**
-     * Draws the sides and puck on the field.
+     * Draws the sides and puck on to the field.
      */
     public void draw() {
         try {
-            Platform.runLater(new Runnable() {
+            Platform.runLater(() -> {
+                gc.setFill(Color.WHITESMOKE);
+                gc.fillRect(0.0, 0.0, 500, 500);
+                AI_CalculateMovement();
+                //Draw field
+                drawField(Color.RED, Color.GREEN, Color.BLUE);
 
-                @Override
-                public void run() {
-                    gc.setFill(Color.WHITESMOKE);
-                    gc.fillRect(0.0, 0.0, 500, 500);
-                    AI_CalculateMovement();
-                    //Draw field
-                    drawField(Color.RED, Color.GREEN, Color.BLUE);
+                drawPuckandPod();
 
-                    drawPuckandPod(Color.BLACK);
-
-                    if (puckReset) {
-                        gameworld.resetPuck();
-                        puckReset = false;
-                    }
+                if (puckReset) {
+                    gameworld.resetPuck();
+                    puckReset = false;
                 }
             });
 
@@ -106,7 +106,6 @@ public class GameManager implements ContactListener {
         gc.setStroke(colorBottom);
         gc.setFill(colorBottom);
         {
-
             // Bottom left corner to goal
             gc.strokeLine(
                     field_bottomleft.x,
@@ -119,7 +118,7 @@ public class GameManager implements ContactListener {
                     goal_bottomleft.x,
                     goal_bottomleft.y,
                     goal_bottomleft.x,
-                    goal_bottomleft.y - 20 // moet halve pucksize zijn
+                    goal_bottomleft.y - 20 //goal depth
             );
 
             //  Drawing goal
@@ -127,18 +126,18 @@ public class GameManager implements ContactListener {
                     goal_bottomright.x,
                     goal_bottomright.y,
                     goal_bottomright.x,
-                    goal_bottomright.y - 20
+                    goal_bottomright.y - 20 //goal depth
             );
 
             //  Drawing goal down
             gc.strokeLine(
                     goal_bottomright.x,
-                    goal_bottomright.y - 20,
+                    goal_bottomright.y - 20, //goal depth
                     goal_bottomleft.x,
-                    goal_bottomleft.y - 20
+                    goal_bottomleft.y - 20 //goal depth
             );
 
-            // schaduw
+            // shadow
             gc.setStroke(Color.GREY);
             gc.strokeLine(
                     goal_bottomleft.x,
@@ -147,7 +146,7 @@ public class GameManager implements ContactListener {
                     goal_bottomright.y);
             gc.setStroke(colorBottom);
 
-            // rechtsonder naar rechtsonder van goal
+            // Bottom right to goal
             gc.strokeLine(
                     field_bottomright.x,
                     field_bottomright.y,
@@ -170,27 +169,27 @@ public class GameManager implements ContactListener {
             gc.strokeLine(
                     goal_lefttop.x,
                     goal_lefttop.y,
-                    goal_lefttop.x - 18,
-                    goal_lefttop.y + 12
+                    goal_lefttop.x - 18, //goal depth
+                    goal_lefttop.y + 12 //goal depth
             );
 
             //Draw goal in
             gc.strokeLine(
                     goal_leftbottom.x,
                     goal_leftbottom.y,
-                    goal_leftbottom.x - 18,
-                    goal_leftbottom.y + 12
+                    goal_leftbottom.x - 18, //goal depth
+                    goal_leftbottom.y + 12 //goal depth
             );
 
             //Draw goal
             gc.strokeLine(
-                    goal_lefttop.x - 18,
-                    goal_lefttop.y + 12,
-                    goal_leftbottom.x - 18,
-                    goal_leftbottom.y + 12
+                    goal_lefttop.x - 18, //goal depth
+                    goal_lefttop.y + 12, //goal depth
+                    goal_leftbottom.x - 18, //goal depth
+                    goal_leftbottom.y + 12 //goal depth
             );
 
-            // schaduw
+            // shadow
             gc.setStroke(Color.GREY);
             gc.strokeLine(
                     goal_lefttop.x,
@@ -205,14 +204,12 @@ public class GameManager implements ContactListener {
                     field_bottomleft.y,
                     goal_leftbottom.x,
                     goal_leftbottom.y);
-
         }
 
         //Draw right side
         gc.setStroke(colorRight);
         gc.setFill(colorRight);
         {
-
             //From bottom right corner to goal
             gc.strokeLine(
                     field_bottomright.x,
@@ -224,16 +221,16 @@ public class GameManager implements ContactListener {
             gc.strokeLine(
                     goal_righttop.x,
                     goal_righttop.y,
-                    goal_righttop.x + 18,
-                    goal_righttop.y + 12
+                    goal_righttop.x + 18, //goal depth
+                    goal_righttop.y + 12 //goal depth
             );
 
             // Goal in
             gc.strokeLine(
                     goal_rightbottom.x,
                     goal_rightbottom.y,
-                    goal_rightbottom.x + 18,
-                    goal_rightbottom.y + 12
+                    goal_rightbottom.x + 18, //goal depth
+                    goal_rightbottom.y + 12 //goal depth
             );
 
             // Draw goal
@@ -263,7 +260,7 @@ public class GameManager implements ContactListener {
     }
 
     /**
-     * Scales the vector and rotates the Y-coordinate.
+     * Scales a vector
      *
      * @param vector a Vec2 object to convert.
      */
@@ -275,13 +272,9 @@ public class GameManager implements ContactListener {
     }
 
     /**
-     * Draws the puck. Refactored from Draw().
-     *
-     * @param color The color that should be used to draw the puck and pods
+     * Draws the puck and the 3 pods
      */
-    public void drawPuckandPod(Color color) {
-        //Set the color
-
+    public void drawPuckandPod() {
         Body bodylist = gameworld.getPhysWorld().getBodyList();
         //While there are physics items, check if circle
         while (bodylist != null) {
@@ -304,8 +297,8 @@ public class GameManager implements ContactListener {
                     counter = 0;
                 }
             } else if (type == ShapeType.CIRCLE && bodylist.getUserData() instanceof Puck) {
-                gc.setStroke(color);
-                gc.setFill(color);
+                gc.setStroke(Color.BLACK);
+                gc.setFill(Color.BLACK);
             }
             if (type == ShapeType.CIRCLE) {
                 CircleShape cs = (CircleShape) bodylist.getFixtureList().getShape();
@@ -320,6 +313,7 @@ public class GameManager implements ContactListener {
 
     /**
      * Part of slowly phasing out the AI from the Controller to the AI classes.
+     * Method content should be moved.
      */
     private void AI_CalculateMovement() {
         // temp | note-to-self: avoid hardcoding     
@@ -386,14 +380,16 @@ public class GameManager implements ContactListener {
 
     /**
      * Moves the AI up from player viewpoint.
+     *
+     * @param color The color of the pod to move. "BLUE" or "GREEN" allowed
      */
-    private void AI_moveUp(String kleur) {
-        if (kleur.equals("BLUE")) {
+    private void AI_moveUp(String color) {
+        if (color.equals("BLUE")) {
             if (gameworld.getPod(1).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.F).y + MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(1).moveLeft(1);
             }
         }
-        if (kleur.equals("GREEN")) {
+        if (color.equals("GREEN")) {
             if (gameworld.getPod(2).getPosition().y > MathUtillities.getCoordinates(MathUtillities.Corner.G).y + MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(2).moveRight(2);
             }
@@ -402,20 +398,32 @@ public class GameManager implements ContactListener {
 
     /**
      * Moves the AI down from player viewpoint.
+     *
+     * @param color The color of the pod to move. "BLUE" or "GREEN" allowed
      */
-    private void AI_moveDown(String kleur) {
-        if (kleur.equals("BLUE")) {
+    private void AI_moveDown(String color) {
+        if (color.equals("BLUE")) {
             if (gameworld.getPod(1).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.E).y - MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(1).moveRight(1);
             }
         }
-        if (kleur.equals("GREEN")) {
+        if (color.equals("GREEN")) {
             if (gameworld.getPod(2).getPosition().y < MathUtillities.getCoordinates(MathUtillities.Corner.H).y - MathUtillities.getPodSize() / 2) {
                 gameworld.getPod(2).moveLeft(2);
             }
         }
     }
 
+    /**
+     * *************TODO***************
+     */
+    //This one may need some refactoring??
+    /**
+     * Is the player moving right or left?
+     *
+     * @param playerMoveRight
+     * @param playerMoveLeft
+     */
     public void player_Move(boolean playerMoveRight, boolean playerMoveLeft) {
         if (playerMoveRight) {
             if (gameworld.getPod(0).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize() / 2) {
@@ -429,7 +437,10 @@ public class GameManager implements ContactListener {
         }
     }
 
-    public void update() {
+    /**
+     * Method to start the physics simulation
+     */
+    public void start() {
         try {
             Timer physTimer = new Timer("Simulate Physics", true);
             physTimer.scheduleAtFixedRate(new TimerTask() {
@@ -444,10 +455,20 @@ public class GameManager implements ContactListener {
         }
     }
 
+    /**
+     * Adds a listener for collisions that happen in the game
+     *
+     * @param cl A class implementing ContactListener
+     */
     public void addContactListener(ContactListener cl) {
         gameworld.getPhysWorld().setContactListener(cl);
     }
 
+    /**
+     * Method is called when a collision occurs
+     *
+     * @param cntct
+     */
     @Override
     public void beginContact(Contact cntct) {
         Body bodyA = cntct.getFixtureA().getBody();
@@ -469,16 +490,32 @@ public class GameManager implements ContactListener {
         }
     }
 
+    /**
+     * Method is called when collision ends
+     *
+     * @param cntct
+     */
     @Override
     public void endContact(Contact cntct) {
     }
 
+    /**
+     * Method is called when collision is about to occur
+     *
+     * @param cntct
+     * @param mnfld
+     */
     @Override
     public void preSolve(Contact cntct, Manifold mnfld) {
     }
 
+    /**
+     * Method is called after collision has ended.
+     *
+     * @param cntct
+     * @param ci
+     */
     @Override
     public void postSolve(Contact cntct, ContactImpulse ci) {
     }
-
 }

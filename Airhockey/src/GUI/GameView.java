@@ -7,7 +7,6 @@ import game.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
@@ -116,7 +115,7 @@ public class GameView implements Initializable {
             }
         }.start();
 
-        gamemanager.update();
+        gamemanager.start();
     }
 
     public void init_Multiplayer(Human player, Lobby lobby) {
