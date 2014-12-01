@@ -11,12 +11,12 @@ import networking.IPlayer;
  *
  * @author Maikel
  */
-public class Human implements IPlayer{
-    
+public class Human implements IPlayer {
+
     private final String name;
     private final String password;
     private int score;
-    
+
     /**
      *
      * @param name
@@ -39,8 +39,12 @@ public class Human implements IPlayer{
     }
 
     @Override
-    public void setRanking() {
-        score--;
+    public void setRanking(Boolean scoreBool) {
+        if (scoreBool) {
+            score++;
+        } else {
+            score--;
+        }
     }
-    
+
 }

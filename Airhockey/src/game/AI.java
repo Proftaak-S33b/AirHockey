@@ -14,21 +14,22 @@ import org.jbox2d.common.Vec2;
  *
  * @author Etienne
  */
-public class AI extends Observable implements IPlayer, Observer{
+public class AI extends Observable implements IPlayer, Observer {
 
     private final String name;
     private int score;
-    private Vec2 direction; 
-    
+    private Vec2 direction;
+
     /**
      * Creates a new AI object with a given name.
+     *
      * @param name String representing the given name of the AI.
      */
     public AI(String name, int score) {
         this.name = name;
         this.score = score;
     }
-    
+
     @Override
     public String getName() {
         return this.name;
@@ -38,23 +39,28 @@ public class AI extends Observable implements IPlayer, Observer{
     public int getRanking() {
         return this.score;
     }
-    
-    public Vec2 getDirection(){
+
+    public Vec2 getDirection() {
         return this.direction;
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("Updated AI.");        
-        this.direction = (Vec2)arg;
+        System.out.println("Updated AI.");
+        this.direction = (Vec2) arg;
         setChanged();
         notifyObservers(direction);
         clearChanged();
     }
 
     @Override
-    public void setRanking() {
-        score--;
+    public void setRanking(Boolean scoreBool) {
+        if (scoreBool) {
+            score++;
+        } else {
+            score--;
+        }
     }
-    
 }
+
+

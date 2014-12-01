@@ -485,8 +485,12 @@ public class GameManager implements ContactListener {
         Body bodyB = cntct.getFixtureB().getBody();
         if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
             Goal g = (Goal) bodyB.getUserData();
-            g.getPlayer().setRanking();
+            g.getPlayer().setRanking(false);
             int score = g.getPlayer().getRanking();
+            Puck puck = (Puck) bodyA.getUserData();
+            if (puck.getTouched(0) != null) {
+                puck.getTouched(0).getPlayer().setRanking(true);
+            }
             System.out.println(g.getPlayer().getName() + " " + score);
             //Reset puck
             puckReset = true;
@@ -494,13 +498,26 @@ public class GameManager implements ContactListener {
             round++;
         } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
             Goal g = (Goal) bodyA.getUserData();
-            g.getPlayer().setRanking();
+            g.getPlayer().setRanking(false);
             int score = g.getPlayer().getRanking();
+            Puck puck = (Puck) bodyB.getUserData();
+            if (puck.getTouched(0) != null) {
+                puck.getTouched(0).getPlayer().setRanking(true);
+            }
             System.out.println(g.getPlayer().getName() + " " + score);
             //Reset puck
             puckReset = true;
             //Set next round
             round++;
+        }
+        if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Pod) {
+            Puck puck = (Puck) bodyA.getUserData();
+            Pod pod = (Pod) bodyB.getUserData();
+            puck.addTouched(pod);
+        } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Pod) {
+            Puck puck = (Puck) bodyB.getUserData();
+            Pod pod = (Pod) bodyA.getUserData();
+            puck.addTouched(pod);
         }
     }
 

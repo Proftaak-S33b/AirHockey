@@ -17,5 +17,5 @@ public interface IPlayer extends Serializable{
     
     public int getRanking();
     
-    public void setRanking();
+    public void setRanking(Boolean score);
 }
