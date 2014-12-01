@@ -77,6 +77,10 @@ public class Puck extends Observable{
      * @return 
      */
     public Pod getTouched(int howLongAgo) {
+        if (touched.isEmpty())
+        {
+            return null;
+        }
         return this.touched.get(howLongAgo);
     }
 
