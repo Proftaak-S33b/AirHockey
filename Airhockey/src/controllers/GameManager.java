@@ -41,6 +41,7 @@ public class GameManager implements ContactListener {
     final int scale = 10;
 
     int counter = 0;
+    int round = 1; //Keep track of how many rounds are played
 
     /**
      * Creates a new instance of a GameManager
@@ -59,25 +60,34 @@ public class GameManager implements ContactListener {
     /**
      * Draws the sides and puck on to the field.
      */
-    public void draw() {
-        try {
-            Platform.runLater(() -> {
-                gc.setFill(Color.WHITESMOKE);
-                gc.fillRect(0.0, 0.0, 500, 500);
-                AI_CalculateMovement();
-                //Draw field
-                drawField(Color.RED, Color.GREEN, Color.BLUE);
+    public boolean draw() {
+        if (round < 11) {
+            try {
+                Platform.runLater(() -> {
+                    gc.setFill(Color.WHITESMOKE);
+                    gc.fillRect(0.0, 0.0, 500, 500);
+                    AI_CalculateMovement();
+                    //Draw field
+                    drawField(Color.RED, Color.GREEN, Color.BLUE);
 
-                drawPuckandPod();
+                    drawPuckandPod();
 
-                if (puckReset) {
-                    gameworld.resetPuck();
-                    puckReset = false;
-                }
-            });
+                    if (puckReset) {
+                        gameworld.resetPuck();
+                        puckReset = false;
+                    }
+                });
 
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+            return true;
+        } else {
+            //Display ended message
+            gc.fillText("Game Ended!", gc.getCanvas().getWidth() / 2, gc.getCanvas().getWidth() / 2);
+            //Stop gameworld
+            gameworld.getPhysWorld().clearForces();
+            return false;
         }
     }
 
@@ -480,6 +490,8 @@ public class GameManager implements ContactListener {
             System.out.println(g.getPlayer().getName() + " " + score);
             //Reset puck
             puckReset = true;
+            //Set next round
+            round++;
         } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
             Goal g = (Goal) bodyA.getUserData();
             g.getPlayer().setRanking();
@@ -487,6 +499,8 @@ public class GameManager implements ContactListener {
             System.out.println(g.getPlayer().getName() + " " + score);
             //Reset puck
             puckReset = true;
+            //Set next round
+            round++;
         }
     }
 

@@ -109,7 +109,11 @@ public class GameView implements Initializable {
 
             @Override
             public void handle(long now) {
-                gamemanager.draw();
+                boolean gameBusy = gamemanager.draw();
+                if(!gameBusy){
+                    this.stop();
+                }
+                else {
                 player_Move();
                 //Refresh scoretable
                 ObservableList<IPlayer> data = FXCollections.observableArrayList();
@@ -118,6 +122,7 @@ public class GameView implements Initializable {
                 }
                 players.removeAll(players);
                 players.addAll(data);
+                }
             }
         }.start();
 
