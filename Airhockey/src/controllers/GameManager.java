@@ -458,6 +458,9 @@ public class GameManager implements ContactListener {
                 @Override
                 public void run() {
                     gameworld.getPhysWorld().step(1 / 60f, 10, 5);
+                    if(round > 10){
+                        this.cancel();
+                    }
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
