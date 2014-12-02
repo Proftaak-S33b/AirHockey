@@ -105,8 +105,8 @@ public class GameView implements Initializable {
         currentPlayer = player;
         players = FXCollections.observableArrayList();
         players.add(currentPlayer);
-        players.add(new AI("Com1", 20));
-        players.add(new AI("Com2", 20));
+        players.add(new AI("Blue", 20));
+        players.add(new AI("Green", 20));
         tableScore.setItems((ObservableList) players);
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;

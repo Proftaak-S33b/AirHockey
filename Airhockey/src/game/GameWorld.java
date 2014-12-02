@@ -60,28 +60,28 @@ public class GameWorld {
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.C).x, MathUtillities.getCoordinates(MathUtillities.Corner.C).y - 2),
                 MathUtillities.getCoordinates(MathUtillities.Corner.C));
         //Green goal
-        goal = new Goal(players.get(1),
+        goal = new Goal(players.get(2),
                 this,
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.H).x + 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.H).y + 1.2f),
                 MathUtillities.getCoordinates(MathUtillities.Corner.H));
-        goal = new Goal(players.get(1),
+        goal = new Goal(players.get(2),
                 this,
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.G).x + 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.G).y + 1.2f),
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.H).x + 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.H).y + 1.2f));
-        goal = new Goal(players.get(1),
+        goal = new Goal(players.get(2),
                 this,
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.G).x + 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.G).y +1.2f),
                 MathUtillities.getCoordinates(MathUtillities.Corner.G));
         //Blue goal
-        goal = new Goal(players.get(2),
+        goal = new Goal(players.get(1),
                 this,
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.E).x - 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.E).y +1.2f),
                 MathUtillities.getCoordinates(MathUtillities.Corner.E));
-        goal = new Goal(players.get(2),
+        goal = new Goal(players.get(1),
                 this,
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.E).x - 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.E).y+1.2f),
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.F).x - 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.F).y+1.2f));
-        goal = new Goal(players.get(2),
+        goal = new Goal(players.get(1),
                 this,
                 new Vec2(MathUtillities.getCoordinates(MathUtillities.Corner.F).x - 1.8f, MathUtillities.getCoordinates(MathUtillities.Corner.F).y + 1.2f),
                 MathUtillities.getCoordinates(MathUtillities.Corner.F));

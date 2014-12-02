@@ -89,7 +89,17 @@ public class Puck extends Observable{
      * @param touched
      */
     public void addTouched(Pod touched) {
+        if (this.touched.isEmpty())
+        {
+            System.out.println("leeg");
+        }
+        else
+        {
+            this.touched.add(1, getTouched(0));
+            System.out.println(this.getTouched(1).getPlayer().getName());
+        }
         this.touched.add(0, touched);
+        System.out.println(this.getTouched(0).getPlayer().getName());
     }
     
     /**
