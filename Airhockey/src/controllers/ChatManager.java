@@ -14,6 +14,7 @@ import networking.Message;
 
 /**
  * Controller for managing the chat in games
+ * TODO, will use sockets
  *
  * @author Joris
  */

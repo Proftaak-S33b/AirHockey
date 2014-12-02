@@ -38,11 +38,14 @@ import networking.Lobby;
  */
 public class GameView implements Initializable {
 
-  
+    /**
+     * Enum that shows the type of game
+     */
     private enum GameType {
 
         SINGLEPLAYER,
-        MULTIPLAYER
+        MULTIPLAYER,
+        SPECTATING
     }
 
     @FXML
@@ -79,8 +82,6 @@ public class GameView implements Initializable {
     private ObservableList<IPlayer> players;
 
     // Scales the physics to the drawing.
-
-
     //Movement commands
     private boolean playerMoveRight;
     private boolean playerMoveLeft;
@@ -88,12 +89,18 @@ public class GameView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
-        
+
         //Initialize score table
         columnPlayer.setCellValueFactory(new PropertyValueFactory("Name"));
         columnScore.setCellValueFactory(new PropertyValueFactory("Ranking"));
     }
 
+    /**
+     * Has to be called when starting singleplayer mode
+     *
+     * @param player The player that plays this game
+     * @param difficulty The difficulty of the AI
+     */
     public void init_Singleplayer(Human player, Difficulty difficulty) {
         currentPlayer = player;
         players = FXCollections.observableArrayList();
@@ -103,16 +110,16 @@ public class GameView implements Initializable {
         tableScore.setItems((ObservableList) players);
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;
-        gamemanager = new GameManager(gc , players, difficulty);
-        
-                new AnimationTimer() {
+        gamemanager = new GameManager(gc, players, difficulty);
+
+        new AnimationTimer() {
 
             @Override
             public void handle(long now) {
                 boolean gameBusy = gamemanager.draw();
                 //Refresh scoretable
                 ObservableList<IPlayer> data = FXCollections.observableArrayList();
-                for(IPlayer player : players){
+                for (IPlayer player : players) {
                     data.add(player);
                 }
                 players.removeAll(players);
@@ -130,6 +137,12 @@ public class GameView implements Initializable {
         gamemanager.start();
     }
 
+    /**
+     * Has to be called when starting multiplayer game
+     *
+     * @param player The player that is currently playing
+     * @param lobby The lobby object that represents this game
+     */
     public void init_Multiplayer(Human player, Lobby lobby) {
         currentPlayer = player;
         currentLobby = lobby;
@@ -148,6 +161,11 @@ public class GameView implements Initializable {
         }
     }
 
+    /**
+     * Method for handling exit button click
+     *
+     * @param event
+     */
     public void exit(ActionEvent event) {
         try {
             Node node = (Node) event.getSource();
@@ -184,7 +202,8 @@ public class GameView implements Initializable {
                 if (playerMoveLeft) {
                     playerMoveLeft = false;
                 }
-                playerMoveRight = true;;
+                playerMoveRight = true;
+                ;
                 break;
         }
     }

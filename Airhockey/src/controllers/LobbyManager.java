@@ -100,8 +100,7 @@ public class LobbyManager {
      * Returns an unmodifiable ObservableList containing all lobbies in this
      * object
      *
-     * @return An unmodifiable ObservableList containing all lobbies in this
-     * object
+     * @return All lobbies in this object
      */
     public ObservableList<Lobby> getLobbies() {
         return FXCollections.unmodifiableObservableList(lobbies);
