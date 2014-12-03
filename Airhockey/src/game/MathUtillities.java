@@ -6,6 +6,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Random;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -185,5 +186,27 @@ public class MathUtillities {
         float y = (float) ((point.x - center.x) * Math.sin(angel) + (point.y - center.y) * Math.cos(angel) + center.y);
         return new Vec2(x,y);
     }
-
+    
+    /**
+     * Returns a random integer between two given values (inclusive).
+     * Works with negatives, unlike util.Random
+     * <i>Work in progress.</i>
+     * @param min the lower bound for the generator
+     * @param max the upper bound for the generator - must be positive.
+     * @return an integer with the generated number
+     */
+    public static int randomIntBetween(int min, int max) {
+	// Generate between (negative)min and max. 
+	// max is exclusive to nextInt(), so that gets corrected by 1.
+	Random r = new Random();
+	
+	int num = r.nextInt((max + 1) + (Math.abs(min))) - min;
+	
+	boolean within_range = num >= min & num <= max ? true : false;
+	
+	// within range? change nothing. Else: recalculate.
+	num = within_range ? num : randomIntBetween(min, max);
+	
+	return num;
+    }
 }
