@@ -81,6 +81,12 @@ public class Puck extends Observable{
         {
             return null;
         }
+        if(howLongAgo == 1){
+            if(touched.size() == 1)
+            {
+                return null;
+            }
+        }
         return this.touched.get(howLongAgo);
     }
 
