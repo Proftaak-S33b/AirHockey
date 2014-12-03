@@ -27,6 +27,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import networking.IPlayer;
 import networking.Lobby;
@@ -78,7 +81,7 @@ public class GameView implements Initializable {
     private GameType gametype;
     private GameManager gamemanager;
     private Difficulty difficulty;
-
+    final URL resource = getClass().getResource("nietvanzelf.mp3");
     private ObservableList<IPlayer> players;
 
     // Scales the physics to the drawing.
@@ -111,7 +114,6 @@ public class GameView implements Initializable {
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;
         gamemanager = new GameManager(gc, players, difficulty);
-
         new AnimationTimer() {
 
             @Override
@@ -205,6 +207,9 @@ public class GameView implements Initializable {
                 playerMoveRight = true;
                 ;
                 break;
+	    case M:
+		// TODO: pause/mute background music.
+		break;
         }
     }
 
