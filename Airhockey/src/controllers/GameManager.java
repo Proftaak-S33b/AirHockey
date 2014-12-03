@@ -494,7 +494,7 @@ public class GameManager implements ContactListener {
             Puck puck = (Puck) bodyA.getUserData();
             if (puck.getTouched(0) != null) {
                 if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-                    if (puck.getTouched(1) != null) {
+                    if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
                         puck.getTouched(1).getPlayer().setRanking(true);
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
@@ -519,7 +519,7 @@ public class GameManager implements ContactListener {
             Puck puck = (Puck) bodyB.getUserData();
             if (puck.getTouched(0) != null) {
                 if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-                    if (puck.getTouched(1) != null) {
+                    if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
                         puck.getTouched(1).getPlayer().setRanking(true);
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
