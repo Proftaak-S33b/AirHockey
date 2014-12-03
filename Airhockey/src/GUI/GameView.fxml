@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
@@ -47,5 +48,10 @@
             </content>
         </TitledPane>
       <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" text="&lt; Back" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Label fx:id="LabelGameEnd" layoutX="237.0" layoutY="286.0" prefHeight="35.0" prefWidth="146.0" text="LabelGameEnd" textAlignment="CENTER" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

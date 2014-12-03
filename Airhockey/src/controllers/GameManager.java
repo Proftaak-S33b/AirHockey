@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import GUI.GameView;
 import game.AI.Difficulty;
 import game.GameWorld;
 import game.Goal;
@@ -33,10 +34,11 @@ import org.jbox2d.collision.shapes.CircleShape;
  * @author Maikel
  */
 public class GameManager implements ContactListener {
-
+    
     private final GameWorld gameworld;
     private final GraphicsContext gc;
     private final Difficulty difficulty;
+    private final GameView gv;
     private boolean puckReset = false;
     final int scale = 10;
 
@@ -50,8 +52,9 @@ public class GameManager implements ContactListener {
      * @param players The players that will be playing this game.
      * @param difficulty The difficulty of the AI.
      */
-    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty) {
+    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameView gv) {
         this.gc = gc;
+        this.gv = gv;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
         addContactListener(this);
@@ -84,7 +87,7 @@ public class GameManager implements ContactListener {
             return true;
         } else {
             //Display ended message
-            gc.fillText("Game Ended!", gc.getCanvas().getWidth() / 2, gc.getCanvas().getWidth() / 2);
+            gv.SetEndLabel();
             //Stop gameworld
             gameworld.getPhysWorld().clearForces();
             return false;

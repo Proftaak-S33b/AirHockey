@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -71,6 +72,9 @@ public class GameView implements Initializable {
 
     @FXML
     private Canvas gameCanvas;
+    
+    @FXML
+    private Label LabelGameEnd;
 
     private GraphicsContext gc;
 
@@ -113,7 +117,7 @@ public class GameView implements Initializable {
         tableScore.setItems((ObservableList) players);
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;
-        gamemanager = new GameManager(gc, players, difficulty);
+        gamemanager = new GameManager(gc, players, difficulty, this);
         new AnimationTimer() {
 
             @Override
@@ -126,12 +130,11 @@ public class GameView implements Initializable {
                 }
                 players.removeAll(players);
                 players.addAll(data);
-                
-                if(!gameBusy){
+
+                if (!gameBusy) {
                     this.stop();
-                }
-                else {
-                player_Move();
+                } else {
+                    player_Move();
                 }
             }
         }.start();
@@ -207,9 +210,9 @@ public class GameView implements Initializable {
                 playerMoveRight = true;
                 ;
                 break;
-	    case M:
-		// TODO: pause/mute background music.
-		break;
+            case M:
+                // TODO: pause/mute background music.
+                break;
         }
     }
 
@@ -231,5 +234,10 @@ public class GameView implements Initializable {
                 }
                 break;
         }
+    }
+
+    public void SetEndLabel() {
+        LabelGameEnd.setText("Game Ended!");
+        LabelGameEnd.setVisible(true);
     }
 }
