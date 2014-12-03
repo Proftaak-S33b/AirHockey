@@ -12,12 +12,12 @@ public class SocketClient {
     InetAddress ipaddress ;//= InetAddress.getLocalHost();
     InetAddress serverip;
     String hostname;
-    int portnumber;
     Socket socket;
     PrintWriter out;
     BufferedReader in;
     BufferedReader serverinput;
     String userinput;
+    int portnumber;
     
     /**
      * 
