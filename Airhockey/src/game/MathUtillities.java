@@ -52,6 +52,15 @@ public class MathUtillities {
     }
 
     /**
+     * Returns the distance from the center to the edge of the pod.
+     * Helps the war on magic numbers.
+     * @return a double with the radius.
+     */
+    public static double getPodRadius() {
+	return getPodSize() / 2;
+    }
+    
+    /**
      *
      * @return
      */

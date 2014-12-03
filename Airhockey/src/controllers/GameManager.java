@@ -5,7 +5,7 @@
  */
 package controllers;
 
-import game.Difficulty;
+import game.AI.Difficulty;
 import game.GameWorld;
 import game.Goal;
 import game.MathUtillities;

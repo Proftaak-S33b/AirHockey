@@ -2,8 +2,8 @@ package GUI;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
 import controllers.GameManager;
-import game.AI;
-import game.Difficulty;
+import game.AI.AI;
+import game.AI.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
