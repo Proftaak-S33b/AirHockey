@@ -10,7 +10,7 @@ import java.util.Random;
 import org.jbox2d.common.Vec2;
 
 /**
- *
+ * All the Coordinates and calculates
  * @author maikel
  */
 public class MathUtillities {
@@ -44,8 +44,8 @@ public class MathUtillities {
     private static final int fieldSize = 40;
 
     /**
-     *
-     * @return
+     * Get the size of the pod
+     * @return the podsize
      */
     public static double getPodSize() {
         return fieldSize * 0.08;
@@ -61,8 +61,8 @@ public class MathUtillities {
     }
     
     /**
-     *
-     * @return
+     * Get the size of the puck
+     * @return the pucksize
      */
     public static double getPuckSize() {
         return fieldSize * 0.04;
@@ -89,8 +89,6 @@ public class MathUtillities {
      * rectangle.
      */
     public static Vec2 getCoordinates(Corner corner) {
-        //Hernoemen en misschien met enum doorgeven welk coordinaat je wilt getten?
-        //Feedback over comments verwerken, = geef aan hoe we aan deze coordinaten komen
         Vec2 vector = new Vec2(0, 0);
         switch (corner) {
             case A:
@@ -160,8 +158,8 @@ public class MathUtillities {
     }
 
     /**
-     *
-     * @return
+     * Get the startposition for the Pods
+     * @return the startposition
      */
     //Deze heeft heel wat werk nodig
     public static ArrayList<Vec2> getStartPositions() {

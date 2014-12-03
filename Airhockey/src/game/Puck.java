@@ -15,7 +15,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 /**
- *
+ * The Puck from the gameworld
  * @author Maikel
  */
 public class Puck extends Observable {
@@ -31,7 +31,8 @@ public class Puck extends Observable {
     private final Body body;
 
     /**
-     *
+     * Create a new Puck with a Speed en the Gameworld
+     * The direction of the Puck is random
      * @param world
      * @param speed
      */
@@ -91,7 +92,7 @@ public class Puck extends Observable {
     }
 
     /**
-     *
+     * Add a touch with a Pod
      * @param touched
      */
     public void addTouched(Pod touched) {

@@ -8,7 +8,7 @@ package game;
 import networking.IPlayer;
 
 /**
- *
+ * The Player which is a human
  * @author Maikel
  */
 public class Human implements IPlayer {
@@ -18,9 +18,9 @@ public class Human implements IPlayer {
     private int score;
 
     /**
-     *
-     * @param name
-     * @param password
+     * Create a Player with a Name, Password and score
+     * @param name of the player
+     * @param password of the player
      */
     public Human(String name, String password, int score) {
         this.name = name;
@@ -28,16 +28,28 @@ public class Human implements IPlayer {
         this.score = score;
     }
 
+    /**
+     * Get the name of a player
+     * @return the name of the player
+     */
     @Override
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Get the ranking of a player
+     * @return the ranking of the player
+     */
     @Override
     public int getRanking() {
         return this.score;
     }
 
+    /**
+     * set the score of the player
+     * @param scoreBool true = score +1 , false = score -1 
+     */
     @Override
     public void setRanking(Boolean scoreBool) {
         if (scoreBool) {

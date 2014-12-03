@@ -393,11 +393,11 @@ public class AI extends Observable implements IPlayer, Observer{
 	
 	System.out.println("Updated AI: "+ this.direction.x + ", " + this.direction.y);        
     }    
-    
-    // maikel pls, voeg dan op zijn minst ook meteen javadocs(/** */) toe :(    
+     
     /**
      * Sets the ranking for this AI.
      * @param scoreBool a boolean indicating if the AI scored.
+     * true = score +1 , false = score -1
      */
     @Override
     public void setRanking(Boolean scoreBool) {

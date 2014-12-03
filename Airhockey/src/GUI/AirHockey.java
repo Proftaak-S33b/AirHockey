@@ -40,7 +40,6 @@ public class AirHockey extends Application {
 	String mp3 = Paths.get("Airhockey Soundtrack "+ i +".mp3").toUri().toString();
 	Media track = new Media(mp3);	
 	mediaPlayer = new MediaPlayer(track);	
-	mediaPlayer.play();
 	
         stage.setScene(scene);
         stage.show();

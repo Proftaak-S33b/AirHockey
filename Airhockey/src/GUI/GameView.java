@@ -72,7 +72,7 @@ public class GameView implements Initializable {
 
     @FXML
     private Canvas gameCanvas;
-    
+
     @FXML
     private Label LabelGameEnd;
 
@@ -211,14 +211,10 @@ public class GameView implements Initializable {
                 ;
                 break;
             case M:
-                // TODO: pause/mute background music.
-                
-                if(AirHockey.mediaPlayer.getStatus().toString().equals("PLAYING"))
-                {
+                //pause/mute background music.
+                if (AirHockey.mediaPlayer.getStatus().toString().equals("PLAYING")) {
                     AirHockey.mediaPlayer.pause();
-                }
-                else
-                {
+                } else {
                     AirHockey.mediaPlayer.play();
                 }
                 break;
