@@ -23,6 +23,8 @@ import javafx.stage.Stage;
  */
 public class AirHockey extends Application {
     
+    static MediaPlayer mediaPlayer;
+    
     @Override
     public void start(Stage stage) throws Exception {
         Parent mainMenu = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
@@ -37,7 +39,7 @@ public class AirHockey extends Application {
 	// Media is saved in /Airhockey, not in /src!
 	String mp3 = Paths.get("Airhockey Soundtrack "+ i +".mp3").toUri().toString();
 	Media track = new Media(mp3);	
-	MediaPlayer mediaPlayer = new MediaPlayer(track);	
+	mediaPlayer = new MediaPlayer(track);	
 	mediaPlayer.play();
 	
         stage.setScene(scene);

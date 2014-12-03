@@ -212,6 +212,15 @@ public class GameView implements Initializable {
                 break;
             case M:
                 // TODO: pause/mute background music.
+                
+                if(AirHockey.mediaPlayer.getStatus().toString().equals("PLAYING"))
+                {
+                    AirHockey.mediaPlayer.pause();
+                }
+                else
+                {
+                    AirHockey.mediaPlayer.play();
+                }
                 break;
         }
     }
