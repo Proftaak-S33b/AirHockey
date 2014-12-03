@@ -34,7 +34,7 @@ import org.jbox2d.collision.shapes.CircleShape;
  * @author Maikel
  */
 public class GameManager implements ContactListener {
-    
+
     private final GameWorld gameworld;
     private final GraphicsContext gc;
     private final Difficulty difficulty;
@@ -499,6 +499,9 @@ public class GameManager implements ContactListener {
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                    } else {
+                        g.getPlayer().setRanking(false);
+                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                     }
                 } else {
                     puck.getTouched(0).getPlayer().setRanking(true);
@@ -521,6 +524,9 @@ public class GameManager implements ContactListener {
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                    } else {
+                        g.getPlayer().setRanking(false);
+                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                     }
                 } else {
                     puck.getTouched(0).getPlayer().setRanking(true);
