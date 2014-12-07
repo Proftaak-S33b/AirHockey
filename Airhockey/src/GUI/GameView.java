@@ -2,8 +2,8 @@ package GUI;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
 import controllers.GameManager;
-import game.AI;
-import game.Difficulty;
+import game.AI.AI;
+import game.AI.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,6 +28,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import networking.IPlayer;
 import networking.Lobby;
@@ -69,6 +73,9 @@ public class GameView implements Initializable {
     @FXML
     private Canvas gameCanvas;
 
+    @FXML
+    private Label LabelGameEnd;
+
     private GraphicsContext gc;
 
     //Singleplayer
@@ -78,7 +85,7 @@ public class GameView implements Initializable {
     private GameType gametype;
     private GameManager gamemanager;
     private Difficulty difficulty;
-
+    final URL resource = getClass().getResource("nietvanzelf.mp3");
     private ObservableList<IPlayer> players;
 
     // Scales the physics to the drawing.
@@ -110,8 +117,7 @@ public class GameView implements Initializable {
         tableScore.setItems((ObservableList) players);
         gametype = GameType.SINGLEPLAYER;
         this.difficulty = difficulty;
-        gamemanager = new GameManager(gc, players, difficulty);
-
+        gamemanager = new GameManager(gc, players, difficulty, this);
         new AnimationTimer() {
 
             @Override
@@ -124,12 +130,11 @@ public class GameView implements Initializable {
                 }
                 players.removeAll(players);
                 players.addAll(data);
-                
-                if(!gameBusy){
+
+                if (!gameBusy) {
                     this.stop();
-                }
-                else {
-                player_Move();
+                } else {
+                    player_Move();
                 }
             }
         }.start();
@@ -205,6 +210,14 @@ public class GameView implements Initializable {
                 playerMoveRight = true;
                 ;
                 break;
+            case M:
+                //pause/mute background music.
+                if (AirHockey.mediaPlayer.getStatus().toString().equals("PLAYING")) {
+                    AirHockey.mediaPlayer.pause();
+                } else {
+                    AirHockey.mediaPlayer.play();
+                }
+                break;
         }
     }
 
@@ -226,5 +239,10 @@ public class GameView implements Initializable {
                 }
                 break;
         }
+    }
+
+    public void SetEndLabel() {
+        LabelGameEnd.setText("Game Ended!");
+        LabelGameEnd.setVisible(true);
     }
 }

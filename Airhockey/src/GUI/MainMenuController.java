@@ -6,7 +6,7 @@
 package GUI;
 
 import controllers.DatabaseManager;
-import game.Difficulty;
+import game.AI.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;

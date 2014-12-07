@@ -6,7 +6,7 @@
 package game;
 
 /**
- *
+ * The ID from a Wall
  * @author maikel
  */
 public enum WallID {

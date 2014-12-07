@@ -12,7 +12,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 
 /**
- *
+ * The world of the game
  * @author Maikel
  */
 public class GameWorld {
@@ -150,6 +150,12 @@ public class GameWorld {
         return pods.get(index);
     }
 
+    /**
+     * Finds the player by name
+     * @param name
+     * @return the index of the by name
+     * @throws NoSuchFieldException 
+     */
     public int findPlayerIndex(String name) throws NoSuchFieldException {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getName().equals(name)) {
@@ -158,10 +164,7 @@ public class GameWorld {
         }
         throw new NoSuchFieldException("No such player");
     }
-
-    public int getScore(String playerName) {
-        return -1;
-    }
+    
     /**
      * Resets the puck to the starting position with random direction
      */

@@ -14,7 +14,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 /**
- *
+ * The pods from the gameworld
  * @author Maikel
  */
 public class Pod {
@@ -26,10 +26,10 @@ public class Pod {
     
     
      /**
-     *
+     * Create a new Pod with a gameworld, player and Startposition
      * @param world
      * @param player The player this pod belongs to.
-     * @param Position
+     * @param Position The start position
      */
     public Pod(GameWorld world, IPlayer player, Vec2 Position) {
         this.player = player;
@@ -53,7 +53,7 @@ public class Pod {
     }
     
      /**
-     *
+     * get the player from the pod
      * @return The player this object belongs to
      */
     public IPlayer getPlayer() {
@@ -61,7 +61,7 @@ public class Pod {
     }
 
     /**
-     *
+     * get the position from the pod
      * @return The position of this object
      */
     public Vec2 getPosition() {
@@ -69,7 +69,7 @@ public class Pod {
     }
     
      /**
-     *
+     * Move to the Right with a Pod
      * @param index 0 = red, 1 = blue, 2 = green
      */
     public void moveRight(int index) {
@@ -99,7 +99,7 @@ public class Pod {
     }
 
     /**
-     *
+     * Move to the Left with a Pod
      * @param index 0 = red, 1 = blue, 2 = green
      */
     public void moveLeft(int index) {

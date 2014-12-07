@@ -14,7 +14,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 /**
- *
+ * The wall from the gameworld made by an ID
  * @author maikel
  */
 public class Wall {
@@ -24,6 +24,13 @@ public class Wall {
     private final GameWorld world;
     private final WallID wallid;
 
+    /**
+     * Create a new wall by an ID, world, Left-position, Right-Position 
+     * @param wallid The ID from the wall
+     * @param world
+     * @param pos1 left position of the goal
+     * @param pos2 right position of the goal
+     */
     public Wall(WallID wallid, GameWorld world, Vec2 pos1, Vec2 pos2) {
         this.world = world;
         this.wallid = wallid;
@@ -63,6 +70,11 @@ public class Wall {
         //Set the user data so that we can track physics items
         body.setUserData(this);
     }
+    
+    /**
+     * get the wallid  from the Wall
+     * @return the WallID
+     */
     public WallID getWallID() {
         return this.wallid;
     }

@@ -6,10 +6,11 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Random;
 import org.jbox2d.common.Vec2;
 
 /**
- *
+ * All the Coordinates and calculates
  * @author maikel
  */
 public class MathUtillities {
@@ -43,16 +44,25 @@ public class MathUtillities {
     private static final int fieldSize = 40;
 
     /**
-     *
-     * @return
+     * Get the size of the pod
+     * @return the podsize
      */
     public static double getPodSize() {
         return fieldSize * 0.08;
     }
 
     /**
-     *
-     * @return
+     * Returns the distance from the center to the edge of the pod.
+     * Helps the war on magic numbers.
+     * @return a double with the radius.
+     */
+    public static double getPodRadius() {
+	return getPodSize() / 2;
+    }
+    
+    /**
+     * Get the size of the puck
+     * @return the pucksize
      */
     public static double getPuckSize() {
         return fieldSize * 0.04;
@@ -79,8 +89,6 @@ public class MathUtillities {
      * rectangle.
      */
     public static Vec2 getCoordinates(Corner corner) {
-        //Hernoemen en misschien met enum doorgeven welk coordinaat je wilt getten?
-        //Feedback over comments verwerken, = geef aan hoe we aan deze coordinaten komen
         Vec2 vector = new Vec2(0, 0);
         switch (corner) {
             case A:
@@ -150,8 +158,8 @@ public class MathUtillities {
     }
 
     /**
-     *
-     * @return
+     * Get the startposition for the Pods
+     * @return the startposition
      */
     //Deze heeft heel wat werk nodig
     public static ArrayList<Vec2> getStartPositions() {
@@ -185,5 +193,27 @@ public class MathUtillities {
         float y = (float) ((point.x - center.x) * Math.sin(angel) + (point.y - center.y) * Math.cos(angel) + center.y);
         return new Vec2(x,y);
     }
-
+    
+    /**
+     * Returns a random integer between two given values (inclusive).
+     * Works with negatives, unlike util.Random
+     * <i>Work in progress.</i>
+     * @param min the lower bound for the generator
+     * @param max the upper bound for the generator - must be positive.
+     * @return an integer with the generated number
+     */
+    public static int randomIntBetween(int min, int max) {
+	// Generate between (negative)min and max. 
+	// max is exclusive to nextInt(), so that gets corrected by 1.
+	Random r = new Random();
+	
+	int num = r.nextInt((max + 1) + (Math.abs(min))) - min;
+	
+	boolean within_range = num >= min & num <= max ? true : false;
+	
+	// within range? change nothing. Else: recalculate.
+	num = within_range ? num : randomIntBetween(min, max);
+	
+	return num;
+    }
 }

@@ -15,7 +15,7 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 /**
- *
+ * The goals from the gameworld
  * @author Maikel
  */
 public class Goal {
@@ -25,6 +25,14 @@ public class Goal {
     //Physics object
     private Body body;
 
+    
+    /**
+     * Create a new Goal with a Player, World, Left-position, Right-Position
+     * @param player the goal from a player
+     * @param world
+     * @param pos1 left position of the goal
+     * @param pos2 right position of the goal
+     */
     public Goal(IPlayer player, GameWorld world, Vec2 pos1, Vec2 pos2) {
         this.world = world;
         this.player = player;
@@ -63,6 +71,11 @@ public class Goal {
         body.setUserData(this);
     }
 
+    /**
+     * 
+     * get the player from the goal
+     * @return the player
+     */
     public IPlayer getPlayer() {
         return player;
     }

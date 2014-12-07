@@ -5,7 +5,8 @@
  */
 package controllers;
 
-import game.Difficulty;
+import GUI.GameView;
+import game.AI.Difficulty;
 import game.GameWorld;
 import game.Goal;
 import game.MathUtillities;
@@ -37,6 +38,7 @@ public class GameManager implements ContactListener {
     private final GameWorld gameworld;
     private final GraphicsContext gc;
     private final Difficulty difficulty;
+    private final GameView gv;
     private boolean puckReset = false;
     final int scale = 10;
 
@@ -50,8 +52,9 @@ public class GameManager implements ContactListener {
      * @param players The players that will be playing this game.
      * @param difficulty The difficulty of the AI.
      */
-    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty) {
+    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameView gv) {
         this.gc = gc;
+        this.gv = gv;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
         addContactListener(this);
@@ -84,7 +87,7 @@ public class GameManager implements ContactListener {
             return true;
         } else {
             //Display ended message
-            gc.fillText("Game Ended!", gc.getCanvas().getWidth() / 2, gc.getCanvas().getWidth() / 2);
+            gv.SetEndLabel();
             //Stop gameworld
             gameworld.getPhysWorld().clearForces();
             return false;
@@ -491,11 +494,14 @@ public class GameManager implements ContactListener {
             Puck puck = (Puck) bodyA.getUserData();
             if (puck.getTouched(0) != null) {
                 if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-                    if (puck.getTouched(1) != null) {
+                    if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
                         puck.getTouched(1).getPlayer().setRanking(true);
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                    } else {
+                        g.getPlayer().setRanking(false);
+                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                     }
                 } else {
                     puck.getTouched(0).getPlayer().setRanking(true);
@@ -513,11 +519,14 @@ public class GameManager implements ContactListener {
             Puck puck = (Puck) bodyB.getUserData();
             if (puck.getTouched(0) != null) {
                 if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-                    if (puck.getTouched(1) != null) {
+                    if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
                         puck.getTouched(1).getPlayer().setRanking(true);
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                    } else {
+                        g.getPlayer().setRanking(false);
+                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                     }
                 } else {
                     puck.getTouched(0).getPlayer().setRanking(true);
