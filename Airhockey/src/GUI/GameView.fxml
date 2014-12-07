@@ -12,6 +12,7 @@
 <AnchorPane id="AnchorPane" focusTraversable="true" onKeyPressed="#keyPressed" onKeyReleased="#keyReleased" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.GameView">
     <stylesheets>
         <URL value="@GameView.css" />
+        <URL value="@Theme.css" />
     </stylesheets>
     <children>
         <Canvas fx:id="gameCanvas" height="500.0" layoutX="50.0" layoutY="62.0" rotate="180.0" width="500.0">
@@ -29,6 +30,10 @@
                     </children>
                 </Pane>
             </content>
+         <styleClass>
+            <String fx:value="lightGreyButton" />
+            <String fx:value="darkOrange" />
+         </styleClass>
         </TitledPane>
         <TitledPane collapsible="false" focusTraversable="false" layoutX="424.0" layoutY="34.0" minHeight="-Infinity" minWidth="-Infinity" opacity="0.9" prefHeight="201.0" prefWidth="162.0" text="Score" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="40.0">
             <content>
@@ -45,7 +50,11 @@
                     </children>
                 </Pane>
             </content>
+         <styleClass>
+            <String fx:value="darkBlue" />
+            <String fx:value="lightGreyButton" />
+         </styleClass>
         </TitledPane>
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" text="&lt; Back" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Button mnemonicParsing="false" onAction="#exit" styleClass="lightGreyButton" text="&lt; Back" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </children>
 </AnchorPane>
