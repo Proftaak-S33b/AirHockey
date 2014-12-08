@@ -87,7 +87,7 @@ public final class SoundManager {
      * 
      */
     static public void play(){
-	setTrack(Sounds[8]);
+	setTrack(Sounds[5]);
 	mediaplayer = new MediaPlayer(track);
 	mediaplayer.play();
     }
