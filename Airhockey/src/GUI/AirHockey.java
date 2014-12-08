@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import controllers.SoundManager;
 import java.nio.file.Paths;
 import java.util.Random;
 import javafx.application.Application;
@@ -36,10 +37,11 @@ public class AirHockey extends Application {
         
 	Random r = new Random();
 	int i = r.nextInt(3) + 1;
+	SoundManager.play();
 	// Media is saved in /Airhockey, not in /src!
-	String mp3 = Paths.get("Airhockey Soundtrack "+ i +".mp3").toUri().toString();
-	Media track = new Media(mp3);	
-	mediaPlayer = new MediaPlayer(track);	
+	//String mp3 = Paths.get("Airhockey Soundtrack "+ i +".mp3").toUri().toString();
+	//Media track = new Media(mp3);	
+	//mediaPlayer = new MediaPlayer(track);	
 	
         stage.setScene(scene);
         stage.show();
