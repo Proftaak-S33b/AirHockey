@@ -12,131 +12,113 @@ import java.util.HashMap;
 
 /**
  * RMI Server class. Connects with Client.
- * @author Etienne
+ *
+ * @author Etienne & Joris
  */
 public class Server {
-        
+
     // RMI defaults.    
     private static final String DEFAULT_HOST = "localhost";
     private static final String DEFAULT_PROTOCOL = "rmi";
     private static final String DEFAULT_HOSTNAME = "local";
-    private static final int DEFAULT_PORT = 1099;    
-    
+    private static final int DEFAULT_PORT = 1099;
+
     private InetAddress serverip;
     private Registry registry;
-        
+
     /**
      * Returns the ip-address of the server.
-     * @return InetAddress with the ip. 
-     * Can be converted to a String using toString().
+     *
+     * @return InetAddress with the ip. Can be converted to a String using
+     * toString().
      */
-    public InetAddress getServerIP(){
+    public InetAddress getServerIP() {
         return serverip;
     }
-    
-    /**
-     * Gets a complete Key-Value copy of the registry.
-     * @return an HashMap (a.k.a Dictionary(C#) / associative array(PHP)) 
-     * with the keys (binded objects' names) + values (remote objects themselves).
-     * @throws RemoteException thrown when the remotes' shit hits the fan.
-     * @throws NotBoundException thrown when the key is not bound in the registry.
-     */
-    public HashMap getRegistryValues() throws RemoteException, NotBoundException{
-        
-        HashMap values = new HashMap<>();
-        
-        // Get all the names registered. (Keys)
-        String[] array = registry.list();
-        
-        // Now put the keys with their remotes in the map.
-        for (String s : array) {
-            values.put(s, registry.lookup(s));            
-        }
-        
-        return values;
-    }
-    
+
     /**
      * Creates a new Server with a registry on default port 1099.
+     *
      * @throws UnknownHostException thrown when the host isn't found.
      */
-    public Server() throws UnknownHostException{
-        CreateRegistry();
+    public Server() throws UnknownHostException {
+        createRegistry();
         serverip = InetAddress.getLocalHost();
     }
-    
+
     /**
      * Creates a new Server on a given portnumber.
+     *
      * @param port an int with the number of the port to connect to.
      * @throws UnknownHostException thrown when the host isn't found.
      */
-    public Server(int port) throws UnknownHostException{
-        CreateRegistry(port);
+    public Server(int port) throws UnknownHostException {
+        createRegistry(port);
         serverip = InetAddress.getLocalHost();
     }
-    
+
     /**
      * Creates a new Registry on default port 1099.
      */
-    private void CreateRegistry(){
+    private void createRegistry() {
         try {
             registry = LocateRegistry.createRegistry(DEFAULT_PORT);
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }
     }
-    
+
     /**
      * Creates a new Registry on a given portnumber.
-     * @param portnumber an int with the number of the port a Client needs to connect to.
+     *
+     * @param portnumber an int with the number of the port a Client needs to
+     * connect to.
      */
-    private void CreateRegistry(int portnumber){
+    private void createRegistry(int portnumber) {
         try {
             registry = LocateRegistry.createRegistry(portnumber);
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }
     }
-    
+
     /**
-     * Binds a remote object to the registry.
-     * @param name a String with the name to bind to.
-     * @param obj a remote object to bind to the registry.
-     * @throws java.rmi.AlreadyBoundException this exception is thrown when the name is already in use.
+     * Binds a remote object to the registry. Using "HockeyGame" as name.
+     *
+     * @param obj a IGameData object to bind to the registry.
+     * @throws java.rmi.AlreadyBoundException this exception is thrown when the
+     * name is already in use.
      */
-    public void BindToRegistry(String name, Remote obj) throws AlreadyBoundException{
+    public void bindToRegistry(IGameData obj) throws AlreadyBoundException {
         try {
-            registry.bind(name, obj);
+            registry.bind("HockeyGame", obj);
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }
     }
-    
-    
-    
- ////////////////////////////////////////////////////////////////////////////
-    
+
+    ////////////////////////////////////////////////////////////////////////////
     //Old code, i need this to remember the mechanics. pls dont remove ;_;
     //<editor-fold defaultstate="collapsed" desc="main">
     /**
-     * Include a main() method so we can launch the server and client seperately.
-     * @param args 
+     * Include a main() method so we can launch the server and client
+     * seperately.
+     *
+     * @param args
      */
-    public static void main(String[] args){
-        
+    public static void main(String[] args) {
+
         // The following code can throw a RemoteException.
-        try { 
-            
+        try {
+
             // Set Security Manager.
             // For RMI to download classes, a security manager must be in force.
-            
             /*  This will cause errors if you don't have the right policies. 
-                Currently disabled.
-            if (System.getSecurityManager() == null) {
-                System.setSecurityManager(new SecurityManager());
-            }            
-            */
-                    
+             Currently disabled.
+             if (System.getSecurityManager() == null) {
+             System.setSecurityManager(new SecurityManager());
+             }            
+             */
             // Create the registry. Default port: 1099.
             // By binding it like this you don't need to use your command line.
             Registry registry = LocateRegistry.createRegistry(DEFAULT_PORT);
@@ -144,14 +126,12 @@ public class Server {
             // Instantiate the implementation class.
             // Interface is deprecated.
             //Interface i = new InterfaceImpl();
-            
             // bind it to the registry.
             //registry.bind("write", i);
-            
-        // Catches exception by printing error.
-        } catch (Exception e) { 
+            // Catches exception by printing error.
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }        
-    }  
+        }
+    }
     //</editor-fold>
 }

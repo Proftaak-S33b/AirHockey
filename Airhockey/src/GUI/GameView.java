@@ -1,7 +1,7 @@
 package GUI;
 
-//<editor-fold defaultstate="collapsed" desc="imports">
 import controllers.GameManager;
+import controllers.GameManager.GameType;
 import game.AI.AI;
 import game.AI.Difficulty;
 import game.Human;
@@ -19,7 +19,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
@@ -28,9 +27,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import networking.IPlayer;
 import networking.Lobby;
@@ -41,19 +37,6 @@ import networking.Lobby;
  * @author Joris Douven
  */
 public class GameView implements Initializable {
-
-    /**
-     * Enum that shows the type of game
-     */
-    private enum GameType {
-
-        SINGLEPLAYER,
-        MULTIPLAYER,
-        SPECTATING
-    }
-
-    @FXML
-    private Button buttonChat;
 
     @FXML
     private TextField textChat;
@@ -82,13 +65,12 @@ public class GameView implements Initializable {
     private IPlayer currentPlayer;
     //Multiplayer
     private Lobby currentLobby;
-    private GameType gametype;
     private GameManager gamemanager;
     private Difficulty difficulty;
     final URL resource = getClass().getResource("nietvanzelf.mp3");
     private ObservableList<IPlayer> players;
+    private boolean gameStarted = false;
 
-    // Scales the physics to the drawing.
     //Movement commands
     private boolean playerMoveRight;
     private boolean playerMoveLeft;
@@ -109,37 +91,39 @@ public class GameView implements Initializable {
      * @param difficulty The difficulty of the AI
      */
     public void init_Singleplayer(Human player, Difficulty difficulty) {
-        currentPlayer = player;
-        players = FXCollections.observableArrayList();
-        players.add(currentPlayer);
-        players.add(new AI("Blue", 20));
-        players.add(new AI("Green", 20));
-        tableScore.setItems((ObservableList) players);
-        gametype = GameType.SINGLEPLAYER;
-        this.difficulty = difficulty;
-        gamemanager = new GameManager(gc, players, difficulty, this);
-        new AnimationTimer() {
+        if (!gameStarted) {
+            currentPlayer = player;
+            players = FXCollections.observableArrayList();
+            players.add(currentPlayer);
+            players.add(new AI("Blue", 20));
+            players.add(new AI("Green", 20));
+            tableScore.setItems((ObservableList) players);
+            this.difficulty = difficulty;
+            gamemanager = new GameManager(gc, players, difficulty, GameType.SINGLEPLAYER, this);
+            new AnimationTimer() {
 
-            @Override
-            public void handle(long now) {
-                boolean gameBusy = gamemanager.draw();
-                //Refresh scoretable
-                ObservableList<IPlayer> data = FXCollections.observableArrayList();
-                for (IPlayer player : players) {
-                    data.add(player);
+                @Override
+                public void handle(long now) {
+                    boolean gameBusy = gamemanager.draw();
+                    //Refresh scoretable
+                    ObservableList<IPlayer> data = FXCollections.observableArrayList();
+                    for (IPlayer player : players) {
+                        data.add(player);
+                    }
+                    players.removeAll(players);
+                    players.addAll(data);
+
+                    if (!gameBusy) {
+                        this.stop();
+                    } else {
+                        player_Move();
+                    }
                 }
-                players.removeAll(players);
-                players.addAll(data);
+            }.start();
 
-                if (!gameBusy) {
-                    this.stop();
-                } else {
-                    player_Move();
-                }
-            }
-        }.start();
-
-        gamemanager.start();
+            gamemanager.start();
+            gameStarted = true;
+        }
     }
 
     /**
@@ -149,9 +133,40 @@ public class GameView implements Initializable {
      * @param lobby The lobby object that represents this game
      */
     public void init_Multiplayer(Human player, Lobby lobby) {
-        currentPlayer = player;
-        currentLobby = lobby;
-        gametype = GameType.MULTIPLAYER;
+        if (!gameStarted) {
+            currentPlayer = player;
+            currentLobby = lobby;
+            GameType gametype;
+            boolean isHost = lobby.getAllPlayers().get(0) == player;
+            if (isHost) {
+                gametype = GameType.MULTIPLAYER_HOST;
+            } else {
+                gametype = GameType.MULTIPLAYER_CLIENT;
+            }
+            gamemanager = new GameManager(gc, players, difficulty, gametype, this);
+            new AnimationTimer() {
+
+                @Override
+                public void handle(long now) {
+                    boolean gameBusy = gamemanager.draw();
+                    //Refresh scoretable
+                    ObservableList<IPlayer> data = FXCollections.observableArrayList();
+                    for (IPlayer player : players) {
+                        data.add(player);
+                    }
+                    players.removeAll(players);
+                    players.addAll(data);
+
+                    if (!gameBusy) {
+                        this.stop();
+                    } else {
+                        player_Move();
+                    }
+                }
+            }.start();
+            gamemanager.start();
+            gameStarted = true;
+        }
     }
 
     /**
@@ -241,6 +256,9 @@ public class GameView implements Initializable {
         }
     }
 
+    /**
+     * Sets the label for when the game has ended
+     */
     public void SetEndLabel() {
         LabelGameEnd.setText("Game Ended!");
         LabelGameEnd.setVisible(true);

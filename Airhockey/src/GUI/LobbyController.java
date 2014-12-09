@@ -6,6 +6,7 @@
 package GUI;
 
 import controllers.ChatManager;
+import controllers.GameManager;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -169,16 +169,17 @@ public class LobbyController implements Initializable {
 
     /**
      * Method for switching to the GameView scene
+     * @param evt
      */
-    private void startGame() {
+    public void startGame(ActionEvent evt) {
         try {
-            Stage stage = (Stage) tablePlayers.getScene().getWindow();
-            Parent root;
-            root = FXMLLoader.load(getClass().getResource("FXMLGameView.fxml"));
-            Scene scene = new Scene(root);
-            stage.setTitle("Airhockey - In multiplayer game");
-            stage.setScene(scene);
+            Node node = (Node) evt.getSource();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setScene(new Scene((Pane) loader.load()));
+            GameView controller = loader.<GameView>getController();
             stage.show();
+            controller.init_Multiplayer(currentPlayer, currentLobby);
         } catch (IOException ex) {
             System.out.println("Error changing scene from Lobby to Game " + ex.toString());
         }

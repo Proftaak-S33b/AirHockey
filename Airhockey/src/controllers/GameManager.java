@@ -35,6 +35,17 @@ import org.jbox2d.collision.shapes.CircleShape;
  */
 public class GameManager implements ContactListener {
 
+    /**
+     * Enum that shows the type of game
+     */
+    public enum GameType {
+        SINGLEPLAYER,
+        MULTIPLAYER_HOST,
+        MULTIPLAYER_CLIENT,
+        SPECTATING
+    }
+
+    private GameType gameType;
     private final GameWorld gameworld;
     private final GraphicsContext gc;
     private final Difficulty difficulty;
@@ -51,17 +62,22 @@ public class GameManager implements ContactListener {
      * @param gc The GraphicsContext to draw on.
      * @param players The players that will be playing this game.
      * @param difficulty The difficulty of the AI.
+     * @param gameType The type of game for the client this gamemanager manages the game of
+     * @param gv The GUI Controller //should not be here!!!
      */
-    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameView gv) {
+    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv) {
         this.gc = gc;
         this.gv = gv;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
+        this.gameType = gameType;
         addContactListener(this);
     }
 
     /**
      * Draws the sides and puck on to the field.
+     *
+     * @return
      */
     public boolean draw() {
         if (round < 11) {

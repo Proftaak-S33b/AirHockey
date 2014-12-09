@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -68,14 +67,14 @@ public class MainMenuController implements Initializable {
         }
         currentPlayer = new Human("Ik", "", 20);
         try {
-           Node node = (Node) event.getSource();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
-                Stage stage = (Stage) node.getScene().getWindow();
-                stage.setScene(new Scene((Pane) loader.load()));
-                GameView controller = loader.<GameView>getController();
-                stage.show();
-                controller.init_Singleplayer(currentPlayer, difficulty);
-            
+            Node node = (Node) event.getSource();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+            Stage stage = (Stage) node.getScene().getWindow();
+            stage.setScene(new Scene((Pane) loader.load()));
+            GameView controller = loader.<GameView>getController();
+            stage.show();
+            controller.init_Singleplayer(currentPlayer, difficulty);
+
         } catch (IOException ex) {
             System.out.println("Error changing scene from Main menu to Game " + ex.toString());
         }
