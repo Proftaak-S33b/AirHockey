@@ -21,6 +21,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -58,6 +59,9 @@ public class GameView implements Initializable {
 
     @FXML
     private Label LabelGameEnd;
+    
+    @FXML
+    private ProgressIndicator piLoading;
 
     private GraphicsContext gc;
 
@@ -82,6 +86,7 @@ public class GameView implements Initializable {
         //Initialize score table
         columnPlayer.setCellValueFactory(new PropertyValueFactory("Name"));
         columnScore.setCellValueFactory(new PropertyValueFactory("Ranking"));
+        piLoading.setProgress(0.6);
     }
 
     /**
