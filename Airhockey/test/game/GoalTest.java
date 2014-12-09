@@ -4,8 +4,10 @@
  */
 package game;
 
-import z_OLD_game.Human;
-import z_OLD_game.Player;
+import game.*;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
+import networking.IPlayer;
 import org.jbox2d.common.Vec2;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -22,8 +24,8 @@ import static org.junit.Assert.*;
 public class GoalTest {
 
     private Goal goal;
-    private Player player;
-    private Vec2 position;
+    private IPlayer players;
+    private GameWorld gameworld;
 
     @BeforeClass
     public static void setUpClass() {
@@ -35,33 +37,17 @@ public class GoalTest {
 
     @Before
     public void setUp() {
-        position = new Vec2(0, 0);
-        player = new Human("name", "password");
-        goal = new Goal(position, 275, player);
+        ArrayList<IPlayer> players = new ArrayList<>();
+        players.add(new Human("A", "", 0));
+        players.add(new Human("B", "", 0));
+        players.add(new Human("C", "", 0));
+        gameworld = new GameWorld((ObservableList<IPlayer>) players);
+        goal = new Goal(gameworld.getPlayer("A"), gameworld, new Vec2(0,0), new Vec2(0,0));
     }
 
     @After
     public void tearDown() {
         System.out.println("Finished testing " + this.toString() + ".\n");
-    }
-
-    /**
-     * Test of getPosition method, of class Goal.
-     */
-    @Test
-    public void testGetPosition() {
-        System.out.println("Testing Goal.getPosition():");
-        Vec2 check = new Vec2(0, 0);
-        assertEquals("Incorrect coordinates.", goal.getPosition(), check);
-    }
-
-    /**
-     * Test of getSize method, of class Goal.
-     */
-    @Test
-    public void testGetSize() {
-        System.out.println("Testing goal.getSize():");
-        assertEquals("Incorrect goalsize returned.", goal.getSize(), 275);
     }
 
     /**
@@ -71,6 +57,8 @@ public class GoalTest {
     public void testGetPlayer() {
         System.out.println("Testing goal.getPlayer():");
         assertNotNull("Player is null.", goal.getPlayer());
-        assertEquals("Player isn't set correctly.", goal.getPlayer(), player);
+        assertEquals("Player isn't set correctly.", 
+                goal.getPlayer(), 
+                gameworld.getPlayer("A"));
     }
 }
