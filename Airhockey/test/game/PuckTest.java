@@ -4,12 +4,9 @@
  */
 package game;
 
-import z_OLD_game.Human;
-import z_OLD_game.Pod;
-import z_OLD_game.Player;
-import z_OLD_game.GameWorld;
-import z_OLD_game.Puck;
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
+import networking.IPlayer;
 import org.jbox2d.common.Vec2;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -39,12 +36,12 @@ public class PuckTest {
 
     @Before
     public void setUp() {
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(new Human("A", ""));
-        players.add(new Human("B", ""));
-        players.add(new Human("C", ""));
-        world = new GameWorld(players);
-        puck = new Puck(world, 10);
+        ArrayList<IPlayer> players = new ArrayList<>();
+        players.add(new Human("A", "",0));
+        players.add(new Human("B", "",0));
+        players.add(new Human("C", "",0));
+        world = new GameWorld((ObservableList<IPlayer>) players);
+        puck = new Puck(10, world);
     }
 
     @After
@@ -60,45 +57,14 @@ public class PuckTest {
         System.out.println("Testing Puck.getPosition():");
         assertNotNull("Position is null.", puck.getPosition());
     }
-
+    
     /**
-     * Test of move method, of class Puck.
+     * Test of the getBody method of the class Puck.
      */
     @Test
-    public void testMove() {
-        System.out.println("Testing Puck.move():");
-
+    public void testGetBody() {
+        System.out.println("Testing Puck.getBody():");
+        assertNotNull("Body is null!", puck.getBody());
     }
 
-    /**
-     * Test of getDirection method, of class Puck.
-     */
-    @Test
-    public void testGetDirection() {
-        System.out.println("Testing Puck.getDirection():");
-        assertTrue("getDirection returned geen coordinate.", puck.getVelocity() instanceof Vec2);
-    }
-
-    /**
-     * Test of getLastTouched method, of class Puck.
-     */
-    @Test
-    public void testGetLastTouched() {
-        System.out.println("Testing Puck.getLastTouched():");
-        Pod p = new Pod(world, new Human("name", "password"), new Vec2(0, 0));
-        assertEquals("Pod verkeerd toegevoegd.", puck.getLastTouched(), p);
-    }
-
-    /**
-     * Test of addTouched method, of class Puck.
-     */
-    @Test
-    public void testAddTouched() {
-        System.out.println("Testing Puck.addTouched():");
-        puck = null;
-        puck = new Puck(world, 10);
-        Pod p = new Pod(world, new Human("name", "password"), new Vec2(0, 0));
-        puck.addTouched(p);
-        assertEquals("Toucher not added.", puck.getLastTouched(), p);
-    }
 }

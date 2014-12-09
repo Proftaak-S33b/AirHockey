@@ -128,8 +128,13 @@ public class Pod {
         }
     }
     
+    /**
+     * Sets the position of the pod to the given position
+     * @param position Vec2 object of the position where
+     * the pod should be moved to.
+     */
     public void setPosition(Vec2 position)
     {
-        //TODO
+        body.setTransform(position, 0);
     }
 }

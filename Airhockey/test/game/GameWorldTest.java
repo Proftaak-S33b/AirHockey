@@ -29,9 +29,6 @@ import static org.junit.Assert.*;
 public class GameWorldTest {
 
     private GameWorld gameworld;
-    private Field field;
-    private Pod pod;
-    private Administrator admin;
 
     @BeforeClass
     public static void setUpClass() {
@@ -43,15 +40,11 @@ public class GameWorldTest {
 
     @Before
     public void setUp() {
-        
-        pod = new Pod(null, null, null);
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Human("A", ""));
         players.add(new Human("B", ""));
         players.add(new Human("C", ""));
         gameworld = new GameWorld(players);
-        field = new Field(gameworld,500);
-        admin = Administrator.getInstance(players.get(0));
     }
 
     @After
@@ -59,11 +52,58 @@ public class GameWorldTest {
     }
 
     /**
-     * Test of getPlayer method, of class GameWorld.
+     * Test the getPlayer() method of class GameWorld.
      */
     @Test
     public void testGetPlayer() {
-        System.out.println("Testing GameWorld.getPlayer():");
-        assertNotNull("Gameworld does not contain any players: (Or does your playerlist start at 1?)", gameworld.getPlayer("A"));
+        System.out.println("Testing GameWorld(players):");
+        assertEquals("Non excisting playername returns a object!",
+                null,
+                gameworld.getPlayer("non excisting"));
+        assertNotNull("Excisting playername returns no player",
+                gameworld.getPlayer("A"));
+    }
+    
+    /**
+     * Test the getPhysWorld() method of class GameWorld.
+     */
+    @Test
+    public void testGetPhysWorld() {
+        System.out.println("Testing getPhysWorld:");
+        assertNotNull("Returns null!",
+                gameworld.getPhysWorld());
+    }
+    
+    /**
+     * Test the getPuck() method of the class GameWorld.
+     */
+    @Test
+    public void testGetPuck() {
+        System.out.println("Testing getPuck:");
+        assertNotNull("Returns null!",
+                gameworld.getPuck());
+    }
+    
+    /**
+     * Test the getPod() method of the class GameWorld.
+     */
+    @Test
+    public void testGetPod() {
+        System.out.println("Testing getPod:");
+        assertNotNull("Returns null!", 
+                gameworld.getPod(1));
+        assertNull("If pod doesn't excist, null is not returned!",
+                gameworld.getPod(100));
+    }
+    
+    /**
+     * Test the findPlayerIndex method of the class GameWorld.
+     */
+    @Test
+    public void testFindPlayerIndex() throws NoSuchFieldException {
+        System.out.println("Testing findPlayerIndex:");
+        assertEquals("Index doesn't match!",
+                0,
+                gameworld.findPlayerIndex("A"));
     }
 }

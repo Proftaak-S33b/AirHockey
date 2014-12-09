@@ -39,6 +39,7 @@ public class GameManager implements ContactListener {
      * Enum that shows the type of game
      */
     public enum GameType {
+
         SINGLEPLAYER,
         MULTIPLAYER_HOST,
         MULTIPLAYER_CLIENT,
@@ -62,7 +63,8 @@ public class GameManager implements ContactListener {
      * @param gc The GraphicsContext to draw on.
      * @param players The players that will be playing this game.
      * @param difficulty The difficulty of the AI.
-     * @param gameType The type of game for the client this gamemanager manages the game of
+     * @param gameType The type of game for the client this gamemanager manages
+     * the game of
      * @param gv The GUI Controller //should not be here!!!
      */
     public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv) {

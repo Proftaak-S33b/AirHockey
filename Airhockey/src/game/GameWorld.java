@@ -108,7 +108,8 @@ public class GameWorld {
      * name is found, null is returned.
      *
      * @param name The name of the player
-     * @return Returns the player object with the specified name.
+     * @return Returns the player object with the specified name. If player doesn't
+     * excist return null
      */
     public IPlayer getPlayer(String name) {
         for (IPlayer p : players) {
@@ -144,9 +145,10 @@ public class GameWorld {
      *
      * @param index
      * @return Returns the pod object that belongs to the player with the
-     * specified name.
+     * specified name. If not excists return null.
      */
     public Pod getPod(int index) {
+        
         return pods.get(index);
     }
 
