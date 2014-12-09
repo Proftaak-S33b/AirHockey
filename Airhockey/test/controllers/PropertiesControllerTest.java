@@ -56,20 +56,21 @@ public class PropertiesControllerTest {
     @Test
     public void loadPropertiesTest()
     {
+        pr.writeProperties("1", "12", "123", "1234", "12345", "123456", "1234567");
         assertTrue("Load props", pr.loadProperties());
     }
     
     @Test
     public void writePropertiesTest()
     {
-        //weet niet wat ik hier in moet vullen
-        assertTrue("Write props", pr.writeProperties(null, null, null, null, null, null, null));
-        assertFalse("Write props", pr.writeProperties(null, null, null, null, null, null, null));
+        assertTrue("Write props", pr.writeProperties("1", "12", "123", "1234", "12345", "123456", "1234567"));
+        assertFalse("Write empty props", pr.writeProperties("", "", "", "", "", "", ""));
     }
     
     @Test
     public void isCorrectlyConfiguredTest()
     {
+        pr.writeProperties("1", "12", "123", "1234", "12345", "123456", "1234567");
         assertTrue("Correct config props", pr.isCorrectlyConfigured());
     }
 }
