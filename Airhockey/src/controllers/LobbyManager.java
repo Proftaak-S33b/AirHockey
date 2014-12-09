@@ -16,7 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.ILobbyData;
 import networking.Lobby;
-import networking.RMIData;
+import networking.Client;
 
 /**
  * Controller for managing the multiplayer lobby with multiple games
@@ -28,14 +28,14 @@ public class LobbyManager {
     private final ILobbyData lobbyData;
     private final ObservableList<Lobby> lobbies;
     private final Timer timer;
-    private final RMIData rmiclient;
+    private final Client rmiclient;
 
     /**
      * Instantiates the lobbyController and sets a timer that will regularly
      * fetch the lobbies from the RMI server
      */
     public LobbyManager() {
-        rmiclient = new RMIData("localhost", 1337);
+        rmiclient = new Client("localhost", 1337);
         lobbyData = rmiclient.getLobbyData();
         lobbies = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);

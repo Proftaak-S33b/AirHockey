@@ -1,6 +1,8 @@
 package controllers;
 
 import java.nio.file.Paths;
+import java.util.Observable;
+import java.util.Observer;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -8,7 +10,7 @@ import javafx.scene.media.MediaPlayer;
  * Manages all those xXx_MLG_xXx Qu1ck5c0p3s, m8.
  * @author Etienne
  */
-public final class SoundManager {
+public class SoundManager implements Observer{
     
     /**
      * Holds the track to be played by the mediaplayer.
@@ -19,6 +21,9 @@ public final class SoundManager {
      * Responsible for playing the sound effects.
      */
     static private MediaPlayer mediaplayer;
+    
+    Thread bgm;
+    Thread channel;
     
     /**
      * Indicates the event when firing the mediaplayer.
@@ -64,15 +69,15 @@ public final class SoundManager {
      * u havn' a giggle m8?
      */
     private SoundManager(){
-	//setTrack(Sounds[3]);
+	//setTrack(3);
 	//mediaplayer = new MediaPlayer(track);
     }
     
     /**
      * 
      */
-    static public void setTrack(String sound){
-	String mp3 = Paths.get("audio/" + sound).toUri().toString();
+    static public void setTrack(int index){
+	String mp3 = Paths.get("audio/" + Sounds[index]).toUri().toString();
 	track = new Media(mp3);
     }
     
@@ -86,8 +91,8 @@ public final class SoundManager {
     /**
      * 
      */
-    static public void play(){
-	setTrack(Sounds[5]);
+    static public void play(int index){
+	setTrack(index);
 	mediaplayer = new MediaPlayer(track);
 	mediaplayer.play();
     }
@@ -104,5 +109,10 @@ public final class SoundManager {
      */
     static public void stop(){
 	mediaplayer.stop();
+    }
+    
+    @Override
+    public void update(Observable o, Object arg) {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

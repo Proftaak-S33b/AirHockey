@@ -4,10 +4,12 @@ import java.net.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import networking.IPlayer;
 
 /**
  * Standalone RMI Server for dedicated server hosting.
  * Serves as a networking interface for individual clients.
+ * http://stackoverflow.com/questions/4637362/communication-via-internet-in-java
  * @author Etienne
  */
 public class rmiStandaloneServer {
@@ -89,17 +91,20 @@ public class rmiStandaloneServer {
     /**
      * Registers a client with the server.
      */
-    public void registerClient(ClientData client){
-	clients.put(client.name, client);
-	System.out.println("Registering client under " + client.name);
+    public void registerClient(InetAddress address, String name,
+	    String description, IPlayer host,
+	    Socket socket, ServerSocket serversocket){
+	ClientData client = new ClientData(address, name, description, host, socket, serversocket);
+	clients.put(client.getName(), client);
+	System.out.println("Registering client under " + client.getName());
     }
     
     /**
      * Unregisters a client with the server.
      */
     public void unregisterClient(ClientData client){
-	clients.remove(client.name);
-	System.out.println("Unregistering client with key " + client.name);
+	clients.remove(client.getName());
+	System.out.println("Unregistering client with key " + client.getName());
     }
     
     /**
@@ -130,7 +135,7 @@ public class rmiStandaloneServer {
 	System.out.println("Starting standalone server..");
 	
 	try {
-	    rmiStandaloneServer rmiss = new rmiStandaloneServer("NetworkServer");
+	    rmiStandaloneServer rmi_ss = new rmiStandaloneServer("NetworkServer");
 	} catch (UnknownHostException ex) {
 	    Logger.getLogger(rmiStandaloneServer.class.getName()).log(Level.SEVERE, null, ex);
 	    System.out.println("Failed. Exiting program.");

@@ -5,6 +5,7 @@
  */
 package game;
 
+import controllers.SoundManager;
 import java.util.ArrayList;
 import java.util.Observable;
 import org.jbox2d.collision.shapes.CircleShape;
@@ -37,7 +38,7 @@ public class Puck extends Observable {
      * @param speed
      */
     public Puck(int speed, GameWorld world) {
-        this.speed = speed;
+        this.speed = 20;/*speed;*/
         direction = new Vec2((float) Math.random(), (float) Math.random());
         direction.normalize();
         touched = new ArrayList<>();
@@ -99,10 +100,10 @@ public class Puck extends Observable {
         if (this.touched.isEmpty()) {
             System.out.println("leeg");
         } else {
-            this.touched.add(1, getTouched(0));
+            this.touched.add(1, getTouched(0));	    
             System.out.println(this.getTouched(1).getPlayer().getName());
         }
-        this.touched.add(0, touched);
+        this.touched.add(0, touched);	
         System.out.println(this.getTouched(0).getPlayer().getName());
     }
 

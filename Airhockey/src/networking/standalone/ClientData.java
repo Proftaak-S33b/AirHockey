@@ -23,27 +23,75 @@ import networking.IPlayer;
  * 'muh enterprise'.
  * @author Etienne
  */
-public class ClientData {
+public class ClientData implements IClientData{
    
    // Properties - TODO: Are all these needed? redundancies? Who does the setup?
    
-   // ipaddress of the server 
-   final InetAddress address;
+   /** ipaddress of the server */
+   private final InetAddress address;
    
-   //name for the server to memorize easier
-   final String name;
+   /** name for the server to memorize easier */
+   private final String name;
    
-   // title of the lobby
-   final String description;
+   /** title of the lobby */
+   private final String description;
    
-   // socket of the clientclient
-   final Socket socket;
+   /** socket of the clientclient */
+   private final Socket socket;
    
-   //socket of the clientserver
-   final ServerSocket serversocket;
+   /** socket of the clientserver */
+   private final ServerSocket serversocket;
    
-   // player who tries to go online
-   final IPlayer host;
+   /** player who tries to go online */
+   private final IPlayer host;
+
+    /**
+     * ipaddress of the server
+     * @return the address
+     */
+    public InetAddress getAddress() {
+	return address;
+    }
+
+    /**
+     * name for the server to memorize easier
+     * @return the name
+     */
+    public String getName() {
+	return name;
+    }
+
+    /**
+     * title of the lobby
+     * @return the description
+     */
+    public String getDescription() {
+	return description;
+    }
+
+    /**
+     * socket of the clientclient
+     * @return the socket
+     */
+    public Socket getSocket() {
+	return socket;
+    }
+
+    /**
+     * socket of the clientserver
+     * @return the serversocket
+     */
+    public ServerSocket getServersocket() {
+	return serversocket;
+    }
+
+    /**
+     * player who tries to go online
+     * @return the host
+     */
+    public IPlayer getHost() {
+	return host;
+    }
    
    /**
     * Packages all the data neatly and tightly in one object for easy transport.

@@ -37,7 +37,7 @@ public class AirHockey extends Application {
         
 	Random r = new Random();
 	int i = r.nextInt(3) + 1;
-	SoundManager.play();
+	SoundManager.play(1);
 	// Media is saved in /Airhockey, not in /src!
 	//String mp3 = Paths.get("Airhockey Soundtrack "+ i +".mp3").toUri().toString();
 	//Media track = new Media(mp3);	
