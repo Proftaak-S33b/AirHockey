@@ -92,11 +92,6 @@ public class GameManager implements ContactListener {
                     drawField(Color.RED, Color.GREEN, Color.BLUE);
 
                     drawPuckandPod();
-
-                    if (puckReset) {
-                        gameworld.resetPuck();
-                        puckReset = false;
-                    }
                 });
 
             } catch (Exception e) {
@@ -479,6 +474,10 @@ public class GameManager implements ContactListener {
                 @Override
                 public void run() {
                     gameworld.getPhysWorld().step(1 / 60f, 10, 5);
+                    if (puckReset) {
+                        gameworld.resetPuck();
+                        puckReset = false;
+                    }
                     if (round > 10) {
                         this.cancel();
                     }
