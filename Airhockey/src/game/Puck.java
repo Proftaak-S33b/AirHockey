@@ -104,6 +104,7 @@ public class Puck extends Observable {
         }
         this.touched.add(0, touched);
         System.out.println(this.getTouched(0).getPlayer().getName());
+        System.out.println("---------------------------");
     }
 
     /**

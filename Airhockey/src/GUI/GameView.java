@@ -162,6 +162,7 @@ public class GameView implements Initializable {
     public void setTekst(ActionEvent event) {
         if (!textChat.getText().equals("")) {
             listChat.getItems().add(textChat.getText());
+            //listChat.getItems().add(new AI("", 20).chat());
             textChat.clear();
         }
     }

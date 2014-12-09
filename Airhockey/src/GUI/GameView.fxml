@@ -57,7 +57,6 @@
          </styleClass>
         </TitledPane>
       <Button mnemonicParsing="false" onAction="#exit" styleClass="lightGreyButton" text="&lt; Back" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" text="&lt; Back" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <Label fx:id="LabelGameEnd" layoutX="237.0" layoutY="286.0" prefHeight="35.0" prefWidth="146.0" text="LabelGameEnd" textAlignment="CENTER" visible="false">
          <font>
             <Font size="24.0" />
