@@ -16,12 +16,12 @@ import org.jbox2d.dynamics.FixtureDef;
 
 /**
  * The Puck from the gameworld
+ *
  * @author Maikel
  */
 public class Puck extends Observable {
 
     //Game objects
-
     private int speed;
     private Vec2 direction;
     private final ArrayList<Pod> touched;
@@ -31,8 +31,9 @@ public class Puck extends Observable {
     private final Body body;
 
     /**
-     * Create a new Puck with a Speed en the Gameworld
-     * The direction of the Puck is random
+     * Create a new Puck with a Speed en the Gameworld The direction of the Puck
+     * is random
+     *
      * @param world
      * @param speed
      */
@@ -75,6 +76,24 @@ public class Puck extends Observable {
     }
 
     /**
+     * Set a new position of the puck
+     *
+     * @param position the new position
+     */
+    public void setPosition(Vec2 position) {
+        body.setTransform(position, 0);
+    }
+
+    /**
+     * Set a new velocity of the puck
+     *
+     * @param velocity the new velocity
+     */
+    public void setVelocity(Vec2 velocity) {
+        body.setLinearVelocity(velocity);
+    }
+
+    /**
      * Gets the pod that last touched the Puck
      *
      * @param howLongAgo 0 will get the last touched, 1 will get the 2nd last
@@ -93,6 +112,7 @@ public class Puck extends Observable {
 
     /**
      * Add a touch with a Pod
+     *
      * @param touched
      */
     public void addTouched(Pod touched) {

@@ -43,4 +43,11 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
         data.setScoreP3(score3);
         data.setRound(round);
     }
+
+    @Override
+    public GameData getGameData() throws RemoteException {
+        return this.data;
+    }
+    
+    
 }

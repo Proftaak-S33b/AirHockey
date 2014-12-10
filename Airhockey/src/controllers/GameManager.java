@@ -12,13 +12,26 @@ import game.Goal;
 import game.MathUtillities;
 import game.Pod;
 import game.Puck;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import networking.Coordinate;
+import networking.GameData;
 import networking.IPlayer;
+import networking.IRemoteGame;
+import networking.RMIData;
+import networking.RemoteGame;
+import networking.Server;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -41,8 +54,9 @@ public class GameManager implements ContactListener {
     public enum GameType {
 
         SINGLEPLAYER,
-        MULTIPLAYER_HOST,
-        MULTIPLAYER_CLIENT,
+        MULTIPLAYER_RED,
+        MULTIPLAYER_BLUE,
+        MULTIPLAYER_GREEN,
         SPECTATING
     }
 
@@ -51,11 +65,12 @@ public class GameManager implements ContactListener {
     private final GraphicsContext gc;
     private final Difficulty difficulty;
     private final GameView gv;
+    private final IRemoteGame remoteGame;
     private boolean puckReset = false;
     final int scale = 10;
 
-    int counter = 0;
-    int round = 1; //Keep track of how many rounds are played
+    private int counter = 0;
+    private int round = 1; //Keep track of how many rounds are played
 
     /**
      * Creates a new instance of a GameManager
@@ -74,6 +89,45 @@ public class GameManager implements ContactListener {
         this.difficulty = difficulty;
         this.gameType = gameType;
         gameworld.getPhysWorld().setContactListener(this);
+        if (gameType == GameType.MULTIPLAYER_RED) {
+            remoteGame = startServer();
+        } else {
+            remoteGame = connectToServer(null, round);
+        }
+    }
+
+    private IRemoteGame startServer() {
+        try {
+            Server server = new Server();
+            //Send this to central server
+            //server.getServerIP();
+            IRemoteGame game = new RemoteGame();
+            Vec2 redPodPos = gameworld.getPod(0).getPosition();
+            Vec2 puckPos = gameworld.getPuck().getPosition();
+            Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
+            game.setHostData(
+                    new Coordinate(redPodPos.x, redPodPos.y),
+                    new Coordinate(puckPos.x, puckPos.y),
+                    new Coordinate(puckVel.x, puckVel.y),
+                    gameworld.getPlayers().get(0).getRanking(),
+                    gameworld.getPlayers().get(1).getRanking(),
+                    gameworld.getPlayers().get(2).getRanking(),
+                    round);
+            server.bindToRegistry(game);
+            return game;
+        } catch (UnknownHostException ex) {
+            System.out.println("Can't locate host: " + ex.getMessage());
+        } catch (RemoteException ex) {
+            System.out.println("RemoteException: " + ex.getMessage());
+        } catch (AlreadyBoundException ex) {
+            System.out.println("Already bound to registry: " + ex.getMessage());
+        }
+        return null;
+    }
+
+    private IRemoteGame connectToServer(InetAddress address, int port) {
+        RMIData rmi = new RMIData(address.getHostAddress(), port);
+        return (IRemoteGame) rmi.lookup("HockeyGame");
     }
 
     /**
@@ -481,6 +535,60 @@ public class GameManager implements ContactListener {
                     if (round > 10) {
                         this.cancel();
                     }
+                    if (gameType == GameType.MULTIPLAYER_BLUE) {
+                        Vec2 pos = gameworld.getPod(1).getPosition();
+                        try {
+                            remoteGame.setBluePodPos(new Coordinate(pos.x, pos.y));
+                            GameData data = remoteGame.getGameData();
+                            setLocalData(data);
+                        } catch (RemoteException ex) {
+                            System.out.println("RemoteException: " + ex.getMessage());
+                        }
+                    } else if (gameType == GameType.MULTIPLAYER_GREEN) {
+                        Vec2 pos = gameworld.getPod(2).getPosition();
+                        try {
+                            remoteGame.setGreenPodPos(new Coordinate(pos.x, pos.y));
+                            GameData data = remoteGame.getGameData();
+                            setLocalData(data);
+                        } catch (RemoteException ex) {
+                            System.out.println("RemoteException: " + ex.getMessage());
+                        }
+                    } else if (gameType == GameType.MULTIPLAYER_RED) {
+                        try {
+                            Vec2 redPodPos = gameworld.getPod(0).getPosition();
+                            Vec2 puckPos = gameworld.getPuck().getPosition();
+                            Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
+                            remoteGame.setHostData(
+                                    new Coordinate(redPodPos.x, redPodPos.y),
+                                    new Coordinate(puckPos.x, puckPos.y),
+                                    new Coordinate(puckVel.x, puckVel.y),
+                                    gameworld.getPlayers().get(0).getRanking(),
+                                    gameworld.getPlayers().get(1).getRanking(),
+                                    gameworld.getPlayers().get(2).getRanking(),
+                                    round);
+                        } catch (RemoteException ex) {
+                            System.out.println("RemoteException: " + ex.getMessage());
+                        }
+                    }
+                }
+
+                private void setLocalData(GameData data) {
+                    Vec2 vector;
+                    vector = new Vec2(data.getRedPodPos().x, data.getRedPodPos().y);
+                    gameworld.getPod(0).setPosition(vector);
+                    vector = new Vec2(data.getBluePodPos().x, data.getBluePodPos().y);
+                    gameworld.getPod(1).setPosition(vector);
+                    vector = new Vec2(data.getGreenPodPos().x, data.getGreenPodPos().y);
+                    gameworld.getPod(2).setPosition(vector);
+                    vector = new Vec2(data.getPuckPos().x, data.getPuckPos().y);
+                    gameworld.getPuck().setPosition(vector);
+                    vector = new Vec2(data.getPuckVelocity().x, data.getPuckVelocity().y);
+                    gameworld.getPuck().setVelocity(vector);
+                    List<IPlayer> players = gameworld.getPlayers();
+                    players.get(0).setRanking(data.getScoreP1());
+                    players.get(1).setRanking(data.getScoreP2());
+                    players.get(2).setRanking(data.getScoreP3());
+                    round = data.getRound();
                 }
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
@@ -496,7 +604,7 @@ public class GameManager implements ContactListener {
     @Override
     public void beginContact(Contact cntct) {
         //Only if this class should be in control of game mechanics
-        if (gameType == GameType.SINGLEPLAYER || gameType == GameType.MULTIPLAYER_HOST) {
+        if (gameType == GameType.SINGLEPLAYER || gameType == GameType.MULTIPLAYER_RED) {
             Body bodyA = cntct.getFixtureA().getBody();
             Body bodyB = cntct.getFixtureB().getBody();
             if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
@@ -505,19 +613,19 @@ public class GameManager implements ContactListener {
                 if (puck.getTouched(0) != null) {
                     if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
                         if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
-                            puck.getTouched(1).getPlayer().setRanking(true);
-                            g.getPlayer().setRanking(false);
+                            puck.getTouched(1).getPlayer().changeRanking(true);
+                            g.getPlayer().changeRanking(false);
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
                             System.out.println("---------------------------");
                         } else {
-                            g.getPlayer().setRanking(false);
+                            g.getPlayer().changeRanking(false);
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("---------------------------");
                         }
                     } else {
-                        puck.getTouched(0).getPlayer().setRanking(true);
-                        g.getPlayer().setRanking(false);
+                        puck.getTouched(0).getPlayer().changeRanking(true);
+                        g.getPlayer().changeRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");
@@ -533,19 +641,19 @@ public class GameManager implements ContactListener {
                 if (puck.getTouched(0) != null) {
                     if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
                         if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
-                            puck.getTouched(1).getPlayer().setRanking(true);
-                            g.getPlayer().setRanking(false);
+                            puck.getTouched(1).getPlayer().changeRanking(true);
+                            g.getPlayer().changeRanking(false);
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
                             System.out.println("---------------------------");
                         } else {
-                            g.getPlayer().setRanking(false);
+                            g.getPlayer().changeRanking(false);
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("---------------------------");
                         }
                     } else {
-                        puck.getTouched(0).getPlayer().setRanking(true);
-                        g.getPlayer().setRanking(false);
+                        puck.getTouched(0).getPlayer().changeRanking(true);
+                        g.getPlayer().changeRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");

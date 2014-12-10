@@ -36,7 +36,8 @@ public class LobbyManager {
      */
     public LobbyManager() {
         rmiclient = new RMIData("localhost", 1337);
-        lobbyData = rmiclient.getLobbyData();
+        lobbyData = null;
+        //lobbyData = rmiclient.getLobbyData();
         lobbies = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);
         timer.scheduleAtFixedRate(new TimerTask() {

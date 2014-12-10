@@ -46,4 +46,12 @@ public interface IRemoteGame extends Remote {
      */
     public void setHostData(Coordinate newPodPos, Coordinate newPuckPos, Coordinate newPuckVel,
             int score1, int score2, int score3, int round) throws RemoteException;
+
+    /**
+     * Gets the game data
+     *
+     * @return the game data
+     * @throws RemoteException RMI
+     */
+    public GameData getGameData() throws RemoteException;
 }

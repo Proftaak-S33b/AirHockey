@@ -7,6 +7,7 @@ package game;
 
 import networking.IPlayer;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.ObservableList;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
@@ -99,10 +100,6 @@ public class GameWorld {
         pods.add(new Pod(this, this.players.get(2), startPositions.get(2)));
     }
 
-    public void score(IPlayer scoredAgainst) {
-
-    }
-
     /**
      * Get the player with the specified name. If no player with the specified
      * name is found, null is returned.
@@ -173,5 +170,13 @@ public class GameWorld {
     public void resetPuck(){
         getPhysWorld().destroyBody(puck.getBody());
         puck = new Puck(10, this);
+    }
+    
+    /**
+     * Gets a list of players
+     * @return an arraylist of players in this game
+     */
+    public List<IPlayer> getPlayers(){
+        return players;
     }
 }

@@ -1,7 +1,6 @@
 package game.AI;
 
 import game.GameWorld;
-import game.MathUtillities;
 import game.MathUtillities.Corner;
 import static game.MathUtillities.getCoordinates;
 import static game.MathUtillities.getPodRadius;
@@ -13,8 +12,6 @@ import java.util.HashMap;
 import networking.IPlayer;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jbox2d.common.Vec2;
 
 /**
@@ -160,6 +157,11 @@ public class AI extends Observable implements IPlayer, Observer{
 	put(chatEvent.ON_SCORED, "#rekt");
     }};
     //</editor-fold>
+
+    @Override
+    public void setRanking(int ranking) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     /**
      * Events for the AI to respond to.
@@ -192,6 +194,8 @@ public class AI extends Observable implements IPlayer, Observer{
     /**
      * Creates a new AI object with a given name.
      * @param name String representing the given name of the AI.
+     * @param gameworld
+     * @throws java.lang.NoSuchFieldException
      */
     public AI(String name, GameWorld gameworld) throws NoSuchFieldException {
         this.name = name;
@@ -400,7 +404,7 @@ public class AI extends Observable implements IPlayer, Observer{
      * true = score +1 , false = score -1
      */
     @Override
-    public void setRanking(Boolean scoreBool) {
+    public void changeRanking(Boolean scoreBool) {
 	if (scoreBool) {
 	    score++;
 	} else {

@@ -7,6 +7,7 @@ import game.AI.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -181,11 +182,13 @@ public class GameView implements Initializable {
             currentPlayer = player;
             currentLobby = lobby;
             GameType gametype;
-            boolean isHost = lobby.getAllPlayers().get(0) == player;
-            if (isHost) {
-                gametype = GameType.MULTIPLAYER_HOST;
+            List<IPlayer> playersInLobby = lobby.getAllPlayers();
+            if (players.get(0) == playersInLobby) {
+                gametype = GameType.MULTIPLAYER_RED;
+            } else if (players.get(1) == playersInLobby) {
+                gametype = GameType.MULTIPLAYER_BLUE;
             } else {
-                gametype = GameType.MULTIPLAYER_CLIENT;
+                gametype = GameType.MULTIPLAYER_GREEN;
             }
             gamemanager = new GameManager(gc, players, difficulty, gametype, this);
             new AnimationTimer() {

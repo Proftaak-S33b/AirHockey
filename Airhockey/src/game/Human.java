@@ -9,6 +9,7 @@ import networking.IPlayer;
 
 /**
  * The Player which is a human
+ *
  * @author Maikel
  */
 public class Human implements IPlayer {
@@ -19,6 +20,7 @@ public class Human implements IPlayer {
 
     /**
      * Create a Player with a Name, Password and score
+     *
      * @param name of the player
      * @param password of the player
      */
@@ -30,6 +32,7 @@ public class Human implements IPlayer {
 
     /**
      * Get the name of a player
+     *
      * @return the name of the player
      */
     @Override
@@ -39,6 +42,7 @@ public class Human implements IPlayer {
 
     /**
      * Get the ranking of a player
+     *
      * @return the ranking of the player
      */
     @Override
@@ -47,16 +51,26 @@ public class Human implements IPlayer {
     }
 
     /**
-     * set the score of the player
-     * @param scoreBool true = score +1 , false = score -1 
+     * CHANGE THE MOTHERFUCKING RANKING NOT SET
+     *
+     * @param scoreBool true = score +1 , false = score -1
      */
     @Override
-    public void setRanking(Boolean scoreBool) {
+    public void changeRanking(Boolean scoreBool) {
         if (scoreBool) {
             score++;
         } else {
             score--;
         }
+    }
+
+    /**
+     * Sets a new ranking
+     * @param score
+     */
+    @Override
+    public void setRanking(int score) {
+        this.score = score;
     }
 
 }
