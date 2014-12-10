@@ -1,10 +1,21 @@
 package networking.standalone;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
+
 import java.net.*;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import networking.IPlayer;
+
+//</editor-fold>
 
 /**
  * Standalone RMI Server for dedicated server hosting.
@@ -12,7 +23,7 @@ import networking.IPlayer;
  * http://stackoverflow.com/questions/4637362/communication-via-internet-in-java
  * @author Etienne
  */
-public class rmiStandaloneServer {
+public class rmiStandaloneServer implements Remote{
     
     /**
      * The ipv4 address of the server. 
@@ -33,15 +44,26 @@ public class rmiStandaloneServer {
     private HashMap clients;
     
     /**
+     * To make all our data accessible we use this registry.
+     */
+    public Registry registry;
+    
+    /**
      * Initializes the server. 
      * Name is optional.
      * @param name an optional string with the name of the server.
      */
     public rmiStandaloneServer(String name) throws UnknownHostException{
-	this.name = name;
-	this.address = (Inet4Address) Inet4Address.getLocalHost();
-	this.clients = new HashMap();
-	printInfo();
+	    this.name = name;
+	    this.clients = new HashMap();
+	    this.address = (Inet4Address) Inet4Address.getLocalHost();
+	try {
+	    registry = LocateRegistry.createRegistry(1099);
+	    registry.bind("clients", (Remote) clients);
+	    printInfo();
+	} catch (RemoteException | AlreadyBoundException ex) {
+	    Logger.getLogger(rmiStandaloneServer.class.getName()).log(Level.SEVERE, null, ex);
+	}
     }
 
     /**

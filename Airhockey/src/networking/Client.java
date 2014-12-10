@@ -1,16 +1,12 @@
 package networking;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
-// Waarom rename? Dit is de client toch? En waarom die static methods?
-// (Als je een client nodig hebt voor je lobbymanager, maak er dan daar een?)
-
-
 
 /**
  * RMI Client class. Connects to a Server.
@@ -20,7 +16,8 @@ import java.rmi.registry.Registry;
  */
 public class Client {
 
-    private final InetAddress DEFAULT_SERVER_IP = null;
+    // Might differ per machine. Check RMIStandaloneServer's output.
+    private final String DEFAULT_SERVER_IP = "192.168.11.1"; 
     private Registry registry;
 
     /**
@@ -135,13 +132,13 @@ public class Client {
 	Client c = new Client();
 	
 	// Connect to RMI server.
-	c.LocateRegistry(host, port);
+	c.LocateRegistry(c.DEFAULT_SERVER_IP, 1099);
 	
 	// Get new host from server.
-	c.registry.lookup(client);
+	String info = c.registry.lookup("info");
 	
 	// Reconnect to new host.
-	c.LocateRegistry(host, port);
+	c.LocateRegistry(host, 1099);
 	
 	// Read data from host.
 	c.registry.lookup(data);

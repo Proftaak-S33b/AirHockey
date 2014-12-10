@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package networking.standalone;
 
 import java.net.*;
@@ -25,90 +20,116 @@ import networking.IPlayer;
  */
 public class ClientData implements IClientData{
    
-   // Properties - TODO: Are all these needed? redundancies? Who does the setup?
-   
-   /** ipaddress of the server */
-   private final InetAddress address;
-   
-   /** name for the server to memorize easier */
-   private final String name;
-   
-   /** title of the lobby */
-   private final String description;
-   
-   /** socket of the clientclient */
-   private final Socket socket;
-   
-   /** socket of the clientserver */
-   private final ServerSocket serversocket;
-   
-   /** player who tries to go online */
-   private final IPlayer host;
+    // RSVP/TODO: Are all these needed? redundancies? Who does the setup?
+    
+    /**
+     * ipaddress of the server
+     */
+    private final InetAddress address;
+
+    /**
+     * name for the server to memorize easier
+     */
+    private final String name;
+
+    /**
+     * title of the lobby
+     */
+    private final String description;
+
+    /**
+     * socket of the clientclient
+     */
+    private final Socket socket;
+
+    /**
+     * socket of the clientserver
+     */
+    private final ServerSocket serversocket;
+
+    /**
+     * player who tries to go online
+     */
+    private final IPlayer host;
 
     /**
      * ipaddress of the server
+     *
      * @return the address
      */
+    @Override
     public InetAddress getAddress() {
 	return address;
     }
 
     /**
      * name for the server to memorize easier
+     *
      * @return the name
      */
+    @Override
     public String getName() {
 	return name;
     }
 
     /**
      * title of the lobby
+     *
      * @return the description
      */
+    @Override
     public String getDescription() {
 	return description;
     }
 
     /**
      * socket of the clientclient
+     *
      * @return the socket
      */
+    @Override
     public Socket getSocket() {
 	return socket;
     }
 
     /**
      * socket of the clientserver
+     *
      * @return the serversocket
      */
+    @Override
     public ServerSocket getServersocket() {
 	return serversocket;
     }
 
     /**
      * player who tries to go online
+     *
      * @return the host
      */
+    @Override
     public IPlayer getHost() {
 	return host;
     }
-   
-   /**
-    * Packages all the data neatly and tightly in one object for easy transport.
+
+    /**
+     * Packages all the data neatly and tightly in one object for easy
+     * transport.
+     *
      * @param address
      * @param name
      * @param description
      * @param host
      * @param socket
      * @param serversocket
-    */
-   public ClientData(InetAddress address, String name, String description,
-	   IPlayer host, Socket socket, ServerSocket serversocket){
-       this.address = address;
-       this.name = name;
-       this.description = description;
-       this.socket = socket;
-       this.serversocket = serversocket;
-       this.host = host;
-   }
+     */
+    public ClientData(InetAddress address, String name, String description,
+	    IPlayer host, Socket socket, ServerSocket serversocket) {
+	this.address = address;
+	this.name = name;
+	this.description = description;
+	this.socket = socket;
+	this.serversocket = serversocket;
+	this.host = host;
+    }
 }

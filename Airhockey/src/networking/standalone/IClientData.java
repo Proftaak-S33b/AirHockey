@@ -1,54 +1,62 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package networking.standalone;
+
+//<editor-fold defaultstate="collapsed" desc="imports">
 
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.Remote;
 import networking.IPlayer;
+
+//</editor-fold>
+
 
 /**
  * RMI-related interface for ClientData wrapper object.
+ * ClientData is used as a object to be transferred through RMI, 
+ *  a wrapper for all data related to the client.
+ * This makes the collecting and communicating data easier and shorter.
  * @author Etienne
  */
-public interface IClientData {
+public interface IClientData extends Remote{
     
     /**
-     * ipaddress of the server
-     * @return the address
+     * Returns the ipaddress of the server.
+     * @return the address as InetAdress.
      */
     public InetAddress getAddress();
 
     /**
-     * name for the server to memorize easier
-     * @return the name
+     * Returns the name of the server.
+     * @return the name as a String.
      */
     public String getName();
 
     /**
-     * title of the lobby
-     * @return the description
+     * Returns the title of the lobby.
+     * @return the description as a String.
      */
     public String getDescription();
 
     /**
-     * socket of the clientclient
-     * @return the socket
+     * Returns the socket of the 'clientclient';
+     *  the clientside of the user's application.
+     * (often commonly <i>and confusingly</i> referred to as client).
+     * @return the socket as a Socket object.
      */
     public Socket getSocket();
 
     /**
-     * socket of the clientserver
-     * @return the serversocket
+     * Returns the socket of the 'clientserver';
+     *  the serverside of the user's application.
+     * (often commonly <i>and confusingly</i> referred to as client).
+     * @return the serversocket as a ServerSocket object.
      */
     public ServerSocket getServersocket();
 
     /**
-     * player who tries to go online
-     * @return the host
+     * Returns the player who tries to go online.
+     * @return the host as an IPlayer interface.
      */
     public IPlayer getHost();
 }
