@@ -163,10 +163,16 @@ public class GameView implements Initializable {
 
     }
 
+    /**
+     * Set the progress in the progressindicator
+     */
     public void loadProgress() {
         piLoading.setProgress(count / 5);
     }
 
+    /**
+     * set the visiblty of the progressindicator false
+     */
     public void progressVisible() {
         piLoading.setVisible(false);
     }
