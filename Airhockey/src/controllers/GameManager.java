@@ -14,8 +14,6 @@ import game.Pod;
 import game.Puck;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
@@ -48,7 +46,7 @@ public class GameManager implements ContactListener {
         SPECTATING
     }
 
-    private GameType gameType;
+    private final GameType gameType;
     private final GameWorld gameworld;
     private final GraphicsContext gc;
     private final Difficulty difficulty;
@@ -75,7 +73,7 @@ public class GameManager implements ContactListener {
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
         this.gameType = gameType;
-        addContactListener(this);
+        gameworld.getPhysWorld().setContactListener(this);
     }
 
     /**
@@ -491,88 +489,82 @@ public class GameManager implements ContactListener {
     }
 
     /**
-     * Adds a listener for collisions that happen in the game
-     *
-     * @param cl A class implementing ContactListener
-     */
-    public void addContactListener(ContactListener cl) {
-        gameworld.getPhysWorld().setContactListener(cl);
-    }
-
-    /**
      * Method is called when a collision occurs
      *
      * @param cntct
      */
     @Override
     public void beginContact(Contact cntct) {
-        Body bodyA = cntct.getFixtureA().getBody();
-        Body bodyB = cntct.getFixtureB().getBody();
-        if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
-            Goal g = (Goal) bodyB.getUserData();
-            Puck puck = (Puck) bodyA.getUserData();
-            if (puck.getTouched(0) != null) {
-                if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-                    if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
-                        puck.getTouched(1).getPlayer().setRanking(true);
-                        g.getPlayer().setRanking(false);
-                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                        System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
-                        System.out.println("---------------------------");
+        //Only if this class should be in control of game mechanics
+        if (gameType == GameType.SINGLEPLAYER || gameType == GameType.MULTIPLAYER_HOST) {
+            Body bodyA = cntct.getFixtureA().getBody();
+            Body bodyB = cntct.getFixtureB().getBody();
+            if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
+                Goal g = (Goal) bodyB.getUserData();
+                Puck puck = (Puck) bodyA.getUserData();
+                if (puck.getTouched(0) != null) {
+                    if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
+                        if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
+                            puck.getTouched(1).getPlayer().setRanking(true);
+                            g.getPlayer().setRanking(false);
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                            System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                            System.out.println("---------------------------");
+                        } else {
+                            g.getPlayer().setRanking(false);
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                            System.out.println("---------------------------");
+                        }
                     } else {
+                        puck.getTouched(0).getPlayer().setRanking(true);
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                        System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");
                     }
-                } else {
-                    puck.getTouched(0).getPlayer().setRanking(true);
-                    g.getPlayer().setRanking(false);
-                    System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                    System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
-                    System.out.println("---------------------------");
+                    //Set next round
+                    round++;
                 }
-                //Set next round
-                round++;
-            }
-            //Reset puck
-            puckReset = true;
-        } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
-            Goal g = (Goal) bodyA.getUserData();
-            Puck puck = (Puck) bodyB.getUserData();
-            if (puck.getTouched(0) != null) {
-                if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-                    if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
-                        puck.getTouched(1).getPlayer().setRanking(true);
-                        g.getPlayer().setRanking(false);
-                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                        System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
-                        System.out.println("---------------------------");
+                //Reset puck
+                puckReset = true;
+            } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
+                Goal g = (Goal) bodyA.getUserData();
+                Puck puck = (Puck) bodyB.getUserData();
+                if (puck.getTouched(0) != null) {
+                    if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
+                        if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
+                            puck.getTouched(1).getPlayer().setRanking(true);
+                            g.getPlayer().setRanking(false);
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                            System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                            System.out.println("---------------------------");
+                        } else {
+                            g.getPlayer().setRanking(false);
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                            System.out.println("---------------------------");
+                        }
                     } else {
+                        puck.getTouched(0).getPlayer().setRanking(true);
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                        System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");
                     }
-                } else {
-                    puck.getTouched(0).getPlayer().setRanking(true);
-                    g.getPlayer().setRanking(false);
-                    System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                    System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
-                    System.out.println("---------------------------");
+                    //Set next round
+                    round++;
                 }
-                //Set next round
-                round++;
+                //Reset puck
+                puckReset = true;
             }
-            //Reset puck
-            puckReset = true;
-        }
-        if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Pod) {
-            Puck puck = (Puck) bodyA.getUserData();
-            Pod pod = (Pod) bodyB.getUserData();
-            puck.addTouched(pod);
-        } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Pod) {
-            Puck puck = (Puck) bodyB.getUserData();
-            Pod pod = (Pod) bodyA.getUserData();
-            puck.addTouched(pod);
+            if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Pod) {
+                Puck puck = (Puck) bodyA.getUserData();
+                Pod pod = (Pod) bodyB.getUserData();
+                puck.addTouched(pod);
+            } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Pod) {
+                Puck puck = (Puck) bodyB.getUserData();
+                Pod pod = (Pod) bodyA.getUserData();
+                puck.addTouched(pod);
+            }
         }
     }
 

@@ -3,12 +3,9 @@ package networking;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashMap;
 
 /**
  * RMI Server class. Connects with Client.
@@ -89,7 +86,7 @@ public class Server {
      * @throws java.rmi.AlreadyBoundException this exception is thrown when the
      * name is already in use.
      */
-    public void bindToRegistry(IGameData obj) throws AlreadyBoundException {
+    public void bindToRegistry(IRemoteGame obj) throws AlreadyBoundException {
         try {
             registry.bind("HockeyGame", obj);
         } catch (RemoteException ex) {

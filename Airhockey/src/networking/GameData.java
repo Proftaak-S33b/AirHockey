@@ -5,15 +5,14 @@
  */
 package networking;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
+import java.io.Serializable;
 
 /**
  * A class to contain data about an Airhockey game
  *
  * @author Joris
  */
-public class GameData extends UnicastRemoteObject implements IGameData {
+public class GameData implements Serializable {
 
     private Coordinate redPod;
     private Coordinate bluePod;
@@ -23,12 +22,12 @@ public class GameData extends UnicastRemoteObject implements IGameData {
     private int scorePlayer1;
     private int scorePlayer2;
     private int scorePlayer3;
+    private int round;
 
     /**
-     *
-     * @throws RemoteException
+     * An object which contains all information about a game
      */
-    public GameData() throws RemoteException {
+    public GameData() {
         redPod = new Coordinate(0, 0);
         bluePod = new Coordinate(0, 0);
         greenPod = new Coordinate(0, 0);
@@ -44,10 +43,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      *
      * @param x the new X position of the pod
      * @param y the new Y position of the pod
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setRedPodPos(float x, float y) throws RemoteException {
+    public void setRedPodPos(float x, float y) {
         redPod = new Coordinate(x, y);
     }
 
@@ -56,10 +53,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      *
      * @param x the new X position of the pod
      * @param y the new Y position of the pod
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setBluePodPos(float x, float y) throws RemoteException {
+    public void setBluePodPos(float x, float y) {
         bluePod = new Coordinate(x, y);
     }
 
@@ -68,10 +63,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      *
      * @param x the new X position of the pod
      * @param y the new Y position of the pod
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setGreenPodPos(float x, float y) throws RemoteException {
+    public void setGreenPodPos(float x, float y) {
         greenPod = new Coordinate(x, y);
     }
 
@@ -80,10 +73,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      *
      * @param x the new X position of the puck
      * @param y the new Y position of the puck
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setPuckPos(float x, float y) throws RemoteException {
+    public void setPuckPos(float x, float y) {
         puck = new Coordinate(x, y);
     }
 
@@ -92,10 +83,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      *
      * @param x the new X component of the puck's velocity
      * @param y the new X component of the puck's velocity
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setPuckVelocity(float x, float y) throws RemoteException {
+    public void setPuckVelocity(float x, float y) {
         puckVelocity = new Coordinate(x, y);
     }
 
@@ -103,10 +92,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the position of the red pod
      *
      * @return Coordinate of the red pod position
-     * @throws RemoteException RMI
      */
-    @Override
-    public Coordinate getRedPodPos() throws RemoteException {
+    public Coordinate getRedPodPos() {
         return redPod;
     }
 
@@ -114,10 +101,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the position of the blue pod
      *
      * @return Coordinate of the blue pod position
-     * @throws RemoteException RMI
      */
-    @Override
-    public Coordinate getBluePodPos() throws RemoteException {
+    public Coordinate getBluePodPos() {
         return bluePod;
     }
 
@@ -125,10 +110,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the position of the green pod
      *
      * @return Coordinate of the green pod position
-     * @throws RemoteException RMI
      */
-    @Override
-    public Coordinate getGreenPodPos() throws RemoteException {
+    public Coordinate getGreenPodPos() {
         return greenPod;
     }
 
@@ -136,10 +119,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the position of the puck
      *
      * @return Coordinate of the puck position
-     * @throws RemoteException
      */
-    @Override
-    public Coordinate getPuckPos() throws RemoteException {
+    public Coordinate getPuckPos() {
         return puck;
     }
 
@@ -147,10 +128,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the velocity of the puck as a vector (Coordinate)
      *
      * @return Coordinate with x and y velocity of the puck
-     * @throws RemoteException RMI
      */
-    @Override
-    public Coordinate getPuckVelocity() throws RemoteException {
+    public Coordinate getPuckVelocity() {
         return puckVelocity;
     }
 
@@ -158,10 +137,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Sets the score for player 1
      *
      * @param score The new score
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setScoreP1(int score) throws RemoteException {
+    public void setScoreP1(int score) {
         scorePlayer1 = score;
     }
 
@@ -169,10 +146,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Sets the score for player 2
      *
      * @param score The new score
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setScoreP2(int score) throws RemoteException {
+    public void setScoreP2(int score) {
         scorePlayer2 = score;
     }
 
@@ -180,10 +155,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Sets the score for player 3
      *
      * @param score The new score
-     * @throws RemoteException RMI
      */
-    @Override
-    public void setScoreP3(int score) throws RemoteException {
+    public void setScoreP3(int score) {
         scorePlayer3 = score;
     }
 
@@ -191,10 +164,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the score for player 1
      *
      * @return The score for player 1
-     * @throws RemoteException RMI
      */
-    @Override
-    public int getScoreP1() throws RemoteException {
+    public int getScoreP1() {
         return scorePlayer1;
     }
 
@@ -202,10 +173,8 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the score for player 2
      *
      * @return The score for player 2
-     * @throws RemoteException RMI
      */
-    @Override
-    public int getScoreP2() throws RemoteException {
+    public int getScoreP2() {
         return scorePlayer2;
     }
 
@@ -213,10 +182,24 @@ public class GameData extends UnicastRemoteObject implements IGameData {
      * Gets the score for player 3
      *
      * @return The score for player 3
-     * @throws RemoteException RMI
      */
-    @Override
-    public int getScoreP3() throws RemoteException {
+    public int getScoreP3() {
         return scorePlayer3;
+    }
+
+    /**
+     * Sets the current round of the game
+     * @param round the current round
+     */
+    public void setRound(int round) {
+        this.round = round;
+    }
+
+    /**
+     * Gets the current round
+     * @return the current round
+     */
+    public int getRound() {
+        return this.round;
     }
 }
