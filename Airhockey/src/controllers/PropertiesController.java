@@ -95,38 +95,41 @@ public class PropertiesController {
 
         //TODO -> Check if all properties have a proper value
         OutputStream output = null;
-
-        try {
-
-            output = new FileOutputStream("config.properties");
-
-            //Set RMI server properties
-            props.setProperty("rmiurl", rmiUrl);
-            props.setProperty("rmiport", rmiPort);
-            props.setProperty("rmiregistry", rmiRegistry);
-
-            //Set database properties
-            props.setProperty("dburl", dbUrl);
-            props.setProperty("dbport", dbPort);
-            props.setProperty("dbusername", dbUsername);
-            props.setProperty("dbpassword", dbPassword);
-
-            if (!isCorrectlyConfigured()) {
-                return false;
-            }
-            // save properties to project root folder
-            props.store(output, null);
-
-        } catch (IOException io) {
-            System.out.println(io.getMessage());
+        if (rmiUrl.equals("") && rmiPort.equals("") && rmiRegistry.equals("") && dbUrl.equals("") && dbPort.equals("") && dbUsername.equals("") && dbPassword.equals("")) {
             return false;
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    System.out.println(e.getMessage());
+        } else {
+            try {
+
+                output = new FileOutputStream("config.properties");
+
+                //Set RMI server properties
+                props.setProperty("rmiurl", rmiUrl);
+                props.setProperty("rmiport", rmiPort);
+                props.setProperty("rmiregistry", rmiRegistry);
+
+                //Set database properties
+                props.setProperty("dburl", dbUrl);
+                props.setProperty("dbport", dbPort);
+                props.setProperty("dbusername", dbUsername);
+                props.setProperty("dbpassword", dbPassword);
+
+                if (!isCorrectlyConfigured()) {
                     return false;
+                }
+                // save properties to project root folder
+                props.store(output, null);
+
+            } catch (IOException io) {
+                System.out.println(io.getMessage());
+                return false;
+            } finally {
+                if (output != null) {
+                    try {
+                        output.close();
+                    } catch (IOException e) {
+                        System.out.println(e.getMessage());
+                        return false;
+                    }
                 }
             }
         }

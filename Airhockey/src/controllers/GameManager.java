@@ -14,6 +14,8 @@ import game.Pod;
 import game.Puck;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
@@ -516,15 +518,18 @@ public class GameManager implements ContactListener {
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                        System.out.println("---------------------------");
                     } else {
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                        System.out.println("---------------------------");
                     }
                 } else {
                     puck.getTouched(0).getPlayer().setRanking(true);
                     g.getPlayer().setRanking(false);
                     System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                     System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
+                    System.out.println("---------------------------");
                 }
                 //Set next round
                 round++;
@@ -541,15 +546,18 @@ public class GameManager implements ContactListener {
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                        System.out.println("---------------------------");
                     } else {
                         g.getPlayer().setRanking(false);
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                        System.out.println("---------------------------");
                     }
                 } else {
                     puck.getTouched(0).getPlayer().setRanking(true);
                     g.getPlayer().setRanking(false);
                     System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                     System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
+                    System.out.println("---------------------------");
                 }
                 //Set next round
                 round++;
