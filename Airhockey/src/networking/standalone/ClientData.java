@@ -1,5 +1,6 @@
 package networking.standalone;
 
+import java.io.Serializable;
 import java.net.*;
 import networking.IPlayer;
 
@@ -18,7 +19,7 @@ import networking.IPlayer;
  * 'muh enterprise'.
  * @author Etienne
  */
-public class ClientData implements IClientData{
+public class ClientData implements IClientData, Serializable{
    
     // RSVP/TODO: Are all these needed? redundancies? Who does the setup?
     

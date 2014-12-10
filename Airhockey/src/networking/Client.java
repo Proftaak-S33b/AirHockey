@@ -1,5 +1,7 @@
 package networking;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
+
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.rmi.NotBoundException;
@@ -7,17 +9,27 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import networking.standalone.ClientData;
+import networking.standalone.TestData;
+import static networking.standalone.rmiDefaults.DEFAULT_HOST;
+import static networking.standalone.rmiDefaults.DEFAULT_PORT;
+import static networking.standalone.rmiDefaults.DEFAULT_SERVER_IP;
+import networking.standalone.rmiStandaloneServer;
+
+//</editor-fold>
 
 /**
  * RMI Client class. Connects to a Server.
- * Interesting read / todo? :
- * http://www.javaworld.com/article/2076234/soa/get-smart-with-proxies-and-rmi.html 
  * @author Etienne
  */
 public class Client {
-
-    // Might differ per machine. Check RMIStandaloneServer's output.
-    private final String DEFAULT_SERVER_IP = "192.168.11.1"; 
+     
+    // Interesting read / todo? :
+    // http://www.javaworld.com/article/2076234/soa/get-smart-with-proxies-and-rmi.html 
+    
     private Registry registry;
 
     /**
@@ -127,21 +139,34 @@ public class Client {
      * @param args
      */
     public static void main(String[] args){
-	/*
+
 	// Initialize Client.
 	Client c = new Client();
+
+	// Connect to central RMI server.
+	c.LocateRegistry(DEFAULT_SERVER_IP, DEFAULT_PORT);
 	
-	// Connect to RMI server.
-	c.LocateRegistry(c.DEFAULT_SERVER_IP, 1099);
+	//try {
+	    // Get new host from server.
+	    //HashMap clients = (HashMap) c.registry.lookup("clients");
+
+	    // Reconnect to new host.
+	    /*c.relocate(
+		    ((ClientData)clients.get("default")).getHost().toString(), 
+		    DEFAULT_PORT
+	    );*/
+
+	    TestData r = (TestData) c.Lookup("testdata");
+	    System.out.println(r.getString()/*"" + r.list().length*/);
+	    
+	    // Read data from host.	    Connects to "default".
+	    //ClientData cd = ((ClientData)clients.get("default"));
+	    //System.out.println(cd.getName());
+	    //System.out.println(cd.getDescription());
+	    System.out.println("---");
 	
-	// Get new host from server.
-	String info = c.registry.lookup("info");
-	
-	// Reconnect to new host.
-	c.LocateRegistry(host, 1099);
-	
-	// Read data from host.
-	c.registry.lookup(data);
-	*/
+	//} catch (RemoteException | NotBoundException ex) {
+	//   Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+	//}
     }
 }
