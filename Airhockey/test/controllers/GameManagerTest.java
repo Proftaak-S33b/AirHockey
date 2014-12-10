@@ -47,7 +47,7 @@ public class GameManagerTest {
         players.add(new Human("ik","w8woord", 20));
         players.add(new AI("Blue", 20));
         players.add(new AI("Green", 20));
-        gm = new GameManager(gc, players, Difficulty.EASY, null);
+        gm = new GameManager(gc, players, Difficulty.EASY,null , null);
         gw = new GameWorld(players);
     }
     

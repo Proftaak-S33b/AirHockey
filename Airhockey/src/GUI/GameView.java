@@ -8,7 +8,12 @@ import game.Human;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -59,7 +64,7 @@ public class GameView implements Initializable {
 
     @FXML
     private Label LabelGameEnd;
-    
+
     @FXML
     private ProgressIndicator piLoading;
 
@@ -74,6 +79,7 @@ public class GameView implements Initializable {
     final URL resource = getClass().getResource("nietvanzelf.mp3");
     private ObservableList<IPlayer> players;
     private boolean gameStarted = false;
+    private double count = -0.005;
 
     //Movement commands
     private boolean playerMoveRight;
@@ -86,7 +92,6 @@ public class GameView implements Initializable {
         //Initialize score table
         columnPlayer.setCellValueFactory(new PropertyValueFactory("Name"));
         columnScore.setCellValueFactory(new PropertyValueFactory("Ranking"));
-        piLoading.setProgress(0.6);
     }
 
     /**
@@ -105,30 +110,67 @@ public class GameView implements Initializable {
             tableScore.setItems((ObservableList) players);
             this.difficulty = difficulty;
             gamemanager = new GameManager(gc, players, difficulty, GameType.SINGLEPLAYER, this);
-            new AnimationTimer() {
+
+            piLoading.setVisible(true);
+            Timer t = new Timer("CountdownTimer", true);
+
+            t.schedule(new TimerTask() {
 
                 @Override
-                public void handle(long now) {
-                    boolean gameBusy = gamemanager.draw();
-                    //Refresh scoretable
-                    ObservableList<IPlayer> data = FXCollections.observableArrayList();
-                    for (IPlayer player : players) {
-                        data.add(player);
-                    }
-                    players.removeAll(players);
-                    players.addAll(data);
+                public void run() {
+                    count += 0.005;
 
-                    if (!gameBusy) {
-                        this.stop();
-                    } else {
-                        player_Move();
+                    Platform.runLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            loadProgress();
+                        }
+                    });
+                    if (count >= 5.50) {
+                        Platform.runLater(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                progressVisible();
+                                gamemanager.start();
+                                gameStarted = true;
+                            }
+                        });
+                        t.cancel();
                     }
                 }
-            }.start();
-
-            gamemanager.start();
-            gameStarted = true;
+            }, 0, 5);
         }
+        new AnimationTimer() {
+
+            @Override
+            public void handle(long now) {
+                boolean gameBusy = gamemanager.draw();
+                //Refresh scoretable
+                ObservableList<IPlayer> data = FXCollections.observableArrayList();
+                for (IPlayer player : players) {
+                    data.add(player);
+                }
+                players.removeAll(players);
+                players.addAll(data);
+
+                if (!gameBusy) {
+                    this.stop();
+                } else {
+                    player_Move();
+                }
+            }
+        }.start();
+
+    }
+
+    public void loadProgress() {
+        piLoading.setProgress(count / 5);
+    }
+
+    public void progressVisible() {
+        piLoading.setVisible(false);
     }
 
     /**
