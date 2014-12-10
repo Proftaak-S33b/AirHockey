@@ -5,6 +5,7 @@
 package game;
 
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.IPlayer;
 import org.jbox2d.common.Vec2;
@@ -36,11 +37,11 @@ public class PuckTest {
 
     @Before
     public void setUp() {
-        ArrayList<IPlayer> players = new ArrayList<>();
+        ObservableList<IPlayer> players = FXCollections.observableArrayList();
         players.add(new Human("A", "",0));
         players.add(new Human("B", "",0));
         players.add(new Human("C", "",0));
-        world = new GameWorld((ObservableList<IPlayer>) players);
+        world = new GameWorld(players);
         puck = new Puck(10, world);
     }
 

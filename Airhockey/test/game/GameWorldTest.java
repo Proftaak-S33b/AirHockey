@@ -92,8 +92,15 @@ public class GameWorldTest {
         System.out.println("Testing getPod:");
         assertNotNull("Returns null!", 
                 gameworld.getPod(1));
-        assertNull("If pod doesn't excist, null is not returned!",
-                gameworld.getPod(100));
+        try
+        {
+            gameworld.getPod(100);
+            assertFalse("getPod() outside of index doesn't throw a error!", true);
+        }
+        catch(Exception e)
+        {
+            assertFalse("getPod() outside of index doesn't throw a error!", false);
+        }
     }
     
     /**

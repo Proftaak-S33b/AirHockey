@@ -6,6 +6,13 @@ package game;
 
 import game.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import networking.IPlayer;
 import org.jbox2d.common.Vec2;
@@ -37,11 +44,11 @@ public class GoalTest {
 
     @Before
     public void setUp() {
-        ArrayList<IPlayer> players = new ArrayList<>();
+        ObservableList<IPlayer> players = FXCollections.observableArrayList();
         players.add(new Human("A", "", 0));
         players.add(new Human("B", "", 0));
         players.add(new Human("C", "", 0));
-        gameworld = new GameWorld((ObservableList<IPlayer>) players);
+        gameworld = new GameWorld(players);
         goal = new Goal(gameworld.getPlayer("A"), gameworld, new Vec2(0,0), new Vec2(0,0));
     }
 

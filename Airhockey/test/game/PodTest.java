@@ -5,6 +5,7 @@
 package game;
 
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.*;
 import org.jbox2d.common.Vec2;
@@ -39,11 +40,11 @@ public class PodTest {
     public void setUp() {
         player = new Human("name", "password", 0);
         position = new Vec2(0, 0);
-        ArrayList<IPlayer> players = new ArrayList();
+        ObservableList<IPlayer> players = FXCollections.observableArrayList();
         players.add(new Human("A", "", 0));
         players.add(new Human("B", "", 0));
         players.add(new Human("C", "", 0));
-        world = new GameWorld((ObservableList<IPlayer>) players);
+        world = new GameWorld(players);
         pod = new Pod(world, player, position);
     }
 
