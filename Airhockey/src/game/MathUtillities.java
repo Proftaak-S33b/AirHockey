@@ -71,13 +71,14 @@ public class MathUtillities {
     /**
      * Calculates a new vector to draw the shapes y = 50 - old y
      *
+     * TODO ROTATE X
      * @param vector
      * @return a vector to draw a shape
      */
-    public static Vec2 rotateVector(Vec2 vector) {
+    /*public static Vec2 rotateVector(Vec2 vector) {
         float yVector = 50 - vector.y;
         return new Vec2(vector.x, yVector);
-    }
+    }*/
 
     /**
      * Calculates the 4 coordinates of the rectangle that will represent a goal
