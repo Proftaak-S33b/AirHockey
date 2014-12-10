@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -80,7 +78,6 @@ public class GameView implements Initializable {
     private ObservableList<IPlayer> players;
     private boolean gameStarted = false;
     private double count = -0.005;
-
     //Movement commands
     private boolean playerMoveRight;
     private boolean playerMoveLeft;
@@ -223,8 +220,8 @@ public class GameView implements Initializable {
      */
     public void setTekst(ActionEvent event) {
         if (!textChat.getText().equals("")) {
-            listChat.getItems().add(textChat.getText());
-            //listChat.getItems().add(new AI("", 20).chat());
+            listChat.getItems().add(players.get(0).getName()+": "+textChat.getText());
+            listChat.getItems().add("AI: " +new AI("", 20).chat());
             textChat.clear();
         }
     }
