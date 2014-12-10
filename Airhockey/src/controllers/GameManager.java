@@ -92,7 +92,8 @@ public class GameManager implements ContactListener {
         if (gameType == GameType.MULTIPLAYER_RED) {
             remoteGame = startServer();
         } else {
-            remoteGame = connectToServer(null, round);
+            //remoteGame = connectToServer(null, round);
+            remoteGame = null;
         }
     }
 
