@@ -8,6 +8,7 @@ import game.Goal;
 import game.MathUtillities;
 import game.Pod;
 import game.Puck;
+import game.Wall;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
@@ -25,8 +26,8 @@ import networking.Coordinate;
 import networking.GameData;
 import networking.IPlayer;
 import networking.IRemoteGame;
-import networking.RMIData;
 import networking.RemoteGame;
+import networking.Client;
 import networking.Server;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -160,7 +161,7 @@ public class GameManager implements ContactListener {
     }
 
     private IRemoteGame connectToServer(InetAddress address, int port) {
-        RMIData rmi = new RMIData(address.getHostAddress(), port);
+        Client rmi = new Client(address.getHostAddress(), port);
         return (IRemoteGame) rmi.lookup("HockeyGame");
     }
 
@@ -292,8 +293,9 @@ public class GameManager implements ContactListener {
 
     /**
      * Part of slowly phasing out the AI from the Controller to the AI classes.
-     * Method content should be moved.
+     * Method content has been moved to AI.java.
      */
+    @Deprecated
     private void AI_CalculateMovement() {
         // temp | note-to-self: avoid hardcoding     
         float p1Y = gameworld.getPod(1).getPosition().y; // AI #1     
@@ -495,6 +497,9 @@ public class GameManager implements ContactListener {
         }
     }
 
+    
+    // Adding the sounds was kind of confusing, If someone could clean it up a bit that'd be great.
+    // I'd do it but I'm working on RMI atm. :(
     /**
      * Method is called when a collision occurs
      *
@@ -506,25 +511,50 @@ public class GameManager implements ContactListener {
         if (gameType == GameType.SINGLEPLAYER || gameType == GameType.MULTIPLAYER_RED) {
             Body bodyA = cntct.getFixtureA().getBody();
             Body bodyB = cntct.getFixtureB().getBody();
+	    
             if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
+		
+		// Hits pod
+		SoundManager.play(SoundManager.SoundEffects.intervention_420);
+		
                 Goal g = (Goal) bodyB.getUserData();
                 Puck puck = (Puck) bodyA.getUserData();
+		
                 if (puck.getTouched(0) != null) {
+		    
                     if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
+			
                         if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
+			    
                             puck.getTouched(1).getPlayer().changeRanking(true);
-                            g.getPlayer().changeRanking(false);
+                            g.getPlayer().changeRanking(false);			    			    
+			    
+			    // Scores
+			    SoundManager.setTrack(SoundManager.SoundEffects.Oh_Baby_A_Triple);
+			    
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
                             System.out.println("---------------------------");
+			    
                         } else {
+			    
                             g.getPlayer().changeRanking(false);
+			    
+			    // Own goal
+			    SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
+			    
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("---------------------------");
+			    
                         }
                     } else {
+			
                         puck.getTouched(0).getPlayer().changeRanking(true);
                         g.getPlayer().changeRanking(false);
+			
+			// Scores
+			SoundManager.setTrack(SoundManager.SoundEffects.intervention_420);
+			
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");
@@ -535,24 +565,45 @@ public class GameManager implements ContactListener {
                 //Reset puck
                 puckReset = true;
             } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
+		
+		// Hits pod
+		SoundManager.play(SoundManager.SoundEffects.intervention_420);
+		
                 Goal g = (Goal) bodyA.getUserData();
                 Puck puck = (Puck) bodyB.getUserData();
                 if (puck.getTouched(0) != null) {
+		    
                     if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
+			
                         if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
+			    
                             puck.getTouched(1).getPlayer().changeRanking(true);
                             g.getPlayer().changeRanking(false);
+			    
+			    // Scores
+			    SoundManager.play(SoundManager.SoundEffects.Oh_Baby_A_Triple);
+			    
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
                             System.out.println("---------------------------");
                         } else {
+			    
                             g.getPlayer().changeRanking(false);
+			    
+			    // Scores
+    			    SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
+			    
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("---------------------------");
                         }
                     } else {
+			
                         puck.getTouched(0).getPlayer().changeRanking(true);
                         g.getPlayer().changeRanking(false);
+			
+			// Scores
+			SoundManager.play(SoundManager.SoundEffects.DAMN_SON_WHERED_YOU_FIND_THIS);
+			
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");
@@ -571,7 +622,7 @@ public class GameManager implements ContactListener {
                 Puck puck = (Puck) bodyB.getUserData();
                 Pod pod = (Pod) bodyA.getUserData();
                 puck.addTouched(pod);
-            }
+            }	    
         }
     }
 
