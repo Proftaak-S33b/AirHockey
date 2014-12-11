@@ -47,7 +47,7 @@ public class Client {
      * @param port an int with the portnumber to connect to.
      */
     public Client(String host, int port) {
-        LocateRegistry(host, port);
+        locateRegistry(host, port);
     }
 
     /**
@@ -94,7 +94,7 @@ public class Client {
 	    registry = null;
 	}
 	
-	LocateRegistry(host, port);
+	locateRegistry(host, port);
     }    
     
     /**
@@ -116,7 +116,7 @@ public class Client {
         //Params for IP or which ChatData object to retrieve?
         //nah, registry is initialized, no need to reconnect.
         //if we want different objects, make more client/rmidata objects?
-        return (ChatData) Lookup("chatdata");
+        return (ChatData) lookup("chatdata");
     }
 
     /**
@@ -128,7 +128,7 @@ public class Client {
      * returns null
      */
     public /*static*/ GameData getGameData(String IPAddress, int portNumber) {        
-        return (GameData) Lookup("gamedata");
+        return (GameData) lookup("gamedata");
     }
 
     /**
@@ -141,7 +141,7 @@ public class Client {
 	Client c = new Client();
 
 	// Connect to central RMI server.
-	c.LocateRegistry(DEFAULT_SERVER_IP, DEFAULT_PORT);
+	c.locateRegistry(DEFAULT_SERVER_IP, DEFAULT_PORT);
 	
 	//try {
 	    // Get new host from server.
@@ -153,7 +153,7 @@ public class Client {
 		    DEFAULT_PORT
 	    );*/
 
-	    TestData r = (TestData) c.Lookup("testdata");
+	    TestData r = (TestData) c.lookup("testdata");
 	    System.out.println(r.getString()/*"" + r.list().length*/);
 	    
 	    // Read data from host.	    Connects to "default".
