@@ -516,7 +516,7 @@ public class GameManager implements ContactListener {
 	    
             if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
 		
-		// Hits pod
+		// Hits goal
 		SoundManager.play(SoundManager.SoundEffects.intervention_420);
 		
                 Goal g = (Goal) bodyB.getUserData();
@@ -568,7 +568,7 @@ public class GameManager implements ContactListener {
                 puckReset = true;
             } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
 		
-		// Hits pod
+		// Hits goal
 		SoundManager.play(SoundManager.SoundEffects.intervention_420);
 		
                 Goal g = (Goal) bodyA.getUserData();
@@ -617,10 +617,18 @@ public class GameManager implements ContactListener {
                 puckReset = true;
             }
             if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Pod) {
+		
+		// Hits pod
+		SoundManager.play(SoundManager.SoundEffects.intervention_420);
+		
                 Puck puck = (Puck) bodyA.getUserData();
                 Pod pod = (Pod) bodyB.getUserData();
                 puck.addTouched(pod);
             } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Pod) {
+				
+		// Hits pod
+		SoundManager.play(SoundManager.SoundEffects.intervention_420);
+
                 Puck puck = (Puck) bodyB.getUserData();
                 Pod pod = (Pod) bodyA.getUserData();
                 puck.addTouched(pod);
