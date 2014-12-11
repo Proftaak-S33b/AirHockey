@@ -1,16 +1,41 @@
 package networking.standalone;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
+
+import game.Human;
 import java.net.*;
+import java.rmi.AccessException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import networking.IPlayer;
+import networking.LobbyData;
+
+//</editor-fold>
+
+/*
+
+Note to self
+
+make the client request a list of hosts from this standalone.
+make this standalone keep track of all clients hosting a game.
+make sure other servers unregister at *some* point.
+
+*/
 
 /**
  * Standalone RMI Server for dedicated server hosting.
  * Serves as a networking interface for individual clients.
+ * http://stackoverflow.com/questions/4637362/communication-via-internet-in-java
  * @author Etienne
  */
-public class rmiStandaloneServer {
+public class rmiStandaloneServer{
     
     /**
      * The ipv4 address of the server. 
@@ -28,7 +53,12 @@ public class rmiStandaloneServer {
     /**
      * A list of client applications registered to the server.
      */
-    private HashMap clients;
+    private Map<String, ClientData> clients;
+    
+    /**
+     * To make all our data accessible we use this registry.
+     */
+    public Registry registry;
     
     /**
      * Initializes the server. 
@@ -36,10 +66,22 @@ public class rmiStandaloneServer {
      * @param name an optional string with the name of the server.
      */
     public rmiStandaloneServer(String name) throws UnknownHostException{
-	this.name = name;
-	this.address = (Inet4Address) Inet4Address.getLocalHost();
-	this.clients = new HashMap();
-	printInfo();
+	
+	// Info about this server.
+	    this.name = name;
+	    this.address = (Inet4Address) Inet4Address.getLocalHost();
+	    
+	// Initialize list of clients and register them.
+	    this.clients = new HashMap();
+	try {
+	    registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
+	    TestData td = new TestData();
+	    td.setString("kanker.");
+	    registry.bind("testdata", (Remote) td);
+	    printInfo();
+	} catch (RemoteException | AlreadyBoundException ex) {
+	    Logger.getLogger(rmiStandaloneServer.class.getName()).log(Level.SEVERE, null, ex);
+	}
     }
 
     /**
@@ -47,9 +89,20 @@ public class rmiStandaloneServer {
      * Name is optional.
      */
     public rmiStandaloneServer() throws UnknownHostException{
+	
+	// Info about this server.
 	this.name = "Dedicated Airhockey Server";
 	this.address = (Inet4Address) Inet4Address.getLocalHost();
+	
+	// Initialize list of clients and register them.
 	this.clients = new HashMap();
+	try {
+	    registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
+	    //registry.bind("clients", (Remote) clients);
+	    printInfo();
+	} catch (RemoteException /*| AlreadyBoundException*/ ex) {
+	    Logger.getLogger(rmiStandaloneServer.class.getName()).log(Level.SEVERE, null, ex);
+	}
 	printInfo();
     }
     
@@ -74,7 +127,7 @@ public class rmiStandaloneServer {
     /**
      * Returns the list with clients.
      */
-    public HashMap getList(){
+    public Map getList(){
 	return this.clients;
     }
   
@@ -89,17 +142,21 @@ public class rmiStandaloneServer {
     /**
      * Registers a client with the server.
      */
-    public void registerClient(ClientData client){
-	clients.put(client.name, client);
-	System.out.println("Registering client under " + client.name);
+    public void registerClient(
+	    InetAddress address, String name, String description,
+	    IPlayer host, Socket socket, ServerSocket serversocket
+    ){
+	ClientData client = new ClientData(address, name, description, host, socket, serversocket);
+	clients.put(client.getName(), client);
+	System.out.println("Registering client under " + client.getName());
     }
     
     /**
      * Unregisters a client with the server.
      */
     public void unregisterClient(ClientData client){
-	clients.remove(client.name);
-	System.out.println("Unregistering client with key " + client.name);
+	clients.remove(client.getName());
+	System.out.println("Unregistering client with key " + client.getName());
     }
     
     /**
@@ -108,10 +165,10 @@ public class rmiStandaloneServer {
     public void printInfo(){
 	System.out.println(
 	    "Standalone server " + this.name + " at "
-	    + this.address.toString() + ", with a clientlist of "
-	    + this.clients.size()
+	    + this.address.toString() + ", with a clientlist the size of "
+	    + this.clients.size() + "."
 	);
-    }    
+    }
     
     /**
      * Refreshes the list of registered clients.
@@ -130,17 +187,16 @@ public class rmiStandaloneServer {
 	System.out.println("Starting standalone server..");
 	
 	try {
-	    rmiStandaloneServer rmiss = new rmiStandaloneServer("NetworkServer");
+	    rmiStandaloneServer rmi = new rmiStandaloneServer("NetworkServer");
 	} catch (UnknownHostException ex) {
 	    Logger.getLogger(rmiStandaloneServer.class.getName()).log(Level.SEVERE, null, ex);
 	    System.out.println("Failed. Exiting program.");
 	}
 	
-	while(true){
-	    // accept a connection;
-	    // create a thread to deal with the client;
-	}
+	System.out.println("Running server..");
 	
-	//System.out.println("Running server..");
+	while(true){
+	    // Keep the server running.
+	}	
     }
 }

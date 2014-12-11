@@ -112,6 +112,8 @@ public class AI extends Observable implements IPlayer, Observer{
 	"GET REKT",
 	"Why didn't you listen?",
 	"#rekt",
+	//As reply to question
+	"Wat denk je zelf?"
     };
     
     //<editor-fold defaultstate="collapsed" desc="huge hashmapcopy of messages">
@@ -155,6 +157,8 @@ public class AI extends Observable implements IPlayer, Observer{
 	put(chatEvent.ON_SCORED, "GET REKT");
 	put(chatEvent.ON_SCORED, "Why didn't you listen?");
 	put(chatEvent.ON_SCORED, "#rekt");
+	// As reply to a question in the chat
+	put(chatEvent.ON_SCORED, "Wat denk je zelf?");
     }};
     //</editor-fold>
 
@@ -172,7 +176,8 @@ public class AI extends Observable implements IPlayer, Observer{
 	AT_END_WON,
 	AT_END_LOST,
 	ON_SCORED, // when AI scores.
-	ON_SCORED_AGAINST // when another player scores on this AI.
+	ON_SCORED_AGAINST, // when another player scores on this AI.
+	ON_CHAT_QUESTION // What do you think this means?
     }
     
     //</editor-fold>

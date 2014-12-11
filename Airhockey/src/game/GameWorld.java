@@ -37,7 +37,7 @@ public class GameWorld {
         //Create world
         world = new World(new Vec2(0.0f, 0.0f));
         //Create puck
-        puck = new Puck(10, this);
+        puck = new Puck(20, this);
         //Create field
         Wall wall;
         wall = new Wall(WallID.BOTTOM_LEFT, this, MathUtillities.getCoordinates(MathUtillities.Corner.A), MathUtillities.getCoordinates(MathUtillities.Corner.B));

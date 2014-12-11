@@ -1,11 +1,22 @@
 package networking;
 
+//<editor-fold defaultstate="collapsed" desc="imports">
+
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import networking.standalone.rmiDefaults;
+import static networking.standalone.rmiDefaults.DEFAULT_PORT;
+
+//</editor-fold>
 
 /**
  * RMI Server class. Connects with Client.
@@ -13,26 +24,40 @@ import java.rmi.registry.Registry;
  * @author Etienne & Joris
  */
 public class Server {
-
-    // RMI defaults.    
-    private static final String DEFAULT_HOST = "localhost";
-    private static final String DEFAULT_PROTOCOL = "rmi";
-    private static final String DEFAULT_HOSTNAME = "local";
-    private static final int DEFAULT_PORT = 1099;
-
+    
     private InetAddress serverip;
     private Registry registry;
 
     /**
      * Returns the ip-address of the server.
-     *
-     * @return InetAddress with the ip. Can be converted to a String using
-     * toString().
+     * @return InetAddress with the ip.      
      */
     public InetAddress getServerIP() {
         return serverip;
     }
-
+    
+    /**
+     * Gets a complete Key-Value copy of the registry.
+     * @return an HashMap (a.k.a Dictionary(C#) / associative array(PHP)) 
+     * with the keys (binded objects' names) + values (remote objects themselves).
+     * @throws RemoteException thrown when the remotes' shit hits the fan.
+     * @throws NotBoundException thrown when the key is not bound in the registry.
+     */
+    public HashMap getRegistryValues() throws RemoteException, NotBoundException{
+        
+        HashMap values = new HashMap<>();
+        
+        // Get all the names registered. (Keys)
+        String[] array = registry.list();
+        
+        // Now put the keys with their remotes in the map.
+        for (String s : array) {
+            values.put(s, registry.lookup(s));
+        }
+        
+        return values;
+    }
+    
     /**
      * Creates a new Server with a registry on default port 1099.
      *
@@ -59,7 +84,7 @@ public class Server {
      */
     private void createRegistry() {
         try {
-            registry = LocateRegistry.createRegistry(DEFAULT_PORT);
+            registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }
@@ -97,17 +122,17 @@ public class Server {
     ////////////////////////////////////////////////////////////////////////////
     //Old code, i need this to remember the mechanics. pls dont remove ;_;
     //<editor-fold defaultstate="collapsed" desc="main">
+    
     /**
      * Include a main() method so we can launch the server and client
      * seperately.
      *
      * @param args
      */
-    public static void main(String[] args) {
-
-        // The following code can throw a RemoteException.
-        try {
-
+    public static void main(String[] args){
+        
+        try { 
+            
             // Set Security Manager.
             // For RMI to download classes, a security manager must be in force.
             /*  This will cause errors if you don't have the right policies. 
@@ -119,16 +144,22 @@ public class Server {
             // Create the registry. Default port: 1099.
             // By binding it like this you don't need to use your command line.
             Registry registry = LocateRegistry.createRegistry(DEFAULT_PORT);
-
-            // Instantiate the implementation class.
+	    Inet4Address address = (Inet4Address) Inet4Address.getLocalHost();
+	    System.out.println("Started server at " + address.toString());
+            registry.bind("registry", registry);
+	    // Instantiate the implementation class.
             // Interface is deprecated.
             //Interface i = new InterfaceImpl();
             // bind it to the registry.
             //registry.bind("write", i);
-            // Catches exception by printing error.
-        } catch (Exception e) {
+            
+        // Catches exception by printing error.
+        } catch (RemoteException e) { 
             System.out.println(e.getMessage());
-        }
+        } catch (UnknownHostException | AlreadyBoundException ex) {
+	    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+	}        
     }
+    
     //</editor-fold>
 }
