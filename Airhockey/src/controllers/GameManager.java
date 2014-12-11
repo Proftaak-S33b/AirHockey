@@ -498,7 +498,7 @@ public class GameManager implements ContactListener {
     }
 
     
-    // Adding the sounds was kind of confusing, If someone could clean it up a bit that'd be great.
+    // Adding the sounds was kind of confusing, if someone could clean it up a bit that'd be great.
     // I'd do it but I'm working on RMI atm. :(
     /**
      * Method is called when a collision occurs
@@ -511,6 +511,8 @@ public class GameManager implements ContactListener {
         if (gameType == GameType.SINGLEPLAYER || gameType == GameType.MULTIPLAYER_RED) {
             Body bodyA = cntct.getFixtureA().getBody();
             Body bodyB = cntct.getFixtureB().getBody();
+	    
+	    checkCollisionWithWall(bodyA, bodyB);
 	    
             if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
 		
@@ -626,6 +628,21 @@ public class GameManager implements ContactListener {
         }
     }
 
+    /**
+     * <i>Extracted from beginContact.</i>
+     * Checks if the puck collides with the wall, and if so, plays sound.
+     * @param bodyA see beginContact().
+     * @param bodyB see beginContact().
+     */
+    private void checkCollisionWithWall(Body bodyA, Body bodyB){
+	    if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Wall) {
+		SoundManager.play(SoundManager.SoundEffects.hitmarker);
+	    }
+	    if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Wall) {
+		SoundManager.play(SoundManager.SoundEffects.hitmarker);
+	    }
+    }
+    
     /**
      * <i>Extracted from drawfield, prevents repeating of slightly different lines.</i>
      * Draws a line between two vectors using strokeLine.
