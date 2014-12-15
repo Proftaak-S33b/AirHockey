@@ -125,8 +125,9 @@ public class GameManager implements ContactListener {
         gameworld.getPhysWorld().setContactListener(this);
         if (gameType == GameType.MULTIPLAYER_RED) {
             remoteGame = startServer();
+        } else if(gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
+            remoteGame = connectToServer(null, round);
         } else {
-            //remoteGame = connectToServer(null, round);
             remoteGame = null;
         }
     }
