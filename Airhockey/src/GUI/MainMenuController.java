@@ -11,6 +11,7 @@ import game.Human;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import networking.Player_Leaderboard;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.*;
 
@@ -82,7 +84,7 @@ public class MainMenuController implements Initializable {
 
     public void handleMultiplayer(ActionEvent event) {
         if (DatabaseManager.authenticateUser(tfUsername.getText(), tfPassword.getText())) {
-            currentPlayer = new Human(tfUsername.getText(), tfPassword.getText(), 400);
+            currentPlayer = new Human(tfUsername.getText(), tfPassword.getText(), DatabaseManager.getRanking(tfUsername.getText()));
             try {
                 Node node = (Node) event.getSource();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
