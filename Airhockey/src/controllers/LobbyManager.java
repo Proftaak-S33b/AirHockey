@@ -56,6 +56,9 @@ public class LobbyManager {
         } catch (RemoteException ex) {
             System.out.println(ex.getMessage());
         }
+        for(ClientData d : lobs){
+            System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
+        }
         addClientDataIfNotPresent(lobs);
         removeClientDataIfDoesntExist(lobs);
 //                });
