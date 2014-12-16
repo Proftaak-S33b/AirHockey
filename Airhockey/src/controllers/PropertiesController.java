@@ -13,34 +13,34 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 /**
+ * Static class for changing and getting the properties
  *
- * @author Joris
+ * @author Jur
  */
-public class PropertiesController {
+public final class PropertiesController {
 
-    private final Properties props;
-
-    /**
-     * Instantiates a new SettingsController that can write and read the
-     * properties file from the root folder of the application
-     *
-     * @param props Can be null, the properties this controller will use.
-     */
-    public PropertiesController(Properties props) {
-        if (props != null) {
-            this.props = props;
-        } else {
-            this.props = new Properties();
-        }
-    }
+    private static Properties props = new Properties();
 
     /**
-     * Gets the Properties from this PropertiesController
+     * Gets the Properties of the game
      *
      * @return The properties file this controller manages
      */
-    public Properties getSettings() {
-        return props;
+    public static Properties getSettings() {
+        //Check if properties is not null
+        if (props == null) {
+            props = new Properties();
+            loadProperties();
+        }
+        //Check if properties are correct,
+        //if so return properties
+        if (isCorrectlyConfigured()) {
+            return props;
+        } //Else return new configured properties
+        else {
+            resetProperties();
+            return props;
+        }
     }
 
     /**
@@ -48,21 +48,24 @@ public class PropertiesController {
      *
      * @return True if success, false if failed
      */
-    public boolean loadProperties() {
+    public static boolean loadProperties() {
         InputStream input = null;
         try {
-
             input = new FileInputStream("config.properties");
 
             // load a properties file
             props.load(input);
 
             if (!isCorrectlyConfigured()) {
-                return false;
+                resetProperties();
             }
 
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
+            if(resetProperties())
+            {
+                return true;
+            }
             return false;
         } finally {
             if (input != null) {
@@ -81,21 +84,19 @@ public class PropertiesController {
      * Writes the properties file at the root folder of the application with
      * speciefied parameters. All parameters must have a value.
      *
-     * @param rmiUrl
-     * @param rmiPort
-     * @param rmiRegistry
-     * @param dbUrl
-     * @param dbPort
-     * @param dbUsername
-     * @param dbPassword
-     * @return
+     * @param rmiUrl The url of the rmi lobby server
+     * @param rmiPort The port of the rmi lobby server
+     * @param rmiRegistry The name of the rmi registry
+     * @param dbUrl The url of the database
+     * @param dbPort The port of the databse
+     * @param dbUsername The username to the database
+     * @param dbPassword The password to the database
+     * @return If succesfully written or not
      */
-    public boolean writeProperties(String rmiUrl, String rmiPort, String rmiRegistry,
+    public static boolean writeProperties(String rmiUrl, String rmiPort, String rmiRegistry,
             String dbUrl, String dbPort, String dbUsername, String dbPassword) {
-
-        //TODO -> Check if all properties have a proper value
         OutputStream output = null;
-        if (rmiUrl.equals("") && rmiPort.equals("") && rmiRegistry.equals("") && dbUrl.equals("") && dbPort.equals("") && dbUsername.equals("") && dbPassword.equals("")) {
+        if (rmiUrl.equals("") || rmiPort.equals("") || rmiRegistry.equals("") || dbUrl.equals("") || dbPort.equals("") || dbUsername.equals("") || dbPassword.equals("")) {
             return false;
         } else {
             try {
@@ -114,7 +115,7 @@ public class PropertiesController {
                 props.setProperty("dbpassword", dbPassword);
 
                 if (!isCorrectlyConfigured()) {
-                    return false;
+                    resetProperties();
                 }
                 // save properties to project root folder
                 props.store(output, null);
@@ -141,7 +142,7 @@ public class PropertiesController {
      *
      * @return False if not correctly configured, otherwise true.
      */
-    public boolean isCorrectlyConfigured() {
+    private static boolean isCorrectlyConfigured() {
         if (props == null) {
             return false;
         }
@@ -164,6 +165,36 @@ public class PropertiesController {
             return false;
         }
         if (!props.containsKey("dbpassword")) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Resets the properties file to its original state
+     *
+     * @return True if succesfull, false if failed
+     */
+    private static boolean resetProperties() {
+        try {
+
+            OutputStream output = new FileOutputStream("config.properties");
+
+            //Set RMI server properties
+            props.setProperty("rmiurl", "douven.tk");
+            props.setProperty("rmiport", "1099");
+            props.setProperty("rmiregistry", "serverdata");
+
+            //Set database properties
+            props.setProperty("dburl", "a-chan.nl");
+            props.setProperty("dbport", "3306");
+            props.setProperty("dbusername", "deb82648_air");
+            props.setProperty("dbpassword", "airhockey");
+
+            //Save properties to project root folder
+            props.store(output, null);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
         return true;

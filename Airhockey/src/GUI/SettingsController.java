@@ -43,8 +43,6 @@ public class SettingsController implements Initializable {
     @FXML
     private TextField dbPassword;
 
-    private PropertiesController settings;
-
     /**
      * Initializes the controller class.
      *
@@ -53,13 +51,35 @@ public class SettingsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        //Something with a properties file ->
-        settings = new PropertiesController(null);
-        //settings.loadProperties();
+        //Load properties from file and write to fields
+        if(PropertiesController.loadProperties())
+        {
+            //Fill rmi fields
+            rmiIPAddress.setText(PropertiesController.getSettings().getProperty("rmiurl"));
+            rmiPort.setText(PropertiesController.getSettings().getProperty("rmiport"));
+            rmiRegistry.setText(PropertiesController.getSettings().getProperty("rmiregistry"));
+            
+            //Fill database fields
+            dbIPAddress.setText(PropertiesController.getSettings().getProperty("dburl"));
+            dbPort.setText(PropertiesController.getSettings().getProperty("dbport"));
+            dbUsername.setText(PropertiesController.getSettings().getProperty("dbusername"));
+            dbPassword.setText(PropertiesController.getSettings().getProperty("dbpassword"));
+        }
     }
 
     public void backButton(ActionEvent evt) {
+        //Write all properties back to properties.
+        if(!PropertiesController.writeProperties(
+                rmiIPAddress.getText(), 
+                rmiPort.getText(), 
+                rmiRegistry.getText(), 
+                dbIPAddress.getText(),
+                dbPort.getText(), 
+                dbUsername.getText(),
+                dbPassword.getText())){
+            System.out.println("Properties couldn't be saved!");
+        }
+        
         Node node = (Node) evt.getSource();
         Stage stage = (Stage) node.getScene().getWindow();
         stage.close();
