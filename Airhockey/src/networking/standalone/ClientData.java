@@ -21,7 +21,7 @@ import networking.IPlayer;
  * 'muh enterprise'.
  * @author Etienne
  */
-public class ClientData extends UnicastRemoteObject implements IClientData{
+public class ClientData implements IClientData, Serializable{
    
     // RSVP/TODO: Are all these needed? redundancies? Who does the setup?
     
