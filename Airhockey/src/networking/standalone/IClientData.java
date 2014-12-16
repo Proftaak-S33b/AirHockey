@@ -71,4 +71,10 @@ public interface IClientData extends Remote{
      * @return 
      */
     public int getPlayerAmount();
+    
+    /**
+     * Sets the player count to the given amount
+     * @param playerCount The new player count
+     */
+    public void setPlayerAmount(int playerCount);
 }

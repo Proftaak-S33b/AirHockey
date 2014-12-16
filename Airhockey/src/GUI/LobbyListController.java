@@ -130,7 +130,7 @@ public class LobbyListController implements Initializable {
             try {
                 controller.destroy();
                 IClientData tempdata = (IClientData)lobbyTable.getSelectionModel().getSelectedItem();
-                tempdata.increasePlayerAmount();
+                controller.serverData.setPlayerCountLobby(tempdata.getHost(), tempdata.getPlayerAmount() + 1);
                 Node node = (Node) evt.getSource();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
                 Stage stage = (Stage) node.getScene().getWindow();

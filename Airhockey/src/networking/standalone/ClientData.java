@@ -2,8 +2,6 @@ package networking.standalone;
 
 import java.io.Serializable;
 import java.net.*;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import networking.IPlayer;
 
 /**
@@ -159,5 +157,10 @@ public class ClientData implements IClientData, Serializable{
     @Override
     public int getPlayerAmount() {
         return playerCount;
+    }
+    
+    @Override
+    public void setPlayerAmount(int playerCount) {
+        this.playerCount = playerCount;
     }
 }
