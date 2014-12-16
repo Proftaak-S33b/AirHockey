@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 /**
- * Stub for future socket implementation.
+ * Serverside socket implementation for pushing model.
  * @author Etienne
  */
 public class SocketServer {
@@ -15,6 +15,9 @@ public class SocketServer {
     BufferedReader in;
     String inputline;    
     int portnumber;
+    Thread t1;	// Maintain for three connection.
+    Thread t2;
+    Thread t3;
     
     /**
      * 

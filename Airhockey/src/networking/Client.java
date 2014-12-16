@@ -2,22 +2,14 @@ package networking;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import networking.standalone.ClientData;
 import networking.standalone.TestData;
-import static networking.standalone.rmiDefaults.DEFAULT_HOST;
 import static networking.standalone.rmiDefaults.DEFAULT_PORT;
 import static networking.standalone.rmiDefaults.DEFAULT_SERVER_IP;
-import networking.standalone.rmiStandaloneServer;
 
 //</editor-fold>
 
@@ -26,17 +18,17 @@ import networking.standalone.rmiStandaloneServer;
  * @author Etienne
  */
 public class Client {
-     
-    // Interesting read / todo? :
-    // http://www.javaworld.com/article/2076234/soa/get-smart-with-proxies-and-rmi.html 
     
+    /**
+     * The registry to link to the Server.
+     */
     private Registry registry;
 
     /**
      * Initializes a new Client with no setup done: data can be specified later.
      */
     public Client() {
-
+	
     }
 
     /**

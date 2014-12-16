@@ -8,14 +8,17 @@ import java.net.UnknownHostException;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import networking.standalone.ClientData;
 import networking.standalone.rmiDefaults;
 import static networking.standalone.rmiDefaults.DEFAULT_PORT;
+import networking.standalone.rmiStandaloneServer;
 
 //</editor-fold>
 
@@ -28,7 +31,7 @@ public class Server {
     
     private InetAddress serverip;
     private Registry registry;
-
+    
     /**
      * Returns the ip-address of the server.
      * @return InetAddress with the ip.      
@@ -67,6 +70,7 @@ public class Server {
     public Server() throws UnknownHostException {
         createRegistry();
         serverip = InetAddress.getLocalHost();
+	System.out.println("Started server at " + serverip.toString());
     }
 
     /**
@@ -78,6 +82,7 @@ public class Server {
     public Server(int port) throws UnknownHostException {
         createRegistry(port);
         serverip = InetAddress.getLocalHost();
+	System.out.println("Started server at " + serverip.toString());
     }
 
     /**
@@ -114,7 +119,7 @@ public class Server {
      */
     public void bindToRegistry(IRemoteGame obj) throws AlreadyBoundException {
         try {
-            registry.bind("HockeyGame", obj);
+            registry.bind("HockeyGame", (Remote) obj);
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }

@@ -76,7 +76,7 @@ public class rmiStandaloneServer{
 	try {
 	    registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
 	    TestData td = new TestData();
-	    td.setString("kanker.");
+	    td.setString("Connection established.");
 	    registry.bind("testdata", (Remote) td);
 	    printInfo();
 	} catch (RemoteException | AlreadyBoundException ex) {

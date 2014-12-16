@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 
 /**
- * Stubs for future socket implementation.
+ * Clientside socket implementation for server-pushing model.
  * @author Etienne
  */
 public class SocketClient {

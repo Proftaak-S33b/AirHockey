@@ -5,18 +5,24 @@
  */
 package controllers;
 
+import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.ILobbyData;
 import networking.Lobby;
 import networking.Client;
+import networking.IRemoteGame;
+import networking.Server;
+import networking.standalone.ClientData;
 
 /**
  * Controller for managing the multiplayer lobby with multiple games
@@ -28,15 +34,16 @@ public class LobbyManager {
     private final ILobbyData lobbyData;
     private final ObservableList<Lobby> lobbies;
     private final Timer timer;
-    private final Client rmiclient;
+    private final Client client;
+    private final Server server = null;
 
     /**
      * Instantiates the lobbyController and sets a timer that will regularly
      * fetch the lobbies from the RMI server
      */
     public LobbyManager() {
-        rmiclient = new Client("localhost", 1337);
-        lobbyData = rmiclient.getLobbyData();
+        client = new Client("localhost", 1337);
+        lobbyData = client.getLobbyData();
         lobbies = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -61,9 +68,9 @@ public class LobbyManager {
                     }
                 });
             }
-        }, 0, 200);
-
+        }, 0, 200);    
     }
+
 
     /**
      * Adds a new Lobby with specified name and host player
@@ -74,11 +81,16 @@ public class LobbyManager {
      */
     public boolean addLobby(String gameName, IPlayer host) {
         try {
+	    //bind to server
+	    server.bindToRegistry((IRemoteGame) new ClientData(null, gameName, gameName, host, null, null));
             return lobbyData.add(gameName, host);
         } catch (RemoteException ex) {
             System.out.println(ex.getMessage());
             return false;
-        }
+        } catch (AlreadyBoundException ex) {
+	    Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
+	}
+	return false;
     }
 
     /**
