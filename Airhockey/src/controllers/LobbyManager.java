@@ -56,19 +56,39 @@ public class LobbyManager {
                     } catch (RemoteException ex) {
                         System.out.println(ex.getMessage());
                     }
-                    for (ClientData data : lobs) {
-                        if (!clientData.contains(data)) {
-                            clientData.add(data);
-                        }
-                    }
-                    for (ClientData data : clientData) {
-                        if (!lobs.contains(data)) {
-                            clientData.remove(data);
-                        }
-                    }
+                    addClientDataIfNotPresent(lobs);
+                    removeClientDataIfDoesntExist(lobs);
                 });
             }
-        }, 0, 200);
+
+            private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
+                boolean notfound = false;
+                for (ClientData data : clientData) {
+                    for (ClientData d : lobs) {
+                        if (data.getName().equals(d.getName())) {
+                            notfound = true;
+                        }
+                    }
+                    if(!notfound){
+                        clientData.remove(data);
+                    }
+                }
+            }
+
+            private void addClientDataIfNotPresent(List<ClientData> lobs) {
+                boolean found = false;
+                for (ClientData data : clientData) {
+                    for (ClientData d : lobs) {
+                        if (data.getName().equals(d.getName())) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        clientData.add(data);
+                    }
+                }
+            }
+        }, 0, 1000);
     }
 
     /**
@@ -106,7 +126,7 @@ public class LobbyManager {
         }
         return null;
     }
-    
+
     public ILobby connect(ClientData server) {
         client.locateRegistry(server.getAddress().getHostAddress(), 1099);
         return (ILobby) client.lookup("hockeygame");
