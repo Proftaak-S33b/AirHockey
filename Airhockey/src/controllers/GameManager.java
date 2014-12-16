@@ -135,7 +135,6 @@ public class GameManager implements ContactListener {
 
     private IRemoteGame startServer() {
         try {
-            Server server = new Server();
             //Send this to central server
             //server.getServerIP();
             IRemoteGame game = lobby.getRemoteGame();
@@ -151,8 +150,6 @@ public class GameManager implements ContactListener {
                     gameworld.getPlayers().get(2).getRanking(),
                     round);
             return game;
-        } catch (UnknownHostException ex) {
-            System.out.println("Can't locate host: " + ex.getMessage());
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }

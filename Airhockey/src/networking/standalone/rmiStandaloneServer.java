@@ -3,7 +3,6 @@ package networking.standalone;
 //<editor-fold defaultstate="collapsed" desc="imports">
 import java.net.*;
 import java.rmi.AlreadyBoundException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -59,9 +58,6 @@ public class rmiStandaloneServer {
             // Initialize ServerData object
             data = new ServerData();
             registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
-            //TestData td = new TestData();
-            //td.setString("Connection established.");
-            //registry.bind("testdata", td);
             registry.bind("serverdata", data);
             printInfo();
         } catch (RemoteException ex) {
@@ -107,10 +103,12 @@ public class rmiStandaloneServer {
 
         try {
             rmiStandaloneServer rmi = new rmiStandaloneServer();
+            System.out.println("Running server..");
         } catch (UnknownHostException ex) {
             System.out.println("Failed. Exiting program.");
+            System.exit(-1);
         }
 
-        System.out.println("Running server..");
+        
     }
 }

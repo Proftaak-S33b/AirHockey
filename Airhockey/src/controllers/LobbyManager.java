@@ -43,11 +43,6 @@ public class LobbyManager {
      */
     public LobbyManager() {
         client = new Client();
-        try {
-            server = new Server();
-        } catch (UnknownHostException ex) {
-            System.out.println("UnknownHostException: " + ex.getMessage());
-        }
         serverData = (IServerData) client.lookup("serverdata");
         clientData = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);
@@ -85,6 +80,7 @@ public class LobbyManager {
      */
     public ILobby addLobby(String gameName, IPlayer host) {
         try {
+            server = new Server();
             final ILobby lobby = new Lobby(gameName, host);
             //bind to server
             server.bindToRegistry(lobby);

@@ -15,7 +15,6 @@ import networking.standalone.IServerData;
 import static networking.standalone.rmiDefaults.DEFAULT_PORT;
 
 //</editor-fold>
-
 /**
  * RMI Client class. Connects to a Server.
  *
@@ -32,7 +31,7 @@ public class Client {
      * Initializes a new Client with no setup done: data can be specified later.
      */
     public Client() {
-        locateRegistry("145.93.89.162", DEFAULT_PORT);
+        locateRegistry("192.168.112.1", DEFAULT_PORT);
     }
 
     /**
@@ -92,7 +91,7 @@ public class Client {
 
         locateRegistry(host, port);
     }
-    
+
     /**
      * Runs the client seperately.
      *
@@ -104,19 +103,13 @@ public class Client {
         Client c = new Client();
 
         // Connect to central RMI server.
-        c.locateRegistry("145.93.89.162", DEFAULT_PORT);
+        c.locateRegistry("192.168.112.1", 1099);
 
         try {
             IServerData data = (IServerData) c.lookup("serverdata");
-            //for (int i = 0; i < 1000; i++) {
-                data.add(InetAddress.getLocalHost(), "th", "Meer hoi", new Human("Hans", "test", 20), null, null);
-            //}
+            data.add(InetAddress.getLocalHost(), "th", "Meer hoi", new Human("Hans", "test", 20), null, null);
             final List<ClientData> clients = data.getClients();
             System.out.println("Amount of clients found: " + clients.size());
-            //for (ClientData d : clients) {
-            //    System.out.println("Client: " + d.getDescription() + " at " + d.getAddress().toString());
-            //}
-
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         } catch (UnknownHostException ex) {
