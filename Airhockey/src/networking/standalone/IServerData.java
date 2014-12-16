@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.HashMap;
+import java.util.List;
 import networking.IPlayer;
 
 /**
@@ -34,10 +34,14 @@ public interface IServerData extends Remote {
      * Unregisters a client with the server.
      *
      * @param client
+     * @throws java.rmi.RemoteException
      */
     public void unregisterClient(ClientData client) throws RemoteException;
 
-    public HashMap<String, ClientData> getClients() throws RemoteException;
-
-    public HashMap<String, String> k() throws RemoteException;
+    /**
+     * 
+     * @return
+     * @throws RemoteException 
+     */
+    public List<ClientData> getClients() throws RemoteException;
 }

@@ -133,7 +133,7 @@ public class Client {
 	Client c = new Client();
 
 	// Connect to central RMI server.
-	c.locateRegistry(DEFAULT_SERVER_IP, DEFAULT_PORT);
+	c.locateRegistry("145.93.89.162", DEFAULT_PORT);
 	
 	//try {
 	    // Get new host from server.
