@@ -25,7 +25,7 @@ public interface IServerData extends Remote {
      * @param serversocket
      * @throws java.rmi.RemoteException
      */
-    public void registerClient(
+    public void add(
 	    InetAddress address, String name, String description,
 	    IPlayer host, Socket socket, ServerSocket serversocket
     ) throws RemoteException;
@@ -36,7 +36,7 @@ public interface IServerData extends Remote {
      * @param client
      * @throws java.rmi.RemoteException
      */
-    public void unregisterClient(ClientData client) throws RemoteException;
+    public void remove(ClientData client) throws RemoteException;
 
     /**
      * 

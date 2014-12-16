@@ -1,24 +1,31 @@
 package networking;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
-
+import game.Human;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import networking.standalone.ClientData;
+import networking.standalone.IServerData;
 import networking.standalone.TestData;
 import static networking.standalone.rmiDefaults.DEFAULT_PORT;
 import static networking.standalone.rmiDefaults.DEFAULT_SERVER_IP;
 
 //</editor-fold>
-
 /**
  * RMI Client class. Connects to a Server.
+ *
  * @author Etienne
  */
 public class Client {
-    
+
     /**
      * The registry to link to the Server.
      */
@@ -28,7 +35,7 @@ public class Client {
      * Initializes a new Client with no setup done: data can be specified later.
      */
     public Client() {
-	
+
     }
 
     /**
@@ -73,22 +80,22 @@ public class Client {
     }
 
     /**
-     * Relocates to a different server.
-     * If port is unknown, use zero: this will default to the default port.
-     * If host is null, uses localhost.
+     * Relocates to a different server. If port is unknown, use zero: this will
+     * default to the default port. If host is null, uses localhost.
+     *
      * @param host A String with the hostname.
      * @param port an int with the portnumber.
      */
-    public void relocate(String host, int port){
-	port = (port == 0) ? 1099 : port;	
-	
-	if (registry != null) {
-	    registry = null;
-	}
-	
-	locateRegistry(host, port);
-    }    
-    
+    public void relocate(String host, int port) {
+        port = (port == 0) ? 1099 : port;
+
+        if (registry != null) {
+            registry = null;
+        }
+
+        locateRegistry(host, port);
+    }
+
     /**
      * Gets the LobbyData object through RMI
      *
@@ -119,43 +126,36 @@ public class Client {
      * @return The GameData object at this network location, if none found,
      * returns null
      */
-    public /*static*/ GameData getGameData(String IPAddress, int portNumber) {        
+    public /*static*/ GameData getGameData(String IPAddress, int portNumber) {
         return (GameData) lookup("gamedata");
     }
 
     /**
      * Runs the client seperately.
+     *
      * @param args
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-	// Initialize Client.
-	Client c = new Client();
+        // Initialize Client.
+        Client c = new Client();
 
-	// Connect to central RMI server.
-	c.locateRegistry("145.93.89.162", DEFAULT_PORT);
-	
-	//try {
-	    // Get new host from server.
-	    //HashMap clients = (HashMap) c.registry.lookup("clients");
+        // Connect to central RMI server.
+        c.locateRegistry("145.93.89.162", DEFAULT_PORT);
 
-	    // Reconnect to new host.
-	    /*c.relocate(
-		    ((ClientData)clients.get("default")).getHost().toString(), 
-		    DEFAULT_PORT
-	    );*/
+        try {
+            IServerData data = (IServerData) c.lookup("serverdata");
+            data.add(InetAddress.getLocalHost(), "Hoi", "Meer hoi", new Human("Hans", "test", 20), null, null);
+            final List<ClientData> clients = data.getClients();
+            System.out.println("Amount of clients found: " + clients.size());
+            for (ClientData d : clients) {
+                System.out.println("Client: " + d.getDescription() + " at " + d.getAddress().toString());
+            }
 
-	    TestData r = (TestData) c.lookup("testdata");
-	    System.out.println(r.getString()/*"" + r.list().length*/);
-	    
-	    // Read data from host.	    Connects to "default".
-	    //ClientData cd = ((ClientData)clients.get("default"));
-	    //System.out.println(cd.getName());
-	    //System.out.println(cd.getDescription());
-	    System.out.println("---");
-	
-	//} catch (RemoteException | NotBoundException ex) {
-	//   Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-	//}
+        } catch (RemoteException ex) {
+            System.out.println("RemoteException: " + ex.getMessage());
+        } catch (UnknownHostException ex) {
+            System.out.println("UnknownHostException: " + ex.getMessage());
+        }
     }
 }

@@ -29,7 +29,7 @@ public class ServerData extends UnicastRemoteObject implements IServerData {
      * Registers a client with the server.
      */
     @Override
-    public void registerClient(
+    public void add(
             InetAddress address, String name, String description,
             IPlayer host, Socket socket, ServerSocket serversocket
     ) throws RemoteException {
@@ -44,7 +44,7 @@ public class ServerData extends UnicastRemoteObject implements IServerData {
      * @throws java.rmi.RemoteException
      */
     @Override
-    public void unregisterClient(ClientData client) throws RemoteException {
+    public void remove(ClientData client) throws RemoteException {
         clients.remove(client);
         System.out.println("Unregistering client with name: " + client.getName());
     }

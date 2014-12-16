@@ -16,8 +16,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;

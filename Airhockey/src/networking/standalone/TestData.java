@@ -5,22 +5,26 @@
  */
 package networking.standalone;
 
-import java.io.Serializable;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * Testing class for debugging of RMI communications.
  * @author Etienne
  */
-public class TestData implements Remote, Serializable{
+public class TestData extends UnicastRemoteObject implements Remote {
     public int integer = 5;
     public String string = "TestData";
     
-    public String getString(){
+    public TestData() throws RemoteException {
+    }
+    
+    public String getString() throws RemoteException{
 	return string;
     }
     
-    public void setString(String value){
+    public void setString(String value) throws RemoteException {
 	string = value;
     }
 }

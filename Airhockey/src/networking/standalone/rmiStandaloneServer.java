@@ -59,9 +59,9 @@ public class rmiStandaloneServer {
             // Initialize ServerData object
             data = new ServerData();
             registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
-            TestData td = new TestData();
-            td.setString("Connection established.");
-            registry.bind("testdata", (Remote) td);
+            //TestData td = new TestData();
+            //td.setString("Connection established.");
+            //registry.bind("testdata", td);
             registry.bind("serverdata", data);
             printInfo();
         } catch (RemoteException ex) {

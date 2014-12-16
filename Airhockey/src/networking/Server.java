@@ -5,7 +5,6 @@ package networking;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -15,10 +14,8 @@ import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import networking.standalone.ClientData;
 import networking.standalone.rmiDefaults;
 import static networking.standalone.rmiDefaults.DEFAULT_PORT;
-import networking.standalone.rmiStandaloneServer;
 
 //</editor-fold>
 
