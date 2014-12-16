@@ -24,6 +24,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import networking.Lobby;
+import networking.standalone.ClientData;
+import networking.standalone.IClientData;
 
 /**
  *
@@ -122,14 +124,14 @@ public class LobbyListController implements Initializable {
      * @param evt
      */
     public void joinLobby(Event evt) {
-        if (lobbyTable.getSelectionModel().getSelectedItem() instanceof Lobby) {
+        if (lobbyTable.getSelectionModel().getSelectedItem() instanceof IClientData) {
             try {
                 Node node = (Node) evt.getSource();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
                 Stage stage = (Stage) node.getScene().getWindow();
                 stage.setScene(new Scene((Pane) loader.load()));
                 LobbyController lobbyFXML = loader.<LobbyController>getController();
-                lobbyFXML.initData(currentPlayer, (Lobby) lobbyTable.getSelectionModel().getSelectedItem());
+                lobbyFXML.initData(currentPlayer, controller.connect((IClientData) lobbyTable.getSelectionModel().getSelectedItem()));
                 stage.show();
             } catch (IOException ex) {
                 System.out.println("Error changing scene from LobbyList to Lobby " + ex.toString());

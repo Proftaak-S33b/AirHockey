@@ -22,6 +22,7 @@ import networking.Client;
 import networking.ILobby;
 import networking.Server;
 import networking.standalone.ClientData;
+import networking.standalone.IClientData;
 import networking.standalone.IServerData;
 
 /**
@@ -131,7 +132,7 @@ public class LobbyManager {
         return null;
     }
 
-    public ILobby connect(ClientData server) {
+    public ILobby connect(IClientData server) {
         client.locateRegistry(server.getAddress().getHostAddress(), 1099);
         return (ILobby) client.lookup("hockeygame");
     }
