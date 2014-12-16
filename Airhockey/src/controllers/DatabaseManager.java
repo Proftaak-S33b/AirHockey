@@ -138,4 +138,24 @@ public final class DatabaseManager {
         }
         return result;
     }
+    
+    public static int getRanking(String PlayerName)
+    {
+        int result = -1;
+        //Open connection
+        if(openConnection()){
+            try{
+                //Try to execute sql statment
+                Statement stmnt = connection.createStatement();
+                String SQL = "SELECT playerRating FROM PLAYER WHERE playerName = '" + PlayerName + "';"; 
+                ResultSet rs = stmnt.executeQuery(SQL);
+                result = rs.getInt(1);
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+            }
+            closeConnection();
+        }
+        return result;
+    }
 }
