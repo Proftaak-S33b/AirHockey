@@ -62,29 +62,29 @@ public class LobbyManager {
             }
 
             private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
-                boolean notfound = false;
-                for (ClientData data : clientData) {
-                    for (ClientData d : lobs) {
+                for (ClientData d : lobs) {
+                    ClientData tempData = null;
+                    for (ClientData data : clientData) {
                         if (data.getName().equals(d.getName())) {
-                            notfound = true;
+                            tempData = data;
                         }
                     }
-                    if(!notfound){
-                        clientData.remove(data);
+                    if (tempData != null) {
+                        clientData.remove(tempData);
                     }
                 }
             }
 
             private void addClientDataIfNotPresent(List<ClientData> lobs) {
-                boolean found = false;
-                for (ClientData data : clientData) {
-                    for (ClientData d : lobs) {
+                for (ClientData d : lobs) {
+                    ClientData tempData = null;
+                    for (ClientData data : clientData) {
                         if (data.getName().equals(d.getName())) {
-                            found = true;
+                            tempData = data;
                         }
                     }
-                    if (!found) {
-                        clientData.add(data);
+                    if (tempData != null) {
+                        clientData.add(tempData);
                     }
                 }
             }
