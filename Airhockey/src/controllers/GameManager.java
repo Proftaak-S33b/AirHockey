@@ -24,8 +24,8 @@ import networking.Coordinate;
 import networking.GameData;
 import networking.IPlayer;
 import networking.IRemoteGame;
-import networking.RemoteGame;
 import networking.Client;
+import networking.ILobby;
 import networking.Server;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -61,6 +61,7 @@ public class GameManager implements ContactListener {
     private final GraphicsContext gc;
     private final Difficulty difficulty;
     private final GameView gv;
+    private final ILobby lobby;
     private final IRemoteGame remoteGame;
     private boolean puckReset = false;
     
@@ -113,10 +114,12 @@ public class GameManager implements ContactListener {
      * @param gameType The type of game for the client this gamemanager manages
      * the game of
      * @param gv The GUI Controller //should not be here!!!
+     * @param lobby
      */
-    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv) {
+    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, ILobby lobby) {
         this.gc = gc;
         this.gv = gv;
+        this.lobby = lobby;
         gameworld = new GameWorld(players);
         this.difficulty = difficulty;
         this.gameType = gameType;
@@ -135,7 +138,7 @@ public class GameManager implements ContactListener {
             Server server = new Server();
             //Send this to central server
             //server.getServerIP();
-            IRemoteGame game = new RemoteGame();
+            IRemoteGame game = lobby.getRemoteGame();
             Vec2 redPodPos = gameworld.getPod(0).getPosition();
             Vec2 puckPos = gameworld.getPuck().getPosition();
             Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
@@ -147,14 +150,11 @@ public class GameManager implements ContactListener {
                     gameworld.getPlayers().get(1).getRanking(),
                     gameworld.getPlayers().get(2).getRanking(),
                     round);
-            server.bindToRegistry(game);
             return game;
         } catch (UnknownHostException ex) {
             System.out.println("Can't locate host: " + ex.getMessage());
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
-        } catch (AlreadyBoundException ex) {
-            System.out.println("Already bound to registry: " + ex.getMessage());
         }
         return null;
     }

@@ -114,7 +114,7 @@ public class Server {
      * @throws java.rmi.AlreadyBoundException this exception is thrown when the
      * name is already in use.
      */
-    public void bindToRegistry(IRemoteGame obj) throws AlreadyBoundException {
+    public void bindToRegistry(ILobby obj) throws AlreadyBoundException {
         try {
             registry.bind("hockeygame", (Remote) obj);
         } catch (RemoteException ex) {

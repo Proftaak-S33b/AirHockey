@@ -14,15 +14,12 @@ import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.Lobby;
 import networking.Client;
 import networking.ILobby;
-import networking.IRemoteGame;
 import networking.Server;
 import networking.standalone.ClientData;
 import networking.standalone.IServerData;
@@ -90,7 +87,7 @@ public class LobbyManager {
         try {
             final ILobby lobby = new Lobby(gameName, host);
             //bind to server
-            server.bindToRegistry((IRemoteGame) lobby);
+            server.bindToRegistry(lobby);
             serverData.add(InetAddress.getLocalHost(), gameName, null, host, null, null);
             return lobby;
         } catch (RemoteException | AlreadyBoundException | UnknownHostException ex) {

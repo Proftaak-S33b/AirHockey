@@ -104,7 +104,6 @@ public class LobbyListController implements Initializable {
      * @param evt
      */
     public void createLobby(Event evt) {
-        
         try {
             Node node = (Node) evt.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
