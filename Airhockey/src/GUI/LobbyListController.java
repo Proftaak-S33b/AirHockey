@@ -91,6 +91,7 @@ public class LobbyListController implements Initializable {
      */
     public void backButton(ActionEvent evt) {
         try {
+            controller.destroy();
             Node node = (Node) evt.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             Stage stage = (Stage) node.getScene().getWindow();
@@ -107,6 +108,7 @@ public class LobbyListController implements Initializable {
      */
     public void createLobby(Event evt) {
         try {
+            controller.destroy();
             Node node = (Node) evt.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
             Stage stage = (Stage) node.getScene().getWindow();
@@ -126,6 +128,7 @@ public class LobbyListController implements Initializable {
     public void joinLobby(Event evt) {
         if (lobbyTable.getSelectionModel().getSelectedItem() instanceof IClientData) {
             try {
+                controller.destroy();
                 IClientData tempdata = (IClientData)lobbyTable.getSelectionModel().getSelectedItem();
                 tempdata.increasePlayerAmount();
                 Node node = (Node) evt.getSource();
@@ -146,7 +149,7 @@ public class LobbyListController implements Initializable {
      * @param evt
      */
     public void spectLobby(Event evt) {
-
+        
     }
 
     /**

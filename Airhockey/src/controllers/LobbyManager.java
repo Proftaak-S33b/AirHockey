@@ -5,8 +5,6 @@
  */
 package controllers;
 
-import fontys.observer.RemotePropertyListener;
-import java.beans.PropertyChangeEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
@@ -15,8 +13,6 @@ import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.Lobby;
@@ -147,5 +143,9 @@ public class LobbyManager {
      */
     public ObservableList<ClientData> getLobbies() {
         return FXCollections.unmodifiableObservableList(clientData);
+    }
+    
+    public void destroy(){
+        timer.cancel();
     }
 }
