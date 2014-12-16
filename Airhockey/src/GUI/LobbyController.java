@@ -99,6 +99,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
         currentLobby = lobby;
         try {
             lobby.addListener(this, null);
+            lobby.addPlayer(player);
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }
