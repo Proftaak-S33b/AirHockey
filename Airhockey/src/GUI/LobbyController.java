@@ -12,6 +12,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,6 +80,11 @@ public class LobbyController implements Initializable, RemotePropertyListener {
         //Initialize chat
         chat = new ChatManager();
         chatBox.setItems(chat.getMessages());
+        try {
+            UnicastRemoteObject.exportObject(this, 1337);
+        } catch (RemoteException ex) {
+            System.out.println("Can't export object: " + ex.getMessage());
+        }
     }
 
     /**
