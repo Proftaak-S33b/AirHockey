@@ -83,6 +83,7 @@ public class GameView implements Initializable {
     //Movement commands
     private boolean playerMoveRight;
     private boolean playerMoveLeft;
+    private AnimationTimer aniTimer = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -141,7 +142,7 @@ public class GameView implements Initializable {
                 }
             }, 0, 5);
         }
-        new AnimationTimer() {
+        aniTimer = new AnimationTimer() {
 
             @Override
             public void handle(long now) {
@@ -160,7 +161,8 @@ public class GameView implements Initializable {
                     player_Move();
                 }
             }
-        }.start();
+        };
+        aniTimer.start();
 
     }
 
@@ -204,7 +206,7 @@ public class GameView implements Initializable {
                 gametype = GameType.MULTIPLAYER_GREEN;
             }
             gamemanager = new GameManager(gc, players, difficulty, gametype, this, lobby);
-            new AnimationTimer() {
+            aniTimer = new AnimationTimer() {
 
                 @Override
                 public void handle(long now) {
@@ -223,7 +225,8 @@ public class GameView implements Initializable {
                         player_Move();
                     }
                 }
-            }.start();
+            };
+            aniTimer.start();
             gamemanager.start();
             gameStarted = true;
         }
@@ -236,8 +239,8 @@ public class GameView implements Initializable {
      */
     public void setTekst(ActionEvent event) {
         if (!textChat.getText().equals("")) {
-            listChat.getItems().add(players.get(0).getName()+": "+textChat.getText());
-            listChat.getItems().add("AI: " +new AI("", 20).chat());
+            listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
+            listChat.getItems().add("AI: " + new AI("", 20).chat());
             textChat.clear();
         }
     }
@@ -248,6 +251,8 @@ public class GameView implements Initializable {
      * @param event
      */
     public void exit(ActionEvent event) {
+        gamemanager.destroy();
+        aniTimer.stop();
         try {
             Node node = (Node) event.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));

@@ -62,16 +62,15 @@ public class GameManager implements ContactListener {
     private final IRemoteGame remoteGame;
     private boolean puckReset = false;
     private Timer physTimer = null;
-    
+
     /**
      * Indicates whether the field- and goalcorners need to be (re-)calculated.
      */
     private boolean fieldReset = true;
 
     final int scale = 10;
-    
+
     //<editor-fold defaultstate="collapsed" desc="private field data">
-    
     // fieldcorners
     private Vec2 field_bottomleft;
     private Vec2 field_top;
@@ -99,7 +98,6 @@ public class GameManager implements ContactListener {
     private Vec2 goal_leftbottom_offset;
 
     //</editor-fold>
-	
     int counter = 0;
     int round = 1; //Keep track of how many rounds are played
 
@@ -124,7 +122,7 @@ public class GameManager implements ContactListener {
         gameworld.getPhysWorld().setContactListener(this);
         if (gameType == GameType.MULTIPLAYER_RED) {
             remoteGame = startServer();
-        } else if(gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
+        } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
             remoteGame = connectToServer(null, round);
         } else {
             remoteGame = null;
@@ -184,13 +182,13 @@ public class GameManager implements ContactListener {
         } else {
             //Display ended message
             gv.SetEndLabel();
-	    SoundManager.play(8);
+            SoundManager.play(8);
             //Stop gameworld
             gameworld.getPhysWorld().clearForces();
             return false;
         }
-    }	
-	
+    }
+
     /**
      * Draws the field. Refactored from Draw().
      *
@@ -198,39 +196,39 @@ public class GameManager implements ContactListener {
      * @param colorRight Color of the right side
      * @param colorLeft Color of the left side
      */
-    public void drawField(Color colorBottom, Color colorRight, Color colorLeft) {	
+    public void drawField(Color colorBottom, Color colorRight, Color colorLeft) {
 
-	// If field values arent yet calculated, or need to be reset: recalculate.
-	if (fieldReset) {
-	    fieldInit();
-	}
+        // If field values arent yet calculated, or need to be reset: recalculate.
+        if (fieldReset) {
+            fieldInit();
+        }
 
-	//Draw bottom side
-	drawSide(
-		field_bottomleft,
-		goal_bottomleft, goal_bottomleft_offset,
-		goal_bottomright, goal_bottomright_offset,
-		field_bottomright,
-		colorBottom
-	);
+        //Draw bottom side
+        drawSide(
+                field_bottomleft,
+                goal_bottomleft, goal_bottomleft_offset,
+                goal_bottomright, goal_bottomright_offset,
+                field_bottomright,
+                colorBottom
+        );
 
-	//Drawing left side
-	drawSide(
-		field_top,
-		goal_lefttop, goal_lefttop_offset,
-		goal_leftbottom, goal_leftbottom_offset,
-		field_bottomleft,
-		colorLeft
-	);
+        //Drawing left side
+        drawSide(
+                field_top,
+                goal_lefttop, goal_lefttop_offset,
+                goal_leftbottom, goal_leftbottom_offset,
+                field_bottomleft,
+                colorLeft
+        );
 
-	//Draw right side
-	drawSide(
-		field_bottomright,
-		goal_rightbottom, goal_rightbottom_offset,
-		goal_righttop, goal_righttop_offset,
-		field_top,
-		colorRight
-	);
+        //Draw right side
+        drawSide(
+                field_bottomright,
+                goal_rightbottom, goal_rightbottom_offset,
+                goal_righttop, goal_righttop_offset,
+                field_top,
+                colorRight
+        );
     }
 
     /**
@@ -491,7 +489,6 @@ public class GameManager implements ContactListener {
         }
     }
 
-    
     // Adding the sounds was kind of confusing, if someone could clean it up a bit that'd be great.
     // I'd do it but I'm working on RMI atm. :(
     /**
@@ -505,52 +502,52 @@ public class GameManager implements ContactListener {
         if (gameType == GameType.SINGLEPLAYER || gameType == GameType.MULTIPLAYER_RED) {
             Body bodyA = cntct.getFixtureA().getBody();
             Body bodyB = cntct.getFixtureB().getBody();
-	    
-	    checkCollisionWithWall(bodyA, bodyB);
-	    
+
+            checkCollisionWithWall(bodyA, bodyB);
+
             if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Goal) {
-		
-		// Hits goal
-		SoundManager.play(SoundManager.SoundEffects.intervention_420);
-		
+
+                // Hits goal
+                SoundManager.play(SoundManager.SoundEffects.intervention_420);
+
                 Goal g = (Goal) bodyB.getUserData();
                 Puck puck = (Puck) bodyA.getUserData();
-		
+
                 if (puck.getTouched(0) != null) {
-		    
+
                     if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-			
+
                         if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
-			    
+
                             puck.getTouched(1).getPlayer().changeRanking(true);
-                            g.getPlayer().changeRanking(false);			    			    
-			    
-			    // Scores
-			    SoundManager.setTrack(SoundManager.SoundEffects.Oh_Baby_A_Triple);
-			    
+                            g.getPlayer().changeRanking(false);
+
+                            // Scores
+                            SoundManager.setTrack(SoundManager.SoundEffects.Oh_Baby_A_Triple);
+
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
                             System.out.println("---------------------------");
-			    
+
                         } else {
-			    
+
                             g.getPlayer().changeRanking(false);
-			    
-			    // Own goal
-			    SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
-			    
+
+                            // Own goal
+                            SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
+
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("---------------------------");
-			    
+
                         }
                     } else {
-			
+
                         puck.getTouched(0).getPlayer().changeRanking(true);
                         g.getPlayer().changeRanking(false);
-			
-			// Scores
-			SoundManager.setTrack(SoundManager.SoundEffects.intervention_420);
-			
+
+                        // Scores
+                        SoundManager.setTrack(SoundManager.SoundEffects.intervention_420);
+
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");
@@ -561,45 +558,45 @@ public class GameManager implements ContactListener {
                 //Reset puck
                 puckReset = true;
             } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Goal) {
-		
-		// Hits goal
-		SoundManager.play(SoundManager.SoundEffects.intervention_420);
-		
+
+                // Hits goal
+                SoundManager.play(SoundManager.SoundEffects.intervention_420);
+
                 Goal g = (Goal) bodyA.getUserData();
                 Puck puck = (Puck) bodyB.getUserData();
                 if (puck.getTouched(0) != null) {
-		    
+
                     if (puck.getTouched(0).getPlayer() == g.getPlayer()) {
-			
+
                         if (puck.getTouched(1) != null && puck.getTouched(1).getPlayer() != g.getPlayer()) {
-			    
+
                             puck.getTouched(1).getPlayer().changeRanking(true);
                             g.getPlayer().changeRanking(false);
-			    
-			    // Scores
-			    SoundManager.play(SoundManager.SoundEffects.Oh_Baby_A_Triple);
-			    
+
+                            // Scores
+                            SoundManager.play(SoundManager.SoundEffects.Oh_Baby_A_Triple);
+
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
                             System.out.println("---------------------------");
                         } else {
-			    
+
                             g.getPlayer().changeRanking(false);
-			    
-			    // Scores
-    			    SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
-			    
+
+                            // Scores
+                            SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
+
                             System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                             System.out.println("---------------------------");
                         }
                     } else {
-			
+
                         puck.getTouched(0).getPlayer().changeRanking(true);
                         g.getPlayer().changeRanking(false);
-			
-			// Scores
-			SoundManager.play(SoundManager.SoundEffects.DAMN_SON_WHERED_YOU_FIND_THIS);
-			
+
+                        // Scores
+                        SoundManager.play(SoundManager.SoundEffects.DAMN_SON_WHERED_YOU_FIND_THIS);
+
                         System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
                         System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
                         System.out.println("---------------------------");
@@ -611,54 +608,58 @@ public class GameManager implements ContactListener {
                 puckReset = true;
             }
             if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Pod) {
-		
-		// Hits pod
-		SoundManager.play(SoundManager.SoundEffects.intervention_420);
-		
+
+                // Hits pod
+                SoundManager.play(SoundManager.SoundEffects.intervention_420);
+
                 Puck puck = (Puck) bodyA.getUserData();
                 Pod pod = (Pod) bodyB.getUserData();
                 puck.addTouched(pod);
             } else if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Pod) {
-				
-		// Hits pod
-		SoundManager.play(SoundManager.SoundEffects.intervention_420);
+
+                // Hits pod
+                SoundManager.play(SoundManager.SoundEffects.intervention_420);
 
                 Puck puck = (Puck) bodyB.getUserData();
                 Pod pod = (Pod) bodyA.getUserData();
                 puck.addTouched(pod);
-            }	    
+            }
         }
     }
 
     /**
      * <i>Extracted from beginContact.</i>
      * Checks if the puck collides with the wall, and if so, plays sound.
+     *
      * @param bodyA see beginContact().
      * @param bodyB see beginContact().
      */
-    private void checkCollisionWithWall(Body bodyA, Body bodyB){
-	    if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Wall) {
-		SoundManager.play(SoundManager.SoundEffects.hitmarker);
-	    }
-	    if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Wall) {
-		SoundManager.play(SoundManager.SoundEffects.hitmarker);
-	    }
+    private void checkCollisionWithWall(Body bodyA, Body bodyB) {
+        if (bodyA.getUserData() instanceof Puck && bodyB.getUserData() instanceof Wall) {
+            SoundManager.play(SoundManager.SoundEffects.hitmarker);
+        }
+        if (bodyB.getUserData() instanceof Puck && bodyA.getUserData() instanceof Wall) {
+            SoundManager.play(SoundManager.SoundEffects.hitmarker);
+        }
     }
-    
+
     /**
-     * <i>Extracted from drawfield, prevents repeating of slightly different lines.</i>
+     * <i>Extracted from drawfield, prevents repeating of slightly different
+     * lines.</i>
      * Draws a line between two vectors using strokeLine.
+     *
      * @param from a Vec2 starting point for the line.
      * @param to a Vec2 endpoint for the line.
      */
-    private void drawLine(Vec2 from, Vec2 to){
-	gc.strokeLine(from.x, from.y, to.x, to.y);
+    private void drawLine(Vec2 from, Vec2 to) {
+        gc.strokeLine(from.x, from.y, to.x, to.y);
     }
-    
+
     /**
      * Draws an individual side in one move with the right colors.
+     *
      * @param field_a starting corner from field.
-     * @param goalpost1 goalpost to draw to from field_a. 
+     * @param goalpost1 goalpost to draw to from field_a.
      * @param goalpost1_offset offsetted version of previous goalpost.
      * @param goalpost2 goalpost to draw from to field_b.
      * @param goalpost2_offset offsetted version of previous goalpost.
@@ -666,68 +667,69 @@ public class GameManager implements ContactListener {
      * @param color color of the side.
      */
     private void drawSide(
-	    Vec2 field_a,
-	    Vec2 goalpost1, Vec2 goalpost1_offset, 
-	    Vec2 goalpost2, Vec2 goalpost2_offset, 
-	    Vec2 field_b, 
-	    Color color){
-	gc.setStroke(color);
-	gc.setFill(color);
-	
-	//from field to goal
-	drawLine(field_a, goalpost1);
-	
-	//goal posts one side
-	drawLine(goalpost1, goalpost1_offset);
-	
-	//goalposts other side
-	drawLine(goalpost2, goalpost2_offset);
-	
-	//net inbetween
-	drawLine(goalpost1_offset, goalpost2_offset);
-	
-	gc.setStroke(Color.GRAY);
-	//shadow inbetween
-	drawLine(goalpost1, goalpost2);
-	
-	gc.setStroke(color);
-	//from goal to field
-	drawLine(goalpost2, field_b);
+            Vec2 field_a,
+            Vec2 goalpost1, Vec2 goalpost1_offset,
+            Vec2 goalpost2, Vec2 goalpost2_offset,
+            Vec2 field_b,
+            Color color) {
+        gc.setStroke(color);
+        gc.setFill(color);
+
+        //from field to goal
+        drawLine(field_a, goalpost1);
+
+        //goal posts one side
+        drawLine(goalpost1, goalpost1_offset);
+
+        //goalposts other side
+        drawLine(goalpost2, goalpost2_offset);
+
+        //net inbetween
+        drawLine(goalpost1_offset, goalpost2_offset);
+
+        gc.setStroke(Color.GRAY);
+        //shadow inbetween
+        drawLine(goalpost1, goalpost2);
+
+        gc.setStroke(color);
+        //from goal to field
+        drawLine(goalpost2, field_b);
     }
-    
+
     /**
-     * Initializes the field so it doesn't have to recalculate constants every draw.
+     * Initializes the field so it doesn't have to recalculate constants every
+     * draw.
      */
-    private void fieldInit(){
-	// fieldcorners
-	field_bottomleft = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.A));
-	field_top = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.I));
-	field_bottomright = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.D));
+    private void fieldInit() {
+        // fieldcorners
+        field_bottomleft = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.A));
+        field_top = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.I));
+        field_bottomright = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.D));
 
-	// goalcorners / sides
-	goal_bottomleft = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.B));
-	goal_bottomright = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.C));
-	goal_lefttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.E));
-	goal_leftbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.F));
-	goal_rightbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.G));
-	goal_righttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.H));
+        // goalcorners / sides
+        goal_bottomleft = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.B));
+        goal_bottomright = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.C));
+        goal_lefttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.E));
+        goal_leftbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.F));
+        goal_rightbottom = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.G));
+        goal_righttop = Convert(MathUtillities.getCoordinates(MathUtillities.Corner.H));
 
-	// Offsets for goal depths.
-	yOffset_Bottom = 20;
-	xOffset_LeftRight = 18;
-	yOffset_LeftRight = 12;
+        // Offsets for goal depths.
+        yOffset_Bottom = 20;
+        xOffset_LeftRight = 18;
+        yOffset_LeftRight = 12;
 
-	// Goalcorners, corrected with related offsets.
-	goal_bottomleft_offset = goal_bottomleft_offset = new Vec2(goal_bottomleft.x, goal_bottomleft.y - yOffset_Bottom);
-	goal_bottomright_offset = goal_bottomright_offset = new Vec2(goal_bottomright.x, goal_bottomright.y - yOffset_Bottom);
-	goal_righttop_offset = goal_righttop_offset = new Vec2(goal_righttop.x + xOffset_LeftRight, goal_righttop.y + yOffset_LeftRight);
-	goal_rightbottom_offset = goal_rightbottom_offset = new Vec2(goal_rightbottom.x + xOffset_LeftRight, goal_rightbottom.y + yOffset_LeftRight);
-	goal_lefttop_offset = goal_lefttop_offset = new Vec2(goal_lefttop.x - xOffset_LeftRight, goal_lefttop.y + yOffset_LeftRight);
-	goal_leftbottom_offset = goal_leftbottom_offset = new Vec2(goal_leftbottom.x - xOffset_LeftRight, goal_leftbottom.y + yOffset_LeftRight);
+        // Goalcorners, corrected with related offsets.
+        goal_bottomleft_offset = goal_bottomleft_offset = new Vec2(goal_bottomleft.x, goal_bottomleft.y - yOffset_Bottom);
+        goal_bottomright_offset = goal_bottomright_offset = new Vec2(goal_bottomright.x, goal_bottomright.y - yOffset_Bottom);
+        goal_righttop_offset = goal_righttop_offset = new Vec2(goal_righttop.x + xOffset_LeftRight, goal_righttop.y + yOffset_LeftRight);
+        goal_rightbottom_offset = goal_rightbottom_offset = new Vec2(goal_rightbottom.x + xOffset_LeftRight, goal_rightbottom.y + yOffset_LeftRight);
+        goal_lefttop_offset = goal_lefttop_offset = new Vec2(goal_lefttop.x - xOffset_LeftRight, goal_lefttop.y + yOffset_LeftRight);
+        goal_leftbottom_offset = goal_leftbottom_offset = new Vec2(goal_leftbottom.x - xOffset_LeftRight, goal_leftbottom.y + yOffset_LeftRight);
 
-	fieldReset = false;
+        fieldReset = false;
     }
-    
+
     /**
      * Method is called when collision ends
      *
@@ -756,8 +758,10 @@ public class GameManager implements ContactListener {
     @Override
     public void postSolve(Contact cntct, ContactImpulse ci) {
     }
-    
-    public void destroy(){
-        physTimer.cancel();
+
+    public void destroy() {
+        if (physTimer != null) {
+            physTimer.cancel();
+        }
     }
 }
