@@ -30,7 +30,7 @@ import networking.standalone.IServerData;
  */
 public class LobbyManager {
 
-    private final IServerData serverData;
+    public final IServerData serverData;
     private final ObservableList<ClientData> clientData;
     private final Timer timer;
     private final Client client;

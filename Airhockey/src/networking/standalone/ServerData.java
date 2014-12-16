@@ -58,4 +58,19 @@ public class ServerData extends UnicastRemoteObject implements IServerData {
     public List<ClientData> getClients() throws RemoteException {
         return Collections.unmodifiableList(clients);
     }
+    
+    /**
+     * Set's the lobby of the host to the new playercount
+     * @param host Host of the lobby
+     * @param playerCount New player count
+     * @throws RemoteException 
+     */
+    @Override
+    public void setPlayerCountLobby(IPlayer host, int playerCount) throws RemoteException{
+        for(ClientData data : clients){
+            if(data.getHost().getName() == host.getName()){
+                data.setPlayerAmount(playerCount);
+            }
+        }
+    }
 }

@@ -46,4 +46,11 @@ public interface IServerData extends Remote {
      * @throws RemoteException 
      */
     public List<ClientData> getClients() throws RemoteException;
+    
+    /**
+     * Set's the player counter to the given value
+     * @param host The host of the lobby
+     * @param playerCount The new player count
+     */
+    public void setPlayerCountLobby(IPlayer host, int playerCount) throws RemoteException;
 }
