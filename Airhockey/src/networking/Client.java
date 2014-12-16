@@ -10,15 +10,12 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import networking.standalone.ClientData;
 import networking.standalone.IServerData;
-import networking.standalone.TestData;
 import static networking.standalone.rmiDefaults.DEFAULT_PORT;
-import static networking.standalone.rmiDefaults.DEFAULT_SERVER_IP;
 
 //</editor-fold>
+
 /**
  * RMI Client class. Connects to a Server.
  *
@@ -35,7 +32,7 @@ public class Client {
      * Initializes a new Client with no setup done: data can be specified later.
      */
     public Client() {
-
+        locateRegistry("145.93.89.162", DEFAULT_PORT);
     }
 
     /**
@@ -95,41 +92,7 @@ public class Client {
 
         locateRegistry(host, port);
     }
-
-    /**
-     * Gets the LobbyData object through RMI
-     *
-     * @return
-     */
-    public /*static*/ ILobbyData getLobbyData() {
-        //There can be only one!
-        return new LobbyData();
-    }
-
-    /**
-     * Gets the ChatData object through RMI
-     *
-     * @return
-     */
-    public /*static*/ ChatData getChatData() {
-        //Params for IP or which ChatData object to retrieve?
-        //nah, registry is initialized, no need to reconnect.
-        //if we want different objects, make more client/rmidata objects?
-        return (ChatData) lookup("chatdata");
-    }
-
-    /**
-     * Gets the GameData object through RMI
-     *
-     * @param IPAddress The IP-address to connect to
-     * @param portNumber The portnumber to use with the IP-address
-     * @return The GameData object at this network location, if none found,
-     * returns null
-     */
-    public /*static*/ GameData getGameData(String IPAddress, int portNumber) {
-        return (GameData) lookup("gamedata");
-    }
-
+    
     /**
      * Runs the client seperately.
      *
@@ -145,12 +108,14 @@ public class Client {
 
         try {
             IServerData data = (IServerData) c.lookup("serverdata");
-            data.add(InetAddress.getLocalHost(), "Hoi", "Meer hoi", new Human("Hans", "test", 20), null, null);
+            //for (int i = 0; i < 1000; i++) {
+                data.add(InetAddress.getLocalHost(), "th", "Meer hoi", new Human("Hans", "test", 20), null, null);
+            //}
             final List<ClientData> clients = data.getClients();
             System.out.println("Amount of clients found: " + clients.size());
-            for (ClientData d : clients) {
-                System.out.println("Client: " + d.getDescription() + " at " + d.getAddress().toString());
-            }
+            //for (ClientData d : clients) {
+            //    System.out.println("Client: " + d.getDescription() + " at " + d.getAddress().toString());
+            //}
 
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());

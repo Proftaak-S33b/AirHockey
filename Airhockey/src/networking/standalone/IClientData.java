@@ -59,4 +59,16 @@ public interface IClientData{
      * @return the host as an IPlayer interface.
      */
     public IPlayer getHost();
+    
+    /**
+     * 
+     * @return 
+     */
+    public int getRanking();
+    
+    /**
+     * 
+     * @return 
+     */
+    public int getPlayerAmount();
 }

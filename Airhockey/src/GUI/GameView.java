@@ -7,10 +7,13 @@ import game.AI.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -33,6 +36,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import networking.ILobby;
 import networking.IPlayer;
 import networking.Lobby;
 
@@ -72,7 +76,7 @@ public class GameView implements Initializable {
     //Singleplayer
     private IPlayer currentPlayer;
     //Multiplayer
-    private Lobby currentLobby;
+    private ILobby currentLobby;
     private GameManager gamemanager;
     private Difficulty difficulty;
     final URL resource = getClass().getResource("nietvanzelf.mp3");
@@ -183,12 +187,18 @@ public class GameView implements Initializable {
      * @param player The player that is currently playing
      * @param lobby The lobby object that represents this game
      */
-    public void init_Multiplayer(Human player, Lobby lobby) {
+    public void init_Multiplayer(Human player, ILobby lobby) {
         if (!gameStarted) {
             currentPlayer = player;
             currentLobby = lobby;
             GameType gametype;
-            List<IPlayer> playersInLobby = lobby.getAllPlayers();
+            List<IPlayer> playersInLobby;
+            try {
+                playersInLobby = lobby.getAllPlayers();
+            } catch (RemoteException ex) {
+                System.out.println("RemoteException: " + ex.getMessage());
+                playersInLobby = null;
+            }
             if (players.get(0) == playersInLobby) {
                 gametype = GameType.MULTIPLAYER_RED;
             } else if (players.get(1) == playersInLobby) {

@@ -6,11 +6,13 @@
 package GUI;
 
 import controllers.ChatManager;
-import controllers.GameManager;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import networking.ILobby;
 import networking.Lobby;
 
 /**
@@ -59,7 +62,7 @@ public class LobbyController implements Initializable {
     public Button readyButton;
 
     private Human currentPlayer;
-    private Lobby currentLobby;
+    private ILobby currentLobby;
     private boolean ready = false;
 
     private ChatManager chat;
@@ -84,13 +87,17 @@ public class LobbyController implements Initializable {
      * @param player The player that is logged in on the current session
      * @param lobby The lobby object that this GUI represents
      */
-    public void initData(Human player, Lobby lobby) {
+    public void initData(Human player, ILobby lobby) {
         currentPlayer = player;
         currentLobby = lobby;
 
         //Set stage title
         Stage stage = (Stage) tablePlayers.getScene().getWindow();
-        stage.setTitle(currentLobby.getGameName());
+        try {
+            stage.setTitle(currentLobby.getGameName());
+        } catch (RemoteException ex) {
+            System.out.println("RemoteException: " + ex.getMessage());
+        }
 
         //Set lobby info text fields
         updateLobbyInfo();
@@ -124,10 +131,14 @@ public class LobbyController implements Initializable {
      */
     private void updateLobbyInfo() {
         if (currentLobby != null) {
-            textGameName.setText(currentLobby.getGameName());
-            textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
-            textHostName.setText(currentLobby.getPlayer(0).getName());
-            tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
+            try {
+                textGameName.setText(currentLobby.getGameName());
+                textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
+                textHostName.setText(currentLobby.getPlayer(0).getName());
+                tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
+            } catch (RemoteException ex) {
+                System.out.println("RemoteException: " + ex.getMessage());
+            }
         }
     }
 
@@ -164,7 +175,11 @@ public class LobbyController implements Initializable {
      * @param evt
      */
     public void changedName(ActionEvent evt) {
-        currentLobby.setGameName(textGameName.getText());
+        try {
+            currentLobby.setGameName(textGameName.getText());
+        } catch (RemoteException ex) {
+            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

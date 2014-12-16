@@ -5,7 +5,8 @@
  */
 package networking;
 
-import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,22 +15,26 @@ import java.util.List;
  *
  * @author Joris
  */
-public class Lobby implements Serializable {
+public class Lobby extends UnicastRemoteObject implements ILobby {
 
     private String gameName;
 
     private final ArrayList<IPlayer> players;
+    
+    private final IRemoteGame game;
 
     /**
      * Instantiates a new Lobby with specified game name and host IPlayer
      *
      * @param gameName
      * @param host
+     * @throws java.rmi.RemoteException
      */
-    public Lobby(String gameName, IPlayer host) {
+    public Lobby(String gameName, IPlayer host) throws RemoteException {
         this.gameName = gameName;
         players = new ArrayList<>();
         players.add(host);
+        game = new RemoteGame();
     }
 
     /**
@@ -37,7 +42,8 @@ public class Lobby implements Serializable {
      *
      * @return
      */
-    public int getHostRank() {
+    @Override
+    public int getHostRank() throws RemoteException {
         return players.get(0).getRanking();
     }
 
@@ -47,7 +53,8 @@ public class Lobby implements Serializable {
      * @param player
      * @return
      */
-    public int getRanking(IPlayer player) {
+    @Override
+    public int getRanking(IPlayer player) throws RemoteException {
         for (IPlayer p : players) {
             if (p.equals(player)) {
                 return p.getRanking();
@@ -61,7 +68,8 @@ public class Lobby implements Serializable {
      *
      * @return
      */
-    public String getGameName() {
+    @Override
+    public String getGameName() throws RemoteException {
         return gameName;
     }
 
@@ -70,7 +78,8 @@ public class Lobby implements Serializable {
      *
      * @param gameName length has to be {@code < 20 characters}
      */
-    public void setGameName(String gameName) {
+    @Override
+    public void setGameName(String gameName) throws RemoteException {
 
         this.gameName = gameName;
     }
@@ -85,7 +94,8 @@ public class Lobby implements Serializable {
      * @param player
      * @return true: succeeded in adding, false: adding failed.
      */
-    public boolean addPlayer(IPlayer player) {
+    @Override
+    public boolean addPlayer(IPlayer player) throws RemoteException {
         boolean succeeded = false;
         if (players.size() == 3) {
             return succeeded;
@@ -110,7 +120,8 @@ public class Lobby implements Serializable {
      * @param i i {@code < 3} or will return null
      * @return
      */
-    public IPlayer getPlayer(int i) {
+    @Override
+    public IPlayer getPlayer(int i) throws RemoteException {
         if (i < 3) {
             return players.get(i);
         } else {
@@ -118,7 +129,8 @@ public class Lobby implements Serializable {
         }
     }
 
-    public List<IPlayer> getAllPlayers() {
+    @Override
+    public List<IPlayer> getAllPlayers() throws RemoteException {
         return Collections.unmodifiableList(players);
     }
 
@@ -128,7 +140,8 @@ public class Lobby implements Serializable {
      * @param name
      * @return null if name not found
      */
-    public IPlayer getPlayer(String name) {
+    @Override
+    public IPlayer getPlayer(String name) throws RemoteException {
         for (IPlayer p : players) {
             if (p.getName().equals(name)) {
                 return p;
@@ -143,7 +156,8 @@ public class Lobby implements Serializable {
      * @param player
      * @return false if player not found; true if removal succeeded
      */
-    public boolean removePlayer(IPlayer player) {
+    @Override
+    public boolean removePlayer(IPlayer player) throws RemoteException {
         return players.remove(player);
     }
 
@@ -152,7 +166,18 @@ public class Lobby implements Serializable {
      *
      * @return
      */
-    public int getPlayersAmount() {
+    @Override
+    public int getPlayersAmount() throws RemoteException {
         return players.size();
+    }
+
+    /**
+     * 
+     * @return
+     * @throws RemoteException 
+     */
+    @Override
+    public IRemoteGame getRemoteGame() throws RemoteException {
+        return game;
     }
 }

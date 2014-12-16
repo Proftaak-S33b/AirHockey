@@ -133,4 +133,22 @@ public class ClientData implements IClientData, Serializable{
 	this.serversocket = serversocket;
 	this.host = host;
     }
+
+    /**
+     * 
+     * @return 
+     */
+    @Override
+    public int getRanking() {
+        return host.getRanking();
+    }
+
+    /**
+     * 
+     * @return 
+     */
+    @Override
+    public int getPlayerAmount() {
+        return 1;
+    }
 }

@@ -29,13 +29,13 @@ public class ServerData extends UnicastRemoteObject implements IServerData {
      * Registers a client with the server.
      */
     @Override
-    public void add(
+    public boolean add(
             InetAddress address, String name, String description,
             IPlayer host, Socket socket, ServerSocket serversocket
     ) throws RemoteException {
         ClientData client = new ClientData(address, name, description, host, socket, serversocket);
-        clients.add(client);
         System.out.println("Registering client with name: " + client.getName());
+        return clients.add(client);
     }
 
     /**
@@ -44,9 +44,9 @@ public class ServerData extends UnicastRemoteObject implements IServerData {
      * @throws java.rmi.RemoteException
      */
     @Override
-    public void remove(ClientData client) throws RemoteException {
-        clients.remove(client);
+    public boolean remove(ClientData client) throws RemoteException {
         System.out.println("Unregistering client with name: " + client.getName());
+        return clients.remove(client);
     }
 
     /**

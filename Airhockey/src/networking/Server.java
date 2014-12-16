@@ -116,7 +116,7 @@ public class Server {
      */
     public void bindToRegistry(IRemoteGame obj) throws AlreadyBoundException {
         try {
-            registry.bind("HockeyGame", (Remote) obj);
+            registry.bind("hockeygame", (Remote) obj);
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }
