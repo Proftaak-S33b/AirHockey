@@ -59,8 +59,9 @@ public class LobbyManager {
         for(ClientData d : lobs){
             System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
         }
-        addClientDataIfNotPresent(lobs);
-        removeClientDataIfDoesntExist(lobs);
+        clientData.addAll(lobs);
+        //addClientDataIfNotPresent(lobs);
+        //removeClientDataIfDoesntExist(lobs);
 //                });
     }
 
