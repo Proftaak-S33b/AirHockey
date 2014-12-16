@@ -10,8 +10,6 @@ import game.Pod;
 import game.Puck;
 import game.Wall;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.AlreadyBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Timer;
@@ -26,7 +24,6 @@ import networking.IPlayer;
 import networking.IRemoteGame;
 import networking.Client;
 import networking.ILobby;
-import networking.Server;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -64,6 +61,7 @@ public class GameManager implements ContactListener {
     private final ILobby lobby;
     private final IRemoteGame remoteGame;
     private boolean puckReset = false;
+    private Timer physTimer = null;
     
     /**
      * Indicates whether the field- and goalcorners need to be (re-)calculated.
@@ -419,7 +417,7 @@ public class GameManager implements ContactListener {
      */
     public void start() {
         try {
-            Timer physTimer = new Timer("Simulate Physics", true);
+            physTimer = new Timer("Simulate Physics", true);
             physTimer.scheduleAtFixedRate(new TimerTask() {
 
                 @Override
@@ -757,5 +755,9 @@ public class GameManager implements ContactListener {
      */
     @Override
     public void postSolve(Contact cntct, ContactImpulse ci) {
+    }
+    
+    public void destroy(){
+        physTimer.cancel();
     }
 }

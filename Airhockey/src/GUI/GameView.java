@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -38,7 +36,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.ILobby;
 import networking.IPlayer;
-import networking.Lobby;
 
 /**
  * FXML Controller class
