@@ -71,4 +71,14 @@ public interface IClientData{
      * @return 
      */
     public int getPlayerAmount();
+    
+    /**
+     * 
+     */
+    public void increasePlayerAmount();
+    
+    /**
+     * 
+     */
+    public void decreasePlayerAmount();
 }

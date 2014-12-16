@@ -126,6 +126,8 @@ public class LobbyListController implements Initializable {
     public void joinLobby(Event evt) {
         if (lobbyTable.getSelectionModel().getSelectedItem() instanceof IClientData) {
             try {
+                IClientData tempdata = (IClientData)lobbyTable.getSelectionModel().getSelectedItem();
+                tempdata.increasePlayerAmount();
                 Node node = (Node) evt.getSource();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
                 Stage stage = (Stage) node.getScene().getWindow();

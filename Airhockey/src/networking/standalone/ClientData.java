@@ -52,6 +52,11 @@ public class ClientData implements IClientData, Serializable{
      * player who tries to go online
      */
     private final IPlayer host;
+    
+    /**
+     * 
+     */
+    private int playerCount;
 
     /**
      * ipaddress of the server
@@ -132,6 +137,7 @@ public class ClientData implements IClientData, Serializable{
 	this.socket = socket;
 	this.serversocket = serversocket;
 	this.host = host;
+        this.playerCount = 1;
     }
 
     /**
@@ -149,6 +155,22 @@ public class ClientData implements IClientData, Serializable{
      */
     @Override
     public int getPlayerAmount() {
-        return 1;
+        return playerCount;
+    }
+    
+    /**
+     * Add one player to the lobby count
+     */
+    @Override
+    public void increasePlayerAmount() {
+        playerCount++;
+    }
+    
+    /**
+     * Remove one player from the lobby count
+     */
+    @Override
+    public void decreasePlayerAmount() {
+        playerCount--;
     }
 }
