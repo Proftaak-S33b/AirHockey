@@ -68,7 +68,7 @@ public class ServerData extends UnicastRemoteObject implements IServerData {
     @Override
     public void setPlayerCountLobby(IPlayer host, int playerCount) throws RemoteException{
         for(ClientData data : clients){
-            if(data.getHost().getName() == host.getName()){
+            if(data.getHost().getName().equals(host.getName())){
                 data.setPlayerAmount(playerCount);
             }
         }
