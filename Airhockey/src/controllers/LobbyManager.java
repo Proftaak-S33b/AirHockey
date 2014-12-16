@@ -16,8 +16,6 @@ import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,11 +60,7 @@ public class LobbyManager {
             System.out.println(ex.getMessage());
         }
         for(ClientData d : lobs){
-            try {
-                System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
-            } catch (RemoteException ex) {
-                Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
         }
         clientData.addAll(lobs);
         //addClientDataIfNotPresent(lobs);
@@ -78,12 +72,8 @@ public class LobbyManager {
         for (ClientData d : lobs) {
             ClientData tempData = null;
             for (ClientData data : clientData) {
-                try {
-                    if (data.getName().equals(d.getName())) {
-                        tempData = data;
-                    }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
+                if (data.getName().equals(d.getName())) {
+                    tempData = data;
                 }
             }
             if (tempData != null) {
@@ -96,12 +86,8 @@ public class LobbyManager {
         for (ClientData d : lobs) {
             ClientData tempData = null;
             for (ClientData data : clientData) {
-                try {
-                    if (data.getName().equals(d.getName())) {
-                        tempData = data;
-                    }
-                } catch (RemoteException ex) {
-                    Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
+                if (data.getName().equals(d.getName())) {
+                    tempData = data;
                 }
             }
             if (tempData != null) {
@@ -141,23 +127,15 @@ public class LobbyManager {
      */
     public ClientData getLobby(String gameName) {
         for (ClientData d : clientData) {
-            try {
-                if (d.getName().equals(gameName)) {
-                    return d;
-                }
-            } catch (RemoteException ex) {
-                Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
+            if (d.getName().equals(gameName)) {
+                return d;
             }
         }
         return null;
     }
 
     public ILobby connect(IClientData server) {
-        try {
-            client.locateRegistry(server.getAddress().getHostAddress(), 1099);
-        } catch (RemoteException ex) {
-            Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        client.locateRegistry(server.getAddress().getHostAddress(), 1099);
         return (ILobby) client.lookup("hockeygame");
     }
 
