@@ -133,7 +133,7 @@ public class ClientData implements IClientData, Serializable{
      * @throws java.rmi.RemoteException
      */
     public ClientData(InetAddress address, String name, String description,
-	    IPlayer host, Socket socket, ServerSocket serversocket) throws RemoteException{
+	    IPlayer host, Socket socket, ServerSocket serversocket){
 	this.address = address;
 	this.name = name;
 	this.description = description;
@@ -159,21 +159,5 @@ public class ClientData implements IClientData, Serializable{
     @Override
     public int getPlayerAmount() {
         return playerCount;
-    }
-    
-    /**
-     * Add one player to the lobby count
-     */
-    @Override
-    public void increasePlayerAmount() {
-        playerCount++;
-    }
-    
-    /**
-     * Remove one player from the lobby count
-     */
-    @Override
-    public void decreasePlayerAmount() {
-        playerCount--;
     }
 }

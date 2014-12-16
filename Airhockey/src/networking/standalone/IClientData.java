@@ -71,14 +71,4 @@ public interface IClientData extends Remote{
      * @return 
      */
     public int getPlayerAmount();
-    
-    /**
-     * 
-     */
-    public void increasePlayerAmount();
-    
-    /**
-     * 
-     */
-    public void decreasePlayerAmount();
 }
