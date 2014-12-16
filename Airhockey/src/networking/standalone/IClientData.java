@@ -6,7 +6,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 import networking.IPlayer;
 
 //</editor-fold>
@@ -25,19 +24,19 @@ public interface IClientData extends Remote{
      * Returns the ipaddress of the server.
      * @return the address as InetAdress.
      */
-    public InetAddress getAddress()  throws RemoteException;
+    public InetAddress getAddress();
 
     /**
      * Returns the name of the server.
      * @return the name as a String.
      */
-    public String getName() throws RemoteException;
+    public String getName();
 
     /**
      * Returns the title of the lobby.
      * @return the description as a String.
      */
-    public String getDescription() throws RemoteException;
+    public String getDescription();
 
     /**
      * Returns the socket of the 'clientclient';
@@ -45,7 +44,7 @@ public interface IClientData extends Remote{
      * (often commonly <i>and confusingly</i> referred to as client).
      * @return the socket as a Socket object.
      */
-    public Socket getSocket() throws RemoteException;
+    public Socket getSocket();
 
     /**
      * Returns the socket of the 'clientserver';
@@ -53,33 +52,33 @@ public interface IClientData extends Remote{
      * (often commonly <i>and confusingly</i> referred to as client).
      * @return the serversocket as a ServerSocket object.
      */
-    public ServerSocket getServersocket() throws RemoteException;
+    public ServerSocket getServersocket();
 
     /**
      * Returns the player who tries to go online.
      * @return the host as an IPlayer interface.
      */
-    public IPlayer getHost() throws RemoteException;
+    public IPlayer getHost();
     
     /**
      * 
      * @return 
      */
-    public int getRanking() throws RemoteException;
+    public int getRanking();
     
     /**
      * 
      * @return 
      */
-    public int getPlayerAmount() throws RemoteException;
+    public int getPlayerAmount();
     
     /**
      * 
      */
-    public void increasePlayerAmount() throws RemoteException;
+    public void increasePlayerAmount();
     
     /**
      * 
      */
-    public void decreasePlayerAmount() throws RemoteException;
+    public void decreasePlayerAmount();
 }

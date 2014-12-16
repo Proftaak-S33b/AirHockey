@@ -66,7 +66,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return the address
      */
     @Override
-    public InetAddress getAddress()  throws RemoteException{
+    public InetAddress getAddress() {
 	return address;
     }
 
@@ -76,7 +76,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return the name
      */
     @Override
-    public String getName()  throws RemoteException{
+    public String getName() {
 	return name;
     }
 
@@ -86,7 +86,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return the description
      */
     @Override
-    public String getDescription()  throws RemoteException{
+    public String getDescription() {
 	return description;
     }
 
@@ -96,7 +96,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return the socket
      */
     @Override
-    public Socket getSocket() throws RemoteException {
+    public Socket getSocket() {
 	return socket;
     }
 
@@ -106,7 +106,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return the serversocket
      */
     @Override
-    public ServerSocket getServersocket() throws RemoteException {
+    public ServerSocket getServersocket() {
 	return serversocket;
     }
 
@@ -116,7 +116,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return the host
      */
     @Override
-    public IPlayer getHost() throws RemoteException {
+    public IPlayer getHost() {
 	return host;
     }
 
@@ -148,7 +148,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return 
      */
     @Override
-    public int getRanking()  throws RemoteException{
+    public int getRanking() {
         return host.getRanking();
     }
 
@@ -157,7 +157,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * @return 
      */
     @Override
-    public int getPlayerAmount()  throws RemoteException{
+    public int getPlayerAmount() {
         return playerCount;
     }
     
@@ -165,7 +165,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * Add one player to the lobby count
      */
     @Override
-    public void increasePlayerAmount()  throws RemoteException{
+    public void increasePlayerAmount() {
         playerCount++;
     }
     
@@ -173,7 +173,7 @@ public class ClientData extends UnicastRemoteObject implements IClientData{
      * Remove one player from the lobby count
      */
     @Override
-    public void decreasePlayerAmount()  throws RemoteException{
+    public void decreasePlayerAmount() {
         playerCount--;
     }
 }
