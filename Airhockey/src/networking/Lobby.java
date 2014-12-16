@@ -5,6 +5,8 @@
  */
 package networking;
 
+import fontys.observer.BasicPublisher;
+import fontys.observer.RemotePropertyListener;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private final ArrayList<IPlayer> players;
     
     private final IRemoteGame game;
+    
+    private final BasicPublisher publisher;
 
     /**
      * Instantiates a new Lobby with specified game name and host IPlayer
@@ -35,6 +39,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         players = new ArrayList<>();
         players.add(host);
         game = new RemoteGame();
+        publisher = new BasicPublisher(new String[]{"gameName", "playerAdded", "playerRemoved"});
     }
 
     /**
@@ -74,14 +79,14 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     }
 
     /**
-     * Sets a new game name
+     * Sets a new game name and informs the listeners of this property
      *
      * @param gameName length has to be {@code < 20 characters}
      */
     @Override
     public void setGameName(String gameName) throws RemoteException {
-
         this.gameName = gameName;
+        publisher.inform(this, "gameName", null, gameName);
     }
 
     /**
@@ -90,6 +95,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
      * <li>a) the name is not already used by another player in the lobby </li>
      * <li>b) the amount of players in the lobby is {@code < 3} </li>
      * </ul>
+     * Also informs the listeners of this property
      *
      * @param player
      * @return true: succeeded in adding, false: adding failed.
@@ -108,6 +114,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         }
         if (succeeded) {
             players.add(player);
+            publisher.inform(this, "playerAdded", null, players);
             return true;
         } else {
             return false;
@@ -158,7 +165,9 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
      */
     @Override
     public boolean removePlayer(IPlayer player) throws RemoteException {
-        return players.remove(player);
+        boolean succeeded = players.remove(player);
+        publisher.inform(this, "playerRemoved", null, players);
+        return succeeded;
     }
 
     /**
@@ -179,5 +188,15 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     @Override
     public IRemoteGame getRemoteGame() throws RemoteException {
         return game;
+    }
+
+    @Override
+    public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
+        publisher.addListener(listener, property);
+    }
+
+    @Override
+    public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
+        publisher.addListener(listener, property);
     }
 }

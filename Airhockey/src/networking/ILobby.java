@@ -5,6 +5,7 @@
  */
 package networking;
 
+import fontys.observer.RemotePublisher;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author Joris
  */
-public interface ILobby extends Remote{
+public interface ILobby extends Remote, RemotePublisher{
     
     /**
      * Gets the ranking of the host

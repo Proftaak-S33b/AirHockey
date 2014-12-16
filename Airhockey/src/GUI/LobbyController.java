@@ -6,7 +6,9 @@
 package GUI;
 
 import controllers.ChatManager;
+import fontys.observer.RemotePropertyListener;
 import game.Human;
+import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -25,14 +27,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.ILobby;
-import networking.Lobby;
 
 /**
  * FXML Controller class
  *
  * @author Joris
  */
-public class LobbyController implements Initializable {
+public class LobbyController implements Initializable, RemotePropertyListener {
 
     @FXML
     public TextField textHostName;
@@ -90,6 +91,11 @@ public class LobbyController implements Initializable {
     public void initData(Human player, ILobby lobby) {
         currentPlayer = player;
         currentLobby = lobby;
+        try {
+            lobby.addListener(this, null);
+        } catch (RemoteException ex) {
+            System.out.println("RemoteException: " + ex.getMessage());
+        }
 
         //Set stage title
         Stage stage = (Stage) tablePlayers.getScene().getWindow();
@@ -198,5 +204,10 @@ public class LobbyController implements Initializable {
         } catch (IOException ex) {
             System.out.println("Error changing scene from Lobby to Game " + ex.toString());
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        updateLobbyInfo();
     }
 }

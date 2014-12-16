@@ -5,6 +5,8 @@
  */
 package controllers;
 
+import fontys.observer.RemotePropertyListener;
+import java.beans.PropertyChangeEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
