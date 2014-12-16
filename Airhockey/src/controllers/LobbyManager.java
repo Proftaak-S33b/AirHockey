@@ -46,50 +46,50 @@ public class LobbyManager {
         serverData = (IServerData) client.lookup("serverdata");
         clientData = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    List<ClientData> lobs = new ArrayList<>();
-                    try {
-                        lobs = serverData.getClients();
-                    } catch (RemoteException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                    addClientDataIfNotPresent(lobs);
-                    removeClientDataIfDoesntExist(lobs);
-                });
-            }
-
-            private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
-                for (ClientData d : lobs) {
-                    ClientData tempData = null;
-                    for (ClientData data : clientData) {
-                        if (data.getName().equals(d.getName())) {
-                            tempData = data;
-                        }
-                    }
-                    if (tempData != null) {
-                        clientData.remove(tempData);
-                    }
-                }
-            }
-
-            private void addClientDataIfNotPresent(List<ClientData> lobs) {
-                for (ClientData d : lobs) {
-                    ClientData tempData = null;
-                    for (ClientData data : clientData) {
-                        if (data.getName().equals(d.getName())) {
-                            tempData = data;
-                        }
-                    }
-                    if (tempData != null) {
-                        clientData.add(tempData);
-                    }
-                }
-            }
-        }, 0, 1000);
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                Platform.runLater(() -> {
+        List<ClientData> lobs = new ArrayList<>();
+        try {
+            lobs = serverData.getClients();
+        } catch (RemoteException ex) {
+            System.out.println(ex.getMessage());
+        }
+        addClientDataIfNotPresent(lobs);
+        removeClientDataIfDoesntExist(lobs);
+//                });
     }
+
+    private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
+        for (ClientData d : lobs) {
+            ClientData tempData = null;
+            for (ClientData data : clientData) {
+                if (data.getName().equals(d.getName())) {
+                    tempData = data;
+                }
+            }
+            if (tempData != null) {
+                clientData.remove(tempData);
+            }
+        }
+    }
+
+    private void addClientDataIfNotPresent(List<ClientData> lobs) {
+        for (ClientData d : lobs) {
+            ClientData tempData = null;
+            for (ClientData data : clientData) {
+                if (data.getName().equals(d.getName())) {
+                    tempData = data;
+                }
+            }
+            if (tempData != null) {
+                clientData.add(tempData);
+            }
+        }
+    }
+//        }, 0, 1000);
+//    }
 
     /**
      * Adds a new Lobby with specified name and host player
