@@ -18,7 +18,7 @@ import networking.IPlayer;
  * This makes the collecting and communicating data easier and shorter.
  * @author Etienne
  */
-public interface IClientData{
+public interface IClientData extends Remote{
     
     /**
      * Returns the ipaddress of the server.

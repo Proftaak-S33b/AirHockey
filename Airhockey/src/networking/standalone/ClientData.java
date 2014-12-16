@@ -2,6 +2,8 @@ package networking.standalone;
 
 import java.io.Serializable;
 import java.net.*;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import networking.IPlayer;
 
 /**
@@ -19,7 +21,7 @@ import networking.IPlayer;
  * 'muh enterprise'.
  * @author Etienne
  */
-public class ClientData implements IClientData, Serializable{
+public class ClientData extends UnicastRemoteObject implements IClientData{
    
     // RSVP/TODO: Are all these needed? redundancies? Who does the setup?
     
@@ -128,9 +130,10 @@ public class ClientData implements IClientData, Serializable{
      * @param host
      * @param socket
      * @param serversocket
+     * @throws java.rmi.RemoteException
      */
     public ClientData(InetAddress address, String name, String description,
-	    IPlayer host, Socket socket, ServerSocket serversocket) {
+	    IPlayer host, Socket socket, ServerSocket serversocket) throws RemoteException{
 	this.address = address;
 	this.name = name;
 	this.description = description;
