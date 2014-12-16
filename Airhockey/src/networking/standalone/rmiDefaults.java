@@ -10,7 +10,7 @@ package networking.standalone;
  * @author Etienne
  */
 public class rmiDefaults {
-    public static final String DEFAULT_SERVER_IP = "192.168.11.1";
+    public static final String DEFAULT_SERVER_IP = "145.93.89.162";
     public static final String DEFAULT_HOST = "localhost";
     public static final String DEFAULT_PROTOCOL = "rmi";
     public static final String DEFAULT_HOSTNAME = "local";

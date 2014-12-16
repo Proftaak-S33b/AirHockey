@@ -12,6 +12,7 @@ import java.rmi.registry.Registry;
 import java.util.List;
 import networking.standalone.ClientData;
 import networking.standalone.IServerData;
+import networking.standalone.rmiDefaults;
 import static networking.standalone.rmiDefaults.DEFAULT_PORT;
 
 //</editor-fold>
@@ -31,7 +32,7 @@ public class Client {
      * Initializes a new Client with no setup done: data can be specified later.
      */
     public Client() {
-        locateRegistry("192.168.112.1", DEFAULT_PORT);
+        locateRegistry(rmiDefaults.DEFAULT_SERVER_IP, DEFAULT_PORT);
     }
 
     /**
@@ -103,7 +104,7 @@ public class Client {
         Client c = new Client();
 
         // Connect to central RMI server.
-        c.locateRegistry("192.168.112.1", 1099);
+        c.locateRegistry(rmiDefaults.DEFAULT_SERVER_IP, DEFAULT_PORT);
 
         try {
             IServerData data = (IServerData) c.lookup("serverdata");
