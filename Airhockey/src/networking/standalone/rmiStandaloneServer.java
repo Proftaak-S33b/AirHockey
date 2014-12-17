@@ -3,10 +3,14 @@ package networking.standalone;
 //<editor-fold defaultstate="collapsed" desc="imports">
 import java.net.*;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //</editor-fold>
 
@@ -93,6 +97,17 @@ public class rmiStandaloneServer {
         }
     }
 
+    public void exit() {
+        try {
+            registry.unbind("serverdata");
+            UnicastRemoteObject.unexportObject(data, true);
+        } catch (RemoteException ex) {
+            System.out.println("RemoteException: " + ex.getMessage());
+        } catch (NotBoundException ex) {
+            System.out.println("ERROR: 'serverdata' name not bound in registry.");
+        }
+    }
+
     /**
      * Main method for launching the server out-of-the-box.
      *
@@ -108,7 +123,5 @@ public class rmiStandaloneServer {
             System.out.println("Failed. Exiting program.");
             System.exit(-1);
         }
-
-        
     }
 }
