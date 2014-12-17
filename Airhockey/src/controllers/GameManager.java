@@ -180,7 +180,9 @@ public class GameManager implements ContactListener {
                 Platform.runLater(() -> {
                     gc.setFill(Color.WHITESMOKE);
                     gc.fillRect(0.0, 0.0, 500, 500);
-                    AI_CalculateMovement();
+                    if (gameType == GameType.SINGLEPLAYER) {
+                        AI_CalculateMovement();
+                    }
                     //Draw field
                     drawField(Color.RED, Color.GREEN, Color.BLUE);
 
