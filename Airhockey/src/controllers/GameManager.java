@@ -401,16 +401,43 @@ public class GameManager implements ContactListener {
      *
      * @param playerMoveRight
      * @param playerMoveLeft
+     * @param gametype
      */
-    public void player_Move(boolean playerMoveRight, boolean playerMoveLeft) {
-        if (playerMoveRight) {
-            if (gameworld.getPod(0).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize() / 2) {
-                gameworld.getPod(0).moveRight(0);
+    public void player_Move(boolean playerMoveRight, boolean playerMoveLeft, GameType gametype) {
+        if (gametype == GameType.MULTIPLAYER_RED || gametype == GameType.SINGLEPLAYER) {
+            if (playerMoveRight) {
+                if (gameworld.getPod(0).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize() / 2) {
+                    gameworld.getPod(0).moveRight(0);
+                }
+            }
+            if (playerMoveLeft) {
+                if (gameworld.getPod(0).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.B).x + MathUtillities.getPodSize() / 2) {
+                    gameworld.getPod(0).moveLeft(0);
+                }
             }
         }
-        if (playerMoveLeft) {
-            if (gameworld.getPod(0).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.B).x + MathUtillities.getPodSize() / 2) {
-                gameworld.getPod(0).moveLeft(0);
+        if (gametype == GameType.MULTIPLAYER_BLUE) {
+            if (playerMoveRight) {
+                if (gameworld.getPod(1).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize() / 2) {
+                    gameworld.getPod(1).moveRight(1);
+                }
+            }
+            if (playerMoveLeft) {
+                if (gameworld.getPod(1).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.B).x + MathUtillities.getPodSize() / 2) {
+                    gameworld.getPod(1).moveLeft(1);
+                }
+            }
+        }
+        if (gametype == GameType.MULTIPLAYER_GREEN) {
+            if (playerMoveRight) {
+                if (gameworld.getPod(2).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize() / 2) {
+                    gameworld.getPod(2).moveRight(2);
+                }
+            }
+            if (playerMoveLeft) {
+                if (gameworld.getPod(2).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.B).x + MathUtillities.getPodSize() / 2) {
+                    gameworld.getPod(2).moveLeft(2);
+                }
             }
         }
     }

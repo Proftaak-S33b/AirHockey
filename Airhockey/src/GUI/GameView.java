@@ -85,6 +85,7 @@ public class GameView implements Initializable {
     private boolean playerMoveRight;
     private boolean playerMoveLeft;
     private AnimationTimer aniTimer = null;
+    private GameType gametype = GameType.SINGLEPLAYER;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -192,7 +193,6 @@ public class GameView implements Initializable {
         if (!gameStarted) {
             currentPlayer = player;
             currentLobby = lobby;
-            GameType gametype;
             List<IPlayer> playersInLobby;
             try {
                 playersInLobby = lobby.getAllPlayers();
@@ -308,7 +308,7 @@ public class GameView implements Initializable {
      * Checks which buttons are pressed and moves the player
      */
     private void player_Move() {
-        gamemanager.player_Move(playerMoveRight, playerMoveLeft);
+        gamemanager.player_Move(playerMoveRight, playerMoveLeft, gametype);
     }
 
     /**
