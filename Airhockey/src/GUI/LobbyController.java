@@ -29,6 +29,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import networking.ILobby;
 
@@ -165,12 +166,19 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 }
 
                 //If host ready start game
+                System.out.println(readyStates.get(0).toString());
                 if (readyStates.get(0)) {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
-                    Stage stage = (Stage) tablePlayers.getScene().getWindow();
-                    GameView controller = loader.<GameView>getController();
-                    stage.show();
-                    controller.init_Multiplayer(currentPlayer, currentLobby);
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+                        Stage stage = new Stage(StageStyle.UNDECORATED);
+                        stage.setScene(new Scene((Pane) loader.load()));
+                        GameView controller = loader.<GameView>getController();
+                        stage.show();
+                        controller.init_Multiplayer(currentPlayer, currentLobby);
+                    } catch (IOException ex) {
+                        System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
+                    }
+                    System.out.println("Should be new window now");
                 }
                 //Check if chat message is new
                 if (chatBox.getItems().size() > 0) {
