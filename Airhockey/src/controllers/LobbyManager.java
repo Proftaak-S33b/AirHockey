@@ -52,7 +52,7 @@ public class LobbyManager {
      */
     public LobbyManager(ListView chatBox) {
         try {
-            chat = new ChatSocketClient(rmiDefaults.DEFAULT_SERVER_IP(), DEFAULT_PORT(), chatBox);
+            chat = new ChatSocketClient(rmiDefaults.DEFAULT_SERVER_IP(), 69, chatBox);
         } catch (IOException ex) {
             System.out.println("IOException: " + ex.getMessage());
         }
