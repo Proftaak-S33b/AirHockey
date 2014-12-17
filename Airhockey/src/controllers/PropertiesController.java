@@ -183,7 +183,7 @@ public final class PropertiesController {
             //Set RMI server properties
             props.setProperty("rmiurl", "145.93.89.17");
             props.setProperty("rmiport", "1099");
-            props.setProperty("rmiregistry", "1099");
+            props.setProperty("rmiregistry", "serverdata");
 
             //Set database properties
             props.setProperty("dburl", "a-chan.nl");
