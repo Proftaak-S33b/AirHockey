@@ -207,7 +207,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
      * @return The message
      */
     @Override
-    public String getLastChatMessage(){
+    public String getLastChatMessage() throws RemoteException{
         return lastChatMessage;
     }
     
@@ -216,8 +216,9 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
      * @param message The new message
      */
     @Override
-    public void setLastChatMessage(String message) {
+    public void setLastChatMessage(String message)throws RemoteException{
         this.lastChatMessage = message;
         publisher.inform(this, "newMessage", null, lastChatMessage);
+        System.out.println("New message!");
     }
 }
