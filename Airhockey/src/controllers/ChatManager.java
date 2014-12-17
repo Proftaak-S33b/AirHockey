@@ -37,9 +37,9 @@ public class ChatManager {
      * @param sender
      * @return 
      */
-    public boolean addMessage(String text, IPlayer sender) {
+    public boolean addMessage(String text) {
         try {
-            messagesObservable.add(new Message(text, sender));
+            messagesObservable.add(new Message(text));
         } catch (Message.MessageLengthException ex) {
             return false;
         }

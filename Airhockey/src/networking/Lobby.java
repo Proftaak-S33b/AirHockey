@@ -205,6 +205,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     /**
      * Gets the last message that is send in the chat
      * @return The message
+     * @throws java.rmi.RemoteException
      */
     @Override
     public String getLastChatMessage() throws RemoteException{
@@ -214,11 +215,13 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     /**
      * Sets a new last message that is send in the chat
      * @param message The new message
+     * @throws java.rmi.RemoteException
      */
     @Override
     public void setLastChatMessage(String message)throws RemoteException{
         this.lastChatMessage = message;
         publisher.inform(this, "newMessage", null, lastChatMessage);
         System.out.println("New message!");
+        System.out.println(lastChatMessage);
     }
 }

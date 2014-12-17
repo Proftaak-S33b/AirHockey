@@ -21,7 +21,6 @@ public class Message implements Serializable {
     }
 
     private final String text;
-    private final IPlayer sender;
 
     /**
      * A new message with specified text and sender
@@ -30,13 +29,12 @@ public class Message implements Serializable {
      * @param sender
      * @throws networking.Message.MessageLengthException
      */
-    public Message(String text, IPlayer sender) throws MessageLengthException {
+    public Message(String text) throws MessageLengthException {
         if (text.length() <= 144) {
             this.text = text;
         } else {
             throw new MessageLengthException();
         }
-        this.sender = sender;
     }
 
     /**
@@ -48,17 +46,8 @@ public class Message implements Serializable {
         return text;
     }
 
-    /**
-     * Gets the name of the sender
-     *
-     * @return
-     */
-    public String getSenderName() {
-        return sender.getName();
-    }
-
     @Override
     public String toString() {
-        return sender.getName() + ": " + text;
+        return text;
     }
 }

@@ -146,23 +146,22 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      * Update the lobby info, game name, amount of players and host name.
      */
     private void updateLobbyInfo() {
-        try{
-        if (currentLobby != null && !currentLobby.getAllPlayers().isEmpty()) {
-            try {
+        try {
+            if (currentLobby != null && !currentLobby.getAllPlayers().isEmpty()) {
                 textGameName.setText(currentLobby.getGameName());
                 textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
                 textHostName.setText(currentLobby.getPlayer(0).getName());
                 tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
                 //Check if chat message is new
-                if(chatBox.getItems().get(chatBox.getItems().size()-1).toString().equals(currentLobby.getLastChatMessage())){
-                    chatBox.getItems().add(currentLobby.getLastChatMessage());
+                //if(chatBox.getItems().get(chatBox.getItems().size()-1).toString().equals(currentLobby.getLastChatMessage())){
+                try {
+                    chat.addMessage(currentLobby.getLastChatMessage());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (RemoteException ex) {
-                System.out.println("RemoteException: " + ex.getMessage());
             }
-        }
-        }
-        catch(Exception ex){
+            //}
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -174,11 +173,9 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      */
     public void sendMessage(ActionEvent evt) {
         if (!chatMessage.getText().equals("")) {
-            try{
-                currentLobby.setLastChatMessage(chatMessage.getText());
-                chat.addMessage(chatMessage.getText(), currentPlayer);
-            }
-            catch(Exception ex){
+            try {
+                currentLobby.setLastChatMessage(currentPlayer.getName() + ": " + chatMessage.getText());
+            } catch (Exception ex) {
                 System.out.println("Set chat message failed");
                 System.out.println(ex.getMessage());
             }
@@ -209,13 +206,16 @@ public class LobbyController implements Initializable, RemotePropertyListener {
     public void changedName(ActionEvent evt) {
         try {
             currentLobby.setGameName(textGameName.getText());
+
         } catch (RemoteException ex) {
-            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LobbyController.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
      * Method for switching to the GameView scene
+     *
      * @param evt
      */
     public void startGame(ActionEvent evt) {
