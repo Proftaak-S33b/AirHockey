@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import networking.ILobby;
 
 /**
@@ -152,6 +154,24 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
                 textHostName.setText(currentLobby.getPlayer(0).getName());
                 tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
+                ArrayList<Boolean> readyStates = currentLobby.getPlayerStates();
+                //Set all ready states
+                for (int i = 0; i < 3; i++) {
+                    if (tablePlayers.getItems().size() >= i + 1) {
+                        if (readyStates.get(i)) {
+                            System.out.println("TODO set ready states in GUI");
+                        }
+                    }
+                }
+
+                //If host ready start game
+                if (readyStates.get(0)) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+                    Stage stage = (Stage) tablePlayers.getScene().getWindow();
+                    GameView controller = loader.<GameView>getController();
+                    stage.show();
+                    controller.init_Multiplayer(currentPlayer, currentLobby);
+                }
                 //Check if chat message is new
                 if (chatBox.getItems().size() > 0) {
                     if (!chatBox.getItems().get(chatBox.getItems().size() - 1).toString().equals(currentLobby.getLastChatMessage()) && !currentLobby.getLastChatMessage().isEmpty()) {
@@ -194,9 +214,19 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      */
     public void readyButton(ActionEvent evt) {
         if (ready) {
-            readyButton.getStyleClass().remove("ready");
+            try {
+                readyButton.getStyleClass().remove("ready");
+                currentLobby.setPlayerState(0, false);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
         } else {
-            readyButton.getStyleClass().add("ready");
+            try {
+                readyButton.getStyleClass().add("ready");
+                currentLobby.setPlayerState(0, true);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
         }
         ready = !ready;
     }

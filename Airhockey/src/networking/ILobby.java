@@ -8,6 +8,7 @@ package networking;
 import fontys.observer.RemotePublisher;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -119,4 +120,19 @@ public interface ILobby extends Remote, RemotePublisher{
      * @throws RemoteException 
      */
     public void setLastChatMessage(String message) throws RemoteException;
+    
+    /**
+     *
+     * @return
+     * @throws RemoteException
+     */
+    public ArrayList<Boolean> getPlayerStates() throws RemoteException;
+    
+    /**
+     * 
+     * @param PlayerNr
+     * @param State
+     * @throws RemoteException 
+     */
+    public void setPlayerState(int PlayerNr, boolean State)throws RemoteException;
 }

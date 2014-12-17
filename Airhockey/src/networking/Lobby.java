@@ -22,11 +22,13 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private String gameName;
 
     private final ArrayList<IPlayer> players;
-    
+
     private final IRemoteGame game;
-    
+
     private final BasicPublisher publisher;
-    
+
+    private ArrayList<Boolean> playerStates = new ArrayList<>();
+
     private String lastChatMessage = "";
 
     /**
@@ -37,11 +39,14 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
      * @throws java.rmi.RemoteException
      */
     public Lobby(String gameName, IPlayer host) throws RemoteException {
+        this.playerStates.set(0, false);
+        this.playerStates.set(1, false);
+        this.playerStates.set(2, false);
         this.gameName = gameName;
         players = new ArrayList<>();
         players.add(host);
         game = new RemoteGame();
-        publisher = new BasicPublisher(new String[]{"gameName", "playerAdded", "playerRemoved", "newMessage"});
+        publisher = new BasicPublisher(new String[]{"gameName", "playerAdded", "playerRemoved", "newMessage", "newState"});
     }
 
     /**
@@ -183,9 +188,8 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     }
 
     /**
-     * 
-     * @return
-     * @throws RemoteException 
+     *
+     * @return @throws RemoteException
      */
     @Override
     public IRemoteGame getRemoteGame() throws RemoteException {
@@ -201,27 +205,51 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
         publisher.addListener(listener, property);
     }
-    
+
     /**
      * Gets the last message that is send in the chat
+     *
      * @return The message
      * @throws java.rmi.RemoteException
      */
     @Override
-    public String getLastChatMessage() throws RemoteException{
+    public String getLastChatMessage() throws RemoteException {
         return lastChatMessage;
     }
-    
+
     /**
      * Sets a new last message that is send in the chat
+     *
      * @param message The new message
      * @throws java.rmi.RemoteException
      */
     @Override
-    public void setLastChatMessage(String message)throws RemoteException{
+    public void setLastChatMessage(String message) throws RemoteException {
         this.lastChatMessage = message;
         publisher.inform(this, "newMessage", null, lastChatMessage);
         System.out.println("New message!");
         System.out.println(lastChatMessage);
+    }
+
+    /**
+     * @return @throws RemoteException
+     */
+    @Override
+    public ArrayList<Boolean> getPlayerStates() throws RemoteException {
+        return this.playerStates;
+    }
+
+    /**
+     *
+     * @param PlayerNr
+     * @param State
+     * @throws RemoteException
+     */
+    @Override
+    public void setPlayerState(int PlayerNr, boolean State) throws RemoteException {
+        if (PlayerNr > -1 && PlayerNr < 3) {
+            this.playerStates.set(PlayerNr, State);
+            publisher.inform(this, "newState", null, playerStates);
+        }
     }
 }
