@@ -41,7 +41,7 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
         players = new ArrayList<>();
         players.add(host);
         game = new RemoteGame();
-        publisher = new BasicPublisher(new String[]{"gameName", "playerAdded", "playerRemoved"});
+        publisher = new BasicPublisher(new String[]{"gameName", "playerAdded", "playerRemoved", "newMessage"});
     }
 
     /**
@@ -218,5 +218,6 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     @Override
     public void setLastChatMessage(String message) {
         this.lastChatMessage = message;
+        publisher.inform(this, "newMessage", null, lastChatMessage);
     }
 }

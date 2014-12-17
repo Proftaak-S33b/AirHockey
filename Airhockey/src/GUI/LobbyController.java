@@ -179,6 +179,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 chat.addMessage(chatMessage.getText(), currentPlayer);
             }
             catch(Exception ex){
+                System.out.println("Set chat message failed");
                 System.out.println(ex.getMessage());
             }
             chatMessage.clear();
