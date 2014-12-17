@@ -217,6 +217,35 @@ public class GameView implements Initializable {
             //Set dificulty to prevent errors
             difficulty = Difficulty.NORMAL;
             gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby);
+            Timer t = new Timer("CountdownTimer", true);
+
+            t.schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    count += 0.005;
+
+                    Platform.runLater(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            loadProgress();
+                        }
+                    });
+                    if (count >= 5.50) {
+                        Platform.runLater(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                progressVisible();
+                                gamemanager.start();
+                                gameStarted = true;
+                            }
+                        });
+                        t.cancel();
+                    }
+                }
+            }, 0, 5);
             aniTimer = new AnimationTimer() {
 
                 @Override
@@ -238,8 +267,6 @@ public class GameView implements Initializable {
                 }
             };
             aniTimer.start();
-            gamemanager.start();
-            gameStarted = true;
         }
     }
 
