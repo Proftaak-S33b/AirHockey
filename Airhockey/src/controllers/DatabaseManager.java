@@ -27,7 +27,10 @@ public final class DatabaseManager {
     private static boolean openConnection() {
         boolean result;
         try {
-            connection = DriverManager.getConnection("jdbc:mysql://a-chan.nl:3306/deb82648_pts", "deb82648_air", "airhockey");
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://"+PropertiesController.getSettings().getProperty("dburl")+":"+PropertiesController.getSettings().getProperty("dbport")+"/deb82648_pts", 
+                    PropertiesController.getSettings().getProperty("dbusername"), 
+                    PropertiesController.getSettings().getProperty("dbpassword"));
             result = true;
         } catch (Exception e) {
             connection = null;

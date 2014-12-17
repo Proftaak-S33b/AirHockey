@@ -5,14 +5,16 @@
  */
 package networking.standalone;
 
+import controllers.PropertiesController;
+
 /**
  * Default values for RMI.
  * @author Etienne
  */
 public class rmiDefaults {
-    public static final String DEFAULT_SERVER_IP = "145.93.89.162";
+    public static final String DEFAULT_SERVER_IP = PropertiesController.getSettings().getProperty("rmiurl");
     public static final String DEFAULT_HOST = "localhost";
     public static final String DEFAULT_PROTOCOL = "rmi";
     public static final String DEFAULT_HOSTNAME = "local";
-    public static final int DEFAULT_PORT = 1099;    
+    public static final int DEFAULT_PORT = int.class.cast(PropertiesController.getSettings().getProperty("rmiport"));    
 }
