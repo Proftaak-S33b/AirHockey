@@ -138,7 +138,7 @@ public class rmiStandaloneServer {
                             messages.put(message);
                         }
                     } catch (IOException | InterruptedException ex) {
-                        System.out.println(ex.getMessage());
+                        System.out.println("CTC Error:" + ex.getMessage());
                     }
                 }
             };
