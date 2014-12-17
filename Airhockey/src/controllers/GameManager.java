@@ -500,6 +500,8 @@ public class GameManager implements ContactListener {
                                     gameworld.getPlayers().get(1).getRanking(),
                                     gameworld.getPlayers().get(2).getRanking(),
                                     round);
+                            GameData data = remoteGame.getGameData();
+                            setLocalData(data);
                         } catch (RemoteException ex) {
                             System.out.println("RemoteException: " + ex.getMessage());
                         }
