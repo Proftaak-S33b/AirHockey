@@ -16,6 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -222,6 +223,12 @@ public class LobbyController implements Initializable, RemotePropertyListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        updateLobbyInfo();
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                updateLobbyInfo();
+            }
+        });
     }
 }
