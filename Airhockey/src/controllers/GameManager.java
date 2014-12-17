@@ -159,7 +159,7 @@ public class GameManager implements ContactListener {
 
     private IRemoteGame connectToServer(InetAddress address, int port) {
         Client rmi = new Client(address.getHostAddress(), port);
-        return (IRemoteGame) rmi.lookup("HockeyGame");
+        return (IRemoteGame) rmi.lookup("hockeygame");
     }
 
     /**
