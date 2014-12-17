@@ -16,5 +16,5 @@ public class rmiDefaults {
     public static final String DEFAULT_HOST = "localhost";
     public static final String DEFAULT_PROTOCOL = "rmi";
     public static final String DEFAULT_HOSTNAME = "local";
-    public static final int DEFAULT_PORT = int.class.cast(PropertiesController.getSettings().getProperty("rmiport"));    
+    public static final int DEFAULT_PORT = Integer.parseInt(PropertiesController.getSettings().getProperty("rmiport"));    
 }
