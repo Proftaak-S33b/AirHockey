@@ -127,6 +127,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      */
     public void backButton(ActionEvent evt) {
         try {
+            currentLobby.removePlayer(currentPlayer);
             UnicastRemoteObject.unexportObject(this, true);
             Node node = (Node) evt.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
