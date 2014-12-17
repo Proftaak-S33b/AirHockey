@@ -158,7 +158,7 @@ public class LobbyListController implements Initializable {
      */
     public void sendChat(ActionEvent event) {
         if (!chatMessage.getText().equals("")) {
-            chat.addMessage(chatMessage.getText(), currentPlayer);
+            chat.addMessage(chatMessage.getText());
             chatMessage.clear();
         }
     }
