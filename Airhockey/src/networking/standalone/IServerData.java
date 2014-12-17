@@ -23,34 +23,36 @@ public interface IServerData extends Remote {
      * @param host
      * @param socket
      * @param serversocket
-     * @return 
+     * @return
      * @throws java.rmi.RemoteException
      */
     public boolean add(
-	    InetAddress address, String name, String description,
-	    IPlayer host, Socket socket, ServerSocket serversocket
+            InetAddress address, String name, String description,
+            IPlayer host, Socket socket, ServerSocket serversocket
     ) throws RemoteException;
 
     /**
      * Unregisters a client with the server.
      *
      * @param client
-     * @return 
+     * @return
      * @throws java.rmi.RemoteException
      */
     public boolean remove(ClientData client) throws RemoteException;
 
     /**
-     * 
-     * @return
-     * @throws RemoteException 
+     *
+     * @return @throws RemoteException
      */
     public List<ClientData> getClients() throws RemoteException;
-    
+
     /**
      * Set's the player counter to the given value
+     *
      * @param host The host of the lobby
      * @param playerCount The new player count
+     * @throws java.rmi.RemoteException
      */
     public void setPlayerCountLobby(IPlayer host, int playerCount) throws RemoteException;
+
 }

@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
@@ -13,15 +14,21 @@ import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 import networking.Lobby;
 import networking.Client;
 import networking.ILobby;
 import networking.Server;
+import networking.standalone.ChatSocketClient;
 import networking.standalone.ClientData;
 import networking.standalone.IClientData;
 import networking.standalone.IServerData;
+import networking.standalone.rmiDefaults;
+import static networking.standalone.rmiDefaults.DEFAULT_PORT;
 
 /**
  * Controller for managing the multiplayer lobby with multiple games
@@ -35,12 +42,20 @@ public class LobbyManager {
     private final Timer timer;
     private final Client client;
     private Server server = null;
+    private ChatSocketClient chat;
 
     /**
      * Instantiates the lobbyController and sets a timer that will regularly
      * fetch the lobbies from the RMI server
+     *
+     * @param chatBox the ListView to put new chat messages in
      */
-    public LobbyManager() {
+    public LobbyManager(ListView chatBox) {
+        try {
+            chat = new ChatSocketClient(rmiDefaults.DEFAULT_SERVER_IP(), DEFAULT_PORT(), chatBox);
+        } catch (IOException ex) {
+            System.out.println("IOException: " + ex.getMessage());
+        }
         client = new Client();
         serverData = (IServerData) client.lookup("serverdata");
         clientData = FXCollections.observableArrayList();
@@ -55,7 +70,7 @@ public class LobbyManager {
         } catch (RemoteException ex) {
             System.out.println(ex.getMessage());
         }
-        for(ClientData d : lobs){
+        for (ClientData d : lobs) {
             System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
         }
         clientData.addAll(lobs);
@@ -144,8 +159,12 @@ public class LobbyManager {
     public ObservableList<ClientData> getLobbies() {
         return FXCollections.unmodifiableObservableList(clientData);
     }
-    
-    public void destroy(){
+
+    public void sendChat(String message) {
+        chat.send(message);
+    }
+
+    public void destroy() {
         timer.cancel();
     }
 }

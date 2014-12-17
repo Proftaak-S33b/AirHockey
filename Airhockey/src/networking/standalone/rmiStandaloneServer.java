@@ -1,6 +1,10 @@
 package networking.standalone;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.*;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
@@ -9,9 +13,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import java.util.concurrent.LinkedBlockingQueue;
 //</editor-fold>
 
 /*
@@ -43,6 +45,10 @@ public class rmiStandaloneServer {
      */
     private IServerData data;
 
+    private ArrayList<ConnectionToClient> clientList;
+    private LinkedBlockingQueue<String> messages;
+    private ServerSocket serverSocket;
+
     /**
      * To make all our data accessible we use this registry.
      */
@@ -54,7 +60,6 @@ public class rmiStandaloneServer {
      * @throws java.net.UnknownHostException
      */
     public rmiStandaloneServer() throws UnknownHostException {
-
         // Info about this server.
         this.address = (Inet4Address) Inet4Address.getLocalHost();
 
@@ -67,6 +72,89 @@ public class rmiStandaloneServer {
             System.out.println("RemoteException: " + ex.getMessage());
         } catch (AlreadyBoundException ex) {
             System.out.println("AlreadyBoundException: " + ex.getMessage());
+        }
+
+        clientList = new ArrayList<>();
+        messages = new LinkedBlockingQueue<>();
+        try {
+            serverSocket = new ServerSocket(69);
+        } catch (IOException ex) {
+            System.out.println("IOException: " + ex.getMessage());
+        }
+
+        Thread accept = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Socket s = serverSocket.accept();
+                        clientList.add(new ConnectionToClient(s));
+                    } catch (IOException e) {
+                        System.out.println("IOException: " + e.getMessage());
+                    }
+                }
+            }
+        };
+        accept.setDaemon(true);
+        accept.start();
+
+        Thread messageHandling = new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        String message = messages.take();
+                        sendToAll(message);
+                        System.out.println("Message Received: " + message);
+                    } catch (InterruptedException e) {
+                        System.out.println("InterruptedException: " + e.getMessage());
+                    }
+                }
+            }
+        };
+
+        messageHandling.setDaemon(true);
+        messageHandling.start();
+    }
+
+    private class ConnectionToClient {
+
+        BufferedReader in;
+        PrintWriter out;
+        Socket socket;
+
+        ConnectionToClient(Socket socket) throws IOException {
+            this.socket = socket;
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = new PrintWriter(socket.getOutputStream());
+
+            Thread read = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        String message = in.readLine();
+                        while (message != null) {
+                            message = in.readLine();
+                            messages.put(message);
+                        }
+                    } catch (IOException | InterruptedException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            };
+
+            read.setDaemon(true); // terminate when main ends
+            read.start();
+        }
+
+        public void write(String obj) {
+            out.println(obj);
+        }
+    }
+
+    public void sendToAll(String message) {
+        for (ConnectionToClient client : clientList) {
+            client.write(message);
         }
     }
 
@@ -97,7 +185,7 @@ public class rmiStandaloneServer {
     }
 
     /**
-     * 
+     *
      */
     public void exit() {
         try {

@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import networking.Lobby;
+import networking.standalone.ChatSocketClient;
 import networking.standalone.ClientData;
 import networking.standalone.IClientData;
 
@@ -32,31 +33,30 @@ import networking.standalone.IClientData;
  * @author Joris
  */
 public class LobbyListController implements Initializable {
-
+    
     @FXML
     public TableView lobbyTable;
-
+    
     @FXML
     public TableColumn columnGameName;
-
+    
     @FXML
     public TableColumn columnPlayers;
-
+    
     @FXML
     public TableColumn columnHostRank;
-
+    
     @FXML
     public TextField newLobbyName;
-
+    
     @FXML
     public TextField chatMessage;
-
+    
     @FXML
     public ListView chatBox;
-
+    
     private LobbyManager controller;
-    private ChatManager chat;
-
+    
     private Human currentPlayer;
 
     /**
@@ -66,9 +66,7 @@ public class LobbyListController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        controller = new LobbyManager();
-        chat = new ChatManager();
-        chatBox.setItems(chat.getMessages());
+        controller = new LobbyManager(chatBox);
         columnGameName.setCellValueFactory(new PropertyValueFactory("name"));
         columnPlayers.setCellValueFactory(new PropertyValueFactory("playerAmount"));
         columnHostRank.setCellValueFactory(new PropertyValueFactory("ranking"));
@@ -128,7 +126,7 @@ public class LobbyListController implements Initializable {
     public void joinLobby(Event evt) {
         if (lobbyTable.getSelectionModel().getSelectedItem() instanceof IClientData) {
             try {
-                IClientData tempdata = (IClientData)lobbyTable.getSelectionModel().getSelectedItem();
+                IClientData tempdata = (IClientData) lobbyTable.getSelectionModel().getSelectedItem();
                 controller.serverData.setPlayerCountLobby(tempdata.getHost(), tempdata.getPlayerAmount() + 1);
                 controller.destroy();
                 Node node = (Node) evt.getSource();
@@ -158,16 +156,17 @@ public class LobbyListController implements Initializable {
      */
     public void sendChat(ActionEvent event) {
         if (!chatMessage.getText().equals("")) {
-            chat.addMessage(chatMessage.getText());
+            controller.sendChat(chatMessage.getText().trim());
             chatMessage.clear();
         }
     }
-    
+
     /**
      * Opens the leaderboard window
-     * @param event 
+     *
+     * @param event
      */
-    public void buttonLeaderboard (ActionEvent event) {
+    public void buttonLeaderboard(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Leaderboards.fxml"));
             Stage stage = new Stage(StageStyle.UNDECORATED);
