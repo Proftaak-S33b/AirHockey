@@ -10,10 +10,13 @@ import game.Pod;
 import game.Puck;
 import game.Wall;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
@@ -59,7 +62,7 @@ public class GameManager implements ContactListener {
     private final Difficulty difficulty;
     private final GameView gv;
     private final ILobby lobby;
-    private final IRemoteGame remoteGame;
+    private IRemoteGame remoteGame;
     private boolean puckReset = false;
     private Timer physTimer = null;
 
@@ -123,7 +126,12 @@ public class GameManager implements ContactListener {
         if (gameType == GameType.MULTIPLAYER_RED) {
             remoteGame = startServer();
         } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
-            remoteGame = connectToServer(null, round);
+            try {
+                remoteGame = connectToServer(InetAddress.getByName("145.93.97.212"), 1099);
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+
+            }
         } else {
             remoteGame = null;
         }
