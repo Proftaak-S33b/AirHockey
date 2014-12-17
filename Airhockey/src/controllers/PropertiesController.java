@@ -142,7 +142,7 @@ public final class PropertiesController {
      *
      * @return False if not correctly configured, otherwise true.
      */
-    private static boolean isCorrectlyConfigured() {
+    public static boolean isCorrectlyConfigured() {
         if (props == null) {
             return false;
         }
@@ -181,9 +181,9 @@ public final class PropertiesController {
             OutputStream output = new FileOutputStream("config.properties");
 
             //Set RMI server properties
-            props.setProperty("rmiurl", "douven.tk");
+            props.setProperty("rmiurl", "145.93.89.17");
             props.setProperty("rmiport", "1099");
-            props.setProperty("rmiregistry", "serverdata");
+            props.setProperty("rmiregistry", "1099");
 
             //Set database properties
             props.setProperty("dburl", "a-chan.nl");

@@ -34,7 +34,7 @@ public class PropertiesControllerTest {
     @Before
     public void setUp() {
         prop = new Properties();
-        pr = new PropertiesController(prop);
+        pr = new PropertiesController();
     }
     
     @After
@@ -56,21 +56,21 @@ public class PropertiesControllerTest {
     @Test
     public void loadPropertiesTest()
     {
-        pr.writeProperties("1", "12", "123", "1234", "12345", "123456", "1234567");
+        pr.writeProperties("145.93.89.17", "1099", "1099", "a-chan.nl", "3306", "deb82648_air", "airhockey");
         assertTrue("Load props", pr.loadProperties());
     }
     
     @Test
     public void writePropertiesTest()
     {
-        assertTrue("Write props", pr.writeProperties("1", "12", "123", "1234", "12345", "123456", "1234567"));
+        assertTrue("Write props", pr.writeProperties("145.93.89.17", "1099", "1099", "a-chan.nl", "3306", "deb82648_air", "airhockey"));
         assertFalse("Write empty props", pr.writeProperties("", "", "", "", "", "", ""));
     }
     
     @Test
     public void isCorrectlyConfiguredTest()
     {
-        pr.writeProperties("1", "12", "123", "1234", "12345", "123456", "1234567");
+        pr.writeProperties("145.93.89.17", "1099", "1099", "a-chan.nl", "3306", "deb82648_air", "airhockey");
         assertTrue("Correct config props", pr.isCorrectlyConfigured());
     }
 }
