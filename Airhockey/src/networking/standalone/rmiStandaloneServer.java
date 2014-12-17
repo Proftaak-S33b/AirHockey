@@ -63,7 +63,6 @@ public class rmiStandaloneServer {
             data = new ServerData();
             registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT());
             registry.bind("serverdata", data);
-            printInfo();
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         } catch (AlreadyBoundException ex) {
@@ -97,6 +96,9 @@ public class rmiStandaloneServer {
         }
     }
 
+    /**
+     * 
+     */
     public void exit() {
         try {
             registry.unbind("serverdata");
@@ -118,7 +120,7 @@ public class rmiStandaloneServer {
 
         try {
             rmiStandaloneServer rmi = new rmiStandaloneServer();
-            System.out.println("Running server..");
+            System.out.println("Running server at " + Inet4Address.getLocalHost());
         } catch (UnknownHostException ex) {
             System.out.println("Failed. Exiting program.");
             System.exit(-1);

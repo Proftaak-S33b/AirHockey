@@ -36,8 +36,8 @@ public class Server extends Application {
 
         Console console = new Console(ta);
         PrintStream ps = new PrintStream(console, true);
-        //System.setOut(ps);
-        //System.setErr(ps);
+        System.setOut(ps);
+        System.setErr(ps);
 
         primaryStage.setScene(new Scene(gridpane, 800, 600));
         primaryStage.show();

@@ -9,8 +9,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import networking.IPlayer;
 
 /**
@@ -24,6 +22,10 @@ public class ServerData extends UnicastRemoteObject implements IServerData {
      */
     public List<ClientData> clients;
 
+    /**
+     * 
+     * @throws RemoteException 
+     */
     public ServerData() throws RemoteException {
         clients = new ArrayList<>();
     }
