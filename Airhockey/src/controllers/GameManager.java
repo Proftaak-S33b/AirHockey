@@ -27,6 +27,7 @@ import networking.IPlayer;
 import networking.IRemoteGame;
 import networking.Client;
 import networking.ILobby;
+import networking.standalone.IClientData;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -114,8 +115,9 @@ public class GameManager implements ContactListener {
      * the game of
      * @param gv The GUI Controller //should not be here!!!
      * @param lobby
+     * @param clientData
      */
-    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, ILobby lobby) {
+    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, ILobby lobby, IClientData clientData) {
         this.gc = gc;
         this.gv = gv;
         this.lobby = lobby;
@@ -126,12 +128,7 @@ public class GameManager implements ContactListener {
         if (gameType == GameType.MULTIPLAYER_RED) {
             remoteGame = startServer();
         } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
-            try {
-                remoteGame = connectToServer(InetAddress.getByName("145.93.97.212"), 1099);
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-
-            }
+            remoteGame = connectToServer(clientData.getAddress(), 1099);
         } else {
             remoteGame = null;
         }

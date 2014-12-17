@@ -36,6 +36,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import networking.ILobby;
 import networking.IPlayer;
+import networking.standalone.IClientData;
 
 /**
  * FXML Controller class
@@ -185,8 +186,9 @@ public class GameView implements Initializable {
      *
      * @param player The player that is currently playing
      * @param lobby The lobby object that represents this game
+     * @param clientData
      */
-    public void init_Multiplayer(Human player, ILobby lobby) {
+    public void init_Multiplayer(Human player, ILobby lobby, IClientData clientData) {
         if (!gameStarted) {
             currentPlayer = player;
             currentLobby = lobby;
@@ -216,7 +218,7 @@ public class GameView implements Initializable {
             }
             //Set dificulty to prevent errors
             difficulty = Difficulty.NORMAL;
-            gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby);
+            gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby, clientData);
             Timer t = new Timer("CountdownTimer", true);
 
             t.schedule(new TimerTask() {

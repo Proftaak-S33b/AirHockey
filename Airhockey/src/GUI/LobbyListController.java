@@ -112,7 +112,7 @@ public class LobbyListController implements Initializable {
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             LobbyController lobbyFXML = loader.<LobbyController>getController();
-            lobbyFXML.initData(currentPlayer, controller.addLobby(newLobbyName.getText(), currentPlayer));
+            lobbyFXML.initData(currentPlayer, controller.addLobby(newLobbyName.getText(), currentPlayer), null);
             stage.show();
         } catch (IOException ex) {
             System.out.println("Error changing scene from LobbyList to Lobby " + ex.toString());
@@ -134,7 +134,7 @@ public class LobbyListController implements Initializable {
                 Stage stage = (Stage) node.getScene().getWindow();
                 stage.setScene(new Scene((Pane) loader.load()));
                 LobbyController lobbyFXML = loader.<LobbyController>getController();
-                lobbyFXML.initData(currentPlayer, controller.connect((IClientData) lobbyTable.getSelectionModel().getSelectedItem()));
+                lobbyFXML.initData(currentPlayer, controller.connect((IClientData) lobbyTable.getSelectionModel().getSelectedItem()), tempdata);
                 stage.show();
             } catch (IOException ex) {
                 System.out.println("Error changing scene from LobbyList to Lobby " + ex.toString());
