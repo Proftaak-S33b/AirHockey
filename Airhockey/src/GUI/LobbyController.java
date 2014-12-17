@@ -127,7 +127,6 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      */
     public void backButton(ActionEvent evt) {
         try {
-            currentLobby.removePlayer(currentPlayer);
             UnicastRemoteObject.unexportObject(this, true);
             Node node = (Node) evt.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
@@ -136,6 +135,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
             LobbyListController controller = loader.<LobbyListController>getController();
             stage.show();
             controller.initData(currentPlayer);
+            currentLobby.removePlayer(currentPlayer);
         } catch (IOException ex) {
             System.out.println("Error changing scene from Lobby to LobbyList " + ex.toString());
         }
@@ -145,7 +145,8 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      * Update the lobby info, game name, amount of players and host name.
      */
     private void updateLobbyInfo() {
-        if (currentLobby != null) {
+        try{
+        if (currentLobby != null && !currentLobby.getAllPlayers().isEmpty()) {
             try {
                 textGameName.setText(currentLobby.getGameName());
                 textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
@@ -154,6 +155,10 @@ public class LobbyController implements Initializable, RemotePropertyListener {
             } catch (RemoteException ex) {
                 System.out.println("RemoteException: " + ex.getMessage());
             }
+        }
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());
         }
     }
 
