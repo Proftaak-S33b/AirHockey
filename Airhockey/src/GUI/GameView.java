@@ -111,7 +111,7 @@ public class GameView implements Initializable {
             players.add(new AI("Green", 20));
             tableScore.setItems((ObservableList) players);
             this.difficulty = difficulty;
-            gamemanager = new GameManager(gc, players, difficulty, GameType.SINGLEPLAYER, this, null);
+            gamemanager = new GameManager(gc, players, difficulty, GameType.SINGLEPLAYER, this, null, null);
 
             piLoading.setVisible(true);
             Timer t = new Timer("CountdownTimer", true);
