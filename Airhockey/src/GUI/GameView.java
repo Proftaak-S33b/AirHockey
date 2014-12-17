@@ -198,14 +198,25 @@ public class GameView implements Initializable {
                 System.out.println("RemoteException: " + ex.getMessage());
                 playersInLobby = null;
             }
-            if (players.get(0) == playersInLobby) {
+            //Get which gamemode has to be set
+            if (playersInLobby.get(0).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_RED;
-            } else if (players.get(1) == playersInLobby) {
+                System.out.println("U are player red");
+            } else if (playersInLobby.get(1).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_BLUE;
+                System.out.println("U are player blue");
             } else {
                 gametype = GameType.MULTIPLAYER_GREEN;
+                System.out.println("U are player green");
             }
-            gamemanager = new GameManager(gc, players, difficulty, gametype, this, lobby);
+            //Add all players to gamedata
+            players = FXCollections.observableArrayList();
+            for(IPlayer tempPlayer : playersInLobby){
+                players.add(tempPlayer);
+            }
+            //Set dificulty to prevent errors
+            difficulty = Difficulty.NORMAL;
+            gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby);
             aniTimer = new AnimationTimer() {
 
                 @Override
