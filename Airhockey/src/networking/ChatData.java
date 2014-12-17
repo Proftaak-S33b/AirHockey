@@ -36,7 +36,7 @@ public class ChatData implements IChatData {
     @Override
     public boolean add(String message, IPlayer sender) throws RemoteException {
         try {
-            messages.add(new Message(message, sender));
+            messages.add(new Message(message));
             return true;
         } catch (Message.MessageLengthException ex) {
             System.out.println(ex.getMessage());
