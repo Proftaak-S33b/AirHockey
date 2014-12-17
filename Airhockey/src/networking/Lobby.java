@@ -39,9 +39,9 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
      * @throws java.rmi.RemoteException
      */
     public Lobby(String gameName, IPlayer host) throws RemoteException {
-        this.playerStates.set(0, false);
-        this.playerStates.set(1, false);
-        this.playerStates.set(2, false);
+        this.playerStates.add(false);
+        this.playerStates.add(false);
+        this.playerStates.add(false);
         this.gameName = gameName;
         players = new ArrayList<>();
         players.add(host);
