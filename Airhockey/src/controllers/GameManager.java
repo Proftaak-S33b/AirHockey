@@ -27,6 +27,7 @@ import networking.IPlayer;
 import networking.IRemoteGame;
 import networking.Client;
 import networking.ILobby;
+import networking.Lobby;
 import networking.standalone.IClientData;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -159,7 +160,13 @@ public class GameManager implements ContactListener {
 
     private IRemoteGame connectToServer(InetAddress address, int port) {
         Client rmi = new Client(address.getHostAddress(), port);
-        return (IRemoteGame) rmi.lookup("hockeygame");
+        ILobby l = (ILobby) rmi.lookup("hockeygame");
+        try {
+            return l.getRemoteGame();
+        } catch (RemoteException ex) {
+            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     /**
