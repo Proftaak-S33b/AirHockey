@@ -61,7 +61,7 @@ public class rmiStandaloneServer {
         try {
             // Initialize ServerData object
             data = new ServerData();
-            registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
+            registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT());
             registry.bind("serverdata", data);
             printInfo();
         } catch (RemoteException ex) {

@@ -12,9 +12,9 @@ import controllers.PropertiesController;
  * @author Etienne
  */
 public class rmiDefaults {
-    public static final String DEFAULT_SERVER_IP = PropertiesController.getSettings().getProperty("rmiurl");
-    public static final String DEFAULT_HOST = "localhost";
-    public static final String DEFAULT_PROTOCOL = "rmi";
-    public static final String DEFAULT_HOSTNAME = "local";
-    public static final int DEFAULT_PORT = Integer.parseInt(PropertiesController.getSettings().getProperty("rmiport"));    
+    public static String DEFAULT_SERVER_IP() {return PropertiesController.getSettings().getProperty("rmiurl");};
+    public static String DEFAULT_HOST = "localhost";
+    public static String DEFAULT_PROTOCOL = "rmi";
+    public static String DEFAULT_HOSTNAME = "local";
+    public static int DEFAULT_PORT() { return Integer.parseInt(PropertiesController.getSettings().getProperty("rmiport"));};    
 }

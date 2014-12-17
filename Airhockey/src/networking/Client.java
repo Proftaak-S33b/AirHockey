@@ -32,7 +32,7 @@ public class Client {
      * Initializes a new Client with no setup done: data can be specified later.
      */
     public Client() {
-        locateRegistry(rmiDefaults.DEFAULT_SERVER_IP, DEFAULT_PORT);
+        locateRegistry(rmiDefaults.DEFAULT_SERVER_IP(), DEFAULT_PORT());
     }
 
     /**
@@ -104,7 +104,7 @@ public class Client {
         Client c = new Client();
 
         // Connect to central RMI server.
-        c.locateRegistry(rmiDefaults.DEFAULT_SERVER_IP, DEFAULT_PORT);
+        c.locateRegistry(rmiDefaults.DEFAULT_SERVER_IP(), DEFAULT_PORT());
 
         try {
             IServerData data = (IServerData) c.lookup("serverdata");

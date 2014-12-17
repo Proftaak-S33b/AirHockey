@@ -87,7 +87,7 @@ public class Server {
      */
     private void createRegistry() {
         try {
-            registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT);
+            registry = LocateRegistry.createRegistry(rmiDefaults.DEFAULT_PORT());
         } catch (RemoteException ex) {
             System.out.println("RemoteException: " + ex.getMessage());
         }
@@ -146,7 +146,7 @@ public class Server {
              */
             // Create the registry. Default port: 1099.
             // By binding it like this you don't need to use your command line.
-            Registry registry = LocateRegistry.createRegistry(DEFAULT_PORT);
+            Registry registry = LocateRegistry.createRegistry(DEFAULT_PORT());
 	    Inet4Address address = (Inet4Address) Inet4Address.getLocalHost();
 	    System.out.println("Started server at " + address.toString());
             registry.bind("registry", registry);
