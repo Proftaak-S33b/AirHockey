@@ -153,14 +153,18 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 textHostName.setText(currentLobby.getPlayer(0).getName());
                 tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
                 //Check if chat message is new
-                //if(chatBox.getItems().get(chatBox.getItems().size()-1).toString().equals(currentLobby.getLastChatMessage())){
-                try {
-                    chat.addMessage(currentLobby.getLastChatMessage());
-                } catch (RemoteException ex) {
-                    Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+                if (chatBox.getItems().size() > 0) {
+                    if (!chatBox.getItems().get(chatBox.getItems().size() - 1).toString().equals(currentLobby.getLastChatMessage()) && !currentLobby.getLastChatMessage().isEmpty()) {
+                        try {
+                            chat.addMessage(currentLobby.getLastChatMessage());
+                        } catch (RemoteException ex) {
+                            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                } else {
+                    chat.addMessage("Welcome to the game!");
                 }
             }
-            //}
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
