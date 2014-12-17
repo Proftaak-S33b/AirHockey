@@ -105,4 +105,18 @@ public interface ILobby extends Remote, RemotePublisher{
      * @throws RemoteException 
      */
     public IRemoteGame getRemoteGame() throws RemoteException;
+    
+    /**
+     * 
+     * @return
+     * @throws RemoteException 
+     */
+    public String getLastChatMessage() throws RemoteException;
+    
+    /**
+     * 
+     * @param message
+     * @throws RemoteException 
+     */
+    public void setLastChatMessage(String message) throws RemoteException;
 }

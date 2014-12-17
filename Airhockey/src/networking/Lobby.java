@@ -26,6 +26,8 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     private final IRemoteGame game;
     
     private final BasicPublisher publisher;
+    
+    private String lastChatMessage = "";
 
     /**
      * Instantiates a new Lobby with specified game name and host IPlayer
@@ -198,5 +200,23 @@ public class Lobby extends UnicastRemoteObject implements ILobby {
     @Override
     public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
         publisher.addListener(listener, property);
+    }
+    
+    /**
+     * Gets the last message that is send in the chat
+     * @return The message
+     */
+    @Override
+    public String getLastChatMessage(){
+        return lastChatMessage;
+    }
+    
+    /**
+     * Sets a new last message that is send in the chat
+     * @param message The new message
+     */
+    @Override
+    public void setLastChatMessage(String message) {
+        this.lastChatMessage = message;
     }
 }
