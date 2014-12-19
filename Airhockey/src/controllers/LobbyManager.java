@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -28,14 +29,13 @@ import networking.standalone.ClientData;
 import networking.standalone.IClientData;
 import networking.standalone.IServerData;
 import networking.standalone.rmiDefaults;
-import static networking.standalone.rmiDefaults.DEFAULT_PORT;
 
 /**
  * Controller for managing the multiplayer lobby with multiple games
  *
  * @author Joris
  */
-public class LobbyManager {
+public class LobbyManager implements ChangeListener<String> {
 
     public final IServerData serverData;
     private final ObservableList<ClientData> clientData;
@@ -43,6 +43,8 @@ public class LobbyManager {
     private final Client client;
     private Server server = null;
     private ChatSocketClient chat;
+    private ObservableList<String> messages;
+    private ListView chatBox;
 
     /**
      * Instantiates the lobbyController and sets a timer that will regularly
@@ -51,8 +53,9 @@ public class LobbyManager {
      * @param chatBox the ListView to put new chat messages in
      */
     public LobbyManager(ListView chatBox) {
+        this.chatBox = chatBox;
         try {
-            chat = new ChatSocketClient(rmiDefaults.DEFAULT_SERVER_IP(), 69, chatBox);
+            chat = new ChatSocketClient(rmiDefaults.DEFAULT_SERVER_IP(), 69, this);
         } catch (IOException ex) {
             System.out.println("IOException: " + ex.getMessage());
         }
@@ -166,5 +169,12 @@ public class LobbyManager {
 
     public void destroy() {
         timer.cancel();
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        Platform.runLater(() -> {
+            chatBox.getItems().add(newValue);
+        });
     }
 }

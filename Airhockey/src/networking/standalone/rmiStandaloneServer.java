@@ -105,7 +105,7 @@ public class rmiStandaloneServer {
                     try {
                         String message = messages.take();
                         sendToAll(message);
-                        System.out.println("Message Received: " + message);
+                        System.out.println("Message: " + message);
                     } catch (InterruptedException e) {
                         System.out.println("InterruptedException: " + e.getMessage());
                     }
@@ -134,8 +134,8 @@ public class rmiStandaloneServer {
                     try {
                         String message = in.readLine();
                         while (message != null) {
-                            message = in.readLine();
                             messages.put(message);
+                            message = in.readLine();
                         }
                     } catch (IOException | InterruptedException ex) {
                         System.out.println("CTC Error:" + ex.getMessage());
@@ -147,8 +147,9 @@ public class rmiStandaloneServer {
             read.start();
         }
 
-        public void write(String obj) {
-            out.println(obj);
+        public void write(String message) {
+            out.println(message);
+            out.flush();
         }
     }
 

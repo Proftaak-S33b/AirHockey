@@ -5,7 +5,6 @@
  */
 package GUI;
 
-import controllers.ChatManager;
 import controllers.LobbyManager;
 import game.Human;
 import java.io.IOException;
@@ -23,9 +22,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import networking.Lobby;
-import networking.standalone.ChatSocketClient;
-import networking.standalone.ClientData;
 import networking.standalone.IClientData;
 
 /**
@@ -156,7 +152,7 @@ public class LobbyListController implements Initializable {
      */
     public void sendChat(ActionEvent event) {
         if (!chatMessage.getText().equals("")) {
-            controller.sendChat(chatMessage.getText().trim());
+            controller.sendChat(currentPlayer.getName() + ": " + chatMessage.getText().trim());
             chatMessage.clear();
         }
     }

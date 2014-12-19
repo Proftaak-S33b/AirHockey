@@ -10,10 +10,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Locale;
 import java.util.concurrent.LinkedBlockingQueue;
-import javafx.application.Platform;
-import javafx.scene.control.ListView;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
 
 /**
  *
@@ -24,13 +23,14 @@ public class ChatSocketClient {
     private ConnectionToServer server;
     private LinkedBlockingQueue<String> messages;
     private Socket socket;
-    private ListView chatBox;
+    private ReadOnlyStringWrapper observableMessage;
 
-    public ChatSocketClient(String IPAddress, int port, ListView chatBox) throws IOException {
+    public ChatSocketClient(String IPAddress, int port, ChangeListener<String> changeListener) throws IOException {
         socket = new Socket(IPAddress, port);
         messages = new LinkedBlockingQueue<>();
         server = new ConnectionToServer(socket);
-        this.chatBox = chatBox;
+        observableMessage = new ReadOnlyStringWrapper();
+        observableMessage.addListener(changeListener);
 
         Thread messageHandling = new Thread() {
             @Override
@@ -38,10 +38,8 @@ public class ChatSocketClient {
                 while (true) {
                     try {
                         String message = messages.take();
-                        Platform.runLater(() -> {
-                            chatBox.getItems().add(message);
-                        });
-                        System.out.println("Message Received: " + message);
+                        observableMessage.set(message);
+                        System.out.println("Message: " + message);
                     } catch (InterruptedException e) {
                         System.out.println("InterruptedException: " + e.getMessage());
                     }
@@ -67,13 +65,14 @@ public class ChatSocketClient {
             Thread read = new Thread() {
                 @Override
                 public void run() {
-                    while (true) {
-                        try {
-                            String message = (char) in.read() + "";
+                    try {
+                        String message = in.readLine();
+                        while (message != null) {
                             messages.put(message);
-                        } catch (IOException | InterruptedException ex) {
-                            System.out.println(ex.getMessage());
+                            message = in.readLine();
                         }
+                    } catch (IOException | InterruptedException ex) {
+                        System.out.println(ex.getMessage());
                     }
                 }
             };
@@ -84,6 +83,7 @@ public class ChatSocketClient {
 
         private void write(String message) {
             out.println(message);
+            out.flush();
         }
     }
 
