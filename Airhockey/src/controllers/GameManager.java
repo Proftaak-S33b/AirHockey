@@ -304,61 +304,66 @@ public class GameManager implements ContactListener {
     @Deprecated
     private void AI_CalculateMovement() {
         // temp | note-to-self: avoid hardcoding     
-        float p1Y = gameworld.getPod(1).getPosition().y; // AI #1     
-        float p2Y = gameworld.getPod(2).getPosition().y; // AI #2
+	float blueX = gameworld.getPod(1).getPosition().x; // AI #1     
+        float blueY = gameworld.getPod(1).getPosition().y; // 
+        float greenX = gameworld.getPod(2).getPosition().x; // AI #2
+        float greenY = gameworld.getPod(2).getPosition().y; // 
         float puckY = gameworld.getPuck().getPosition().y;
+	float puckX = gameworld.getPuck().getPosition().x;
+	
+	// Horizontal distance; line of sight of the AI.
+	float sight = 0; // This is pure trial-and-error. No set rules.
+	
+        // Measure vertical distance - whether y is below or above zero, 
+	// the distance will always be a positive number.
+        float distanceBlue = Math.abs(puckY - blueY);
+        float distanceGreen = Math.abs(puckY - greenY);
 
-        /* Measure distance - whether y is lower or higher, the distance will 
-         * always be a positive number.
-         */
-        float distanceBlue = puckY - p1Y;
-        if (distanceBlue < 0) {
-            distanceBlue -= distanceBlue + distanceBlue;
-        }
-
-        float distanceGreen = puckY - p2Y;
-        if (distanceGreen < 0) {
-            distanceGreen -= distanceGreen + distanceGreen;
-        }
-
-        // Create deadzone to prevent flickering.
-        //When in doubt, set to 25. jus werks.
+        // Create deadzone to prevent AI from having MLG-tier accuracy.
         float personalspaceBlue = 0;
         float personalspaceGreen = 0;
         if (difficulty == Difficulty.EASY) {
             personalspaceBlue = 5;
             personalspaceGreen = 6;
+	    sight = 11;
         } else if (difficulty == Difficulty.NORMAL) {
             personalspaceBlue = 3;
             personalspaceGreen = 4;
+	    sight = 15;
         } else if (difficulty == Difficulty.HARD) {
             personalspaceBlue = 1;
             personalspaceGreen = 2;
+	    sight = 99;
         }
 
-        // Where is the puck?
-        if (puckY < p1Y) {
+	boolean withinrange = puckY < blueY;
+	boolean inlineofsight = Math.abs(puckX - blueX) < sight;
+        // Where is the puck? Can the AI *see* the puck?
+        if (withinrange && inlineofsight) {
             // Does the AI respect the puck's personal space?                
             if (distanceBlue > personalspaceBlue) {
                 AI_moveUp("BLUE");
             }
-
         }
-        if (puckY < p2Y) {
+	
+	withinrange = puckY > blueY;
+        if (withinrange && inlineofsight) {
+            // Does the AI respect the puck's personal space?                
+            if (distanceBlue > personalspaceBlue) {
+                AI_moveDown("BLUE");
+            }
+        }
+		
+	withinrange = puckY < greenY;
+	inlineofsight = Math.abs(puckX - greenX) < sight;
+        if (withinrange && inlineofsight) {
             if (distanceGreen > personalspaceGreen) {
                 AI_moveUp("GREEN");
             }
         }
 
-        // Where is the puck?
-        if (puckY > p1Y) {
-            // Does the AI respect the puck's personal space?                
-            if (distanceBlue > personalspaceBlue) {
-                AI_moveDown("BLUE");
-            }
-
-        }
-        if (puckY > p2Y) {
+	withinrange = puckY > greenY;
+        if (withinrange && inlineofsight) {
             if (distanceGreen > personalspaceGreen) {
                 AI_moveDown("GREEN");
             }
