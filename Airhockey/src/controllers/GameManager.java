@@ -444,12 +444,12 @@ public class GameManager implements ContactListener {
         }
         if (gametype == GameType.MULTIPLAYER_GREEN) {
             if (playerMoveRight) {
-                if (gameworld.getPod(2).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.H).x - MathUtillities.getPodSize() / 2) {
+                if (gameworld.getPod(2).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.G).x - MathUtillities.getPodSize() / 2) {
                     gameworld.getPod(2).moveRight(2);
                 }
             }
             if (playerMoveLeft) {
-                if (gameworld.getPod(2).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.G).x + MathUtillities.getPodSize() / 2) {
+                if (gameworld.getPod(2).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.H).x + MathUtillities.getPodSize() / 2) {
                     gameworld.getPod(2).moveLeft(2);
                 }
             }
