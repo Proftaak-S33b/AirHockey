@@ -9,6 +9,7 @@ import game.MathUtillities;
 import game.Pod;
 import game.Puck;
 import game.Wall;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
@@ -127,7 +128,6 @@ public class GameManager implements ContactListener {
         gameworld.getPhysWorld().setContactListener(this);
         if (gameType == GameType.MULTIPLAYER_RED) {
             remoteGame = startServer();
-            remoteGame = connectToServer(clientData.getAddress(), 1099);
         } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
             remoteGame = connectToServer(clientData.getAddress(), 1099);
         } else {

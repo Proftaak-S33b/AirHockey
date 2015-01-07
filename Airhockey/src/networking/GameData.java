@@ -6,13 +6,14 @@
 package networking;
 
 import java.io.Serializable;
+import java.rmi.Remote;
 
 /**
  * A class to contain data about an Airhockey game
  *
  * @author Joris
  */
-public class GameData implements Serializable {
+public class GameData implements Remote {
 
     private Coordinate redPod;
     private Coordinate bluePod;
@@ -26,16 +27,27 @@ public class GameData implements Serializable {
 
     /**
      * An object which contains all information about a game
+     * @param redPod
+     * @param bluePod
+     * @param greenPod
+     * @param Puck
+     * @param puckVelocity
+     * @param scorePlayer1
+     * @param scorePlayer2
+     * @param scorePlayer3
+     * @param round
      */
-    public GameData() {
-        redPod = new Coordinate(0, 0);
-        bluePod = new Coordinate(0, 0);
-        greenPod = new Coordinate(0, 0);
-        puck = new Coordinate(0, 0);
-        puckVelocity = new Coordinate(0, 0);
-        scorePlayer1 = 20;
-        scorePlayer2 = 20;
-        scorePlayer3 = 20;
+    public GameData(Coordinate redPod, Coordinate bluePod, Coordinate greenPod,
+            Coordinate Puck, Coordinate puckVelocity, int scorePlayer1,
+            int scorePlayer2, int scorePlayer3, int round) {
+        this.redPod = redPod;
+        this.bluePod = bluePod;
+        this.greenPod = greenPod;
+        this.puck = Puck;
+        this.puckVelocity = puckVelocity;
+        this.scorePlayer1 = scorePlayer1;
+        this.scorePlayer2 = scorePlayer2;
+        this.scorePlayer3 = scorePlayer3;
     }
 
     /**

@@ -14,39 +14,61 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
 
-    private final GameData data;
+    private Coordinate redPod;
+    private Coordinate bluePod;
+    private Coordinate greenPod;
+    private Coordinate puck;
+    private Coordinate puckVelocity;
+    private int scorePlayer1;
+    private int scorePlayer2;
+    private int scorePlayer3;
+    private int round;
     /**
      * 
      * @throws RemoteException 
      */
     public RemoteGame() throws RemoteException {
-        data = new GameData();
+        redPod = new Coordinate(0, 0);
+        bluePod = new Coordinate(0, 0);
+        greenPod = new Coordinate(0, 0);
+        puck = new Coordinate(0, 0);
+        puckVelocity = new Coordinate(0, 0);
+        scorePlayer1 = 20;
+        scorePlayer2 = 20;
+        scorePlayer3 = 20;
+        round = 0;
     }
 
     @Override
     public void setBluePodPos(Coordinate newPosition) throws RemoteException {
-        data.setBluePodPos(newPosition.x, newPosition.y);
+        bluePod.x = newPosition.x;
+        bluePod.y = newPosition.y;
     }
 
     @Override
     public void setGreenPodPos(Coordinate newPosition) throws RemoteException {
-        data.setGreenPodPos(newPosition.x, newPosition.y);
+        greenPod.x = newPosition.x;
+        greenPod.y = newPosition.y;
     }
 
     @Override
     public void setHostData(Coordinate newPodPos, Coordinate newPuckPos, Coordinate newPuckVel, int score1, int score2, int score3, int round) throws RemoteException {
-        data.setRedPodPos(newPodPos.x, newPodPos.y);
-        data.setPuckPos(newPuckPos.x, newPuckPos.y);
-        data.setPuckVelocity(newPuckVel.x, newPuckVel.y);
-        data.setScoreP1(score1);
-        data.setScoreP2(score2);
-        data.setScoreP3(score3);
-        data.setRound(round);
+        redPod.x = newPodPos.x;
+        redPod.y = newPodPos.y;
+        puck.x = newPuckPos.x;
+        puck.y = newPuckPos.y;
+        puckVelocity.x = newPuckVel.x;
+        puckVelocity.y = newPuckVel.y;
+        scorePlayer1 = score1;
+        scorePlayer2 = score2;
+        scorePlayer3 = score3;
+        this.round = round;
+        
     }
 
     @Override
     public GameData getGameData() throws RemoteException {
-        return this.data;
+        return new GameData(redPod, bluePod, greenPod, puck, puckVelocity, scorePlayer1, scorePlayer2, scorePlayer3, round);
     }
     
     
