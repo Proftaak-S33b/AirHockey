@@ -8,68 +8,23 @@ import java.net.*;
  * @author Etienne
  */
 public class SocketServer {
-                
-    ServerSocket serversocket;
-    Socket clientsocket;
-    PrintWriter out;
-    BufferedReader in;
-    String inputline;    
-    int portnumber;
-    Thread t1;	// Maintain for three connection.
-    Thread t2;
-    Thread t3;
-    
-    /**
-     * 
-     */
-    public void getInput() throws IOException{
-        while ((inputline = in.readLine()) != null) {
-                out.println(inputline);
-            }
+        public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = null;
+        boolean listening = true;
+
+        try {
+            serverSocket = new ServerSocket(1099);
+        } catch (IOException e) {
+            System.err.println("Could not listen on port: 1099.");
+            System.exit(-1);
+        }
+
+        while (listening) {
+            // create new Thread which runs Multiserverrunnable
+            Thread t = new Thread(new SocketRunnable(serverSocket.accept()));
+            // start Thread
+            t.start();
+        }
+        serverSocket.close();
     }
-    
-    /**
-     * Opens the streams for the clientsocket.
-     * @throws IOException 
-     */
-    public void openStreams() throws IOException{
-        
-        //
-        out = new PrintWriter(
-                clientsocket.getOutputStream(), true);
-        
-        //
-        in = new BufferedReader(
-                new InputStreamReader(clientsocket.getInputStream()));
-    }
-    
-    /**
-     * Creates the socket of the server and one for the client.
-     * @param portnumber an int with the number of the port.
-     * @throws IOException 
-     */
-    public void createSockets(int portnumber) throws IOException{
-        
-        //
-        serversocket = new ServerSocket(portnumber);
-        
-        //
-        clientsocket = serversocket.accept();
-    }
-    
-    /**
-     * Writes a message to the client.
-     * @param message 
-     */
-    public void writeMessage(String message){
-        out.println(message);
-    }
-    
-    /**
-     * Creates a new Server object.
-     * @param portnumber an int with the number of the port to listen to.
-     */
-    public SocketServer(int portnumber){
-        this.portnumber = portnumber;
-    }            
 }
