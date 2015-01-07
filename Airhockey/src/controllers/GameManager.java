@@ -461,39 +461,25 @@ public class GameManager implements ContactListener {
      */
     public void start() {
         try {
-            GameData data = null;
-            //Create physics timer task
             physTimer = new Timer("Simulate Physics", true);
             physTimer.scheduleAtFixedRate(new TimerTask() {
+
                 @Override
                 public void run() {
                     gameworld.getPhysWorld().step(1 / 60f, 10, 5);
-                    //Check if puck has to be reset
                     if (puckReset) {
                         gameworld.resetPuck();
                         puckReset = false;
                     }
-                    //Check if game has ended
                     if (round > 10) {
                         this.cancel();
                     }
-                    //Send new data to the server
-                    sendGameData();
-                    //Request new data from the server
-                    getGameData();
-                    //Set last received data from server if it's not null
-                    if(data != null){
-                        setLocalData(data);
-                    }
-                }
-                /**
-                 * Send the gamedata from the server
-                 */
-                private void sendGameData() {
                     if (gameType == GameType.MULTIPLAYER_BLUE) {
                         Vec2 pos = gameworld.getPod(1).getPosition();
                         try {
                             remoteGame.setBluePodPos(new Coordinate(pos.x, pos.y));
+                            GameData data = remoteGame.getGameData();
+                            setLocalData(data);
                         } catch (RemoteException ex) {
                             System.out.println("RemoteException: " + ex.getMessage());
                         }
@@ -501,6 +487,8 @@ public class GameManager implements ContactListener {
                         Vec2 pos = gameworld.getPod(2).getPosition();
                         try {
                             remoteGame.setGreenPodPos(new Coordinate(pos.x, pos.y));
+                            GameData data = remoteGame.getGameData();
+                            setLocalData(data);
                         } catch (RemoteException ex) {
                             System.out.println("RemoteException: " + ex.getMessage());
                         }
@@ -517,26 +505,14 @@ public class GameManager implements ContactListener {
                                     gameworld.getPlayers().get(1).getRanking(),
                                     gameworld.getPlayers().get(2).getRanking(),
                                     round);
+                            GameData data = remoteGame.getGameData();
+                            setLocalData(data);
                         } catch (RemoteException ex) {
                             System.out.println("RemoteException: " + ex.getMessage());
                         }
                     }
                 }
-                
-                /**
-                 * Get the gamedata van de server
-                 */
-                private void getGameData() {
-                    try {
-                        GameData data = remoteGame.getGameData();
-                    } catch (RemoteException ex) {
-                        Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                /**
-                 * Set's the local game data
-                 * @param data the new game data
-                 */
+
                 private void setLocalData(GameData data) {
                     Vec2 vector;
                     vector = new Vec2(data.getRedPodPos().x, data.getRedPodPos().y);
