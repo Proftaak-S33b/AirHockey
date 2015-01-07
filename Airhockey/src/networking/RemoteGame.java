@@ -36,7 +36,6 @@ public class RemoteGame extends UnicastRemoteObject implements IRemoteGame {
         scorePlayer1 = 20;
         scorePlayer2 = 20;
         scorePlayer3 = 20;
-        round = 0;
     }
 
     @Override
