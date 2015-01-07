@@ -26,6 +26,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point3D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -223,10 +224,12 @@ public class GameView implements Initializable, RemotePropertyListener {
                 gametype = GameType.MULTIPLAYER_BLUE;
                 System.out.println("U are player blue");
                 gameCanvas.setRotate(300.0);
+                gameCanvas.setRotationAxis(new Point3D(0.6,0,1));
             } else {
                 gametype = GameType.MULTIPLAYER_GREEN;
                 System.out.println("U are player green");
                 gameCanvas.setRotate(60.0);
+                gameCanvas.setRotationAxis(new Point3D(3,0,1));
             }
             //Add all players to gamedata
             players = FXCollections.observableArrayList();
