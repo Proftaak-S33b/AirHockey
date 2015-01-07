@@ -485,9 +485,6 @@ public class GameManager implements ContactListener {
                     if(data != null){
                         setLocalData(data);
                     }
-                    else{
-                        System.out.println("GameData is still null!");
-                    }
                 }
                 /**
                  * Send the gamedata from the server
@@ -533,7 +530,7 @@ public class GameManager implements ContactListener {
                     try {
                         GameData data = remoteGame.getGameData();
                     } catch (RemoteException ex) {
-                        System.out.println("Failed to get gamedata from server");
+                        Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
                 /**
