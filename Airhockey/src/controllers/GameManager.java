@@ -50,7 +50,6 @@ public class GameManager implements ContactListener {
      * Enum that shows the type of game
      */
     public enum GameType {
-
         SINGLEPLAYER,
         MULTIPLAYER_RED,
         MULTIPLAYER_BLUE,
@@ -128,6 +127,7 @@ public class GameManager implements ContactListener {
         gameworld.getPhysWorld().setContactListener(this);
         if (gameType == GameType.MULTIPLAYER_RED) {
             remoteGame = startServer();
+            remoteGame = connectToServer(clientData.getAddress(), 1099);
         } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
             remoteGame = connectToServer(clientData.getAddress(), 1099);
         } else {
