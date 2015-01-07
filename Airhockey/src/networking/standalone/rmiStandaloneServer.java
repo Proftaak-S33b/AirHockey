@@ -132,10 +132,9 @@ public class rmiStandaloneServer {
                 @Override
                 public void run() {
                     try {
-                        String message = in.readLine();
-                        while (message != null) {
+                        String message;
+                        while ((message = in.readLine()) != null) {
                             messages.put(message);
-                            message = in.readLine();
                         }
                     } catch (IOException | InterruptedException ex) {
                         System.out.println("CTC Error:" + ex.getMessage());

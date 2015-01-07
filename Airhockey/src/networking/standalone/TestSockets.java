@@ -45,6 +45,11 @@ public class TestSockets implements ChangeListener<String> {
     }
 
     private String readString(String helptext) {
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TestSockets.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.out.print(helptext + " ");
         String read = input.nextLine();
         if (read.equals("stop")) {

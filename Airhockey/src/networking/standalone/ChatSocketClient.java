@@ -39,7 +39,7 @@ public class ChatSocketClient {
                     try {
                         String message = messages.take();
                         observableMessage.set(message);
-                        System.out.println("Message: " + message);
+                        //System.out.println("Message: " + message);
                     } catch (InterruptedException e) {
                         System.out.println("InterruptedException: " + e.getMessage());
                     }
