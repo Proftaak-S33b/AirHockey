@@ -171,7 +171,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
 
                 //If host ready start game
                 System.out.println(readyStates.get(0).toString()+", "+ readyStates.get(1) +", "+  readyStates.get(2));
-                if (readyStates.get(0) && readyStates.get(1) && readyStates.get(2)) {
+                if (readyStates.get(0)) {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
                         Stage stage = (Stage) chatBox.getScene().getWindow();
