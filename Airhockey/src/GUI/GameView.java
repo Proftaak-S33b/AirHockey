@@ -40,6 +40,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import networking.ILobby;
 import networking.IPlayer;
@@ -223,13 +224,11 @@ public class GameView implements Initializable, RemotePropertyListener {
             } else if (playersInLobby.get(1).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_BLUE;
                 System.out.println("U are player blue");
-                gameCanvas.setRotate(300.0);
-                gameCanvas.setRotationAxis(new Point3D(0.6,0,1));
+                gameCanvas.getTransforms().add(new Rotate(0,0,300));
             } else {
                 gametype = GameType.MULTIPLAYER_GREEN;
                 System.out.println("U are player green");
-                gameCanvas.setRotate(60.0);
-                gameCanvas.setRotationAxis(new Point3D(3,0,1));
+                gameCanvas.getTransforms().add(new Rotate(0,0,60));
             }
             //Add all players to gamedata
             players = FXCollections.observableArrayList();
