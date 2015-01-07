@@ -224,11 +224,11 @@ public class GameView implements Initializable, RemotePropertyListener {
             } else if (playersInLobby.get(1).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_BLUE;
                 System.out.println("U are player blue");
-                gameCanvas.getTransforms().add(new Rotate(0,0,300));
+                gameCanvas.getTransforms().add(new Rotate(300,25,23));
             } else {
                 gametype = GameType.MULTIPLAYER_GREEN;
                 System.out.println("U are player green");
-                gameCanvas.getTransforms().add(new Rotate(0,0,60));
+                gameCanvas.getTransforms().add(new Rotate(60,25,23));
             }
             //Add all players to gamedata
             players = FXCollections.observableArrayList();
