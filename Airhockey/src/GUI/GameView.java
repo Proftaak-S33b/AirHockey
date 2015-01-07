@@ -1,10 +1,13 @@
 package GUI;
 
+import controllers.ChatManager;
 import controllers.GameManager;
 import controllers.GameManager.GameType;
+import fontys.observer.RemotePropertyListener;
 import game.AI.AI;
 import game.AI.Difficulty;
 import game.Human;
+import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
@@ -12,6 +15,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -43,7 +48,7 @@ import networking.standalone.IClientData;
  *
  * @author Joris Douven
  */
-public class GameView implements Initializable {
+public class GameView implements Initializable, RemotePropertyListener {
 
     @FXML
     private TextField textChat;
@@ -77,6 +82,7 @@ public class GameView implements Initializable {
     private ILobby currentLobby;
     private GameManager gamemanager;
     private Difficulty difficulty;
+    private ChatManager chat;
     final URL resource = getClass().getResource("nietvanzelf.mp3");
     private ObservableList<IPlayer> players;
     private boolean gameStarted = false;
@@ -90,6 +96,8 @@ public class GameView implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gc = gameCanvas.getGraphicsContext2D();
+        chat = new ChatManager();
+        listChat.setItems(chat.getMessages());
 
         //Initialize score table
         columnPlayer.setCellValueFactory(new PropertyValueFactory("Name"));
@@ -193,6 +201,11 @@ public class GameView implements Initializable {
         if (!gameStarted) {
             currentPlayer = player;
             currentLobby = lobby;
+            try {
+                lobby.addListener(this, "newMessage");
+            } catch (RemoteException ex) {
+                System.out.println("RemoteException: " + ex.getMessage());
+            }
             List<IPlayer> playersInLobby;
             try {
                 playersInLobby = lobby.getAllPlayers();
@@ -213,7 +226,7 @@ public class GameView implements Initializable {
             }
             //Add all players to gamedata
             players = FXCollections.observableArrayList();
-            for(IPlayer tempPlayer : playersInLobby){
+            for (IPlayer tempPlayer : playersInLobby) {
                 players.add(tempPlayer);
             }
             //Set dificulty to prevent errors
@@ -279,9 +292,19 @@ public class GameView implements Initializable {
      */
     public void setTekst(ActionEvent event) {
         if (!textChat.getText().equals("")) {
-            listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
-            listChat.getItems().add("AI: " + new AI("", 20).chat());
-            textChat.clear();
+            if (gametype == GameType.SINGLEPLAYER) {
+                listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
+                listChat.getItems().add("AI: " + new AI("", 20).chat());
+                textChat.clear();
+            } else {
+                try {
+                    currentLobby.setLastChatMessage(currentPlayer.getName() + ": " + textChat.getText());
+                } catch (Exception ex) {
+                    System.out.println("Set chat message failed");
+                    System.out.println(ex.getMessage());
+                }
+                textChat.clear();
+            }
         }
     }
 
@@ -368,5 +391,20 @@ public class GameView implements Initializable {
     public void SetEndLabel() {
         LabelGameEnd.setText("Game Ended!");
         LabelGameEnd.setVisible(true);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    chat.addMessage(currentLobby.getLastChatMessage());
+                } catch (RemoteException ex) {
+                    System.out.println("RemoteException for chat: " + ex.getMessage());
+                }
+            }
+        });
     }
 }

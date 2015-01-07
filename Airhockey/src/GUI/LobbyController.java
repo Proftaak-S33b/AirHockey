@@ -29,8 +29,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import networking.ILobby;
 import networking.standalone.IClientData;
 
@@ -170,7 +168,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 }
 
                 //If host ready start game
-                System.out.println(readyStates.get(0).toString()+", "+ readyStates.get(1) +", "+  readyStates.get(2));
+                System.out.println(readyStates.get(0).toString() + ", " + readyStates.get(1) + ", " + readyStates.get(2));
                 if (readyStates.get(0)) {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
@@ -190,7 +188,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                         try {
                             chat.addMessage(currentLobby.getLastChatMessage());
                         } catch (RemoteException ex) {
-                            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("RemoteException for chat: " + ex.getMessage());
                         }
                     }
                 } else {
