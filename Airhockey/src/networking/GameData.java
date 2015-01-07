@@ -13,7 +13,7 @@ import java.rmi.Remote;
  *
  * @author Joris
  */
-public class GameData implements Remote {
+public class GameData implements Serializable {
 
     private Coordinate redPod;
     private Coordinate bluePod;
