@@ -204,12 +204,12 @@ public class GameView implements Initializable, RemotePropertyListener {
         if (!gameStarted) {
             currentPlayer = player;
             currentLobby = lobby;
-            try {
+            /*try {
                 UnicastRemoteObject.exportObject(this, 9999);
                 lobby.addListener(this, "newMessage");
             } catch (RemoteException ex) {
                 System.out.println("RemoteException: " + ex.getMessage());
-            }
+            }*/
             List<IPlayer> playersInLobby;
             try {
                 playersInLobby = lobby.getAllPlayers();
