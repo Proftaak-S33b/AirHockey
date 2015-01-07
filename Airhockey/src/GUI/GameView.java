@@ -11,6 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -202,6 +203,7 @@ public class GameView implements Initializable, RemotePropertyListener {
             currentPlayer = player;
             currentLobby = lobby;
             try {
+                UnicastRemoteObject.exportObject(this, 9999);
                 lobby.addListener(this, "newMessage");
             } catch (RemoteException ex) {
                 System.out.println("RemoteException: " + ex.getMessage());
