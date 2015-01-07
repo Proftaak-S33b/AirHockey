@@ -432,24 +432,24 @@ public class GameManager implements ContactListener {
         }
         if (gametype == GameType.MULTIPLAYER_BLUE) {
             if (playerMoveRight) {
-                if (gameworld.getPod(1).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize() / 2) {
+                if (gameworld.getPod(1).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.E).x - MathUtillities.getPodSize() / 2) {
                     gameworld.getPod(1).moveRight(1);
                 }
             }
             if (playerMoveLeft) {
-                if (gameworld.getPod(1).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.B).x + MathUtillities.getPodSize() / 2) {
+                if (gameworld.getPod(1).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.F).x + MathUtillities.getPodSize() / 2) {
                     gameworld.getPod(1).moveLeft(1);
                 }
             }
         }
         if (gametype == GameType.MULTIPLAYER_GREEN) {
             if (playerMoveRight) {
-                if (gameworld.getPod(2).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.C).x - MathUtillities.getPodSize() / 2) {
+                if (gameworld.getPod(2).getPosition().x < MathUtillities.getCoordinates(MathUtillities.Corner.H).x - MathUtillities.getPodSize() / 2) {
                     gameworld.getPod(2).moveRight(2);
                 }
             }
             if (playerMoveLeft) {
-                if (gameworld.getPod(2).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.B).x + MathUtillities.getPodSize() / 2) {
+                if (gameworld.getPod(2).getPosition().x > MathUtillities.getCoordinates(MathUtillities.Corner.G).x + MathUtillities.getPodSize() / 2) {
                     gameworld.getPod(2).moveLeft(2);
                 }
             }
