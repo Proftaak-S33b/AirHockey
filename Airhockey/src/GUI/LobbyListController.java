@@ -29,30 +29,30 @@ import networking.standalone.IClientData;
  * @author Joris
  */
 public class LobbyListController implements Initializable {
-    
+
     @FXML
     public TableView lobbyTable;
-    
+
     @FXML
     public TableColumn columnGameName;
-    
+
     @FXML
     public TableColumn columnPlayers;
-    
+
     @FXML
     public TableColumn columnHostRank;
-    
+
     @FXML
     public TextField newLobbyName;
-    
+
     @FXML
     public TextField chatMessage;
-    
+
     @FXML
     public ListView chatBox;
-    
+
     private LobbyManager controller;
-    
+
     private Human currentPlayer;
 
     /**
@@ -143,7 +143,22 @@ public class LobbyListController implements Initializable {
      * @param evt
      */
     public void spectLobby(Event evt) {
-        
+        if (lobbyTable.getSelectionModel().getSelectedItem() instanceof IClientData) {
+            try {
+                IClientData tempdata = (IClientData) lobbyTable.getSelectionModel().getSelectedItem();
+                controller.serverData.setPlayerCountLobby(tempdata.getHost(), tempdata.getPlayerAmount() + 1);
+                controller.destroy();
+                Node node = (Node) evt.getSource();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+                Stage stage = (Stage) node.getScene().getWindow();
+                stage.setScene(new Scene((Pane) loader.load()));
+                GameView gameView = loader.<GameView>getController();
+                gameView.init_Multiplayer(currentPlayer, controller.connect((IClientData) lobbyTable.getSelectionModel().getSelectedItem()), tempdata);
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("Error changing scene from LobbyList to GameView " + ex.toString());
+            }
+        }
     }
 
     /**
