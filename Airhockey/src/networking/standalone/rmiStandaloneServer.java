@@ -112,7 +112,6 @@ public class rmiStandaloneServer {
                 }
             }
         };
-
         messageHandling.setDaemon(true);
         messageHandling.start();
     }
