@@ -29,8 +29,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import networking.ILobby;
-import networking.standalone.IClientData;
+import z_OLD_RMI.ILobby;
+import networking.standalone_old.IClientData;
 
 /**
  * FXML Controller class

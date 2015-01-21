@@ -119,11 +119,16 @@ public class ServerReceiver {
     public void joinLobby(int id, IPlayer player) {
         for (Lobby l : lobbyList) {
             if (l.getID() == id) {
-                l.addPlayer(player);
+                System.out.println("Lobby found");
+                //l.addPlayer(player);
                 //TODO
                 //Make future commands sent by this user processed by GameReceiver
             }
         }
+    }
+    
+    public void getLobbies(Connection conn){
+        
     }
 
     /**

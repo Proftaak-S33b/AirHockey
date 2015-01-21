@@ -21,7 +21,7 @@ public class SendMessage implements ServerCommand, Serializable{
      */
     @Override
     public void Execute() {
-	//receiver.sendMessage(message);
+	receiver.sendMessage(message);
     }        
 
     /**

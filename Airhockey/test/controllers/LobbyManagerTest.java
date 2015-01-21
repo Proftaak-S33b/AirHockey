@@ -7,7 +7,7 @@ package controllers;
 
 import game.Human;
 import networking.IPlayer;
-import networking.Lobby;
+import z_OLD_RMI.Lobby;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

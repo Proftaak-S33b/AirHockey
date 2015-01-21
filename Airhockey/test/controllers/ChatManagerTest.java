@@ -9,7 +9,7 @@ import game.Human;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.IPlayer;
-import networking.Message;
+import z_OLD_RMI.Message;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

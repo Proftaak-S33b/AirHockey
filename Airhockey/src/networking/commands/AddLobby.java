@@ -7,9 +7,8 @@ import networking.IPlayer;
  * Command for adding a lobby to the server.
  * @author Etienne
  */
-public class AddLobby implements ServerCommand, Serializable{
+public class AddLobby implements ServerCommand {
     
-    int id;
     String name;
     IPlayer host;
     
@@ -19,8 +18,7 @@ public class AddLobby implements ServerCommand, Serializable{
      * @param name
      * @param host 
      */
-    public AddLobby(int id, String name, IPlayer host){
-	this.id = id;
+    public AddLobby(String name, IPlayer host){
 	this.name = name;
 	this.host = host;
     }

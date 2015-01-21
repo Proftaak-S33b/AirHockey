@@ -20,14 +20,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
-import networking.Lobby;
-import networking.Client;
-import networking.ILobby;
-import networking.Server;
-import networking.standalone.ChatSocketClient;
-import networking.standalone.ClientData;
-import networking.standalone.IClientData;
-import networking.standalone.IServerData;
+import z_OLD_RMI.Lobby;
+import z_OLD_RMI.Client;
+import z_OLD_RMI.ILobby;
+import z_OLD_RMI.Server;
+import networking.standalone_old.ChatSocketClient;
+import networking.standalone_old.ClientData;
+import networking.standalone_old.IClientData;
+import networking.standalone_old.IServerData;
 import networking.standalone.rmiDefaults;
 
 /**

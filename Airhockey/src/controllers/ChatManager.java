@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import networking.Message;
+import z_OLD_RMI.Message;
 
 /**
  * Controller for managing the chat in games

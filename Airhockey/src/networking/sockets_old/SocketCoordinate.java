@@ -5,7 +5,7 @@
  */
 package networking.sockets_old;
 
-import networking.Coordinate;
+import z_OLD_RMI.Coordinate;
 
 /**
  *
@@ -19,7 +19,8 @@ public class SocketCoordinate extends Coordinate{
 	RED,
 	GREEN,
 	BLUE,
-	PUCK
+	PUCK_POS,
+        PUCK_VEL
     }    
 	    
     public SocketCoordinate(float x, float y, Name name) {

@@ -34,9 +34,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import networking.ILobby;
+import z_OLD_RMI.ILobby;
 import networking.IPlayer;
-import networking.standalone.IClientData;
+import networking.standalone_old.IClientData;
 
 /**
  * FXML Controller class

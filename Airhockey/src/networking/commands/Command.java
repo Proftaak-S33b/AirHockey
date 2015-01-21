@@ -1,10 +1,12 @@
 package networking.commands;
 
+import java.io.Serializable;
+
 /**
  * Command design pattern for sending commands over sockets.
  * @author Etienne
  */
-public interface Command {
+public interface Command extends Serializable {
     
     /**
      * Whatever the command object wants to do is called from here.

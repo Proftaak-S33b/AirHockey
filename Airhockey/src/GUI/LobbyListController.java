@@ -22,7 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import networking.standalone.IClientData;
+import networking.standalone_old.IClientData;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialogs;
 
