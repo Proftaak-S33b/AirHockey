@@ -110,7 +110,7 @@ public class LobbyListController implements Initializable {
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             LobbyController lobbyFXML = loader.<LobbyController>getController();
-            lobbyFXML.initData(currentPlayer, null);
+            lobbyFXML.initData(currentPlayer, null, controller.getClient());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Error changing scene from LobbyList to Lobby " + ex.toString());
@@ -124,16 +124,16 @@ public class LobbyListController implements Initializable {
     public void joinLobby(Event evt) {
         if (lobbyTable.getSelectionModel().getSelectedItem() instanceof Lobby) {
             try {
-                Lobby tempdata = (Lobby) lobbyTable.getSelectionModel().getSelectedItem();
-                if (tempdata.getPlayersAmount()< 3) {
-                    controller.serverData.setPlayerCountLobby(tempdata.getHost(), tempdata.getPlayersAmount()+ 1);
-                    controller.destroy();
+                Lobby lobby = (Lobby) lobbyTable.getSelectionModel().getSelectedItem();
+                if (lobby.getPlayersAmount()< 3) {
+                    controller.joinLobby(lobby, currentPlayer);
                     Node node = (Node) evt.getSource();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
                     Stage stage = (Stage) node.getScene().getWindow();
                     stage.setScene(new Scene((Pane) loader.load()));
                     LobbyController lobbyFXML = loader.<LobbyController>getController();
-                    lobbyFXML.initData(currentPlayer, controller.connect((Lobby) lobbyTable.getSelectionModel().getSelectedItem()), tempdata);
+                    lobbyFXML.initData(currentPlayer, lobby, controller.getClient());
+                    controller.destroy();
                     stage.show();
                 } else {
                     Action response = Dialogs.create()

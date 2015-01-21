@@ -6,18 +6,11 @@
 package GUI;
 
 import controllers.ChatManager;
-import fontys.observer.RemotePropertyListener;
 import game.Human;
-import java.beans.PropertyChangeEvent;
 import java.io.IOException;
 import java.net.URL;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import networking.sockets.Client;
 import networking.standalone.Lobby;
 
 /**
@@ -36,7 +30,7 @@ import networking.standalone.Lobby;
  *
  * @author Joris
  */
-public class LobbyController implements Initializable, RemotePropertyListener {
+public class LobbyController implements Initializable {
 
     @FXML
     public TextField textHostName;
@@ -67,6 +61,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
 
     private Human currentPlayer;
     private Lobby currentLobby;
+    private Client client;
     private boolean ready = false;
 
     private ChatManager chat;
@@ -82,11 +77,6 @@ public class LobbyController implements Initializable, RemotePropertyListener {
         //Initialize chat
         chat = new ChatManager();
         chatBox.setItems(chat.getMessages());
-        try {
-            UnicastRemoteObject.exportObject(this, 1337);
-        } catch (RemoteException ex) {
-            System.out.println("Can't export object: " + ex.getMessage());
-        }
     }
 
     /**
@@ -95,11 +85,11 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      *
      * @param player The player that is logged in on the current session
      * @param lobby The lobby object that this GUI represents
-     * @param clientData
      */
-    public void initData(Human player, Lobby lobby) {
+    public void initData(Human player, Lobby lobby, Client client) {
         currentPlayer = player;
         currentLobby = lobby;
+        this.client = client;
         lobby.addPlayer(player);
 
         //Set stage title
@@ -121,7 +111,6 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      */
     public void backButton(ActionEvent evt) {
         try {
-            UnicastRemoteObject.unexportObject(this, true);
             Node node = (Node) evt.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyList.fxml"));
             Stage stage = (Stage) node.getScene().getWindow();
@@ -156,7 +145,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 }
 
                 //If host ready start game
-                System.out.println(readyStates.get(0).toString()+", "+ readyStates.get(1) +", "+  readyStates.get(2));
+                System.out.println(readyStates.get(0).toString() + ", " + readyStates.get(1) + ", " + readyStates.get(2));
                 if (readyStates.get(0)/* && readyStates.get(1) && readyStates.get(2)*/) {
                     try {
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
@@ -172,9 +161,6 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 }
                 //Check if chat message is new
                 if (chatBox.getItems().size() > 0) {
-                    if (!chatBox.getItems().get(chatBox.getItems().size() - 1).toString().equals(currentLobby.getLastChatMessage()) && !currentLobby.getLastChatMessage().isEmpty()) {
-                        chat.addMessage(currentLobby.getLastChatMessage());
-                    }
                 } else {
                     chat.addMessage("Welcome to the game!");
                 }
@@ -191,12 +177,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      */
     public void sendMessage(ActionEvent evt) {
         if (!chatMessage.getText().equals("")) {
-            try {
-                currentLobby.setLastChatMessage(currentPlayer.getName() + ": " + chatMessage.getText());
-            } catch (Exception ex) {
-                System.out.println("Set chat message failed");
-                System.out.println(ex.getMessage());
-            }
+            client.sendMessage(chatMessage.getText(), currentPlayer);
             chatMessage.clear();
         }
     }
@@ -208,19 +189,12 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      */
     public void readyButton(ActionEvent evt) {
         if (ready) {
-            try {
-                readyButton.getStyleClass().remove("ready");
-                currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), false);
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
+            readyButton.getStyleClass().remove("ready");
+            currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), false);
         } else {
-            try {
-                readyButton.getStyleClass().add("ready");
-                currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), true);
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
+            readyButton.getStyleClass().add("ready");
+            currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), true);
+
         }
         ready = !ready;
     }
@@ -252,16 +226,5 @@ public class LobbyController implements Initializable, RemotePropertyListener {
         } catch (IOException ex) {
             System.out.println("Error changing scene from Lobby to Game " + ex.toString());
         }
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
-        Platform.runLater(new Runnable() {
-
-            @Override
-            public void run() {
-                updateLobbyInfo();
-            }
-        });
     }
 }

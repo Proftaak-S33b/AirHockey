@@ -6,10 +6,6 @@
 package controllers;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.rmi.AlreadyBoundException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
@@ -34,7 +30,7 @@ import networking.standalone.rmiDefaults;
 public class LobbyManager implements ChangeListener<String> {
 
     private final Timer timer;
-    private final Client client;
+    private Client client = null;
     private ListView chatBox;
     private IPlayer player;
     private final ObservableList<Lobby> lobbies;
@@ -49,10 +45,11 @@ public class LobbyManager implements ChangeListener<String> {
     public LobbyManager(ListView chatBox, IPlayer player) {
         this.chatBox = chatBox;
         this.player = player;
+        this.lobbies = FXCollections.observableArrayList();
         try {
             client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
         } catch (IOException ex) {
-            Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
         timer = new Timer("lobbyController", true);
 //        timer.scheduleAtFixedRate(new TimerTask() {
@@ -99,7 +96,6 @@ public class LobbyManager implements ChangeListener<String> {
 //    }
 //        }, 0, 1000);
 //    }
-
     /**
      * Adds a new Lobby with specified name and host player
      *
@@ -125,6 +121,19 @@ public class LobbyManager implements ChangeListener<String> {
         }
         return null;
     }
+    
+    /**
+     * Tells the server to assign this player to the specified lobby.
+     * @param lobby The lobby to join
+     * @param player The player in question
+     */
+    public void joinLobby(Lobby lobby, IPlayer player){
+        client.joinLobby(lobby, player);
+    }
+
+    public Client getClient() {
+        return this.client;
+    }
 
     /**
      * Returns an unmodifiable ObservableList containing all lobbies in this
@@ -133,7 +142,9 @@ public class LobbyManager implements ChangeListener<String> {
      * @return All lobbies in this object
      */
     public ObservableList<Lobby> getLobbies() {
-        return FXCollections.unmodifiableObservableList(client.getLobbies);
+        return FXCollections.unmodifiableObservableList(
+                FXCollections.observableArrayList(
+                        client.getLobbies()));
     }
 
     public void sendChat(String message) {
