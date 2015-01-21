@@ -18,7 +18,7 @@ import networking.commands.Command;
 public class Server {
 
     private ArrayList<Connection> clientList;
-    private LinkedBlockingQueue<Object> messages;
+    private LinkedBlockingQueue<Object> serverCommands;
     private ServerSocket serverSocket;
 
     public Server() {
@@ -45,103 +45,11 @@ public class Server {
         };
         accept.setDaemon(true);
         accept.start();
-
-        Thread messageHandling = new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Object message = messages.take();
-                        if (message instanceof String) {
-                            processString((String) message);
-                        } else {
-                            System.out.println("Unknown class type received: " + message.getClass());
-                        }
-                        System.out.println("Message received");
-                    } catch (InterruptedException e) {
-                        System.out.println("InterruptedException: " + e.getMessage());
-                    }
-                }
-            }
-        };
-        messageHandling.setDaemon(true);
-        messageHandling.start();
     }
 
-    private class ConnectionToClient {
-
-        ObjectInputStream in;
-        ObjectOutputStream out;
-        Socket socket;
-
-        ConnectionToClient(Socket socket) throws IOException {
-            this.socket = socket;
-            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-            out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-
-            Thread read = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        Object message;
-                        while ((message = in.readObject()) != null) {
-                            messages.put(message);
-                        }
-                    } catch (IOException | InterruptedException ex) {
-                        System.out.println("CTC Error:" + ex.getMessage());
-                    } catch (ClassNotFoundException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                }
-            };
-
-            read.setDaemon(true); // terminate when main ends
-            read.start();
-        }
-
-        public void write(Object message) {
-            try {
-                out.writeObject(message);
-                out.flush();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-    }
-
-    public void sendToAll(Command message) {
+    private void sendToAll(Command message) {
         for (Connection client : clientList) {
             client.write(message);
-        }
-    }
-
-    private void processString(String command) {
-        String[] split = command.split(" ");
-        if (split[0].equals("sendchat")) {
-            String message = split[1];
-            //send this message to all clients
-        } else if (split[0].equals("addlobby")) {
-            int id = Integer.parseInt(split[1]);
-            String name = split[2];
-            String host = split[3];
-            //new add lobby object                
-        } else if (split[0].equals("removelobby")) {
-            int id = Integer.parseInt(split[1]);
-            //remove lobby object
-        } else if (split[0].equals("changelobbyname")) {
-            int id = Integer.parseInt(split[1]);
-            String name = split[2];
-            //change name of the lobby object
-        } else if (split[0].equals("joinlobby")) {
-            int id = Integer.parseInt(split[1]);
-            String player = split[2];
-            //join lobby
-        } else if (split[0].equals("leavelobby")) {
-            int id = Integer.parseInt(split[1]);
-            String player = split[2];
-            //leave lobby
-        } else {
-            System.out.println("String not recognized: " + command);
         }
     }
 }
