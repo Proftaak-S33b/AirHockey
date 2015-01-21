@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -64,25 +63,23 @@ public class LobbyManager implements ChangeListener<String> {
         serverData = (IServerData) client.lookup("serverdata");
         clientData = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    List<ClientData> lobs = new ArrayList<>();
-                    try {
-                        lobs = serverData.getClients();
-                    } catch (RemoteException ex) {
-                        System.out.println(ex.getMessage());
-                    }
-//        for (ClientData d : lobs) {
-//            System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
-//        }
-//        clientData.addAll(lobs);
-                    addClientDataIfNotPresent(lobs);
-                    removeClientDataIfDoesntExist(lobs);
-                });
-            }
-        }, 0, 100);
+//        timer.scheduleAtFixedRate(new TimerTask() {
+//            @Override
+//            public void run() {
+//                Platform.runLater(() -> {
+        List<ClientData> lobs = new ArrayList<>();
+        try {
+            lobs = serverData.getClients();
+        } catch (RemoteException ex) {
+            System.out.println(ex.getMessage());
+        }
+        for (ClientData d : lobs) {
+            System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
+        }
+        clientData.addAll(lobs);
+//        addClientDataIfNotPresent(lobs);
+//        removeClientDataIfDoesntExist(lobs);
+//                });
     }
 
     private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
