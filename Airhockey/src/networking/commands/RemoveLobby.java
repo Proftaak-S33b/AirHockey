@@ -5,18 +5,21 @@
  */
 package networking.commands;
 
-import networking.standalone.Server;
+import java.io.Serializable;
 
 /**
- * DEPR!
+ * Command object for removing a lobby from the server.
  * @author Etienne
  */
-public class RemoveLobby implements GameCommand{
-    public Server server;
+public class RemoveLobby implements GameCommand, Serializable{
     
-    public RemoveLobby(Server server){
-	this.server = server;
+    int id;
+    
+    public RemoveLobby(int id){
+	this.id = id;
     }
+    
+    public GameReceiver receiver;
 
     @Override
     public void Execute() {
@@ -24,7 +27,7 @@ public class RemoveLobby implements GameCommand{
     }       
 
     @Override
-    public void SetReceiver() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void SetReceiver(GameReceiver receiver) {
+	this.receiver = receiver;
     }
 }
