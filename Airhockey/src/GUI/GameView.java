@@ -49,7 +49,7 @@ public class GameView implements Initializable {
     private TextField textChat;
 
     @FXML
-    private ListView listChat;
+    public ListView listChat;
 
     @FXML
     private TableView tableScore;

@@ -9,8 +9,8 @@ import game.MathUtillities;
 import game.Pod;
 import game.Puck;
 import game.Wall;
+import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Timer;
@@ -18,6 +18,8 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -25,9 +27,11 @@ import networking.Coordinate;
 import networking.GameData;
 import networking.IPlayer;
 import networking.IRemoteGame;
-import networking.Client;
+import networking.sockets.Client;
 import networking.ILobby;
-import networking.Lobby;
+import networking.sockets.Message;
+import networking.sockets.Server;
+import networking.sockets.SocketCoordinate;
 import networking.standalone.IClientData;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -44,12 +48,20 @@ import org.jbox2d.collision.shapes.CircleShape;
  *
  * @author Maikel
  */
-public class GameManager implements ContactListener {
+public class GameManager implements ContactListener, ChangeListener<String> {
+
+    @Override
+    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        Platform.runLater(() -> {
+            gv.listChat.getItems().add(newValue);
+        });
+    }
 
     /**
      * Enum that shows the type of game
      */
     public enum GameType {
+
         SINGLEPLAYER,
         MULTIPLAYER_RED,
         MULTIPLAYER_BLUE,
@@ -63,7 +75,9 @@ public class GameManager implements ContactListener {
     private final Difficulty difficulty;
     private final GameView gv;
     private final ILobby lobby;
-    private IRemoteGame remoteGame;
+//    private IRemoteGame remoteGame;
+    private Server server;
+    private Client client;
     private boolean puckReset = false;
     private Timer physTimer = null;
 
@@ -126,48 +140,82 @@ public class GameManager implements ContactListener {
         this.gameType = gameType;
         gameworld.getPhysWorld().setContactListener(this);
         if (gameType == GameType.MULTIPLAYER_RED) {
-            remoteGame = startServer();
-            remoteGame = connectToServer(clientData.getAddress(), 1099);
-        } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
-            remoteGame = connectToServer(clientData.getAddress(), 1099);
+            startServer();
+//            remoteGame = startServer();
+//            remoteGame = connectToServer(clientData.getAddress(), 1099);
+//        } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
+//            remoteGame = connectToServer(clientData.getAddress(), 1099);
         } else {
-            remoteGame = null;
+            try {
+                client = new Client(clientData.getAddress().getHostAddress(), 4444, this);
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+            //            remoteGame = null;
         }
     }
 
-    private IRemoteGame startServer() {
+    /**
+     * 
+     */
+    private void startServer() {
         try {
-            //Send this to central server
-            //server.getServerIP();
-            IRemoteGame game = lobby.getRemoteGame();
+            server = new Server();
+            client = new Client("localhost", 4444, this);
+            server.setScoresAndRound(20, 20, 20, 0);
             Vec2 redPodPos = gameworld.getPod(0).getPosition();
             Vec2 puckPos = gameworld.getPuck().getPosition();
             Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
-            game.setHostData(
-                    new Coordinate(redPodPos.x, redPodPos.y),
-                    new Coordinate(puckPos.x, puckPos.y),
-                    new Coordinate(puckVel.x, puckVel.y),
-                    gameworld.getPlayers().get(0).getRanking(),
-                    gameworld.getPlayers().get(1).getRanking(),
-                    gameworld.getPlayers().get(2).getRanking(),
-                    round);
-            return game;
-        } catch (RemoteException ex) {
-            System.out.println("RemoteException: " + ex.getMessage());
+            client.sendCoordinate(redPodPos.x, redPodPos.y, SocketCoordinate.Name.RED);
+            client.sendCoordinate(puckPos.x, puckPos.y, SocketCoordinate.Name.PUCK_POS);
+            client.sendCoordinate(puckVel.x, puckVel.y, SocketCoordinate.Name.PUCK_VEL);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
-        return null;
     }
-
-    private IRemoteGame connectToServer(InetAddress address, int port) {
-        Client rmi = new Client(address.getHostAddress(), port);
-        ILobby l = (ILobby) rmi.lookup("hockeygame");
-        try {
-            return l.getRemoteGame();
-        } catch (RemoteException ex) {
-            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
+   
+    /**
+     * Sends a text message to the server which distributes it over all clients
+     * @param message the text message to be sent
+     * @param sender the IPlayer who sent this message
+     */
+    public void sendMessage(String message, IPlayer sender){
+        client.send(new Message(message, sender));
     }
+//
+//    private IRemoteGame startServer() {
+//        try {
+//            //Send this to central server
+//            //server.getServerIP();
+//            IRemoteGame game = lobby.getRemoteGame();
+//            Vec2 redPodPos = gameworld.getPod(0).getPosition();
+//            Vec2 puckPos = gameworld.getPuck().getPosition();
+//            Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
+//            game.setHostData(
+//                    new Coordinate(redPodPos.x, redPodPos.y),
+//                    new Coordinate(puckPos.x, puckPos.y),
+//                    new Coordinate(puckVel.x, puckVel.y),
+//                    gameworld.getPlayers().get(0).getRanking(),
+//                    gameworld.getPlayers().get(1).getRanking(),
+//                    gameworld.getPlayers().get(2).getRanking(),
+//                    round);
+//            return game;
+//        } catch (RemoteException ex) {
+//            System.out.println("RemoteException: " + ex.getMessage());
+//        }
+//        return null;
+//    }
+//
+//    private IRemoteGame connectToServer(InetAddress address, int port) {
+//        Client rmi = new Client(address.getHostAddress(), port);
+//        ILobby l = (ILobby) rmi.lookup("hockeygame");
+//        try {
+//            return l.getRemoteGame();
+//        } catch (RemoteException ex) {
+//            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return null;
+//    }
 
     /**
      * Draws the sides and puck on to the field.
@@ -304,18 +352,18 @@ public class GameManager implements ContactListener {
     @Deprecated
     private void AI_CalculateMovement() {
         // temp | note-to-self: avoid hardcoding     
-	float blueX = gameworld.getPod(1).getPosition().x; // AI #1     
+        float blueX = gameworld.getPod(1).getPosition().x; // AI #1     
         float blueY = gameworld.getPod(1).getPosition().y; // 
         float greenX = gameworld.getPod(2).getPosition().x; // AI #2
         float greenY = gameworld.getPod(2).getPosition().y; // 
         float puckY = gameworld.getPuck().getPosition().y;
-	float puckX = gameworld.getPuck().getPosition().x;
-	
-	// Horizontal distance; line of sight of the AI.
-	float sight = 0; // This is pure trial-and-error. No set rules.
-	
+        float puckX = gameworld.getPuck().getPosition().x;
+
+        // Horizontal distance; line of sight of the AI.
+        float sight = 0; // This is pure trial-and-error. No set rules.
+
         // Measure vertical distance - whether y is below or above zero, 
-	// the distance will always be a positive number.
+        // the distance will always be a positive number.
         float distanceBlue = Math.abs(puckY - blueY);
         float distanceGreen = Math.abs(puckY - greenY);
 
@@ -325,19 +373,19 @@ public class GameManager implements ContactListener {
         if (difficulty == Difficulty.EASY) {
             personalspaceBlue = 5;
             personalspaceGreen = 6;
-	    sight = 11;
+            sight = 11;
         } else if (difficulty == Difficulty.NORMAL) {
             personalspaceBlue = 3;
             personalspaceGreen = 4;
-	    sight = 15;
+            sight = 15;
         } else if (difficulty == Difficulty.HARD) {
             personalspaceBlue = 1;
             personalspaceGreen = 2;
-	    sight = 99;
+            sight = 99;
         }
 
-	boolean withinrange = puckY < blueY;
-	boolean inlineofsight = Math.abs(puckX - blueX) < sight;
+        boolean withinrange = puckY < blueY;
+        boolean inlineofsight = Math.abs(puckX - blueX) < sight;
         // Where is the puck? Can the AI *see* the puck?
         if (withinrange && inlineofsight) {
             // Does the AI respect the puck's personal space?                
@@ -345,24 +393,24 @@ public class GameManager implements ContactListener {
                 AI_moveUp("BLUE");
             }
         }
-	
-	withinrange = puckY > blueY;
+
+        withinrange = puckY > blueY;
         if (withinrange && inlineofsight) {
             // Does the AI respect the puck's personal space?                
             if (distanceBlue > personalspaceBlue) {
                 AI_moveDown("BLUE");
             }
         }
-		
-	withinrange = puckY < greenY;
-	inlineofsight = Math.abs(puckX - greenX) < sight;
+
+        withinrange = puckY < greenY;
+        inlineofsight = Math.abs(puckX - greenX) < sight;
         if (withinrange && inlineofsight) {
             if (distanceGreen > personalspaceGreen) {
                 AI_moveUp("GREEN");
             }
         }
 
-	withinrange = puckY > greenY;
+        withinrange = puckY > greenY;
         if (withinrange && inlineofsight) {
             if (distanceGreen > personalspaceGreen) {
                 AI_moveDown("GREEN");
@@ -476,40 +524,40 @@ public class GameManager implements ContactListener {
                     }
                     if (gameType == GameType.MULTIPLAYER_BLUE) {
                         Vec2 pos = gameworld.getPod(1).getPosition();
-                        try {
-                            remoteGame.setBluePodPos(new Coordinate(pos.x, pos.y));
-                            GameData data = remoteGame.getGameData();
-                            setLocalData(data);
-                        } catch (RemoteException ex) {
-                            System.out.println("RemoteException: " + ex.getMessage());
-                        }
+//                        try {
+//                            remoteGame.setBluePodPos(new Coordinate(pos.x, pos.y));
+//                            GameData data = remoteGame.getGameData();
+//                            setLocalData(data);
+//                        } catch (RemoteException ex) {
+//                            System.out.println("RemoteException: " + ex.getMessage());
+//                        }
                     } else if (gameType == GameType.MULTIPLAYER_GREEN) {
                         Vec2 pos = gameworld.getPod(2).getPosition();
-                        try {
-                            remoteGame.setGreenPodPos(new Coordinate(pos.x, pos.y));
-                            GameData data = remoteGame.getGameData();
-                            setLocalData(data);
-                        } catch (RemoteException ex) {
-                            System.out.println("RemoteException: " + ex.getMessage());
-                        }
+//                        try {
+//                            remoteGame.setGreenPodPos(new Coordinate(pos.x, pos.y));
+//                            GameData data = remoteGame.getGameData();
+//                            setLocalData(data);
+//                        } catch (RemoteException ex) {
+//                            System.out.println("RemoteException: " + ex.getMessage());
+//                        }
                     } else if (gameType == GameType.MULTIPLAYER_RED) {
-                        try {
-                            Vec2 redPodPos = gameworld.getPod(0).getPosition();
-                            Vec2 puckPos = gameworld.getPuck().getPosition();
-                            Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
-                            remoteGame.setHostData(
-                                    new Coordinate(redPodPos.x, redPodPos.y),
-                                    new Coordinate(puckPos.x, puckPos.y),
-                                    new Coordinate(puckVel.x, puckVel.y),
-                                    gameworld.getPlayers().get(0).getRanking(),
-                                    gameworld.getPlayers().get(1).getRanking(),
-                                    gameworld.getPlayers().get(2).getRanking(),
-                                    round);
-                            GameData data = remoteGame.getGameData();
-                            setLocalData(data);
-                        } catch (RemoteException ex) {
-                            System.out.println("RemoteException: " + ex.getMessage());
-                        }
+//                        try {
+                        Vec2 redPodPos = gameworld.getPod(0).getPosition();
+                        Vec2 puckPos = gameworld.getPuck().getPosition();
+                        Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
+//                            remoteGame.setHostData(
+//                                    new Coordinate(redPodPos.x, redPodPos.y),
+//                                    new Coordinate(puckPos.x, puckPos.y),
+//                                    new Coordinate(puckVel.x, puckVel.y),
+//                                    gameworld.getPlayers().get(0).getRanking(),
+//                                    gameworld.getPlayers().get(1).getRanking(),
+//                                    gameworld.getPlayers().get(2).getRanking(),
+//                                    round);
+//                            GameData data = remoteGame.getGameData();
+//                            setLocalData(data);
+//                        } catch (RemoteException ex) {
+//                            System.out.println("RemoteException: " + ex.getMessage());
+//                        }
                     }
                 }
 

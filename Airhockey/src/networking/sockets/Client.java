@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
+import networking.GameData;
 
 /**
  *
@@ -18,9 +19,10 @@ import javafx.beans.value.ChangeListener;
 public class Client {
 
     private ConnectionToServer server;
-    private LinkedBlockingQueue<String> messages;
+    private LinkedBlockingQueue<Object> messages;
     private Socket socket;
     private ReadOnlyStringWrapper observableMessage;
+    private GameData gameData;
 
     public Client(String IPAddress, int port, ChangeListener<String> changeListener) throws IOException {
         socket = new Socket(IPAddress, port);
@@ -34,8 +36,14 @@ public class Client {
             public void run() {
                 while (true) {
                     try {
-                        String message = messages.take();
-                        observableMessage.set(message);
+                        Object message = messages.take();
+                        if (message instanceof Message) {
+                            observableMessage.set(message.toString());
+                        } else if (message instanceof GameData) {
+                            gameData = (GameData) message;
+                        } else {
+                            System.out.println("Unknown class type received");
+                        }
                         //System.out.println("Message: " + message);
                     } catch (InterruptedException e) {
                         System.out.println("InterruptedException: " + e.getMessage());
@@ -50,41 +58,48 @@ public class Client {
 
     private class ConnectionToServer {
 
-        BufferedReader in;
-        PrintWriter out;
+        ObjectInputStream in;
+        ObjectOutputStream out;
         Socket socket;
 
         ConnectionToServer(Socket socket) throws IOException {
             this.socket = socket;
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 
             Thread read = new Thread() {
                 @Override
                 public void run() {
                     try {
-                        String message = in.readLine();
+                        Object message = in.readObject();
                         while (message != null) {
                             messages.put(message);
-                            message = in.readLine();
+                            message = in.readObject();
                         }
-                    } catch (IOException | InterruptedException ex) {
+                    } catch (IOException | InterruptedException | ClassNotFoundException ex) {
                         System.out.println(ex.getMessage());
                     }
                 }
             };
-
             read.setDaemon(true);
             read.start();
         }
 
-        private void write(String message) {
-            out.println(message);
-            out.flush();
+        private void write(Object message) {
+            try {
+                out.writeObject(message);
+                out.flush();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 
-    public void send(String message) {
+    public void send(Object message) {
         server.write(message);
+    }
+
+    public void sendCoordinate(float Podx, float Pody, SocketCoordinate.Name name) {
+        send(new SocketCoordinate(Podx, Pody, name));
     }
 }
