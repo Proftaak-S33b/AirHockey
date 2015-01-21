@@ -8,10 +8,10 @@ package networking.commands;
 import networking.standalone.Server;
 
 /**
- *
+ * DEPR!
  * @author Etienne
  */
-public class RemoveLobby implements Command{
+public class RemoveLobby implements GameCommand{
     public Server server;
     
     public RemoveLobby(Server server){
@@ -22,4 +22,9 @@ public class RemoveLobby implements Command{
     public void Execute() {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }       
+
+    @Override
+    public void SetReceiver() {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

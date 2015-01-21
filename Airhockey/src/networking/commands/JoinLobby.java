@@ -12,14 +12,19 @@ import networking.standalone.Server;
  * @author Etienne
  */
 public class JoinLobby implements Command{
-    Server server;
+    Receiver receiver;
     
     public JoinLobby(Server server){
-	this.server = server;
+	
     }
 
     @Override
     public void Execute() {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }        
+
+    @Override
+    public void SetReceiver(Receiver receiver) {
+	this.receiver = receiver;
+    }
 }
