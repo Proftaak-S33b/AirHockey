@@ -42,11 +42,12 @@ public class LobbyManager implements ChangeListener<String> {
      * @param chatBox the ListView to put new chat messages in
      * @param player
      */
-    public LobbyManager(ListView chatBox, IPlayer player) {
+    public LobbyManager(ListView chatBox) {
         this.chatBox = chatBox;
-        this.player = player;
+        this.player = null;
         this.lobbies = FXCollections.observableArrayList();
         try {
+            System.out.println("Connecting...");
             client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

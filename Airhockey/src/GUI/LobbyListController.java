@@ -64,7 +64,7 @@ public class LobbyListController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        controller = new LobbyManager(chatBox, currentPlayer);
+        controller = new LobbyManager(chatBox);
         columnGameName.setCellValueFactory(new PropertyValueFactory("name"));
         columnPlayers.setCellValueFactory(new PropertyValueFactory("playerAmount"));
         columnHostRank.setCellValueFactory(new PropertyValueFactory("ranking"));

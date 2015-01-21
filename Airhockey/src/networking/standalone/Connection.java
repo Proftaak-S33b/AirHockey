@@ -21,8 +21,8 @@ public class Connection {
 
     public Connection(Socket socket) throws IOException {
         this.socket = socket;
-        in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 
     /**
@@ -67,8 +67,8 @@ public class Connection {
      */
     public void close() {
         try {
-            in.close();
             out.close();
+            in.close();
             socket.close();
         } catch (IOException ex) {
             System.out.println("Error closing socket: " + ex.getMessage());
