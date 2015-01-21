@@ -1,25 +1,25 @@
 package networking.commands;
 
-import java.io.Serializable;
-
 /**
- * Command for sending a message to the lobbychat.
+ *
  * @author Etienne
  */
-public class SendMessage implements ServerCommand, Serializable{
-    
-    String message;
-    
-    public SendMessage(String message){
-	this.message = message;
-    }
+public class ChangeLobbyname implements ServerCommand{
 
-    public ServerReceiver receiver; 
+    private int lobby_id;
+    private String newlobbyname;
+    
+    public ChangeLobbyname(int lobby_id, String newlobbyname){
+	this.lobby_id = lobby_id;
+	this.newlobbyname = newlobbyname;
+    }
+    
+    public ServerReceiver receiver;
     
     @Override
     public void Execute() {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }        
+    }
 
     @Override
     public void SetReceiver(ServerReceiver receiver) {
