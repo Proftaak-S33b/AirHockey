@@ -5,16 +5,11 @@
  */
 package networking.standalone;
 
-import game.Human;
-import networking.sockets.*;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
-import networking.GameData;
+import networking.commands.Command;
 
 /**
  *
@@ -26,13 +21,11 @@ public class Server {
     private LinkedBlockingQueue<Object> messages;
     private ServerSocket serverSocket;
 
-    private GameData gameData;
-
     public Server() {
         clientList = new ArrayList<>();
-        gameData = new GameData();
         try {
             serverSocket = new ServerSocket(4444);
+            System.out.println("Started server at: " + InetAddress.getLocalHost().getHostAddress() + ":4444");
         } catch (IOException ex) {
             System.out.println("IOException: " + ex.getMessage());
         }
@@ -42,10 +35,8 @@ public class Server {
             public void run() {
                 while (true) {
                     try {
-                        Connection runnable = new Connection(serverSocket.accept());
-                        Thread t = new Thread(runnable);
-                        t.start();
-                        clientList.add(runnable);
+                        Connection connection = new Connection(serverSocket.accept());
+                        clientList.add(connection);
                     } catch (IOException e) {
                         System.out.println("IOException: " + e.getMessage());
                     }
@@ -75,14 +66,6 @@ public class Server {
         };
         messageHandling.setDaemon(true);
         messageHandling.start();
-
-        Timer timer = new Timer("SendTimer", true);
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                sendToAll(gameData);
-            }
-        }, 0, 1 / 30);
     }
 
     private class ConnectionToClient {
@@ -126,7 +109,7 @@ public class Server {
         }
     }
 
-    public void sendToAll(Object message) {
+    public void sendToAll(Command message) {
         for (Connection client : clientList) {
             client.write(message);
         }
