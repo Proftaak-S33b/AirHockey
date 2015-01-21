@@ -43,7 +43,6 @@ public class Server {
                 }
             }
         };
-        accept.setDaemon(true);
         accept.start();
     }
 

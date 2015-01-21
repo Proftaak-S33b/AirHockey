@@ -7,7 +7,6 @@ package networking.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
 import networking.IPlayer;
 import networking.standalone.Connection;
 import networking.standalone.Lobby;
@@ -23,20 +22,23 @@ public class ServerReceiver {
     private List<Lobby> lobbyList;
     private List<Connection> serverConnections;
 
-    public ServerReceiver() {
+    public ServerReceiver(List<Connection> connections) {
         lobbyList = new ArrayList<>();
-        serverConnections = new ArrayList<>();
+        if (connections == null) {
+            serverConnections = new ArrayList<>();
+        } else {
+            serverConnections = connections;
+        }
         Thread messageHandling = new Thread() {
             @Override
             public void run() {
                 while (true) {
                     for (Connection c : serverConnections) {
                         ServerCommand command;
-                        if ((command = c.read()) != null) {
+                        if ((command = (ServerCommand) c.read()) != null) {
                             executeCommand(command);
                         }
                     }
-                    System.out.println("Message received");
                 }
             }
         };
@@ -50,7 +52,9 @@ public class ServerReceiver {
      * @param command The command to be executed
      */
     public void executeCommand(ServerCommand command) {
-
+        command.SetReceiver(this);
+        command.Execute();
+        System.out.println("Executed command.");
     }
 
     /**
@@ -60,20 +64,30 @@ public class ServerReceiver {
      * @param host the host of the lobby
      */
     public void addLobby(String name, IPlayer host) {
-
+        lobbyList.add(new Lobby(NEXTLOBBYID++, name, host));
+        System.out.println("Adding lobby");
     }
 
     /**
-     * remove a lobby
+     * Remove a lobby
      *
-     * @param id the id of the lobby
+     * @param id The id of the lobby
      */
     public void removeLobby(int id) {
-
+        Lobby lobby = null;
+        for (Lobby l : lobbyList) {
+            if (l.getID() == id) {
+                lobby = l;
+            }
+        }
+        if (lobby != null) {
+            lobbyList.remove(lobby);
+            System.out.println("Removing lobby: " + lobby.getGameName());
+        }
     }
 
     /**
-     * change the name of the lobby
+     * Change the name of the lobby
      *
      * @param id the id of the lobby
      * @param newName the new name of the lobby
@@ -87,7 +101,7 @@ public class ServerReceiver {
     }
 
     /**
-     * join a lobby add a player to the lobby
+     * Join a lobby add a player to the lobby
      *
      * @param id the id of the lobby
      * @param player the player which will join the lobby

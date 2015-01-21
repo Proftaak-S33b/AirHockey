@@ -11,4 +11,7 @@ package networking.commands;
  */
 public class GameReceiver {
     
+    public GameReceiver(){
+        
+    }
 }
