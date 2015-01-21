@@ -8,7 +8,8 @@ package networking.sockets;
 import java.io.*;
 import java.net.*;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.locks.ReentrantLock;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
@@ -23,10 +24,11 @@ import networking.standalone.Lobby;
 public class Client {
 
     private ConnectionToServer connection;
-    private LinkedBlockingQueue<Object> messages;
+    private LinkedBlockingDeque<Object> messages;
     private Socket socket;
     private ReadOnlyStringWrapper observableMessage;
     private ObservableList<Lobby> lobbyList;
+    private ReentrantLock lock;
 
     /**
      *
@@ -37,10 +39,11 @@ public class Client {
      */
     public Client(String IPAddress, int port, ChangeListener<String> changeListener) throws IOException {
         socket = new Socket(IPAddress, port);
-        messages = new LinkedBlockingQueue<>();
+        messages = new LinkedBlockingDeque<>();
         connection = new ConnectionToServer(socket);
         observableMessage = new ReadOnlyStringWrapper();
         observableMessage.addListener(changeListener);
+        lock = new ReentrantLock();
 
         Thread messageHandling = new Thread() {
             @Override
@@ -55,6 +58,7 @@ public class Client {
                             System.out.println("Changing lobbyList");
                             lobbyList.clear();
                             lobbyList.addAll((List<Lobby>) message);
+                            lock.unlock();
                         } else {
                             System.out.println("Unknown class type received");
                         }
@@ -120,7 +124,9 @@ public class Client {
     }
 
     /**
-     * Tells the server to create a new lobby with specified name and player as 'host'.
+     * Tells the server to create a new lobby with specified name and player as
+     * 'host'.
+     *
      * @param name The name of the lobby to create
      * @param me The player that will be the host
      */
@@ -130,6 +136,7 @@ public class Client {
 
     /**
      * Tells the server to change the name of the specified lobby
+     *
      * @param lobby the lobby of which the name should be changed
      * @param name the new name
      */
@@ -155,5 +162,17 @@ public class Client {
      */
     public void sendMessage(String message, IPlayer me) {
         send(new SendMessage(me.getName() + ": " + message));
+    }
+
+    /**
+     * Gets all the lobbies from the server. Will block until the lobbies have
+     * been received.
+     *
+     * @return a list containing all lobbies
+     */
+    public List<Lobby> getLobbies() {
+        send(new GetLobbies());
+        lock.lock();
+        return lobbyList;
     }
 }

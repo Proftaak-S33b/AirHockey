@@ -1,14 +1,12 @@
 package networking.commands;
 
-import java.io.Serializable;
 import networking.IPlayer;
-import networking.standalone.Server;
 
 /**
  *
  * @author Etienne
  */
-public class JoinLobby implements ServerCommand, Serializable{
+public class JoinLobby implements ServerCommand {
     
     int id;
     IPlayer player;

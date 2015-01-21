@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Command for sending a message to the lobbychat.
  * @author Etienne
  */
-public class SendMessage implements ServerCommand, Serializable{
+public class SendMessage implements ServerCommand {
     
     String message;
     

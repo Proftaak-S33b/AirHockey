@@ -1,28 +1,28 @@
 package networking.commands;
 
-import java.io.Serializable;
 import networking.IPlayer;
 
 /**
  * Command for adding a lobby to the server.
+ *
  * @author Etienne
  */
 public class AddLobby implements ServerCommand {
-    
+
     String name;
     IPlayer host;
-    
+
     /**
      * Gives the command the needed parameters.
-     * @param id 
+     *
      * @param name
-     * @param host 
+     * @param host
      */
-    public AddLobby(String name, IPlayer host){
-	this.name = name;
-	this.host = host;
+    public AddLobby(String name, IPlayer host) {
+        this.name = name;
+        this.host = host;
     }
-    
+
     ServerReceiver receiver;
 
     /**
@@ -30,15 +30,16 @@ public class AddLobby implements ServerCommand {
      */
     @Override
     public void Execute() {
-	receiver.addLobby(name, host);
+        receiver.addLobby(name, host);
     }
 
     /**
      * set the receiver
-     * @param receiver 
+     *
+     * @param receiver
      */
     @Override
     public void SetReceiver(ServerReceiver receiver) {
-	this.receiver = receiver;
+        this.receiver = receiver;
     }
 }

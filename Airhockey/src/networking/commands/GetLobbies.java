@@ -15,6 +15,9 @@ public class GetLobbies implements ServerCommand, ReturnCommand {
 
     private Connection returnAddress;
     
+    /**
+     * Does nothing. Please make sure 'setReturnAddress' is used server-side.
+     */
     public GetLobbies(){
         
     }
@@ -39,6 +42,7 @@ public class GetLobbies implements ServerCommand, ReturnCommand {
      * Only to be used server-side please! Updates the return connection for return value.
      * @param conn the returnaddress
      */
+    @Override
     public void setReturnAddress(Connection conn){
         returnAddress = conn;
     }

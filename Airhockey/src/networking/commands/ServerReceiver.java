@@ -126,9 +126,14 @@ public class ServerReceiver {
             }
         }
     }
-    
-    public void getLobbies(Connection conn){
-        
+
+    /**
+     * Sends the lobbylist over the specified connection.
+     *
+     * @param conn the connection to send the lobbylist over
+     */
+    public void getLobbies(Connection conn) {
+        conn.write(lobbyList);
     }
 
     /**

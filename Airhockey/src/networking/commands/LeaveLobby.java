@@ -6,7 +6,7 @@ import networking.IPlayer;
  *
  * @author Etienne
  */
-public class LeaveLobby implements GameCommand{
+public class LeaveLobby implements GameCommand {
     
     int id;
     IPlayer player;

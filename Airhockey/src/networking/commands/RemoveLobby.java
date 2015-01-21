@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Command object for removing a lobby from the server.
  * @author Etienne
  */
-public class RemoveLobby implements GameCommand, Serializable{
+public class RemoveLobby implements GameCommand {
     
     int id;
     
