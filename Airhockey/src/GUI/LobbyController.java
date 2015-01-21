@@ -29,8 +29,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import networking.ILobby;
 import networking.standalone.IClientData;
 
@@ -228,14 +226,14 @@ public class LobbyController implements Initializable, RemotePropertyListener {
         if (ready) {
             try {
                 readyButton.getStyleClass().remove("ready");
-                currentLobby.setPlayerState(0, false);
+                currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), false);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
         } else {
             try {
                 readyButton.getStyleClass().add("ready");
-                currentLobby.setPlayerState(0, true);
+                currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), true);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
