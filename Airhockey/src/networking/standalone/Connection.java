@@ -22,6 +22,7 @@ public class Connection {
     public Connection(Socket socket) throws IOException {
         this.socket = socket;
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+        out.flush();
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
     }
 

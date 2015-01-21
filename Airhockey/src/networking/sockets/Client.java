@@ -84,8 +84,9 @@ public class Client {
 
         ConnectionToServer(Socket socket) throws IOException {
             this.socket = socket;
-            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
             out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+            out.flush();
+            in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 
             Thread read = new Thread() {
                 @Override
