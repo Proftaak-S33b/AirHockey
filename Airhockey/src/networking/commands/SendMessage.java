@@ -16,11 +16,18 @@ public class SendMessage implements ServerCommand, Serializable{
 
     public ServerReceiver receiver; 
     
+    /**
+     * Execute sendMessage
+     */
     @Override
     public void Execute() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	//receiver.sendMessage(message);
     }        
 
+    /**
+     * set the receiver
+     * @param receiver 
+     */
     @Override
     public void SetReceiver(ServerReceiver receiver) {
 	this.receiver = receiver;

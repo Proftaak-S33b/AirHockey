@@ -27,11 +27,18 @@ public class AddLobby implements ServerCommand, Serializable{
     
     ServerReceiver receiver;
 
+    /**
+     * Execute addLobby
+     */
     @Override
     public void Execute() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	receiver.addLobby(name, host);
     }
 
+    /**
+     * set the receiver
+     * @param receiver 
+     */
     @Override
     public void SetReceiver(ServerReceiver receiver) {
 	this.receiver = receiver;

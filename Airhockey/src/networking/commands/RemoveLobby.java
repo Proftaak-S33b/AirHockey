@@ -21,11 +21,18 @@ public class RemoveLobby implements GameCommand, Serializable{
     
     public GameReceiver receiver;
 
+    /**
+     * Execute removeLobby
+     */
     @Override
     public void Execute() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	//receiver.removeLobby(id);
     }       
 
+    /**
+     * set the receiver
+     * @param receiver 
+     */
     @Override
     public void SetReceiver(GameReceiver receiver) {
 	this.receiver = receiver;

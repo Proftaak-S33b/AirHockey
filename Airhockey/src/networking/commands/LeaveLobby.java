@@ -22,11 +22,18 @@ public class LeaveLobby implements GameCommand{
     
     public GameReceiver receiver; 
     
+    /**
+     * Execute leaveLobby
+     */
     @Override
     public void Execute() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	//receiver.leaveLobby(id, player);
     }
 
+    /**
+     * set the receiver
+     * @param receiver 
+     */
     @Override
     public void SetReceiver(GameReceiver receiver) {
 	this.receiver = receiver;

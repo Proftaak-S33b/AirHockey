@@ -25,11 +25,18 @@ public class JoinLobby implements ServerCommand, Serializable{
     
     ServerReceiver receiver;
     
+    /**
+     * execute joinlobby
+     */
     @Override
     public void Execute() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        receiver.joinLobby(id, player);
     }        
 
+    /**
+     * set the receiver
+     * @param receiver 
+     */
     @Override
     public void SetReceiver(ServerReceiver receiver) {
 	this.receiver = receiver;
