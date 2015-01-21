@@ -5,12 +5,10 @@
  */
 package controllers;
 
-import networking.IPlayer;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import z_OLD_RMI.Message;
 
 /**
  * Controller for managing the chat in games
@@ -20,15 +18,15 @@ import z_OLD_RMI.Message;
  */
 public class ChatManager {
 
-    private transient ObservableList<Message> messagesObservable;
-    private final ArrayList<Message> messages;
+//    private transient ObservableList<Message> messagesObservable;
+//    private final ArrayList<Message> messages;
 
     /**
      * Instantiates a new chatController
      */
     public ChatManager() {
-        messages = new ArrayList<>();
-        messagesObservable = FXCollections.observableArrayList(messages);
+//        messages = new ArrayList<>();
+//        messagesObservable = FXCollections.observableArrayList(messages);
     }
 
     /**
@@ -38,11 +36,11 @@ public class ChatManager {
      * @return 
      */
     public boolean addMessage(String text) {
-        try {
-            messagesObservable.add(new Message(text));
-        } catch (Message.MessageLengthException ex) {
-            return false;
-        }
+//        try {
+//            messagesObservable.add(new Message(text));
+//        } catch (Message.MessageLengthException ex) {
+//            return false;
+//        }
         return true;
     }
 
@@ -50,22 +48,23 @@ public class ChatManager {
      * Gets and unmodifiable ObservableList with all messages registered by this ChatManager
      * @return 
      */
-    public ObservableList<Message> getMessages() {
-        return FXCollections.unmodifiableObservableList(messagesObservable);
+    public ObservableList<Object> getMessages() {
+//        return FXCollections.unmodifiableObservableList(messagesObservable);
+        return null;
     }
-
-    private void readObject(java.io.ObjectInputStream stream)
-            throws IOException, ClassNotFoundException {
-        stream.defaultReadObject();
-        messagesObservable = FXCollections.observableArrayList(messages);
-    }
-
-    private void writeObject(java.io.ObjectOutputStream stream)
-            throws IOException {
-        stream.defaultWriteObject();
-        messages.clear();
-        for (Message l : messagesObservable) {
-            messages.add(l);
-        }
-    }
+//
+//    private void readObject(java.io.ObjectInputStream stream)
+//            throws IOException, ClassNotFoundException {
+//        stream.defaultReadObject();
+//        messagesObservable = FXCollections.observableArrayList(messages);
+//    }
+//
+//    private void writeObject(java.io.ObjectOutputStream stream)
+//            throws IOException {
+//        stream.defaultWriteObject();
+//        messages.clear();
+//        for (Message l : messagesObservable) {
+//            messages.add(l);
+//        }
+//    }
 }
