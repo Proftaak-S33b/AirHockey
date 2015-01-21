@@ -291,15 +291,15 @@ public class GameView implements Initializable {
      * @param event
      */
     public void exit(ActionEvent event) {
-        gamemanager.destroy();
-        aniTimer.stop();
         try {
+        gamemanager.destroy();
+        aniTimer.stop();  
             Node node = (Node) event.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             stage.show();
-        } catch (IOException ex) {
+        } catch (IOException | NullPointerException ex) {
             System.out.println("Error changing scene from LobbyList to MainMenu " + ex.toString());
         }
     }
