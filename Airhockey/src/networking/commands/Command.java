@@ -15,5 +15,4 @@ public interface Command {
      * To set the receiver to connect to.
      * @param receiver the receiver class for the command to interact with.
      */
-    public void SetReceiver(Receiver receiver);
 }

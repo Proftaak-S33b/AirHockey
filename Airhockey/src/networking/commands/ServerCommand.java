@@ -5,7 +5,7 @@ package networking.commands;
  * These are seperated even though they are very alike as means of encapsulation for the command objects.
  * @author Etienne
  */
-public interface ServerCommand {
+public interface ServerCommand extends Command{
     
     /**
      * Whatever the command object wants to do is called from here.
