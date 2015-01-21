@@ -33,14 +33,14 @@ public class Lobby {
     /**
      * Returns the current game name
      *
-     * @return
+     * @return the name of the game
      */
     public String getGameName() {
         return gameName;
     }
 
     /**
-     * Sets a new game name and informs the listeners of this property
+     * Sets a new game name
      *
      * @param gameName length has to be {@code < 20 characters}
      */
@@ -54,9 +54,8 @@ public class Lobby {
      * <li>a) the name is not already used by another player in the lobby </li>
      * <li>b) the amount of players in the lobby is {@code < 3} </li>
      * </ul>
-     * Also informs the listeners of this property
      *
-     * @param player
+     * @param player 
      * @return true: succeeded in adding, false: adding failed.
      */
     public boolean addPlayer(IPlayer player) {
@@ -82,7 +81,7 @@ public class Lobby {
      * Gets the IPlayer with the specified index
      *
      * @param i i {@code < 3} or will return null
-     * @return
+     * @return the player from position in the list
      */
     public IPlayer getPlayer(int i) {
         if (i < 3) {
@@ -92,6 +91,10 @@ public class Lobby {
         }
     }
 
+    /**
+     * get all players from the player list
+     * @return a unmodifiableList of players
+     */
     public List<IPlayer> getAllPlayers() {
         return Collections.unmodifiableList(players);
     }
@@ -132,17 +135,17 @@ public class Lobby {
     }
 
     /**
-     *
-     * @return
+     * returns a list with a readu states from the players
+     * @return the states of the players
      */
     public List<Boolean> getPlayerStates() {
         return this.playerStates;
     }
 
     /**
-     *
-     * @param playerNr
-     * @param state
+     * set the states of a player
+     * @param playerNr the number of the player
+     * @param state the state to be set
      */
     public void setPlayerState(int playerNr, boolean state) {
         if (playerNr > -1 && playerNr < 3) {

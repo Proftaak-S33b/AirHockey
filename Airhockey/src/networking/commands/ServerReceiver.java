@@ -24,15 +24,28 @@ public class ServerReceiver {
         lobbyList = new ArrayList<>();
     }
     
+    /**
+     * Exectuce the command 
+     * @param command The command to be executed
+     */
     public void executeCommand(Command command){
         //pass reference to command object
         command.Execute();
     }
     
+    /**
+     * Add a lobby
+     * @param name the name of the lobby
+     * @param host the host of the lobby
+     */
     public void addLobby(String name, IPlayer host){
         
     }
     
+    /**
+     * remove a lobby
+     * @param id the id of the lobby
+     */
     public void removeLobby(int id){
         
     }
