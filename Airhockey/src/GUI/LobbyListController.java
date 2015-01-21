@@ -22,7 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import networking.standalone_old.IClientData;
+import networking.standalone.Lobby;
 import org.controlsfx.control.action.Action;
 import org.controlsfx.dialog.Dialogs;
 
@@ -110,7 +110,7 @@ public class LobbyListController implements Initializable {
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             LobbyController lobbyFXML = loader.<LobbyController>getController();
-            lobbyFXML.initData(currentPlayer, controller.addLobby(newLobbyName.getText(), currentPlayer), null);
+            lobbyFXML.initData(currentPlayer, null);
             stage.show();
         } catch (IOException ex) {
             System.out.println("Error changing scene from LobbyList to Lobby " + ex.toString());
@@ -122,18 +122,18 @@ public class LobbyListController implements Initializable {
      * @param evt
      */
     public void joinLobby(Event evt) {
-        if (lobbyTable.getSelectionModel().getSelectedItem() instanceof IClientData) {
+        if (lobbyTable.getSelectionModel().getSelectedItem() instanceof Lobby) {
             try {
-                IClientData tempdata = (IClientData) lobbyTable.getSelectionModel().getSelectedItem();
-                if (tempdata.getPlayerAmount() < 3) {
-                    controller.serverData.setPlayerCountLobby(tempdata.getHost(), tempdata.getPlayerAmount() + 1);
+                Lobby tempdata = (Lobby) lobbyTable.getSelectionModel().getSelectedItem();
+                if (tempdata.getPlayersAmount()< 3) {
+                    controller.serverData.setPlayerCountLobby(tempdata.getHost(), tempdata.getPlayersAmount()+ 1);
                     controller.destroy();
                     Node node = (Node) evt.getSource();
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
                     Stage stage = (Stage) node.getScene().getWindow();
                     stage.setScene(new Scene((Pane) loader.load()));
                     LobbyController lobbyFXML = loader.<LobbyController>getController();
-                    lobbyFXML.initData(currentPlayer, controller.connect((IClientData) lobbyTable.getSelectionModel().getSelectedItem()), tempdata);
+                    lobbyFXML.initData(currentPlayer, controller.connect((Lobby) lobbyTable.getSelectionModel().getSelectedItem()), tempdata);
                     stage.show();
                 } else {
                     Action response = Dialogs.create()
