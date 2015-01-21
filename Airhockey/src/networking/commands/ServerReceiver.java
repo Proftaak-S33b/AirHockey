@@ -15,12 +15,12 @@ import networking.standalone.Lobby;
  * @author Etienne
  */
 public class ServerReceiver {
-    
+
     private static int NEXTLOBBYID = 10000;
-    
+
     private List<Lobby> lobbyList;
-    
-    public ServerReceiver(){
+
+    public ServerReceiver() {
         lobbyList = new ArrayList<>();
     }
     
@@ -47,6 +47,17 @@ public class ServerReceiver {
      * @param id the id of the lobby
      */
     public void removeLobby(int id){
-        
+}
+
+    public void changeLobbyName(int id, String newName) {
+        for (Lobby l : lobbyList) {
+            if (l.getID() == id) {
+                l.setGameName(newName);
+            }
+        }
+    }
+
+    public void joinLobby(int id, IPlayer player) {
+
     }
 }

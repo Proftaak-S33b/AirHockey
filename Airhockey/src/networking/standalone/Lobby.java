@@ -14,13 +14,13 @@ import networking.IPlayer;
  */
 public class Lobby {
 
+    private int ID;
     private String gameName;
-
     private final ArrayList<IPlayer> players;
-
     private List<Boolean> playerStates;
 
-    public Lobby(String gameName, IPlayer host) {
+    public Lobby(int ID, String gameName, IPlayer host) {
+        this.ID = ID;
         playerStates = new ArrayList<>();
         this.playerStates.add(false);
         this.playerStates.add(false);
@@ -28,6 +28,14 @@ public class Lobby {
         this.gameName = gameName;
         players = new ArrayList<>();
         players.add(host);
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int newID) {
+        this.ID = newID;
     }
 
     /**
