@@ -7,6 +7,7 @@ package networking.standalone;
 
 import java.io.*;
 import java.net.Socket;
+import networking.commands.Command;
 
 /**
  *
@@ -31,11 +32,11 @@ public class Connection {
      *
      * @return The read ICommand, or null if the stream was empty
      */
-    public ICommand read() {
+    public Command read() {
         try {
-            ICommand message;
+            Command message;
             if (in.available() > 0) {
-                if ((message = in.readObject()) != null) {
+                if ((message = (Command) in.readObject()) != null) {
                     return message;
                 }
             }
@@ -52,7 +53,7 @@ public class Connection {
      *
      * @param o the ICommand to send
      */
-    public void write(ICommand o) {
+    public void write(Command o) {
         try {
             out.writeObject(o);
             out.flush();

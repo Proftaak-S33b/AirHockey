@@ -90,7 +90,7 @@ public class AI extends Observable implements IPlayer, Observer{
 	"Just surrender already!",
 	// At end, lost
 	"omfg hax",
-	"suck my dick faggot i bet you play this all day",
+	"why you do dis",
 	// At end, won
 	"gg no re",
 	"gg wp",
@@ -107,13 +107,11 @@ public class AI extends Observable implements IPlayer, Observer{
 	"W00T!!!111einz",
 	"ayy lmao",
 	"OHH BABY A TRIPLE",
-	"GET NOSCOPED!!1!1!one",
+	"Get noscoped!!1!1!one",
 	"Faze clan pls",
-	"GET REKT",
+	"get rekt",
 	"Why didn't you listen?",
-	"#rekt",
-	//As reply to question
-	"Wat denk je zelf?"
+	"#rekt"
     };
     
     //<editor-fold defaultstate="collapsed" desc="huge hashmapcopy of messages">
@@ -152,20 +150,13 @@ public class AI extends Observable implements IPlayer, Observer{
 	put(chatEvent.ON_SCORED, "W00T!!!111einz");
 	put(chatEvent.ON_SCORED, "ayy lmao");
 	put(chatEvent.ON_SCORED, "OHH BABY A TRIPLE");
-	put(chatEvent.ON_SCORED, "GET NOSCOPED!!1!1!one");
+	put(chatEvent.ON_SCORED, "get noscoped!!1!1!one");
 	put(chatEvent.ON_SCORED, "Faze clan pls");
 	put(chatEvent.ON_SCORED, "GET REKT");
 	put(chatEvent.ON_SCORED, "Why didn't you listen?");
 	put(chatEvent.ON_SCORED, "#rekt");
-	// As reply to a question in the chat
-	put(chatEvent.ON_SCORED, "Wat denk je zelf?");
     }};
     //</editor-fold>
-
-    @Override
-    public void setRanking(int ranking) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     /**
      * Events for the AI to respond to.
@@ -177,7 +168,6 @@ public class AI extends Observable implements IPlayer, Observer{
 	AT_END_LOST,
 	ON_SCORED, // when AI scores.
 	ON_SCORED_AGAINST, // when another player scores on this AI.
-	ON_CHAT_QUESTION // What do you think this means?
     }
     
     //</editor-fold>
@@ -369,6 +359,15 @@ public class AI extends Observable implements IPlayer, Observer{
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="// Overrides //////////////////////////////////////////////////////////////">
+    
+    /**
+     * AI has no need to get ranked.
+     * @param ranking 
+     */
+    @Override
+    public void setRanking(int ranking) {
+        System.out.println("Set ranking of AI.");
+    }
     
     /**
      * Return the name of the AI opponent.
