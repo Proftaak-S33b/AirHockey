@@ -14,20 +14,16 @@ import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
-import z_OLD_RMI.Lobby;
-import z_OLD_RMI.Client;
-import z_OLD_RMI.ILobby;
-import z_OLD_RMI.Server;
-import networking.standalone_old.ChatSocketClient;
-import networking.standalone_old.ClientData;
-import networking.standalone_old.IClientData;
-import networking.standalone_old.IServerData;
+import networking.sockets.Client;
+import networking.standalone.Lobby;
 import networking.standalone.rmiDefaults;
 
 /**
@@ -37,78 +33,70 @@ import networking.standalone.rmiDefaults;
  */
 public class LobbyManager implements ChangeListener<String> {
 
-    public final IServerData serverData;
-    private final ObservableList<ClientData> clientData;
     private final Timer timer;
     private final Client client;
-    private Server server = null;
-    private ChatSocketClient chat;
-    private ObservableList<String> messages;
     private ListView chatBox;
+    private IPlayer player;
+    private final ObservableList<Lobby> lobbies;
 
     /**
      * Instantiates the lobbyController and sets a timer that will regularly
      * fetch the lobbies from the RMI server
      *
      * @param chatBox the ListView to put new chat messages in
+     * @param player
      */
-    public LobbyManager(ListView chatBox) {
+    public LobbyManager(ListView chatBox, IPlayer player) {
         this.chatBox = chatBox;
+        this.player = player;
         try {
-            chat = new ChatSocketClient(rmiDefaults.DEFAULT_SERVER_IP(), 69, this);
+            client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
         } catch (IOException ex) {
-            System.out.println("IOException: " + ex.getMessage());
+            Logger.getLogger(LobbyManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        client = new Client();
-        serverData = (IServerData) client.lookup("serverdata");
-        clientData = FXCollections.observableArrayList();
         timer = new Timer("lobbyController", true);
 //        timer.scheduleAtFixedRate(new TimerTask() {
 //            @Override
 //            public void run() {
 //                Platform.runLater(() -> {
-        List<ClientData> lobs = new ArrayList<>();
-        try {
-            lobs = serverData.getClients();
-        } catch (RemoteException ex) {
-            System.out.println(ex.getMessage());
+        List<Lobby> lobs = new ArrayList<>();
+        lobs = client.getLobbies();
+        for (Lobby l : lobs) {
+            System.out.println("Lobby: " + l.getGameName());
         }
-        for (ClientData d : lobs) {
-            System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
-        }
-        clientData.addAll(lobs);
+        lobbies.addAll(lobs);
 //        addClientDataIfNotPresent(lobs);
 //        removeClientDataIfDoesntExist(lobs);
 //                });
     }
 
-    private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
-        for (ClientData d : lobs) {
-            ClientData tempData = null;
-            for (ClientData data : clientData) {
-                if (data.getName().equals(d.getName())) {
-                    tempData = data;
-                }
-            }
-            if (tempData != null) {
-                clientData.remove(tempData);
-            }
-        }
-    }
-
-    private void addClientDataIfNotPresent(List<ClientData> lobs) {
-        for (ClientData d : lobs) {
-            ClientData tempData = null;
-            for (ClientData data : clientData) {
-                if (data.getName().equals(d.getName())) {
-                    tempData = data;
-                }
-            }
-            if (tempData != null) {
-                clientData.add(tempData);
-            }
-        }
-    }
+//    private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
+//        for (ClientData d : lobs) {
+//            ClientData tempData = null;
+//            for (ClientData data : clientData) {
+//                if (data.getName().equals(d.getName())) {
+//                    tempData = data;
+//                }
+//            }
+//            if (tempData != null) {
+//                clientData.remove(tempData);
+//            }
+//        }
+//    }
+//
+//    private void addClientDataIfNotPresent(List<ClientData> lobs) {
+//        for (ClientData d : lobs) {
+//            ClientData tempData = null;
+//            for (ClientData data : clientData) {
+//                if (data.getName().equals(d.getName())) {
+//                    tempData = data;
+//                }
+//            }
+//            if (tempData != null) {
+//                clientData.add(tempData);
+//            }
+//        }
+//    }
 //        }, 0, 1000);
 //    }
 
@@ -119,18 +107,8 @@ public class LobbyManager implements ChangeListener<String> {
      * @param host The IPlayer who created this lobby, cant be in another lobby
      * @return True if success, false if failed.
      */
-    public ILobby addLobby(String gameName, IPlayer host) {
-        try {
-            server = new Server();
-            final ILobby lobby = new Lobby(gameName, host);
-            //bind to server
-            server.bindToRegistry(lobby);
-            serverData.add(InetAddress.getLocalHost(), gameName, null, host, null, null);
-            return lobby;
-        } catch (RemoteException | AlreadyBoundException | UnknownHostException ex) {
-            System.out.println(ex.getMessage());
-            return null;
-        }
+    public void addLobby(String gameName, IPlayer host) {
+        client.addLobby(gameName, host);
     }
 
     /**
@@ -139,18 +117,13 @@ public class LobbyManager implements ChangeListener<String> {
      * @param gameName The name of the lobby to return
      * @return Returns null if lobby not found.
      */
-    public ClientData getLobby(String gameName) {
-        for (ClientData d : clientData) {
-            if (d.getName().equals(gameName)) {
-                return d;
+    public Lobby getLobby(String gameName) {
+        for (Lobby l : lobbies) {
+            if (l.getGameName().equals(gameName)) {
+                return l;
             }
         }
         return null;
-    }
-
-    public ILobby connect(IClientData server) {
-        client.locateRegistry(server.getAddress().getHostAddress(), 1099);
-        return (ILobby) client.lookup("hockeygame");
     }
 
     /**
@@ -159,12 +132,12 @@ public class LobbyManager implements ChangeListener<String> {
      *
      * @return All lobbies in this object
      */
-    public ObservableList<ClientData> getLobbies() {
-        return FXCollections.unmodifiableObservableList(clientData);
+    public ObservableList<Lobby> getLobbies() {
+        return FXCollections.unmodifiableObservableList(client.getLobbies);
     }
 
     public void sendChat(String message) {
-        chat.send(message);
+        client.sendMessage(message, player);
     }
 
     public void destroy() {
