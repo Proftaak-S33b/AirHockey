@@ -19,6 +19,13 @@ public class Lobby {
     private final ArrayList<IPlayer> players;
     private List<Boolean> playerStates;
 
+    /**
+     * the constructor of the lobby
+     * creates a new lobby with an ID, gameName and host
+     * @param ID the id of the lobby
+     * @param gameName the name of the game
+     * @param host the host of the game
+     */
     public Lobby(int ID, String gameName, IPlayer host) {
         this.ID = ID;
         playerStates = new ArrayList<>();
@@ -30,10 +37,18 @@ public class Lobby {
         players.add(host);
     }
 
+    /**
+     * Get the id of the lobby
+     * @return The id of the lobby
+     */
     public int getID() {
         return ID;
     }
-
+    
+    /**
+     * Set the id of the lobby
+     * @param newID the new id of the lobby
+     */
     public void setID(int newID) {
         this.ID = newID;
     }
