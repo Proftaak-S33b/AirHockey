@@ -77,8 +77,8 @@ public class LobbyManager implements ChangeListener<String> {
             System.out.println("Lobby: " + d.getName() + d.getAddress().toString());
         }
         clientData.addAll(lobs);
-        //addClientDataIfNotPresent(lobs);
-        //removeClientDataIfDoesntExist(lobs);
+//        addClientDataIfNotPresent(lobs);
+//        removeClientDataIfDoesntExist(lobs);
 //                });
     }
 
