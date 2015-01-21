@@ -58,6 +58,16 @@ public class ServerReceiver {
     }
 
     /**
+     * Sends a text message to all clients connected to this receiver
+     *
+     * @param text the text message to send
+     */
+    public void sendMessage(String text) {
+        sendToAll(text);
+        System.out.println("Received message: " + text);
+    }
+
+    /**
      * Add a lobby
      *
      * @param name the name of the lobby
@@ -113,6 +123,28 @@ public class ServerReceiver {
                 //TODO
                 //Make future commands sent by this user processed by GameReceiver
             }
+        }
+    }
+
+    /**
+     * Adds a connection to the list of connections being managed
+     *
+     * @param connection
+     */
+    public void addConnection(Connection connection) {
+        if (connection != null) {
+            serverConnections.add(connection);
+        }
+    }
+
+    /**
+     * Sends an object to all clients in the list
+     *
+     * @param message the object to send
+     */
+    private void sendToAll(Object message) {
+        for (Connection client : serverConnections) {
+            client.write(message);
         }
     }
 }

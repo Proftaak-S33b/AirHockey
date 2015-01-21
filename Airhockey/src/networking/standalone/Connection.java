@@ -7,7 +7,6 @@ package networking.standalone;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.LinkedBlockingQueue;
 import networking.commands.Command;
 
 /**
@@ -42,7 +41,7 @@ public class Connection {
                 }
             }
         } catch (IOException ex) {
-            System.out.println("CTC Error:" + ex.getMessage());
+            System.out.println("Connection error:" + ex.getMessage());
         } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
@@ -50,16 +49,29 @@ public class Connection {
     }
 
     /**
-     * Writes an object to the stream
+     * Writes an object to the stream.
      *
-     * @param o the ICommand to send
+     * @param o the object to send
      */
-    public void write(Command o) {
+    public void write(Object o) {
         try {
             out.writeObject(o);
             out.flush();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+        }
+    }
+
+    /**
+     * Closes the streams and socket.
+     */
+    public void close() {
+        try {
+            in.close();
+            out.close();
+            socket.close();
+        } catch (IOException ex) {
+            System.out.println("Error closing socket: " + ex.getMessage());
         }
     }
 }

@@ -45,10 +45,4 @@ public class Server {
         };
         accept.start();
     }
-
-    private void sendToAll(Command message) {
-        for (Connection client : clientList) {
-            client.write(message);
-        }
-    }
 }

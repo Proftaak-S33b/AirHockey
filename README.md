@@ -9,7 +9,4 @@ Etienne Cooijmans,
 Jur Clerkx (batman),
 Maikel Hoeks
 
-
-
-
 And it fucking sucks dick
