@@ -29,8 +29,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import z_OLD_RMI.ILobby;
-import networking.standalone_old.IClientData;
+import networking.standalone.Lobby;
 
 /**
  * FXML Controller class
@@ -67,8 +66,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
     public Button readyButton;
 
     private Human currentPlayer;
-    private ILobby currentLobby;
-    private IClientData clientData;
+    private Lobby currentLobby;
     private boolean ready = false;
 
     private ChatManager chat;
@@ -99,24 +97,14 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      * @param lobby The lobby object that this GUI represents
      * @param clientData
      */
-    public void initData(Human player, ILobby lobby, IClientData clientData) {
+    public void initData(Human player, Lobby lobby) {
         currentPlayer = player;
         currentLobby = lobby;
-        this.clientData = clientData;
-        try {
-            lobby.addListener(this, null);
-            lobby.addPlayer(player);
-        } catch (RemoteException ex) {
-            System.out.println("RemoteException: " + ex.getMessage());
-        }
+        lobby.addPlayer(player);
 
         //Set stage title
         Stage stage = (Stage) tablePlayers.getScene().getWindow();
-        try {
-            stage.setTitle(currentLobby.getGameName());
-        } catch (RemoteException ex) {
-            System.out.println("RemoteException: " + ex.getMessage());
-        }
+        stage.setTitle(currentLobby.getGameName());
 
         //Set lobby info text fields
         updateLobbyInfo();
@@ -157,7 +145,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
                 textHostName.setText(currentLobby.getPlayer(0).getName());
                 tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
-                ArrayList<Boolean> readyStates = currentLobby.getPlayerStates();
+                ArrayList<Boolean> readyStates = (ArrayList<Boolean>) currentLobby.getPlayerStates();
                 //Set all ready states
                 for (int i = 0; i < 3; i++) {
                     if (tablePlayers.getItems().size() >= i + 1) {
@@ -176,7 +164,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                         stage.setScene(new Scene((Pane) loader.load()));
                         GameView controller = loader.<GameView>getController();
                         stage.show();
-                        controller.init_Multiplayer(currentPlayer, currentLobby, clientData);
+                        controller.init_Multiplayer(currentPlayer, currentLobby);
                     } catch (IOException ex) {
                         System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
                     }
@@ -185,11 +173,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
                 //Check if chat message is new
                 if (chatBox.getItems().size() > 0) {
                     if (!chatBox.getItems().get(chatBox.getItems().size() - 1).toString().equals(currentLobby.getLastChatMessage()) && !currentLobby.getLastChatMessage().isEmpty()) {
-                        try {
-                            chat.addMessage(currentLobby.getLastChatMessage());
-                        } catch (RemoteException ex) {
-                            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        chat.addMessage(currentLobby.getLastChatMessage());
                     }
                 } else {
                     chat.addMessage("Welcome to the game!");
@@ -248,13 +232,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
      * @param evt
      */
     public void changedName(ActionEvent evt) {
-        try {
-            currentLobby.setGameName(textGameName.getText());
-
-        } catch (RemoteException ex) {
-            Logger.getLogger(LobbyController.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
+        currentLobby.setGameName(textGameName.getText());
     }
 
     /**
@@ -270,7 +248,7 @@ public class LobbyController implements Initializable, RemotePropertyListener {
             stage.setScene(new Scene((Pane) loader.load()));
             GameView controller = loader.<GameView>getController();
             stage.show();
-            controller.init_Multiplayer(currentPlayer, currentLobby, clientData);
+            controller.init_Multiplayer(currentPlayer, currentLobby);
         } catch (IOException ex) {
             System.out.println("Error changing scene from Lobby to Game " + ex.toString());
         }

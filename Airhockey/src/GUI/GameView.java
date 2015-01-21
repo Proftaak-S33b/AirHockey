@@ -34,9 +34,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import z_OLD_RMI.ILobby;
 import networking.IPlayer;
-import networking.standalone_old.IClientData;
+import networking.standalone.Lobby;
 
 /**
  * FXML Controller class
@@ -74,7 +73,7 @@ public class GameView implements Initializable {
     //Singleplayer
     private IPlayer currentPlayer;
     //Multiplayer
-    private ILobby currentLobby;
+    private Lobby currentLobby;
     private GameManager gamemanager;
     private Difficulty difficulty;
     final URL resource = getClass().getResource("nietvanzelf.mp3");
@@ -111,7 +110,7 @@ public class GameView implements Initializable {
             players.add(new AI("Green", 20));
             tableScore.setItems((ObservableList) players);
             this.difficulty = difficulty;
-            gamemanager = new GameManager(gc, players, difficulty, GameType.SINGLEPLAYER, this, null, null);
+            gamemanager = new GameManager(gc, players, difficulty, GameType.SINGLEPLAYER, this, null);
 
             piLoading.setVisible(true);
             Timer t = new Timer("CountdownTimer", true);
@@ -189,17 +188,12 @@ public class GameView implements Initializable {
      * @param lobby The lobby object that represents this game
      * @param clientData
      */
-    public void init_Multiplayer(Human player, ILobby lobby, IClientData clientData) {
+    public void init_Multiplayer(Human player, Lobby lobby) {
         if (!gameStarted) {
             currentPlayer = player;
             currentLobby = lobby;
             List<IPlayer> playersInLobby;
-            try {
-                playersInLobby = lobby.getAllPlayers();
-            } catch (RemoteException ex) {
-                System.out.println("RemoteException: " + ex.getMessage());
-                playersInLobby = null;
-            }
+            playersInLobby = lobby.getAllPlayers();
             //Get which gamemode has to be set
             if (playersInLobby.get(0).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_RED;
@@ -218,7 +212,7 @@ public class GameView implements Initializable {
             }
             //Set dificulty to prevent errors
             difficulty = Difficulty.NORMAL;
-            gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby, clientData);
+            gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby);
             Timer t = new Timer("CountdownTimer", true);
 
             t.schedule(new TimerTask() {

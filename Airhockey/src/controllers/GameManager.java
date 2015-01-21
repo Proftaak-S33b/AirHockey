@@ -23,16 +23,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import z_OLD_RMI.Coordinate;
-import z_OLD_RMI.GameData;
 import networking.IPlayer;
-import z_OLD_RMI.IRemoteGame;
 import networking.sockets.Client;
-import z_OLD_RMI.ILobby;
-import networking.sockets_old.Message;
-import networking.sockets_old.Server;
-import networking.sockets_old.SocketCoordinate;
-import networking.standalone_old.IClientData;
+import networking.standalone.Lobby;
+import networking.standalone.Server;
+import networking.standalone.rmiDefaults;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
 import org.jbox2d.collision.Manifold;
@@ -74,7 +69,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
     private final GraphicsContext gc;
     private final Difficulty difficulty;
     private final GameView gv;
-    private final ILobby lobby;
+    private final Lobby lobby;
 //    private IRemoteGame remoteGame;
     private Server server;
     private Client client;
@@ -131,7 +126,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * @param lobby
      * @param clientData
      */
-    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, ILobby lobby, IClientData clientData) {
+    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, Lobby lobby) {
         this.gc = gc;
         this.gv = gv;
         this.lobby = lobby;
@@ -140,39 +135,20 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         this.gameType = gameType;
         gameworld.getPhysWorld().setContactListener(this);
         if (gameType == GameType.MULTIPLAYER_RED) {
-            startServer();
-//            remoteGame = startServer();
-//            remoteGame = connectToServer(clientData.getAddress(), 1099);
-//        } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN) {
-//            remoteGame = connectToServer(clientData.getAddress(), 1099);
+            try { 
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444, this);
+            } catch (IOException ex) {
+                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             try {
-                client = new Client(clientData.getAddress().getHostAddress(), 4444, this);
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444, this);
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //            remoteGame = null;
         }
     }
 
-    /**
-     * 
-     */
-    private void startServer() {
-        try {
-            server = new Server();
-            client = new Client("localhost", 4444, this);
-            server.setScoresAndRound(20, 20, 20, 0);
-            Vec2 redPodPos = gameworld.getPod(0).getPosition();
-            Vec2 puckPos = gameworld.getPuck().getPosition();
-            Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
-            client.sendCoordinate(redPodPos.x, redPodPos.y, SocketCoordinate.Name.RED);
-            client.sendCoordinate(puckPos.x, puckPos.y, SocketCoordinate.Name.PUCK_POS);
-            client.sendCoordinate(puckVel.x, puckVel.y, SocketCoordinate.Name.PUCK_VEL);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
    
     /**
      * Sends a text message to the server which distributes it over all clients
@@ -180,7 +156,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * @param sender the IPlayer who sent this message
      */
     public void sendMessage(String message, IPlayer sender){
-        client.send(new Message(message, sender));
+        client.sendMessage(message, sender);
     }
 //
 //    private IRemoteGame startServer() {
@@ -561,24 +537,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
                     }
                 }
 
-                private void setLocalData(GameData data) {
-                    Vec2 vector;
-                    vector = new Vec2(data.getRedPodPos().x, data.getRedPodPos().y);
-                    gameworld.getPod(0).setPosition(vector);
-                    vector = new Vec2(data.getBluePodPos().x, data.getBluePodPos().y);
-                    gameworld.getPod(1).setPosition(vector);
-                    vector = new Vec2(data.getGreenPodPos().x, data.getGreenPodPos().y);
-                    gameworld.getPod(2).setPosition(vector);
-                    vector = new Vec2(data.getPuckPos().x, data.getPuckPos().y);
-                    gameworld.getPuck().setPosition(vector);
-                    vector = new Vec2(data.getPuckVelocity().x, data.getPuckVelocity().y);
-                    gameworld.getPuck().setVelocity(vector);
-                    List<IPlayer> players = gameworld.getPlayers();
-                    players.get(0).setRanking(data.getScoreP1());
-                    players.get(1).setRanking(data.getScoreP2());
-                    players.get(2).setRanking(data.getScoreP3());
-                    round = data.getRound();
-                }
+                
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
             System.out.println(e.toString());
