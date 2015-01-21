@@ -9,5 +9,5 @@ public interface Command {
     /**
      * Whatever the command object wants to do is called from here.
      */
-    public void Execute();    
+    public void Execute();
 }
