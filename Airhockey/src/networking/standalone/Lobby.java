@@ -5,6 +5,7 @@
  */
 package networking.standalone;
 
+import java.io.Serializable;
 import java.util.*;
 import networking.IPlayer;
 
@@ -12,7 +13,7 @@ import networking.IPlayer;
  *
  * @author Joris
  */
-public class Lobby {
+public class Lobby implements Serializable {
 
     private int ID;
     private String gameName;
@@ -20,8 +21,9 @@ public class Lobby {
     private List<Boolean> playerStates;
 
     /**
-     * the constructor of the lobby
-     * creates a new lobby with an ID, gameName and host
+     * the constructor of the lobby creates a new lobby with an ID, gameName and
+     * host
+     *
      * @param ID the id of the lobby
      * @param gameName the name of the game
      * @param host the host of the game
@@ -39,14 +41,16 @@ public class Lobby {
 
     /**
      * Get the id of the lobby
+     *
      * @return The id of the lobby
      */
     public int getID() {
         return ID;
     }
-    
+
     /**
      * Set the id of the lobby
+     *
      * @param newID the new id of the lobby
      */
     public void setID(int newID) {
@@ -78,7 +82,7 @@ public class Lobby {
      * <li>b) the amount of players in the lobby is {@code < 3} </li>
      * </ul>
      *
-     * @param player 
+     * @param player
      * @return true: succeeded in adding, false: adding failed.
      */
     public boolean addPlayer(IPlayer player) {
@@ -116,6 +120,7 @@ public class Lobby {
 
     /**
      * get all players from the player list
+     *
      * @return a unmodifiableList of players
      */
     public List<IPlayer> getAllPlayers() {
@@ -159,6 +164,7 @@ public class Lobby {
 
     /**
      * returns a list with a readu states from the players
+     *
      * @return the states of the players
      */
     public List<Boolean> getPlayerStates() {
@@ -167,6 +173,7 @@ public class Lobby {
 
     /**
      * set the states of a player
+     *
      * @param playerNr the number of the player
      * @param state the state to be set
      */

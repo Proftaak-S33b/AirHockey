@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,7 +27,7 @@ import networking.standalone.rmiDefaults;
  */
 public class LobbyManager implements ChangeListener<String> {
 
-    private final Timer timer;
+//    private Timer timer;
     private Client client = null;
     private ListView chatBox;
     private IPlayer player;
@@ -52,7 +50,7 @@ public class LobbyManager implements ChangeListener<String> {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        timer = new Timer("lobbyController", true);
+//        timer = new Timer("lobbyController", true);
 //        timer.scheduleAtFixedRate(new TimerTask() {
 //            @Override
 //            public void run() {
@@ -98,11 +96,10 @@ public class LobbyManager implements ChangeListener<String> {
 //        }, 0, 1000);
 //    }
     /**
-     * Adds a new Lobby with specified name and host player
+     * Adds a new Lobby with specified name and host player and joins it.
      *
      * @param gameName The name the new lobby will be identified as. Unique
      * @param host The IPlayer who created this lobby, cant be in another lobby
-     * @return True if success, false if failed.
      */
     public void addLobby(String gameName, IPlayer host) {
         client.addLobby(gameName, host);
@@ -122,13 +119,14 @@ public class LobbyManager implements ChangeListener<String> {
         }
         return null;
     }
-    
+
     /**
      * Tells the server to assign this player to the specified lobby.
+     *
      * @param lobby The lobby to join
      * @param player The player in question
      */
-    public void joinLobby(Lobby lobby, IPlayer player){
+    public void joinLobby(Lobby lobby, IPlayer player) {
         client.joinLobby(lobby, player);
     }
 
@@ -149,11 +147,11 @@ public class LobbyManager implements ChangeListener<String> {
     }
 
     public void sendChat(String message) {
-        client.sendMessage(message, player);
+        client.sendMessage(message);
     }
 
     public void destroy() {
-        timer.cancel();
+//        timer.cancel();
     }
 
     @Override

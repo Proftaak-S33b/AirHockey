@@ -153,10 +153,9 @@ public class GameManager implements ContactListener, ChangeListener<String> {
     /**
      * Sends a text message to the server which distributes it over all clients
      * @param message the text message to be sent
-     * @param sender the IPlayer who sent this message
      */
-    public void sendMessage(String message, IPlayer sender){
-        client.sendMessage(message, sender);
+    public void sendMessage(String message){
+        client.sendMessage(message);
     }
 //
 //    private IRemoteGame startServer() {

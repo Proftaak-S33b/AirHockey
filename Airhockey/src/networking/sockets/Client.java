@@ -60,8 +60,10 @@ public class Client {
                                 lobbyList.addAll((List<Lobby>) message);
                                 lobbyList.notify();
                             }
+                        } else if (message instanceof Lobby) {
+                            //TODO get this object back to the caller of "addLobby"...
                         } else {
-                            System.out.println("Unknown class type received");
+                            System.out.println("Unknown class type received: " + message.getClass().getName());
                         }
                     } catch (InterruptedException e) {
                         System.out.println("InterruptedException: " + e.getMessage());
@@ -160,10 +162,9 @@ public class Client {
      * Sends a text message to the server.
      *
      * @param message the text message
-     * @param me the sender of the message
      */
-    public void sendMessage(String message, IPlayer me) {
-        send(new SendMessage(me.getName() + ": " + message));
+    public void sendMessage(String message) {
+        send(new SendMessage(message));
     }
 
     /**

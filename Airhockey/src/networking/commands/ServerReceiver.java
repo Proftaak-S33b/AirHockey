@@ -56,7 +56,7 @@ public class ServerReceiver {
     public void executeCommand(ServerCommand command) {
         command.SetReceiver(this);
         command.Execute();
-        System.out.println("Executed command.");
+        System.out.println("Executed command: " + command.getClass().getSimpleName());
     }
 
     /**
@@ -70,14 +70,20 @@ public class ServerReceiver {
     }
 
     /**
-     * Add a lobby
+     * Adds a lobby and puts the creator of this lobby in it.
      *
      * @param name the name of the lobby
      * @param host the host of the lobby
+     * @param returnAddress the address to return the result to.
      */
-    public void addLobby(String name, IPlayer host) {
-        lobbyList.add(new Lobby(NEXTLOBBYID++, name, host));
-        System.out.println("Adding lobby");
+    public void addLobby(String name, IPlayer host, Connection returnAddress) {
+        Lobby lobby = new Lobby(NEXTLOBBYID, name, host);
+        lobbyList.add(lobby);
+        System.out.println("Adding lobbyID: " + NEXTLOBBYID);
+        
+        returnAddress.write(lobby);
+        System.out.println("Sending new lobby ID: " + NEXTLOBBYID);
+        NEXTLOBBYID++;
     }
 
     /**
@@ -138,7 +144,7 @@ public class ServerReceiver {
     public void getLobbies(Connection conn) {
         conn.write(lobbyList);
     }
-    
+
     /**
      * Adds a connection to the list of connections being managed
      *

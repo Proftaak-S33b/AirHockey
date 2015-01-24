@@ -1,7 +1,5 @@
 package networking.commands;
 
-import java.io.Serializable;
-
 /**
  * Command for sending a message to the lobbychat.
  * @author Etienne

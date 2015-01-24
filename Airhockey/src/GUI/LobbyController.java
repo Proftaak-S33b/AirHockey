@@ -177,7 +177,7 @@ public class LobbyController implements Initializable {
      */
     public void sendMessage(ActionEvent evt) {
         if (!chatMessage.getText().equals("")) {
-            client.sendMessage(chatMessage.getText(), currentPlayer);
+            client.sendMessage(currentPlayer.getName() + ": " + chatMessage.getText().trim());
             chatMessage.clear();
         }
     }

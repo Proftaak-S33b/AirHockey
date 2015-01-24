@@ -1,16 +1,19 @@
 package networking.commands;
 
 import networking.IPlayer;
+import networking.standalone.Connection;
 
 /**
  * Command for adding a lobby to the server.
  *
  * @author Etienne
  */
-public class AddLobby implements ServerCommand {
+public class AddLobby implements ServerCommand, ReturnCommand {
 
-    String name;
-    IPlayer host;
+    private String name;
+    private IPlayer host;
+    private Connection connection;
+    private ServerReceiver receiver;
 
     /**
      * Gives the command the needed parameters.
@@ -23,14 +26,12 @@ public class AddLobby implements ServerCommand {
         this.host = host;
     }
 
-    ServerReceiver receiver;
-
     /**
      * Execute addLobby
      */
     @Override
     public void Execute() {
-        receiver.addLobby(name, host);
+        receiver.addLobby(name, host, connection);
     }
 
     /**
@@ -41,5 +42,10 @@ public class AddLobby implements ServerCommand {
     @Override
     public void SetReceiver(ServerReceiver receiver) {
         this.receiver = receiver;
+    }
+
+    @Override
+    public void setReturnAddress(Connection conn) {
+        connection = conn;
     }
 }
