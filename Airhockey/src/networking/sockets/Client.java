@@ -8,10 +8,10 @@ package networking.sockets;
 import java.io.*;
 import java.net.*;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.IPlayer;
 import networking.commands.*;
@@ -28,7 +28,6 @@ public class Client {
     private Socket socket;
     private ReadOnlyStringWrapper observableMessage;
     private ObservableList<Lobby> lobbyList;
-    private ReentrantLock lock;
 
     /**
      *
@@ -43,7 +42,7 @@ public class Client {
         connection = new ConnectionToServer(socket);
         observableMessage = new ReadOnlyStringWrapper();
         observableMessage.addListener(changeListener);
-        lock = new ReentrantLock();
+        lobbyList = FXCollections.observableArrayList();
 
         Thread messageHandling = new Thread() {
             @Override
@@ -55,10 +54,12 @@ public class Client {
                             System.out.println("Received string: " + message);
                             observableMessage.set((String) message);
                         } else if (message instanceof List) {
-                            System.out.println("Changing lobbyList");
-                            lobbyList.clear();
-                            lobbyList.addAll((List<Lobby>) message);
-                            lock.unlock();
+                            synchronized (lobbyList) {
+                                System.out.println("Changing lobbyList");
+                                lobbyList.clear();
+                                lobbyList.addAll((List<Lobby>) message);
+                                lobbyList.notify();
+                            }
                         } else {
                             System.out.println("Unknown class type received");
                         }
@@ -173,7 +174,17 @@ public class Client {
      */
     public List<Lobby> getLobbies() {
         send(new GetLobbies());
-        lock.lock();
+        try {
+            synchronized (lobbyList) {
+                try {
+                    lobbyList.wait();
+                } catch (InterruptedException ex) {
+                    System.out.println("Thread interrupted while waiting for object: " + ex.getMessage());
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return lobbyList;
     }
 }

@@ -7,6 +7,7 @@ package networking.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 import networking.IPlayer;
 import networking.standalone.Connection;
 import networking.standalone.Lobby;
@@ -21,23 +22,24 @@ public class ServerReceiver {
 
     private List<Lobby> lobbyList;
     private List<Connection> serverConnections;
+    private LinkedBlockingQueue<Command> queue;
 
-    public ServerReceiver(List<Connection> connections) {
+    public ServerReceiver() {
         lobbyList = new ArrayList<>();
-        if (connections == null) {
-            serverConnections = new ArrayList<>();
-        } else {
-            serverConnections = connections;
-        }
+        serverConnections = new ArrayList<>();
+        queue = new LinkedBlockingQueue<>();
+
         Thread messageHandling = new Thread() {
             @Override
             public void run() {
                 while (true) {
-                    for (Connection c : serverConnections) {
-                        ServerCommand command;
-                        if ((command = (ServerCommand) c.read()) != null) {
-                            executeCommand(command);
+                    try {
+                        Command command = queue.take();
+                        if (command instanceof ServerCommand) {
+                            executeCommand((ServerCommand) command);
                         }
+                    } catch (InterruptedException ex) {
+                        System.out.println(ex.getMessage());
                     }
                 }
             }
@@ -123,6 +125,7 @@ public class ServerReceiver {
                 //l.addPlayer(player);
                 //TODO
                 //Make future commands sent by this user processed by GameReceiver
+                //connection.setQueue(gameReceiver.getQueue);
             }
         }
     }
@@ -135,16 +138,47 @@ public class ServerReceiver {
     public void getLobbies(Connection conn) {
         conn.write(lobbyList);
     }
-
+    
     /**
      * Adds a connection to the list of connections being managed
      *
      * @param connection
+     * @return Returns true if the connection was successfully added. Returns
+     * false if the connection was not added or null.
      */
-    public void addConnection(Connection connection) {
-        if (connection != null) {
-            serverConnections.add(connection);
+    public boolean addConnection(Connection connection) {
+        synchronized (serverConnections) {
+            if (connection != null) {
+                return serverConnections.add(connection);
+            }
+            return false;
         }
+    }
+
+    /**
+     * Removes a connection for the list of connections being managed
+     *
+     * @param connection the connection to remove
+     * @return Returns true if the connection was successfully removed. Returns
+     * false if the connection was not removed or not found.
+     */
+    public boolean removeConnection(Connection connection) {
+        synchronized (serverConnections) {
+            if (connection != null) {
+                return serverConnections.remove(connection);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Gets this receiver's queue. Can be used for passing to a Connection so
+     * that connection's messages will be processed by this receiver.
+     *
+     * @return Gets this receiver's LinkedBlockingQueue{@code<Command>}.
+     */
+    public LinkedBlockingQueue<Command> getQueue() {
+        return queue;
     }
 
     /**

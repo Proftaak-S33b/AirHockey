@@ -9,7 +9,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
-import networking.commands.Command;
+import networking.commands.ServerReceiver;
 
 /**
  *
@@ -17,12 +17,14 @@ import networking.commands.Command;
  */
 public class Server {
 
-    private ArrayList<Connection> clientList;
+    private final ArrayList<Connection> clientList;
     private LinkedBlockingQueue<Object> serverCommands;
     private ServerSocket serverSocket;
+    private ServerReceiver serverReceiver;
 
     public Server() {
         clientList = new ArrayList<>();
+        serverReceiver = new ServerReceiver();
         try {
             serverSocket = new ServerSocket(4444);
             System.out.println("Started server at: " + InetAddress.getLocalHost().getHostAddress() + ":4444");
@@ -35,8 +37,12 @@ public class Server {
             public void run() {
                 while (true) {
                     try {
-                        Connection connection = new Connection(serverSocket.accept());
-                        clientList.add(connection);
+                        Connection connection = new Connection(serverSocket.accept(), serverReceiver.getQueue());
+                        System.out.println(connection.getSocket().getInetAddress() + " connected.");
+                        synchronized (clientList) {
+                            clientList.add(connection);
+                            serverReceiver.addConnection(connection);
+                        }
                     } catch (IOException e) {
                         System.out.println("IOException: " + e.getMessage());
                     }

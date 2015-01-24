@@ -7,7 +7,9 @@ package networking.standalone;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
 import networking.commands.Command;
+import networking.commands.ReturnCommand;
 
 /**
  *
@@ -18,35 +20,34 @@ public class Connection {
     private ObjectInputStream in;
     private ObjectOutputStream out;
     private Socket socket;
+    private LinkedBlockingQueue<Command> queue;
 
-    public Connection(Socket socket) throws IOException {
+    public Connection(Socket socket, LinkedBlockingQueue<Command> queue) throws IOException {
         this.socket = socket;
+        this.queue = queue;
         out = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         out.flush();
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-    }
 
-    /**
-     * If available, reads an object from the stream. This method will not
-     * block, although if large objects are being sent it may take a little
-     * while
-     *
-     * @return The read ICommand, or null if the stream was empty
-     */
-    public Command read() {
-        try {
-            Command message;
-            if (in.available() > 0) {
-                if ((message = (Command) in.readObject()) != null) {
-                    return message;
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Command message = (Command) in.readObject();
+                    while (message != null) {
+                        if (message instanceof ReturnCommand) {
+                            ((ReturnCommand) message).setReturnAddress(Connection.this);
+                        }
+                        queue.put(message);
+                        message = (Command) in.readObject();
+                    }
+                } catch (IOException | InterruptedException | ClassNotFoundException ex) {
+                    System.out.println(ex.getMessage());
                 }
             }
-        } catch (IOException ex) {
-            System.out.println("Connection error:" + ex.getMessage());
-        } catch (ClassNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return null;
+        }, "ConnectionWatcher");
+        t.setDaemon(true);
+        t.start();
     }
 
     /**
@@ -74,5 +75,24 @@ public class Connection {
         } catch (IOException ex) {
             System.out.println("Error closing socket: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Makes this connection put incoming commands into the new queue so they
+     * can be processed.
+     *
+     * @param queue the new queue this connection will put new commands into
+     */
+    public void setQueue(LinkedBlockingQueue<Command> queue) {
+        this.queue = queue;
+    }
+
+    /**
+     * Gets the socket this connection uses.
+     *
+     * @return the socket this connection uses.
+     */
+    public Socket getSocket() {
+        return socket;
     }
 }
