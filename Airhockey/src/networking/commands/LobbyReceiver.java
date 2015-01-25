@@ -21,4 +21,10 @@ public class LobbyReceiver {
     public LobbyReceiver() {
 
     }
+    
+    public void readyStates()
+    {
+        
+    }
+    
 }

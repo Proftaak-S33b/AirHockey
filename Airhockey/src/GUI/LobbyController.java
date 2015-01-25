@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -98,6 +100,10 @@ public class LobbyController implements Initializable {
 
         //Set lobby info text fields
         updateLobbyInfo();
+
+    
+        
+        
 
         //Initialize players table
         columnPlayers.setCellValueFactory(new PropertyValueFactory("name"));

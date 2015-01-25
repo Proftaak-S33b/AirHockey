@@ -14,4 +14,12 @@ public class GameReceiver {
     public GameReceiver(){
         
     }
+    
+    public void moveLeft(){
+        
+    }
+    
+    public void moveRight(){
+        
+    }
 }
