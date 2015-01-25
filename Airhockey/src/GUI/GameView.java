@@ -201,8 +201,12 @@ public class GameView implements Initializable {
             } else if (playersInLobby.get(1).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_BLUE;
                 System.out.println("U are player blue");
-            } else {
+            } else if (playersInLobby.get(2).getName().equals(currentPlayer.getName())){
                 gametype = GameType.MULTIPLAYER_GREEN;
+                System.out.println("U are player green");
+            }else
+            {
+                gametype = GameType.SPECTATING;
                 System.out.println("U are player green");
             }
             //Add all players to gamedata
