@@ -155,7 +155,22 @@ public class LobbyListController implements Initializable {
      * @param evt
      */
     public void spectLobby(Event evt) {
-        
+         if (lobbyTable.getSelectionModel().getSelectedItem() instanceof Lobby) {
+            try {
+                Lobby lobby = (Lobby) lobbyTable.getSelectionModel().getSelectedItem();
+                controller.joinLobby(lobby, currentPlayer);
+                controller.destroy();
+                Node node = (Node) evt.getSource();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+                Stage stage = (Stage) node.getScene().getWindow();
+                stage.setScene(new Scene((Pane) loader.load()));
+                GameView gameView = loader.<GameView>getController();
+                gameView.init_Multiplayer(currentPlayer, lobby);
+                stage.show();
+            } catch (IOException ex) {
+                System.out.println("Error changing scene from LobbyList to GameView " + ex.toString());
+            }
+        }
     }
 
     /**
