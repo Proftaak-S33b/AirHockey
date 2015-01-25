@@ -28,6 +28,7 @@ public class Client {
     private Socket socket;
     private ReadOnlyStringWrapper observableMessage;
     private ObservableList<Lobby> lobbyList;
+    private Lobby lobby;
 
     /**
      *
@@ -62,6 +63,8 @@ public class Client {
                             }
                         } else if (message instanceof Lobby) {
                             //TODO get this object back to the caller of "addLobby"...
+                            System.out.println("addLobby: " + message.toString());
+                            lobby = (Lobby) message;
                         } else {
                             System.out.println("Unknown class type received: " + message.getClass().getName());
                         }
@@ -187,5 +190,14 @@ public class Client {
             System.out.println(e.getMessage());
         }
         return lobbyList;
+    }
+    
+    /**
+     * get the created lobby
+     * @return the lobby
+     */
+    public Lobby getLobby()
+    {
+        return this.lobby;
     }
 }
