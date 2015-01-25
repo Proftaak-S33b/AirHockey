@@ -11,7 +11,7 @@ public interface Command extends Serializable {
     /**
      * Whatever the command object wants to do is called from here.
      */
-    public void Execute();
+    public void execute();
     
     /**
      * To set the receiver to connect to.

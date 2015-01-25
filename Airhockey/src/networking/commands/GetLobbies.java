@@ -26,14 +26,14 @@ public class GetLobbies implements ServerCommand, ReturnCommand {
      * Sends the list of lobbies back to where this command came from
      */
     @Override
-    public void Execute() {
+    public void execute() {
         receiver.getLobbies(returnAddress);
     }
     
     ServerReceiver receiver;
 
     @Override
-    public void SetReceiver(ServerReceiver receiver) {
+    public void setReceiver(ServerReceiver receiver) {
         this.receiver = receiver;
                 
     }

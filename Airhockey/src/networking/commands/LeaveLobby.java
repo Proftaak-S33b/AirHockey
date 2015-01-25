@@ -26,7 +26,7 @@ public class LeaveLobby implements GameCommand {
      * Execute leaveLobby
      */
     @Override
-    public void Execute() {
+    public void execute() {
 	//receiver.leaveLobby(id, player);
     }
 

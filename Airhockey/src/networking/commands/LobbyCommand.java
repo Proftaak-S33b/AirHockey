@@ -15,5 +15,5 @@ public interface LobbyCommand extends Command {
      * To set the receiver to connect to.
      * @param receiver the receiver class for the command to interact with.
      */
-    public void SetReceiver(LobbyReceiver receiver);
+    public void setReceiver(LobbyReceiver receiver);
 }

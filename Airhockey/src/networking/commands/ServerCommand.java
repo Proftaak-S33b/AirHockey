@@ -11,5 +11,5 @@ public interface ServerCommand extends Command{
      * To set the receiver to connect to.
      * @param receiver the receiver class for the command to interact with.
      */
-    public void SetReceiver(ServerReceiver receiver);
+    public void setReceiver(ServerReceiver receiver);
 }

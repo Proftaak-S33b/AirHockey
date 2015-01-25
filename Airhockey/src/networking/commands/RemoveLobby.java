@@ -25,7 +25,7 @@ public class RemoveLobby implements GameCommand {
      * Execute removeLobby
      */
     @Override
-    public void Execute() {
+    public void execute() {
 	//receiver.removeLobby(id);
     }       
 

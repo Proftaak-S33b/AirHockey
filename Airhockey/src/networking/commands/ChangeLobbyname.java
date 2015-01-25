@@ -23,12 +23,12 @@ public class ChangeLobbyname implements ServerCommand {
     public ServerReceiver receiver;
 
     @Override
-    public void Execute() {
+    public void execute() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void SetReceiver(ServerReceiver receiver) {
+    public void setReceiver(ServerReceiver receiver) {
         this.receiver = receiver;
     }
 }

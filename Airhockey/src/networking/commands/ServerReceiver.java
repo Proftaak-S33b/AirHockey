@@ -54,8 +54,8 @@ public class ServerReceiver {
      * @param command The command to be executed
      */
     public void executeCommand(ServerCommand command) {
-        command.SetReceiver(this);
-        command.Execute();
+        command.setReceiver(this);
+        command.execute();
         System.out.println("Executed command: " + command.getClass().getSimpleName());
     }
 

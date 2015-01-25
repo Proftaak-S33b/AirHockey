@@ -18,7 +18,7 @@ public class SendMessage implements ServerCommand {
      * Execute sendMessage
      */
     @Override
-    public void Execute() {
+    public void execute() {
 	receiver.sendMessage(message);
     }        
 
@@ -27,7 +27,7 @@ public class SendMessage implements ServerCommand {
      * @param receiver 
      */
     @Override
-    public void SetReceiver(ServerReceiver receiver) {
+    public void setReceiver(ServerReceiver receiver) {
 	this.receiver = receiver;
     }
 }

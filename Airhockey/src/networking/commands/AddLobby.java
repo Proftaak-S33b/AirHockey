@@ -30,7 +30,7 @@ public class AddLobby implements ServerCommand, ReturnCommand {
      * Execute addLobby
      */
     @Override
-    public void Execute() {
+    public void execute() {
         receiver.addLobby(name, host, connection);
     }
 
@@ -40,7 +40,7 @@ public class AddLobby implements ServerCommand, ReturnCommand {
      * @param receiver
      */
     @Override
-    public void SetReceiver(ServerReceiver receiver) {
+    public void setReceiver(ServerReceiver receiver) {
         this.receiver = receiver;
     }
 

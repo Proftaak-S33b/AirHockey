@@ -27,7 +27,7 @@ public class JoinLobby implements ServerCommand {
      * execute joinlobby
      */
     @Override
-    public void Execute() {
+    public void execute() {
         receiver.joinLobby(id, player);
     }        
 
@@ -36,7 +36,7 @@ public class JoinLobby implements ServerCommand {
      * @param receiver 
      */
     @Override
-    public void SetReceiver(ServerReceiver receiver) {
+    public void setReceiver(ServerReceiver receiver) {
 	this.receiver = receiver;
     }
 }
