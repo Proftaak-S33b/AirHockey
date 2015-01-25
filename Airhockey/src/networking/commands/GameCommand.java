@@ -11,5 +11,5 @@ public interface GameCommand extends Command{
      * To set the receiver to connect to.
      * @param receiver the receiver class for the command to interact with.
      */
-    public void SetReceiver(GameReceiver receiver);
+    public void setReceiver(GameReceiver receiver);
 }

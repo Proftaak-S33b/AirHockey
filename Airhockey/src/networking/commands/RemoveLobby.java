@@ -34,7 +34,7 @@ public class RemoveLobby implements GameCommand {
      * @param receiver 
      */
     @Override
-    public void SetReceiver(GameReceiver receiver) {
+    public void setReceiver(GameReceiver receiver) {
 	this.receiver = receiver;
     }
 }
