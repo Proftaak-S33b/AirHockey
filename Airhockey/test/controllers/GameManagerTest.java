@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import controllers.GameManager.GameType;
 import game.AI.AI;
 import game.AI.Difficulty;
 import game.GameWorld;
@@ -47,7 +48,7 @@ public class GameManagerTest {
         players.add(new Human("ik","w8woord", 20));
         players.add(new AI("Blue", 20));
         players.add(new AI("Green", 20));
-        gm = new GameManager(gc, players, Difficulty.EASY,null , null);
+        gm = new GameManager(gc, players, Difficulty.EASY,GameType.SINGLEPLAYER , null, null);
         gw = new GameWorld(players);
     }
     
@@ -67,12 +68,12 @@ public class GameManagerTest {
         Vec2 vector;
         Vec2 vector1;
         vector = gw.getPod(0).getPosition();
-        gm.player_Move(true, false);
+        gm.player_Move(true, false, GameType.SINGLEPLAYER);
         vector1 = gw.getPod(0).getPosition();
         assertFalse("MoveRight", vector.x == vector1.x);
         
         vector = gw.getPod(0).getPosition();
-        gm.player_Move(false ,true);
+        gm.player_Move(false ,true, GameType.SINGLEPLAYER);
         vector1 = gw.getPod(0).getPosition();
         assertFalse("MoveLeft", vector.x == vector1.x);
     }
