@@ -29,6 +29,7 @@ public class Client {
     private ReadOnlyStringWrapper observableMessage;
     private ObservableList<Lobby> lobbyList;
     private Lobby lobby;
+    ChangeListener<String> changeListener;
 
     /**
      *
@@ -44,6 +45,7 @@ public class Client {
         observableMessage = new ReadOnlyStringWrapper();
         observableMessage.addListener(changeListener);
         lobbyList = FXCollections.observableArrayList();
+        this.changeListener = changeListener;
 
         Thread messageHandling = new Thread() {
             @Override
@@ -199,5 +201,15 @@ public class Client {
     public Lobby getLobby()
     {
         return this.lobby;
+    }
+    
+    /**
+     * change the changelistener
+     * @param listener a new changeListener
+     */
+    public void changeChangeListener(ChangeListener<String> listener)
+    {
+        observableMessage.addListener(listener);
+        observableMessage.removeListener(changeListener);
     }
 }

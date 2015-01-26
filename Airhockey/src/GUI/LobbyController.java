@@ -5,7 +5,6 @@
  */
 package GUI;
 
-import controllers.ChatManager;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +13,8 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ import networking.standalone.Lobby;
  *
  * @author Joris
  */
-public class LobbyController implements Initializable {
+public class LobbyController implements Initializable , ChangeListener<String> {
 
     @FXML
     public TextField textHostName;
@@ -67,7 +68,6 @@ public class LobbyController implements Initializable {
     private Client client;
     private boolean ready = false;
 
-    private ChatManager chat;
 
     /**
      * Initializes the controller class.
@@ -77,9 +77,6 @@ public class LobbyController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //Initialize chat
-        chat = new ChatManager();
-        chatBox.setItems(chat.getMessages());
     }
 
     /**
@@ -88,12 +85,14 @@ public class LobbyController implements Initializable {
      *
      * @param player The player that is logged in on the current session
      * @param lobby The lobby object that this GUI represents
+     * @param client
      */
     public void initData(Human player, Lobby lobby, Client client) {
         currentPlayer = player;
         currentLobby = lobby;
         this.client = client;
         lobby.addPlayer(player);
+        client.changeChangeListener(this);
 
         //Set stage title
         Stage stage = (Stage) tablePlayers.getScene().getWindow();
@@ -180,8 +179,9 @@ public class LobbyController implements Initializable {
                 }
                 //Check if chat message is new
                 if (chatBox.getItems().size() > 0) {
+                    
                 } else {
-                    chat.addMessage("Welcome to the game!");
+                    client.sendMessage("Welcome to the game "+ currentPlayer.getName()+"!");
                 }
             }
         } catch (Exception ex) {
@@ -245,5 +245,12 @@ public class LobbyController implements Initializable {
         } catch (IOException ex) {
             System.out.println("Error changing scene from Lobby to Game " + ex.toString());
         }
+    }
+
+    @Override
+    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+        Platform.runLater(() -> {
+            chatBox.getItems().add(newValue);
+        });
     }
 }
