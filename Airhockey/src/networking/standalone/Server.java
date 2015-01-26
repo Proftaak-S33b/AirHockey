@@ -18,9 +18,9 @@ import networking.commands.ServerReceiver;
 public class Server {
 
     private final ArrayList<Connection> clientList;
-    private LinkedBlockingQueue<Object> serverCommands;
     private ServerSocket serverSocket;
     private ServerReceiver serverReceiver;
+    private boolean running = true;
 
     public Server() {
         clientList = new ArrayList<>();
@@ -35,7 +35,7 @@ public class Server {
         Thread accept = new Thread() {
             @Override
             public void run() {
-                while (true) {
+                while (running) {
                     try {
                         Connection connection = new Connection(serverSocket.accept(), serverReceiver.getQueue());
                         System.out.println(connection.getSocket().getInetAddress() + " connected.");

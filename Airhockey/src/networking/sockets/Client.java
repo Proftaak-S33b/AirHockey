@@ -3,9 +3,8 @@ package networking.sockets;
 import java.io.*;
 import java.net.*;
 import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.*;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.IPlayer;
@@ -16,28 +15,25 @@ import networking.standalone.Lobby;
  *
  * @author Joris
  */
-public class Client {
+public class Client extends Observable {
 
     private ConnectionToServer connection;
     private LinkedBlockingDeque<Object> messages;
     private Socket socket;
-    private ReadOnlyStringWrapper observableMessage;
-    private ObservableList<Lobby> lobbyList;
+    private String message;
     private Lobby lobby;
+    private ObservableList<Lobby> lobbyList;
 
     /**
      *
      * @param IPAddress
      * @param port
-     * @param changeListener
      * @throws IOException
      */
-    public Client(String IPAddress, int port, ChangeListener<String> changeListener) throws IOException {
+    public Client(String IPAddress, int port) throws IOException {
         socket = new Socket(IPAddress, port);
         messages = new LinkedBlockingDeque<>();
         connection = new ConnectionToServer(socket);
-        observableMessage = new ReadOnlyStringWrapper();
-        observableMessage.addListener(changeListener);
         lobbyList = FXCollections.observableArrayList();
 
         Thread messageHandling = new Thread() {
@@ -48,7 +44,9 @@ public class Client {
                         Object message = messages.take();
                         if (message instanceof String) {
                             System.out.println("Received string: " + message);
-                            observableMessage.set((String) message);
+                            Client.this.message = (String) message;
+                            Client.super.setChanged();
+                            Client.super.notifyObservers(Client.this.message);
                         } else if (message instanceof List) {
                             synchronized (lobbyList) {
                                 System.out.println("Changing lobbyList");
@@ -58,8 +56,10 @@ public class Client {
                             }
                         } else if (message instanceof Lobby) {
                             //TODO get this object back to the caller of "addLobby"...
-                            System.out.println("addLobby: " + message.toString());
-                            lobby = (Lobby) message;
+                            System.out.println("Received lobby: " + message.toString());
+                            Client.this.lobby = (Lobby) message;
+                            Client.super.setChanged();
+                            Client.super.notifyObservers(Client.this.lobby);
                         } else {
                             System.out.println("Unknown class type received: " + message.getClass().getName());
                         }
@@ -137,6 +137,15 @@ public class Client {
     }
 
     /**
+     * Get the current lobby
+     *
+     * @return the current Lobby object
+     */
+    public Lobby getLobby() {
+        return this.lobby;
+    }
+
+    /**
      * Tells the server to change the name of the specified lobby
      *
      * @param lobby the lobby of which the name should be changed
@@ -195,14 +204,5 @@ public class Client {
             System.out.println(e.getMessage());
         }
         return lobbyList;
-    }
-    
-    /**
-     * get the created lobby
-     * @return the lobby
-     */
-    public Lobby getLobby()
-    {
-        return this.lobby;
     }
 }

@@ -65,8 +65,8 @@ public class LobbyListController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         controller = new LobbyManager(chatBox);
-        columnGameName.setCellValueFactory(new PropertyValueFactory("name"));
-        columnPlayers.setCellValueFactory(new PropertyValueFactory("playerAmount"));
+        columnGameName.setCellValueFactory(new PropertyValueFactory("gameName"));
+        columnPlayers.setCellValueFactory(new PropertyValueFactory("playersAmount"));
         columnHostRank.setCellValueFactory(new PropertyValueFactory("ranking"));
         lobbyTable.setItems(controller.getLobbies());
     }
@@ -161,11 +161,11 @@ public class LobbyListController implements Initializable {
                 controller.joinLobby(lobby, currentPlayer);
                 controller.destroy();
                 Node node = (Node) evt.getSource();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
                 Stage stage = (Stage) node.getScene().getWindow();
                 stage.setScene(new Scene((Pane) loader.load()));
-                GameView gameView = loader.<GameView>getController();
-                gameView.init_Multiplayer(currentPlayer, lobby);
+                LobbyController lobbyFXML = loader.<LobbyController>getController();
+                lobbyFXML.initData(currentPlayer, lobby, controller.getClient());
                 stage.show();
             } catch (IOException ex) {
                 System.out.println("Error changing scene from LobbyList to GameView " + ex.toString());

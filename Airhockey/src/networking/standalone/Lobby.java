@@ -13,7 +13,7 @@ import networking.IPlayer;
  *
  * @author Joris
  */
-public class Lobby implements Serializable {
+public class Lobby implements Serializable{
 
     private int ID;
     private String gameName;
@@ -116,6 +116,11 @@ public class Lobby implements Serializable {
         } else {
             return null;
         }
+    }
+    
+    public int getRanking()
+    {
+        return players.get(0).getRanking();
     }
 
     /**

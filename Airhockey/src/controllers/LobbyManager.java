@@ -6,12 +6,13 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,9 +26,9 @@ import networking.standalone.rmiDefaults;
  *
  * @author Joris
  */
-public class LobbyManager implements ChangeListener<String> {
+public class LobbyManager implements Observer {
 
-//    private Timer timer;
+    private Timer timer;
     private Client client = null;
     private ListView chatBox;
     private IPlayer player;
@@ -46,55 +47,61 @@ public class LobbyManager implements ChangeListener<String> {
         this.lobbies = FXCollections.observableArrayList();
         try {
             System.out.println("Connecting...");
-            client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
+            client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
+            client.addObserver(this);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+            System.exit(-1);
         }
-//        timer = new Timer("lobbyController", true);
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                Platform.runLater(() -> {
-        List<Lobby> lobs = new ArrayList<>();
-        lobs = client.getLobbies();
-        for (Lobby l : lobs) {
-            System.out.println("Lobby: " + l.getGameName());
-        }
-        lobbies.addAll(lobs);
+        timer = new Timer("lobbyController", true);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    List<Lobby> lobs;
+                    lobs = client.getLobbies();
+                    for (Lobby l : lobs) {
+                        System.out.println("Lobby: " + l.getGameName());
+                    }
+                    lobbies.clear();
+                    lobbies.addAll(lobs);
+                    System.out.println(lobbies.size() + " lobbies in list");
 //        addClientDataIfNotPresent(lobs);
 //        removeClientDataIfDoesntExist(lobs);
-//                });
+                });
+            }
+        }, 0, 5000);
     }
+    //    private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
+    //        for (ClientData d : lobs) {
+    //            ClientData tempData = null;
+    //            for (ClientData data : clientData) {
+    //                if (data.getName().equals(d.getName())) {
+    //                    tempData = data;
+    //                }
+    //            }
+    //            if (tempData != null) {
+    //                clientData.remove(tempData);
+    //            }
+    //        }
+    //    }
+    //
+    //    private void addClientDataIfNotPresent(List<ClientData> lobs) {
+    //        for (ClientData d : lobs) {
+    //            ClientData tempData = null;
+    //            for (ClientData data : clientData) {
+    //                if (data.getName().equals(d.getName())) {
+    //                    tempData = data;
+    //                }
+    //            }
+    //            if (tempData != null) {
+    //                clientData.add(tempData);
+    //            }
+    //        }
+    //    }
+    //        }, 0, 1000);
+    //    }
 
-//    private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
-//        for (ClientData d : lobs) {
-//            ClientData tempData = null;
-//            for (ClientData data : clientData) {
-//                if (data.getName().equals(d.getName())) {
-//                    tempData = data;
-//                }
-//            }
-//            if (tempData != null) {
-//                clientData.remove(tempData);
-//            }
-//        }
-//    }
-//
-//    private void addClientDataIfNotPresent(List<ClientData> lobs) {
-//        for (ClientData d : lobs) {
-//            ClientData tempData = null;
-//            for (ClientData data : clientData) {
-//                if (data.getName().equals(d.getName())) {
-//                    tempData = data;
-//                }
-//            }
-//            if (tempData != null) {
-//                clientData.add(tempData);
-//            }
-//        }
-//    }
-//        }, 0, 1000);
-//    }
     /**
      * Adds a new Lobby with specified name and host player and joins it.
      *
@@ -130,6 +137,10 @@ public class LobbyManager implements ChangeListener<String> {
         client.joinLobby(lobby, player);
     }
 
+    /**
+     *
+     * @return
+     */
     public Client getClient() {
         return this.client;
     }
@@ -141,23 +152,30 @@ public class LobbyManager implements ChangeListener<String> {
      * @return All lobbies in this object
      */
     public ObservableList<Lobby> getLobbies() {
-        return FXCollections.unmodifiableObservableList(
-                FXCollections.observableArrayList(
-                        client.getLobbies()));
+        return FXCollections.unmodifiableObservableList(lobbies);
     }
 
+    /**
+     *
+     * @param message
+     */
     public void sendChat(String message) {
         client.sendMessage(message);
     }
 
+    /**
+     *
+     */
     public void destroy() {
-//        timer.cancel();
+        timer.cancel();
     }
 
     @Override
-    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        Platform.runLater(() -> {
-            chatBox.getItems().add(newValue);
-        });
+    public void update(Observable o, Object o1) {
+        if (o1 instanceof String) {
+            Platform.runLater(() -> {
+                chatBox.getItems().add(o1);
+            });
+        }
     }
 }

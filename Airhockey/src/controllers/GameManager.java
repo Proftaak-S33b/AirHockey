@@ -166,6 +166,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
 	receiver = new GameReceiver(this);
 	// Are we hosting?
         if (gameType == GameType.MULTIPLAYER_RED) {
+<<<<<<< HEAD
 	    try {
 		// Hosting happens off-site. IE not by any of the users.
 		client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
@@ -175,6 +176,16 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         } else {
             try {
                 client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
+=======
+            try { 
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444);
+            } catch (IOException ex) {
+                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444);
+>>>>>>> a56b4174cc40f0116d5923849596f869b6023123
             } catch (IOException ex) {
                 Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }

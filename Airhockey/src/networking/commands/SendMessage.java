@@ -1,33 +1,67 @@
 package networking.commands;
 
 /**
- * Command for sending a message to the lobbychat.
+ * Command for sending a message to the chat.
+ *
  * @author Etienne
  */
-public class SendMessage implements ServerCommand {
-    
-    String message;
-    
-    public SendMessage(String message){
-	this.message = message;
+public class SendMessage implements ServerCommand, LobbyCommand, GameCommand {
+
+    private String message;
+    private ServerReceiver sReceiver;
+    private LobbyReceiver lReceiver;
+    private GameReceiver gReceiver;
+
+    /**
+     * Instantiates a new SendMessage command
+     *
+     * @param message
+     */
+    public SendMessage(String message) {
+        this.message = message;
     }
 
-    public ServerReceiver receiver; 
-    
     /**
      * Execute sendMessage
      */
     @Override
     public void execute() {
-	receiver.sendMessage(message);
-    }        
+        if (sReceiver != null) {
+            sReceiver.sendMessage(message);
+        } else if (lReceiver != null) {
+            lReceiver.sendMessage(message);
+        } else if (gReceiver != null) {
+            gReceiver.sendMessage(message);
+        }
+    }
 
     /**
      * set the receiver
-     * @param receiver 
+     *
+     * @param receiver
      */
     @Override
     public void setReceiver(ServerReceiver receiver) {
-	this.receiver = receiver;
+        this.sReceiver = receiver;
+    }
+
+    /**
+     * set the receiver
+     *
+     * @param receiver
+     */
+    @Override
+    public void setReceiver(LobbyReceiver receiver) {
+        this.lReceiver = receiver;
+    }
+
+    /**
+     * set the receiver
+     *
+     * @param receiver
+     */
+    @Override
+    public void setReceiver(GameReceiver receiver) {
+        this.gReceiver = receiver;
     }
 }
