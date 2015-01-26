@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import networking.IPlayer;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,7 +28,7 @@ import networking.standalone.rmiDefaults;
  */
 public class LobbyManager implements ChangeListener<String> {
 
-//    private Timer timer;
+    private Timer timer;
     private Client client = null;
     private ListView chatBox;
     private IPlayer player;
@@ -50,57 +51,60 @@ public class LobbyManager implements ChangeListener<String> {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-//        timer = new Timer("lobbyController", true);
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            @Override
-//            public void run() {
-//                Platform.runLater(() -> {
-        List<Lobby> lobs = new ArrayList<>();
-        lobs = client.getLobbies();
-        for (Lobby l : lobs) {
-            System.out.println("Lobby: " + l.getGameName());
-        }
-        lobbies.addAll(lobs);
+        timer = new Timer("lobbyController", true);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    List<Lobby> lobs = new ArrayList<>();
+                    lobs = client.getLobbies();
+                    for (Lobby l : lobs) {
+                        System.out.println("Lobby: " + l.getGameName());
+                    }
+                    lobbies.addAll(lobs);
 //        addClientDataIfNotPresent(lobs);
 //        removeClientDataIfDoesntExist(lobs);
-//                });
+                });
+            }
+        }, 0, 5000);
     }
+        //    private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
+    //        for (ClientData d : lobs) {
+    //            ClientData tempData = null;
+    //            for (ClientData data : clientData) {
+    //                if (data.getName().equals(d.getName())) {
+    //                    tempData = data;
+    //                }
+    //            }
+    //            if (tempData != null) {
+    //                clientData.remove(tempData);
+    //            }
+    //        }
+    //    }
+    //
+    //    private void addClientDataIfNotPresent(List<ClientData> lobs) {
+    //        for (ClientData d : lobs) {
+    //            ClientData tempData = null;
+    //            for (ClientData data : clientData) {
+    //                if (data.getName().equals(d.getName())) {
+    //                    tempData = data;
+    //                }
+    //            }
+    //            if (tempData != null) {
+    //                clientData.add(tempData);
+    //            }
+    //        }
+    //    }
+    //        }, 0, 1000);
+    //    }
 
-//    private void removeClientDataIfDoesntExist(List<ClientData> lobs) {
-//        for (ClientData d : lobs) {
-//            ClientData tempData = null;
-//            for (ClientData data : clientData) {
-//                if (data.getName().equals(d.getName())) {
-//                    tempData = data;
-//                }
-//            }
-//            if (tempData != null) {
-//                clientData.remove(tempData);
-//            }
-//        }
-//    }
-//
-//    private void addClientDataIfNotPresent(List<ClientData> lobs) {
-//        for (ClientData d : lobs) {
-//            ClientData tempData = null;
-//            for (ClientData data : clientData) {
-//                if (data.getName().equals(d.getName())) {
-//                    tempData = data;
-//                }
-//            }
-//            if (tempData != null) {
-//                clientData.add(tempData);
-//            }
-//        }
-//    }
-//        }, 0, 1000);
-//    }
     /**
      * Adds a new Lobby with specified name and host player and joins it.
      *
      * @param gameName The name the new lobby will be identified as. Unique
      * @param host The IPlayer who created this lobby, cant be in another lobby
      */
+
     public void addLobby(String gameName, IPlayer host) {
         client.addLobby(gameName, host);
     }
@@ -143,7 +147,7 @@ public class LobbyManager implements ChangeListener<String> {
     public ObservableList<Lobby> getLobbies() {
         return FXCollections.unmodifiableObservableList(
                 FXCollections.observableArrayList(
-                        client.getLobbies()));
+                        lobbies));
     }
 
     public void sendChat(String message) {
