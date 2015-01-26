@@ -7,7 +7,6 @@ package networking.commands;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
 import networking.IPlayer;
 import networking.standalone.Connection;
 import networking.standalone.Lobby;
@@ -16,23 +15,19 @@ import networking.standalone.Lobby;
  *
  * @author Etienne
  */
-public class ServerReceiver {
+public class ServerReceiver extends Receiver {
 
     private static int NEXTLOBBYID = 10000;
 
-    private List<Lobby> lobbyList;
-    private List<Connection> serverConnections;
-    private LinkedBlockingQueue<Command> queue;
+    private List<LobbyReceiver> lobbyList;
 
     public ServerReceiver() {
         lobbyList = new ArrayList<>();
-        serverConnections = new ArrayList<>();
-        queue = new LinkedBlockingQueue<>();
 
-        Thread messageHandling = new Thread() {
+        Thread messageHandler = new Thread() {
             @Override
             public void run() {
-                while (true) {
+                while (running) {
                     try {
                         Command command = queue.take();
                         if (command instanceof ServerCommand) {
@@ -44,8 +39,8 @@ public class ServerReceiver {
                 }
             }
         };
-        messageHandling.setDaemon(true);
-        messageHandling.start();
+        messageHandler.setDaemon(true);
+        messageHandler.start();
     }
 
     /**
@@ -60,16 +55,6 @@ public class ServerReceiver {
     }
 
     /**
-     * Sends a text message to all clients connected to this receiver
-     *
-     * @param text the text message to send
-     */
-    public void sendMessage(String text) {
-        sendToAll(text);
-        System.out.println("Received message: " + text);
-    }
-
-    /**
      * Adds a lobby and puts the creator of this lobby in it.
      *
      * @param name the name of the lobby
@@ -78,29 +63,34 @@ public class ServerReceiver {
      */
     public void addLobby(String name, IPlayer host, Connection returnAddress) {
         Lobby lobby = new Lobby(NEXTLOBBYID, name, host);
-        lobbyList.add(lobby);
         System.out.println("Adding lobbyID: " + NEXTLOBBYID);
-        
+        LobbyReceiver lobbyReceiver = new LobbyReceiver(lobby);
+        lobbyReceiver.addConnection(returnAddress);
+        this.removeConnection(returnAddress);
+        lobbyList.add(lobbyReceiver);
+        returnAddress.setQueue(lobbyReceiver.getQueue());
         returnAddress.write(lobby);
         System.out.println("Sending new lobby ID: " + NEXTLOBBYID);
         NEXTLOBBYID++;
     }
 
     /**
-     * Remove a lobby
+     * Remove a lobby, the lobby can't have any players in it.
      *
      * @param id The id of the lobby
      */
     public void removeLobby(int id) {
-        Lobby lobby = null;
-        for (Lobby l : lobbyList) {
-            if (l.getID() == id) {
-                lobby = l;
+        LobbyReceiver lobbyReceiver = null;
+        for (LobbyReceiver lr : lobbyList) {
+            if (lr.getLobby().getID() == id) {
+                lobbyReceiver = lr;
             }
         }
-        if (lobby != null) {
-            lobbyList.remove(lobby);
-            System.out.println("Removing lobby: " + lobby.getGameName());
+        if (lobbyReceiver != null) {
+            if (lobbyReceiver.getLobby().getPlayersAmount() != 0) {
+                lobbyList.remove(lobbyReceiver);
+                System.out.println("Removing lobby: " + lobbyReceiver.getLobby().getGameName());
+            }
         }
     }
 
@@ -109,13 +99,11 @@ public class ServerReceiver {
      *
      * @param id the id of the lobby
      * @param newName the new name of the lobby
+     * @deprecated not implemented
      */
     public void changeLobbyName(int id, String newName) {
-        for (Lobby l : lobbyList) {
-            if (l.getID() == id) {
-                l.setGameName(newName);
-            }
-        }
+        //Could
+        //todo
     }
 
     /**
@@ -123,15 +111,16 @@ public class ServerReceiver {
      *
      * @param id the id of the lobby
      * @param player the player which will join the lobby
+     * @param conn the associated connection that will have its incoming
+     * commands processed by the lobbyreceiver you are joining.
      */
-    public void joinLobby(int id, IPlayer player) {
-        for (Lobby l : lobbyList) {
-            if (l.getID() == id) {
+    public void joinLobby(int id, IPlayer player, Connection conn) {
+        System.out.println(player.getName() + " joining...");
+        for (LobbyReceiver lr : lobbyList) {
+            if (lr.getLobby().getID() == id) {
                 System.out.println("Lobby found");
-                //l.addPlayer(player);
-                //TODO
-                //Make future commands sent by this user processed by GameReceiver
-                //connection.setQueue(gameReceiver.getQueue);
+                lr.getLobby().addPlayer(player);
+                conn.setQueue(lr.getQueue());
             }
         }
     }
@@ -143,58 +132,5 @@ public class ServerReceiver {
      */
     public void getLobbies(Connection conn) {
         conn.write(lobbyList);
-    }
-
-    /**
-     * Adds a connection to the list of connections being managed
-     *
-     * @param connection
-     * @return Returns true if the connection was successfully added. Returns
-     * false if the connection was not added or null.
-     */
-    public boolean addConnection(Connection connection) {
-        synchronized (serverConnections) {
-            if (connection != null) {
-                return serverConnections.add(connection);
-            }
-            return false;
-        }
-    }
-
-    /**
-     * Removes a connection for the list of connections being managed
-     *
-     * @param connection the connection to remove
-     * @return Returns true if the connection was successfully removed. Returns
-     * false if the connection was not removed or not found.
-     */
-    public boolean removeConnection(Connection connection) {
-        synchronized (serverConnections) {
-            if (connection != null) {
-                return serverConnections.remove(connection);
-            }
-            return false;
-        }
-    }
-
-    /**
-     * Gets this receiver's queue. Can be used for passing to a Connection so
-     * that connection's messages will be processed by this receiver.
-     *
-     * @return Gets this receiver's LinkedBlockingQueue{@code<Command>}.
-     */
-    public LinkedBlockingQueue<Command> getQueue() {
-        return queue;
-    }
-
-    /**
-     * Sends an object to all clients in the list
-     *
-     * @param message the object to send
-     */
-    private void sendToAll(Object message) {
-        for (Connection client : serverConnections) {
-            client.write(message);
-        }
     }
 }

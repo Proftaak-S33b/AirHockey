@@ -5,26 +5,65 @@
  */
 package networking.commands;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import networking.standalone.Lobby;
 
 /**
  *
  * @author Joris
  */
-public class LobbyReceiver {
+public class LobbyReceiver extends Receiver {
 
-    private LinkedBlockingQueue<Command> queue;
-    
+    private Lobby lobby;
+
     /**
-     * 
+     * Instantiates a new lobbyReceiver to process incoming commands concerning
+     * lobby's.
+     *
+     * @param lobby this receiver's Lobby object
      */
-    public LobbyReceiver() {
+    public LobbyReceiver(Lobby lobby) {
+        this.lobby = lobby;
+
+        Thread messageHandling = new Thread() {
+            @Override
+            public void run() {
+                while (running) {
+                    try {
+                        Command command = queue.take();
+                        if (command instanceof LobbyCommand) {
+                            executeCommand((LobbyCommand) command);
+                        }
+                    } catch (InterruptedException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        };
+        messageHandling.setDaemon(true);
+        messageHandling.start();
+    }
+
+    /**
+     *
+     * @param command
+     */
+    private void executeCommand(LobbyCommand command) {
 
     }
-    
-    public void readyStates()
-    {
-        
+
+    /**
+     * Gets this receiver's Lobby object
+     *
+     * @return
+     */
+    public Lobby getLobby() {
+        return this.lobby;
     }
-    
+
+    /**
+     *
+     */
+    public void readyStates() {
+
+    }
 }

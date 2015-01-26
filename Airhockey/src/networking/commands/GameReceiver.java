@@ -9,17 +9,26 @@ package networking.commands;
  *
  * @author Etienne
  */
-public class GameReceiver {
-    
-    public GameReceiver(){
-        
+public class GameReceiver extends Receiver {
+
+    /**
+     *
+     */
+    public GameReceiver() {
+
     }
-    
-    public void moveLeft(){
-        
+
+    /**
+     *
+     */
+    public void moveLeft() {
+
     }
-    
-    public void moveRight(){
-        
+
+    /**
+     *
+     */
+    public void moveRight() {
+
     }
 }

@@ -1,15 +1,18 @@
 package networking.commands;
 
 import networking.IPlayer;
+import networking.standalone.Connection;
 
 /**
  *
  * @author Etienne
  */
-public class JoinLobby implements ServerCommand {
+public class JoinLobby implements ServerCommand, ReturnCommand {
     
-    int id;
-    IPlayer player;
+    private int id;
+    private IPlayer player;
+    private Connection connection;
+    private ServerReceiver receiver;
 
     /**
      * Joins the lobby of the given player.
@@ -21,14 +24,12 @@ public class JoinLobby implements ServerCommand {
 	this.player = player;
     }        
     
-    ServerReceiver receiver;
-    
     /**
      * execute joinlobby
      */
     @Override
     public void execute() {
-        receiver.joinLobby(id, player);
+        receiver.joinLobby(id, player, connection);
     }        
 
     /**
@@ -38,5 +39,10 @@ public class JoinLobby implements ServerCommand {
     @Override
     public void setReceiver(ServerReceiver receiver) {
 	this.receiver = receiver;
+    }
+
+    @Override
+    public void setReturnAddress(Connection conn) {
+        this.connection = conn;
     }
 }
