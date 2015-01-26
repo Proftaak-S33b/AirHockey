@@ -14,7 +14,8 @@ public class SendMessage implements ServerCommand, LobbyCommand, GameCommand {
 
     /**
      * Instantiates a new SendMessage command
-     * @param message 
+     *
+     * @param message
      */
     public SendMessage(String message) {
         this.message = message;
@@ -25,11 +26,11 @@ public class SendMessage implements ServerCommand, LobbyCommand, GameCommand {
      */
     @Override
     public void execute() {
-        if(sReceiver != null){
-        sReceiver.sendMessage(message);
-        } else if(lReceiver != null){
+        if (sReceiver != null) {
+            sReceiver.sendMessage(message);
+        } else if (lReceiver != null) {
             lReceiver.sendMessage(message);
-        }else if(gReceiver != null){
+        } else if (gReceiver != null) {
             gReceiver.sendMessage(message);
         }
     }

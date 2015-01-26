@@ -9,7 +9,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.LinkedBlockingQueue;
 import networking.commands.Command;
-import networking.commands.ReturnCommand;
 
 /**
  *
@@ -21,6 +20,7 @@ public class Connection {
     private ObjectOutputStream out;
     private Socket socket;
     private LinkedBlockingQueue<Command> queue;
+    private ConnectionWatcher watcher;
 
     public Connection(Socket socket, LinkedBlockingQueue<Command> queue) throws IOException {
         this.socket = socket;
@@ -29,23 +29,8 @@ public class Connection {
         out.flush();
         in = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Command message = (Command) in.readObject();
-                    while (message != null) {
-                        if (message instanceof ReturnCommand) {
-                            ((ReturnCommand) message).setReturnAddress(Connection.this);
-                        }
-                        queue.put(message);
-                        message = (Command) in.readObject();
-                    }
-                } catch (IOException | InterruptedException | ClassNotFoundException ex) {
-                    System.out.println(ex.getMessage());
-                }
-            }
-        }, "ConnectionWatcher");
+        watcher = new ConnectionWatcher(queue, in, this);
+        Thread t = new Thread(watcher, "ConnectionWatcher");
         t.setDaemon(true);
         t.start();
     }
@@ -57,6 +42,7 @@ public class Connection {
      */
     public void write(Object o) {
         try {
+            System.out.println("Writing a " + o.getClass().getSimpleName());
             out.writeObject(o);
             out.flush();
         } catch (IOException ex) {
@@ -84,7 +70,7 @@ public class Connection {
      * @param queue the new queue this connection will put new commands into
      */
     public void setQueue(LinkedBlockingQueue<Command> queue) {
-        this.queue = queue;
+        watcher.setQueue(queue);
     }
 
     /**

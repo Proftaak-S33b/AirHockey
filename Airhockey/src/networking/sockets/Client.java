@@ -9,6 +9,8 @@ import java.io.*;
 import java.net.*;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -138,9 +140,20 @@ public class Client {
      *
      * @param name The name of the lobby to create
      * @param me The player that will be the host
+     * @return 
      */
-    public void addLobby(String name, IPlayer me) {
+    public Lobby addLobby(String name, IPlayer me) {
         send(new AddLobby(name, me));
+        while(this.lobby == null){
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+        Lobby l = this.lobby;
+        this.lobby = null;
+        return l;
     }
 
     /**
@@ -192,15 +205,6 @@ public class Client {
             System.out.println(e.getMessage());
         }
         return lobbyList;
-    }
-    
-    /**
-     * get the created lobby
-     * @return the lobby
-     */
-    public Lobby getLobby()
-    {
-        return this.lobby;
     }
     
     /**

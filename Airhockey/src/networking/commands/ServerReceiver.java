@@ -21,6 +21,9 @@ public class ServerReceiver extends Receiver {
 
     private List<LobbyReceiver> lobbyList;
 
+    /**
+     * 
+     */
     public ServerReceiver() {
         Receiver();
         lobbyList = new ArrayList<>();
@@ -52,7 +55,7 @@ public class ServerReceiver extends Receiver {
     public void executeCommand(ServerCommand command) {
         command.setReceiver(this);
         command.execute();
-        System.out.println("Executed command: " + command.getClass().getSimpleName());
+        System.out.println("Executed ServerCommand: " + command.getClass().getSimpleName());
     }
 
     /**
@@ -130,11 +133,15 @@ public class ServerReceiver extends Receiver {
     }
 
     /**
-     * Sends the lobbylist over the specified connection.
+     * Sends a list of lobbies over the specified connection.
      *
      * @param conn the connection to send the lobbylist over
      */
     public void getLobbies(Connection conn) {
-        conn.write(lobbyList);
+        List<Lobby> lobby = new ArrayList<>();
+        for (LobbyReceiver lr : lobbyList) {
+            lobby.add(lr.getLobby());
+        }
+        conn.write(lobby);
     }
 }

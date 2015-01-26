@@ -100,9 +100,10 @@ public class LobbyManager implements ChangeListener<String> {
      *
      * @param gameName The name the new lobby will be identified as. Unique
      * @param host The IPlayer who created this lobby, cant be in another lobby
+     * @return 
      */
-    public void addLobby(String gameName, IPlayer host) {
-        client.addLobby(gameName, host);
+    public Lobby addLobby(String gameName, IPlayer host) {
+        return client.addLobby(gameName, host);
     }
 
     /**

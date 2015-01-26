@@ -51,6 +51,7 @@ public class LobbyReceiver extends Receiver {
     private void executeCommand(LobbyCommand command) {
         command.setReceiver(this);
         command.execute();
+        System.out.println("Executed LobbyCommand: " + command.getClass().getSimpleName());
     }
 
     /**
