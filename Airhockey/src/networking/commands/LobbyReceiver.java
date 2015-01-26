@@ -5,6 +5,7 @@
  */
 package networking.commands;
 
+import networking.IPlayer;
 import networking.standalone.Lobby;
 
 /**
@@ -73,8 +74,15 @@ public class LobbyReceiver extends Receiver {
 
     /**
      *
+     * @param me
      */
-    public void readyStates() {
-
+    public void readyStates(IPlayer me) {
+        int index = lobby.getAllPlayers().indexOf(me);
+        if(lobby.getPlayerStates().get(index)){
+            lobby.setPlayerState(index, false);
+        }else{
+            lobby.setPlayerState(index, true);
+        }
+        lobbyChanged();
     }
 }
