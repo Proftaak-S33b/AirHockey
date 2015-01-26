@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package networking.sockets;
 
 import java.io.*;
@@ -123,7 +118,7 @@ public class Client {
     }
 
     /**
-     *
+     * Sends any command to the server.
      * @param message
      */
     private void send(Command message) {
@@ -170,6 +165,16 @@ public class Client {
         send(new SendMessage(message));
     }
 
+    /**
+     * Updates player's movement to the server.
+     * @param player the user moving.
+     * @param x the new x coordinate of the pod.
+     * @param y the new y coordinate of the pod.
+     */
+    public void sendMovement(IPlayer player, float x, float y){
+	send(new SendMovement(player, x, y));
+    }
+    
     /**
      * Gets all the lobbies from the server. Will block until the lobbies have
      * been received.

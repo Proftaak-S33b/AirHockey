@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package networking.commands;
 
 import java.util.ArrayList;
@@ -49,7 +44,7 @@ public class ServerReceiver {
     }
 
     /**
-     * Exectuce the command
+     * Execute the command server-side.
      *
      * @param command The command to be executed
      */
@@ -69,6 +64,16 @@ public class ServerReceiver {
         System.out.println("Received message: " + text);
     }
 
+    /**
+     * Broadcasts player movement to the other players.
+     * @param player the user moving.
+     * @param x the new x coordinate of the pod.
+     * @param y the new y coordinate of the pod.
+     */
+    public void sendMovement(IPlayer player, float x, float y){
+	//
+    }
+    
     /**
      * Adds a lobby and puts the creator of this lobby in it.
      *

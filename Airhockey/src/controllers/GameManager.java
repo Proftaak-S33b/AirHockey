@@ -6,13 +6,11 @@ import game.AI.Difficulty;
 import game.GameWorld;
 import game.Goal;
 import game.MathUtillities;
+import game.MathUtillities.Corner;
 import game.Pod;
 import game.Puck;
 import game.Wall;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.rmi.RemoteException;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -24,9 +22,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import networking.IPlayer;
+import networking.commands.GameReceiver;
 import networking.sockets.Client;
 import networking.standalone.Lobby;
-import networking.standalone.Server;
 import networking.standalone.rmiDefaults;
 import org.jbox2d.callbacks.ContactImpulse;
 import org.jbox2d.callbacks.ContactListener;
@@ -64,26 +62,57 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         SPECTATING
     }
 
-    private final GameType gameType;
-    private final GameWorld gameworld;
-    private final GraphicsContext gc;
-    private final Difficulty difficulty;
-    private final GameView gv;
-    private final Lobby lobby;
-//    private IRemoteGame remoteGame;
-    private Server server;
-    private Client client;
-    private boolean puckReset = false;
-    private Timer physTimer = null;
-
-    /**
-     * Indicates whether the field- and goalcorners need to be (re-)calculated.
-     */
-    private boolean fieldReset = true;
 
     final int scale = 10;
 
     //<editor-fold defaultstate="collapsed" desc="private field data">
+    /**
+     * Multiplayer or Singleplayer. Also for identification of the players.
+     */
+    private final GameType gameType;
+    
+    /**
+     * Physics related.
+     */
+    private final GameWorld gameworld;
+    
+    /**
+     * Translates physics to actual pixels.
+     */
+    private final GraphicsContext gc;
+    
+    /**
+     * Because this is for both Singleplayer as Multiplayer.
+     */
+    private final Difficulty difficulty;
+    
+    /**
+     * The GUI.
+     */
+    private final GameView gv;
+    
+    /**
+     * The pre-game room where players collide and swear at each other.
+     */
+    private final Lobby lobby;
+    
+//    private IRemoteGame remoteGame;
+    //private Server server;
+    private Client client;
+    
+    private boolean puckReset = false;
+    private Timer physTimer = null;
+
+    /**
+     * Receives all the incoming commands from the server.
+     */
+    private GameReceiver receiver;
+    
+    /**
+     * Indicates whether the field- and goalcorners need to be (re-)calculated.
+     */
+    private boolean fieldReset = true;
+    
     // fieldcorners
     private Vec2 field_bottomleft;
     private Vec2 field_top;
@@ -111,6 +140,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
     private Vec2 goal_leftbottom_offset;
 
     //</editor-fold>
+    
     int counter = 0;
     int round = 1; //Keep track of how many rounds are played
 
@@ -123,8 +153,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * @param gameType The type of game for the client this gamemanager manages
      * the game of
      * @param gv The GUI Controller //should not be here!!!
-     * @param lobby
-     * @param clientData
+     * @param lobby     
      */
     public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, Lobby lobby) {
         this.gc = gc;
@@ -134,15 +163,18 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         this.difficulty = difficulty;
         this.gameType = gameType;
         gameworld.getPhysWorld().setContactListener(this);
+	receiver = new GameReceiver(this);
+	// Are we hosting?
         if (gameType == GameType.MULTIPLAYER_RED) {
-            try { 
-                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444, this);
-            } catch (IOException ex) {
-                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
+	    try {
+		// Hosting happens off-site. IE not by any of the users.
+		client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
+	    } catch (IOException ex) {
+		Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+	    }
         } else {
             try {
-                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444, this);
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT(), this);
             } catch (IOException ex) {
                 Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -151,47 +183,24 @@ public class GameManager implements ContactListener, ChangeListener<String> {
 
    
     /**
-     * Sends a text message to the server which distributes it over all clients
-     * @param message the text message to be sent
+     * Sends a text message to the server which distributes it over all clients.
+     * @param message the text message to be sent.
      */
     public void sendMessage(String message){
+	// Let the client communicate this.
         client.sendMessage(message);
     }
-//
-//    private IRemoteGame startServer() {
-//        try {
-//            //Send this to central server
-//            //server.getServerIP();
-//            IRemoteGame game = lobby.getRemoteGame();
-//            Vec2 redPodPos = gameworld.getPod(0).getPosition();
-//            Vec2 puckPos = gameworld.getPuck().getPosition();
-//            Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
-//            game.setHostData(
-//                    new Coordinate(redPodPos.x, redPodPos.y),
-//                    new Coordinate(puckPos.x, puckPos.y),
-//                    new Coordinate(puckVel.x, puckVel.y),
-//                    gameworld.getPlayers().get(0).getRanking(),
-//                    gameworld.getPlayers().get(1).getRanking(),
-//                    gameworld.getPlayers().get(2).getRanking(),
-//                    round);
-//            return game;
-//        } catch (RemoteException ex) {
-//            System.out.println("RemoteException: " + ex.getMessage());
-//        }
-//        return null;
-//    }
-//
-//    private IRemoteGame connectToServer(InetAddress address, int port) {
-//        Client rmi = new Client(address.getHostAddress(), port);
-//        ILobby l = (ILobby) rmi.lookup("hockeygame");
-//        try {
-//            return l.getRemoteGame();
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
-
+    
+    /**
+     * Adds a message received from the server.
+     * @param message a String from the server.
+     */
+    public void addMessage(String message){
+	gv.setTekst(message);
+    }
+    
+    //<editor-fold defaultstate="collapsed" desc="//////  GRAPHICS/PHYSICS   ////////////////////////////////////////////////">
+    
     /**
      * Draws the sides and puck on to the field.
      *
@@ -430,10 +439,6 @@ public class GameManager implements ContactListener, ChangeListener<String> {
     }
 
     /**
-     * *************TODO***************
-     */
-    //This one may need some refactoring??
-    /**
      * Is the player moving right or left?
      *
      * @param playerMoveRight
@@ -495,40 +500,12 @@ public class GameManager implements ContactListener, ChangeListener<String> {
                     }
                     if (gameType == GameType.MULTIPLAYER_BLUE) {
                         Vec2 pos = gameworld.getPod(1).getPosition();
-//                        try {
-//                            remoteGame.setBluePodPos(new Coordinate(pos.x, pos.y));
-//                            GameData data = remoteGame.getGameData();
-//                            setLocalData(data);
-//                        } catch (RemoteException ex) {
-//                            System.out.println("RemoteException: " + ex.getMessage());
-//                        }
                     } else if (gameType == GameType.MULTIPLAYER_GREEN) {
                         Vec2 pos = gameworld.getPod(2).getPosition();
-//                        try {
-//                            remoteGame.setGreenPodPos(new Coordinate(pos.x, pos.y));
-//                            GameData data = remoteGame.getGameData();
-//                            setLocalData(data);
-//                        } catch (RemoteException ex) {
-//                            System.out.println("RemoteException: " + ex.getMessage());
-//                        }
                     } else if (gameType == GameType.MULTIPLAYER_RED) {
-//                        try {
                         Vec2 redPodPos = gameworld.getPod(0).getPosition();
                         Vec2 puckPos = gameworld.getPuck().getPosition();
                         Vec2 puckVel = gameworld.getPuck().getBody().getLinearVelocity();
-//                            remoteGame.setHostData(
-//                                    new Coordinate(redPodPos.x, redPodPos.y),
-//                                    new Coordinate(puckPos.x, puckPos.y),
-//                                    new Coordinate(puckVel.x, puckVel.y),
-//                                    gameworld.getPlayers().get(0).getRanking(),
-//                                    gameworld.getPlayers().get(1).getRanking(),
-//                                    gameworld.getPlayers().get(2).getRanking(),
-//                                    round);
-//                            GameData data = remoteGame.getGameData();
-//                            setLocalData(data);
-//                        } catch (RemoteException ex) {
-//                            System.out.println("RemoteException: " + ex.getMessage());
-//                        }
                     }
                 }
 
@@ -539,8 +516,6 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         }
     }
 
-    // Adding the sounds was kind of confusing, if someone could clean it up a bit that'd be great.
-    // I'd do it but I'm working on RMI atm. :(
     /**
      * Method is called when a collision occurs
      *
@@ -814,4 +789,6 @@ public class GameManager implements ContactListener, ChangeListener<String> {
             physTimer.cancel();
         }
     }
+    
+    //</editor-fold>
 }

@@ -71,7 +71,7 @@ public class GameView implements Initializable {
     private GraphicsContext gc;
 
     //Singleplayer
-    private IPlayer currentPlayer;
+    public IPlayer currentPlayer;
     //Multiplayer
     private Lobby currentLobby;
     private GameManager gamemanager;
@@ -214,7 +214,7 @@ public class GameView implements Initializable {
             for(IPlayer tempPlayer : playersInLobby){
                 players.add(tempPlayer);
             }
-            //Set dificulty to prevent errors
+            //Set difficulty to prevent errors
             difficulty = Difficulty.NORMAL;
             gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby);
             Timer t = new Timer("CountdownTimer", true);
@@ -271,16 +271,31 @@ public class GameView implements Initializable {
     }
 
     /**
-     * Method for handling send chat button click
+     * Method for handling "send" chatbutton click.
      *
      * @param event
      */
     public void setTekst(ActionEvent event) {
-        if (!textChat.getText().equals("")) {
+	boolean stringnotempty = !textChat.getText().equals("");
+	if (gametype != GameType.SINGLEPLAYER & stringnotempty) {
+	    // Send it to everyone else.
+	    gamemanager.sendMessage(textChat.getText());
+	    // Add it to the box locally.
+	    listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
+	}
+	else if (stringnotempty) {
             listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
             listChat.getItems().add("AI: " + new AI("", 20).chat());
             textChat.clear();
         }
+    }
+    
+    /**
+     * Method for handling incoming messages from the controller.
+     * @param message 
+     */
+    public void setTekst(String message){
+	listChat.getItems().add(message);
     }
 
     /**
