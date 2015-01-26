@@ -98,6 +98,7 @@ public class LobbyController implements Initializable, Observer {
         stage.setTitle(currentLobby.getGameName());
 
         //Set lobby info text fields
+        
         updateLobbyInfo();
 
         //Initialize players table
@@ -129,6 +130,7 @@ public class LobbyController implements Initializable, Observer {
      * Update the lobby info, game name, amount of players and host name.
      */
     private void updateLobbyInfo() {
+        System.out.println("Update lobby info: " + currentLobby.getPlayersAmount());
         if (currentLobby != null && !currentLobby.getAllPlayers().isEmpty()) {
             textGameName.setText(currentLobby.getGameName());
             textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
@@ -233,7 +235,9 @@ public class LobbyController implements Initializable, Observer {
             });
         } else if (o1 instanceof Lobby) {
             Platform.runLater(() -> {
+                System.out.println("update Lobby");
                 currentLobby = (Lobby) o1;
+                System.out.println(o1.toString());
                 updateLobbyInfo();
             });
         }
