@@ -57,9 +57,10 @@ public class Client extends Observable {
                         } else if (message instanceof Lobby) {
                             //TODO get this object back to the caller of "addLobby"...
                             System.out.println("Received lobby: " + message.toString());
+                            System.out.println("Amount of players: " + ((Lobby) message).getPlayersAmount());
                             Client.this.lobby = (Lobby) message;
                             Client.super.setChanged();
-                            Client.super.notifyObservers(Client.this.lobby);
+                            Client.super.notifyObservers(message);
                         } else {
                             System.out.println("Unknown class type received: " + message.getClass().getName());
                         }

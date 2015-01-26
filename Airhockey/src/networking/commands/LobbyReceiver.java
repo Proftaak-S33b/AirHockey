@@ -69,7 +69,8 @@ public class LobbyReceiver extends Receiver {
      */
     public void lobbyChanged(){
         sendToAll(lobby);
-        System.out.println("send lobby to all: " + lobby.getGameName());
+        System.out.println("Sent lobby \"" + lobby.getGameName() + "\" to all");
+        System.out.println("Amount of players: " + lobby.getPlayersAmount());
     }
 
     /**
