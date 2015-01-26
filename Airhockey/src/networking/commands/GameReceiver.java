@@ -15,7 +15,7 @@ public class GameReceiver extends Receiver {
      *
      */
     public GameReceiver() {
-
+        Receiver();
     }
 
     /**

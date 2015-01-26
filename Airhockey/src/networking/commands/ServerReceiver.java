@@ -22,6 +22,7 @@ public class ServerReceiver extends Receiver {
     private List<LobbyReceiver> lobbyList;
 
     public ServerReceiver() {
+        Receiver();
         lobbyList = new ArrayList<>();
 
         Thread messageHandler = new Thread() {

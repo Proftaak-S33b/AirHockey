@@ -22,6 +22,7 @@ public class LobbyReceiver extends Receiver {
      * @param lobby this receiver's Lobby object
      */
     public LobbyReceiver(Lobby lobby) {
+        Receiver();
         this.lobby = lobby;
 
         Thread messageHandling = new Thread() {
