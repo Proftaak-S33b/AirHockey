@@ -5,6 +5,7 @@
  */
 package networking.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import networking.standalone.Connection;
@@ -18,6 +19,11 @@ public abstract class Receiver {
     protected List<Connection> serverConnections;
     protected LinkedBlockingQueue<Command> queue;
     protected boolean running = true;
+
+    public void Receiver() {
+        queue = new LinkedBlockingQueue<>();
+        serverConnections = new ArrayList<>();
+    }
 
     /**
      * Sends a text message to all clients connected to this receiver
