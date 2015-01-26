@@ -99,23 +99,7 @@ public class LobbyController implements Initializable , ChangeListener<String> {
         stage.setTitle(currentLobby.getGameName());
 
         //Set lobby info text fields
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(new TimerTask() {
-
-            @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        System.out.println("test");
-                        updateLobbyInfo();
-                    }
-                });
-            }
-        }
-        , 0, 1000);
-        
+        updateLobbyInfo();
 
         //Initialize players table
         columnPlayers.setCellValueFactory(new PropertyValueFactory("name"));
