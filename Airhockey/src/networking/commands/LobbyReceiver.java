@@ -49,7 +49,8 @@ public class LobbyReceiver extends Receiver {
      * @param command
      */
     private void executeCommand(LobbyCommand command) {
-
+        command.setReceiver(this);
+        command.execute();
     }
 
     /**

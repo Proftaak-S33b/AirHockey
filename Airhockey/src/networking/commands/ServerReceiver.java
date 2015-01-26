@@ -120,8 +120,11 @@ public class ServerReceiver extends Receiver {
         for (LobbyReceiver lr : lobbyList) {
             if (lr.getLobby().getID() == id) {
                 System.out.println("Lobby found");
+                lr.addConnection(conn);
+                serverConnections.remove(conn);
                 lr.getLobby().addPlayer(player);
                 conn.setQueue(lr.getQueue());
+                conn.write(lr.getLobby());
             }
         }
     }
