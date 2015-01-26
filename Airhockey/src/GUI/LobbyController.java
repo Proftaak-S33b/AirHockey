@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -99,10 +100,22 @@ public class LobbyController implements Initializable {
         stage.setTitle(currentLobby.getGameName());
 
         //Set lobby info text fields
-        updateLobbyInfo();
+        Timer t = new Timer();
+        t.scheduleAtFixedRate(new TimerTask() {
 
-    
-        
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        System.out.println("test");
+                        updateLobbyInfo();
+                    }
+                });
+            }
+        }
+        , 0, 1000);
         
 
         //Initialize players table

@@ -117,6 +117,11 @@ public class Lobby implements Serializable {
             return null;
         }
     }
+    
+    public int getRanking()
+    {
+        return players.get(0).getRanking();
+    }
 
     /**
      * get all players from the player list
