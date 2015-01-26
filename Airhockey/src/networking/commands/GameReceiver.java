@@ -8,7 +8,6 @@ import networking.IPlayer;
  * Receiver for messages from the server during a game.
  * @author Etienne
  */
-<<<<<<< HEAD
 public class GameReceiver {
     
     /**
@@ -53,30 +52,6 @@ public class GameReceiver {
 	// decide where to move
 	
 	// move
-	
-=======
-public class GameReceiver extends Receiver {
-
-    /**
-     *
-     */
-    public GameReceiver() {
-        Receiver();
-    }
-
-    /**
-     *
-     */
-    public void moveLeft() {
-
-    }
-
-    /**
-     *
-     */
-    public void moveRight() {
-
->>>>>>> a56b4174cc40f0116d5923849596f869b6023123
     }
     
     /**

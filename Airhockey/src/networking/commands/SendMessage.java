@@ -31,7 +31,7 @@ public class SendMessage implements ServerCommand, LobbyCommand, GameCommand {
         } else if (lReceiver != null) {
             lReceiver.sendMessage(message);
         } else if (gReceiver != null) {
-            gReceiver.sendMessage(message);
+            gReceiver.addMessage(message);
         }
     }
 
