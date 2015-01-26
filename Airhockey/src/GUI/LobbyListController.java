@@ -104,14 +104,14 @@ public class LobbyListController implements Initializable {
      */
     public void createLobby(Event evt) {
         try {
-            Lobby lobby = controller.addLobby(newLobbyName.getText(), currentPlayer);
+            controller.addLobby(newLobbyName.getText(), currentPlayer);
             controller.destroy();
             Node node = (Node) evt.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
             Stage stage = (Stage) node.getScene().getWindow();
             stage.setScene(new Scene((Pane) loader.load()));
             LobbyController lobbyFXML = loader.<LobbyController>getController();
-            lobbyFXML.initData(currentPlayer, lobby, controller.getClient());
+            lobbyFXML.initData(currentPlayer, controller.getClient().getLobby(), controller.getClient());
             stage.show();
         } catch (IOException ex) {
             System.out.println("Error changing scene from LobbyList to Lobby " + ex.toString());

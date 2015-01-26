@@ -127,7 +127,7 @@ public class ServerReceiver extends Receiver {
                 serverConnections.remove(conn);
                 lr.getLobby().addPlayer(player);
                 conn.setQueue(lr.getQueue());
-                conn.write(lr.getLobby());
+                lr.lobbyChanged();
             }
         }
     }

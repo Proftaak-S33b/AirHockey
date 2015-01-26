@@ -136,13 +136,13 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         gameworld.getPhysWorld().setContactListener(this);
         if (gameType == GameType.MULTIPLAYER_RED) {
             try { 
-                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444, this);
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444);
             } catch (IOException ex) {
                 Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             try {
-                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444, this);
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), 4444);
             } catch (IOException ex) {
                 Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }

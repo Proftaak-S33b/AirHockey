@@ -8,11 +8,8 @@ package networking.sockets;
 import java.io.*;
 import java.net.*;
 import java.util.List;
+import java.util.Observable;
 import java.util.concurrent.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.IPlayer;
@@ -23,31 +20,26 @@ import networking.standalone.Lobby;
  *
  * @author Joris
  */
-public class Client {
+public class Client extends Observable {
 
     private ConnectionToServer connection;
     private LinkedBlockingDeque<Object> messages;
     private Socket socket;
-    private ReadOnlyStringWrapper observableMessage;
-    private ObservableList<Lobby> lobbyList;
+    private String message;
     private Lobby lobby;
-    ChangeListener<String> changeListener;
+    private ObservableList<Lobby> lobbyList;
 
     /**
      *
      * @param IPAddress
      * @param port
-     * @param changeListener
      * @throws IOException
      */
-    public Client(String IPAddress, int port, ChangeListener<String> changeListener) throws IOException {
+    public Client(String IPAddress, int port) throws IOException {
         socket = new Socket(IPAddress, port);
         messages = new LinkedBlockingDeque<>();
         connection = new ConnectionToServer(socket);
-        observableMessage = new ReadOnlyStringWrapper();
-        observableMessage.addListener(changeListener);
         lobbyList = FXCollections.observableArrayList();
-        this.changeListener = changeListener;
 
         Thread messageHandling = new Thread() {
             @Override
@@ -57,7 +49,9 @@ public class Client {
                         Object message = messages.take();
                         if (message instanceof String) {
                             System.out.println("Received string: " + message);
-                            observableMessage.set((String) message);
+                            Client.this.message = (String) message;
+                            Client.super.setChanged();
+                            Client.super.notifyObservers(Client.this.message);
                         } else if (message instanceof List) {
                             synchronized (lobbyList) {
                                 System.out.println("Changing lobbyList");
@@ -67,8 +61,10 @@ public class Client {
                             }
                         } else if (message instanceof Lobby) {
                             //TODO get this object back to the caller of "addLobby"...
-                            System.out.println("addLobby: " + message.toString());
-                            lobby = (Lobby) message;
+                            System.out.println("Received lobby: " + message.toString());
+                            Client.this.lobby = (Lobby) message;
+                            Client.super.setChanged();
+                            Client.super.notifyObservers(Client.this.lobby);
                         } else {
                             System.out.println("Unknown class type received: " + message.getClass().getName());
                         }
@@ -140,20 +136,18 @@ public class Client {
      *
      * @param name The name of the lobby to create
      * @param me The player that will be the host
-     * @return 
      */
-    public Lobby addLobby(String name, IPlayer me) {
+    public void addLobby(String name, IPlayer me) {
         send(new AddLobby(name, me));
-        while(this.lobby == null){
-            try {
-                Thread.sleep(5);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
-        Lobby l = this.lobby;
-        this.lobby = null;
-        return l;
+    }
+
+    /**
+     * Get the current lobby
+     *
+     * @return the current Lobby object
+     */
+    public Lobby getLobby() {
+        return this.lobby;
     }
 
     /**
@@ -205,15 +199,5 @@ public class Client {
             System.out.println(e.getMessage());
         }
         return lobbyList;
-    }
-    
-    /**
-     * change the changelistener
-     * @param listener a new changeListener
-     */
-    public void changeChangeListener(ChangeListener<String> listener)
-    {
-        observableMessage.addListener(listener);
-        observableMessage.removeListener(changeListener);
     }
 }

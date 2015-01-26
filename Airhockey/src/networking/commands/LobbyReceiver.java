@@ -62,6 +62,13 @@ public class LobbyReceiver extends Receiver {
     public Lobby getLobby() {
         return this.lobby;
     }
+    
+    /**
+     * 
+     */
+    public void lobbyChanged(){
+        sendToAll(lobby);
+    }
 
     /**
      *

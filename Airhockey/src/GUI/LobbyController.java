@@ -9,9 +9,9 @@ import game.Human;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -34,7 +34,7 @@ import networking.standalone.Lobby;
  *
  * @author Joris
  */
-public class LobbyController implements Initializable , ChangeListener<String> {
+public class LobbyController implements Initializable, Observer {
 
     @FXML
     public TextField textHostName;
@@ -68,7 +68,6 @@ public class LobbyController implements Initializable , ChangeListener<String> {
     private Client client;
     private boolean ready = false;
 
-
     /**
      * Initializes the controller class.
      *
@@ -92,7 +91,7 @@ public class LobbyController implements Initializable , ChangeListener<String> {
         currentLobby = lobby;
         this.client = client;
         lobby.addPlayer(player);
-        client.changeChangeListener(this);
+        client.addObserver(this);
 
         //Set stage title
         Stage stage = (Stage) tablePlayers.getScene().getWindow();
@@ -130,46 +129,42 @@ public class LobbyController implements Initializable , ChangeListener<String> {
      * Update the lobby info, game name, amount of players and host name.
      */
     private void updateLobbyInfo() {
-        try {
-            if (currentLobby != null && !currentLobby.getAllPlayers().isEmpty()) {
-                textGameName.setText(currentLobby.getGameName());
-                textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
-                textHostName.setText(currentLobby.getPlayer(0).getName());
-                tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
-                ArrayList<Boolean> readyStates = (ArrayList<Boolean>) currentLobby.getPlayerStates();
-                //Set all ready states
-                for (int i = 0; i < 3; i++) {
-                    if (tablePlayers.getItems().size() >= i + 1) {
-                        if (readyStates.get(i)) {
-                            System.out.println("TODO set ready states in GUI");
-                        }
+        if (currentLobby != null && !currentLobby.getAllPlayers().isEmpty()) {
+            textGameName.setText(currentLobby.getGameName());
+            textPlayerCount.setText(currentLobby.getPlayersAmount() + "/3");
+            textHostName.setText(currentLobby.getPlayer(0).getName());
+            tablePlayers.setItems(FXCollections.observableArrayList(currentLobby.getAllPlayers()));
+            ArrayList<Boolean> readyStates = (ArrayList<Boolean>) currentLobby.getPlayerStates();
+            //Set all ready states
+            for (int i = 0; i < 3; i++) {
+                if (tablePlayers.getItems().size() >= i + 1) {
+                    if (readyStates.get(i)) {
+                        System.out.println("TODO set ready states in GUI");
                     }
-                }
-
-                //If host ready start game
-                System.out.println(readyStates.get(0).toString() + ", " + readyStates.get(1) + ", " + readyStates.get(2));
-                if (readyStates.get(0)/* && readyStates.get(1) && readyStates.get(2)*/) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
-                        Stage stage = (Stage) chatBox.getScene().getWindow();
-                        stage.setScene(new Scene((Pane) loader.load()));
-                        GameView controller = loader.<GameView>getController();
-                        stage.show();
-                        controller.init_Multiplayer(currentPlayer, currentLobby);
-                    } catch (IOException ex) {
-                        System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
-                    }
-                    System.out.println("Should be new window now");
-                }
-                //Check if chat message is new
-                if (chatBox.getItems().size() > 0) {
-                    
-                } else {
-                    client.sendMessage("Welcome to the game "+ currentPlayer.getName()+"!");
                 }
             }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+
+            //If host ready start game
+            System.out.println(readyStates.get(0).toString() + ", " + readyStates.get(1) + ", " + readyStates.get(2));
+            if (readyStates.get(0)/* && readyStates.get(1) && readyStates.get(2)*/) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
+                    Stage stage = (Stage) chatBox.getScene().getWindow();
+                    stage.setScene(new Scene((Pane) loader.load()));
+                    GameView controller = loader.<GameView>getController();
+                    stage.show();
+                    controller.init_Multiplayer(currentPlayer, currentLobby);
+                } catch (IOException ex) {
+                    System.out.println("Error changing scene from Main menu to Settings " + ex.toString());
+                }
+                System.out.println("Should be new window now");
+            }
+            //Check if chat message is new
+            if (chatBox.getItems().size() > 0) {
+
+            } else {
+                client.sendMessage("Welcome to the game " + currentPlayer.getName() + "!");
+            }
         }
     }
 
@@ -197,7 +192,6 @@ public class LobbyController implements Initializable , ChangeListener<String> {
         } else {
             readyButton.getStyleClass().add("ready");
             currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), true);
-
         }
         ready = !ready;
     }
@@ -232,9 +226,16 @@ public class LobbyController implements Initializable , ChangeListener<String> {
     }
 
     @Override
-    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        Platform.runLater(() -> {
-            chatBox.getItems().add(newValue);
-        });
+    public void update(Observable o, Object o1) {
+        if (o1 instanceof String) {
+            Platform.runLater(() -> {
+                chatBox.getItems().add(o1);
+            });
+        } else if (o1 instanceof Lobby) {
+            Platform.runLater(() -> {
+                currentLobby = (Lobby) o1;
+                updateLobbyInfo();
+            });
+        }
     }
 }

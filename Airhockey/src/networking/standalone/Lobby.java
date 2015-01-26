@@ -13,7 +13,7 @@ import networking.IPlayer;
  *
  * @author Joris
  */
-public class Lobby implements Serializable {
+public class Lobby implements Serializable{
 
     private int ID;
     private String gameName;

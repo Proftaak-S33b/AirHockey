@@ -82,7 +82,7 @@ public abstract class Receiver {
      *
      * @param message the object to send
      */
-    private void sendToAll(Object message) {
+    protected void sendToAll(Object message) {
         for (Connection client : serverConnections) {
             client.write(message);
         }
