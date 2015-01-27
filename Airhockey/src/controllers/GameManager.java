@@ -205,19 +205,20 @@ public class GameManager implements ContactListener, Observer {
                 // Hosting happens off-site. IE not by any of the users.
                 client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
                 sendPuck();
+                this.client.addObserver(this);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN || gameType == GameType.SPECTATING) {
             try {
                 client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
+                this.client.addObserver(this);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         } else {
 
         }
-        this.client.addObserver(this);
     }
 
     private void sendPuck() {
