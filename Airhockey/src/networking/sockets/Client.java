@@ -63,6 +63,7 @@ public class Client extends Observable {
                             Client.super.notifyObservers(message);
                             //This breaks it for the creator, but not for the joiner of the lobby
                             //setLobby(lobby);
+                        
                         } else {
                             System.out.println("Unknown class type received: " + message.getClass().getName());
                         }

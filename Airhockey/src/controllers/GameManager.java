@@ -11,6 +11,8 @@ import game.Pod;
 import game.Puck;
 import game.Wall;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -41,13 +43,36 @@ import org.jbox2d.collision.shapes.CircleShape;
  *
  * @author Maikel
  */
-public class GameManager implements ContactListener, ChangeListener<String> {
+public class GameManager implements ContactListener, Observer {
 
     @Override
-    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-        Platform.runLater(() -> {
-            gv.listChat.getItems().add(newValue);
-        });
+    public void update(Observable o, Object arg) {
+        String s = (String) arg;
+        if (s.startsWith("MULTIPLAYER")) {
+            if (s.startsWith("MULTIPLAYER_B")) {
+                if (s.endsWith("Right")) {
+                    player_Move(true, false, GameType.MULTIPLAYER_BLUE);
+                } else {
+                    player_Move(false, true, GameType.MULTIPLAYER_BLUE);
+                }
+            } else if (s.startsWith("MULTIPLAYER_G")) {
+                if (s.endsWith("Right")) {
+                    player_Move(true, false, GameType.MULTIPLAYER_GREEN);
+                } else {
+                    player_Move(false, true, GameType.MULTIPLAYER_GREEN);
+                }
+            } else if (s.startsWith("MULTIPLAYER_R")) {
+                if (s.endsWith("Right")) {
+                    player_Move(true, false, GameType.MULTIPLAYER_RED);
+                } else {
+                    player_Move(false, true, GameType.MULTIPLAYER_RED);
+                }
+            }
+        } else {
+            Platform.runLater(() -> {
+                gv.listChat.getItems().add((String) arg);
+            });
+        }
     }
 
     /**
@@ -62,7 +87,6 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         SPECTATING
     }
 
-
     final int scale = 10;
 
     //<editor-fold defaultstate="collapsed" desc="private field data">
@@ -70,36 +94,36 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * Multiplayer or Singleplayer. Also for identification of the players.
      */
     private final GameType gameType;
-    
+
     /**
      * Physics related.
      */
     private final GameWorld gameworld;
-    
+
     /**
      * Translates physics to actual pixels.
      */
     private final GraphicsContext gc;
-    
+
     /**
      * Because this is for both Singleplayer as Multiplayer.
      */
     private final Difficulty difficulty;
-    
+
     /**
      * The GUI.
      */
     private final GameView gv;
-    
+
     /**
      * The pre-game room where players collide and swear at each other.
      */
     private final Lobby lobby;
-    
+
 //    private IRemoteGame remoteGame;
     //private Server server;
     private Client client;
-    
+
     private boolean puckReset = false;
     private Timer physTimer = null;
 
@@ -107,12 +131,12 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * Receives all the incoming commands from the server.
      */
     private GameReceiver receiver;
-    
+
     /**
      * Indicates whether the field- and goalcorners need to be (re-)calculated.
      */
     private boolean fieldReset = true;
-    
+
     // fieldcorners
     private Vec2 field_bottomleft;
     private Vec2 field_top;
@@ -140,7 +164,6 @@ public class GameManager implements ContactListener, ChangeListener<String> {
     private Vec2 goal_leftbottom_offset;
 
     //</editor-fold>
-    
     int counter = 0;
     int round = 1; //Keep track of how many rounds are played
 
@@ -153,7 +176,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * @param gameType The type of game for the client this gamemanager manages
      * the game of
      * @param gv The GUI Controller //should not be here!!!
-     * @param lobby     
+     * @param lobby
      */
     public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, Lobby lobby) {
         this.gc = gc;
@@ -163,15 +186,15 @@ public class GameManager implements ContactListener, ChangeListener<String> {
         this.difficulty = difficulty;
         this.gameType = gameType;
         gameworld.getPhysWorld().setContactListener(this);
-	receiver = new GameReceiver(this);
-	// Are we hosting?
+        receiver = new GameReceiver(this);
+        // Are we hosting?
         if (gameType == GameType.MULTIPLAYER_RED) {
-	    try {
-		// Hosting happens off-site. IE not by any of the users.
-		client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
-	    } catch (IOException ex) {
-		Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
-	    }
+            try {
+                // Hosting happens off-site. IE not by any of the users.
+                client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
+            } catch (IOException ex) {
+                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             try {
                 client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
@@ -179,28 +202,29 @@ public class GameManager implements ContactListener, ChangeListener<String> {
                 Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        this.client.addObserver(this);
     }
 
-   
     /**
      * Sends a text message to the server which distributes it over all clients.
+     *
      * @param message the text message to be sent.
      */
-    public void sendMessage(String message){
-	// Let the client communicate this.
+    public void sendMessage(String message) {
+        // Let the client communicate this.
         client.sendMessage(message);
     }
-    
+
     /**
      * Adds a message received from the server.
+     *
      * @param message a String from the server.
      */
-    public void addMessage(String message){
-	gv.setTekst(message);
+    public void addMessage(String message) {
+        gv.setTekst(message);
     }
-    
+
     //<editor-fold defaultstate="collapsed" desc="//////  GRAPHICS/PHYSICS   ////////////////////////////////////////////////">
-    
     /**
      * Draws the sides and puck on to the field.
      *
@@ -446,38 +470,39 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * @param gametype
      */
     public void player_Move(boolean playerMoveRight, boolean playerMoveLeft, GameType gametype) {
-		
-	int index;
-	
-	switch (gametype){
-	    case MULTIPLAYER_BLUE:
-		index = 1;
-		break;
-	    case MULTIPLAYER_GREEN:
-		index = 2;
-		break;
-	    case MULTIPLAYER_RED:
-	    default:
-		index = 0;
-		break;
-	}
 
-	float x = gameworld.getPod(index).getPosition().x;
-	double radius = MathUtillities.getPodRadius();
-	Pod p = gameworld.getPod(index);
-	boolean lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
-	boolean greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
-		
-	if (playerMoveRight & lessthan) {
-		p.moveRight(index);
-	}
-	if (playerMoveLeft & greaterthan) {
-		p.moveLeft(index);
-	}
-	
+        int index;
+
+        switch (gametype) {
+            case MULTIPLAYER_BLUE:
+                index = 1;
+                break;
+            case MULTIPLAYER_GREEN:
+                index = 2;
+                break;
+            case MULTIPLAYER_RED:
+            default:
+                index = 0;
+                break;
+        }
+
+        float x = gameworld.getPod(index).getPosition().x;
+        double radius = MathUtillities.getPodRadius();
+        Pod p = gameworld.getPod(index);
+        boolean lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
+        boolean greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
+
+        if (playerMoveRight & lessthan) {
+            p.moveRight(index);
+            client.sendMessage(gametype.toString().substring(0, 14) + " Right");
+        }
+        if (playerMoveLeft & greaterthan) {
+            p.moveLeft(index);
+            client.sendMessage(gametype.toString().substring(0, 14) + " Left");
+        }
+
 	// send movement to server.
-	client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
-	
+        //client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
     }
 
     /**
@@ -488,43 +513,42 @@ public class GameManager implements ContactListener, ChangeListener<String> {
      * @param gametype
      */
     public void player_Move(GameType gametype, float x, float y) {
-		
-	int index;
-	
-	switch (gametype){
-	    case MULTIPLAYER_BLUE:
-		index = 1;
-		break;
-	    case MULTIPLAYER_GREEN:
-		index = 2;
-		break;
-	    case MULTIPLAYER_RED:
-	    default:
-		index = 0;
-		break;
-	}
 
-	float x1 = gameworld.getPod(index).getPosition().x;
-	double radius = MathUtillities.getPodRadius();
-	Pod p = gameworld.getPod(index);
-	boolean lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
-	boolean greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
-	
-	boolean moveleft = p.getPosition().x > x;
-	boolean moveright = p.getPosition().x < x;
-	
-	if (moveleft && lessthan) {
-		p.moveRight(index);
-	}
-	if (moveright && greaterthan) {
-		p.moveLeft(index);
-	}
-	
+        int index;
+
+        switch (gametype) {
+            case MULTIPLAYER_BLUE:
+                index = 1;
+                break;
+            case MULTIPLAYER_GREEN:
+                index = 2;
+                break;
+            case MULTIPLAYER_RED:
+            default:
+                index = 0;
+                break;
+        }
+
+        float x1 = gameworld.getPod(index).getPosition().x;
+        double radius = MathUtillities.getPodRadius();
+        Pod p = gameworld.getPod(index);
+        boolean lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
+        boolean greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
+
+        boolean moveleft = p.getPosition().x > x;
+        boolean moveright = p.getPosition().x < x;
+
+        if (moveleft && lessthan) {
+            p.moveRight(index);
+        }
+        if (moveright && greaterthan) {
+            p.moveLeft(index);
+        }
+
 	// send movement to server.
-	//client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
-	
+        //client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
     }
-    
+
     /**
      * Method to start the physics simulation
      */
@@ -554,7 +578,6 @@ public class GameManager implements ContactListener, ChangeListener<String> {
                     }
                 }
 
-                
             }, 0, (long) (1 / 0.06));
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -834,6 +857,6 @@ public class GameManager implements ContactListener, ChangeListener<String> {
             physTimer.cancel();
         }
     }
-    
+
     //</editor-fold>
 }
