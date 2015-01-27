@@ -506,6 +506,7 @@ public class GameManager implements ContactListener, Observer {
                 index = 2;
                 break;
             case MULTIPLAYER_RED:
+            case SINGLEPLAYER:
             default:
                 index = 0;
                 break;
@@ -520,6 +521,7 @@ public class GameManager implements ContactListener, Observer {
 
         switch (gametype) {
             case MULTIPLAYER_RED:
+            case SINGLEPLAYER:
                 lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
                 greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
                 break;
