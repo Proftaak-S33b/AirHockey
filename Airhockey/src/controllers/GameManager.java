@@ -72,8 +72,8 @@ public class GameManager implements ContactListener, Observer {
                 float x;
                 float y;
                 try {
-                    x = Float.parseFloat(s.substring(15, 21));
-                    y = Float.parseFloat(s.substring(20, 26));
+                    x = Float.parseFloat(s.substring(15, 25));
+                    y = Float.parseFloat(s.substring(24, 30));
                     puck_Move(x, y);
                 } catch (NumberFormatException ex) {
                     System.out.println("Puck position not parseable to float: " + s);
@@ -225,7 +225,7 @@ public class GameManager implements ContactListener, Observer {
         Vec2 puckPos = gameworld.getPuck().getPosition();
         float x = puckPos.x;
         float y = puckPos.y;
-        String fuckyou = "MULTIPLAYER_PP" + String.format("%6.2f", x) + String.format("%6.2f", y);
+        String fuckyou = "MULTIPLAYER_PP" + String.format("%10.6f", x) + String.format("%10.6f", y);
         fuckyou = fuckyou.replace(',', '.');
         client.sendMessage(fuckyou);
     }
@@ -563,7 +563,9 @@ public class GameManager implements ContactListener, Observer {
      * @param y the new y position of the pod
      */
     public void puck_Move(float x, float y) {
-        gameworld.getPuck().setPosition(new Vec2(x, y));
+        if (gameType != GameType.MULTIPLAYER_RED) {
+            gameworld.getPuck().setPosition(new Vec2(x, y));
+        }
     }
 
     /**
@@ -597,13 +599,15 @@ public class GameManager implements ContactListener, Observer {
 
             }, 0, (long) (1 / 0.06));
 
-            pollTimer = new Timer("pollTimer", true);
-            pollTimer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    sendPuck();
-                }
-            }, 0, (long) (1 / 0.03));
+            if (gameType == GameType.MULTIPLAYER_RED) {
+                pollTimer = new Timer("pollTimer", true);
+                pollTimer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        sendPuck();
+                    }
+                }, 0, (long) (1 / 0.03));
+            }
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -880,6 +884,9 @@ public class GameManager implements ContactListener, Observer {
     public void destroy() {
         if (physTimer != null) {
             physTimer.cancel();
+        }
+        if (pollTimer != null) {
+            pollTimer.cancel();
         }
     }
 
