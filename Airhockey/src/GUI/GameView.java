@@ -282,9 +282,7 @@ public class GameView implements Initializable {
 	boolean stringnotempty = !textChat.getText().equals("");
 	if (gametype != GameType.SINGLEPLAYER & stringnotempty) {
 	    // Send it to everyone else.
-	    gamemanager.sendMessage(textChat.getText());
-	    // Add it to the box locally.
-	    listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
+	    gamemanager.sendMessage(currentPlayer.getName() + ": " + textChat.getText());
 	}
 	else if (stringnotempty) {
             listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
