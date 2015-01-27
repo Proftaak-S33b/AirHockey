@@ -111,7 +111,7 @@ public class Client extends Observable {
             read.start();
         }
 
-        private void write(Command message) {
+        synchronized private void write(Command message) {
             try {
                 out.writeObject(message);
                 out.flush();

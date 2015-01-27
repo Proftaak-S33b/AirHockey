@@ -2,6 +2,7 @@ package controllers;
 
 //<editor-fold defaultstate="collapsed" desc="imports">
 import GUI.GameView;
+import GUI.PlayerInGame;
 import game.AI.Difficulty;
 import game.GameWorld;
 import game.Goal;
@@ -67,6 +68,16 @@ public class GameManager implements ContactListener, Observer {
                 } else {
                     player_Move(false, true, GameType.MULTIPLAYER_RED);
                 }
+            } else if (s.startsWith("MULTIPLAYER_PP")) {
+                float x;
+                float y;
+                try {
+                    x = Float.parseFloat(s.substring(15, 21));
+                    y = Float.parseFloat(s.substring(20, 26));
+                    puck_Move(x, y);
+                } catch (NumberFormatException ex) {
+                    System.out.println("Puck position not parseable to float: " + s);
+                }
             }
         } else {
             Platform.runLater(() -> {
@@ -126,6 +137,7 @@ public class GameManager implements ContactListener, Observer {
 
     private boolean puckReset = false;
     private Timer physTimer = null;
+    private Timer pollTimer = null;
 
     /**
      * Receives all the incoming commands from the server.
@@ -178,7 +190,7 @@ public class GameManager implements ContactListener, Observer {
      * @param gv The GUI Controller //should not be here!!!
      * @param lobby
      */
-    public GameManager(GraphicsContext gc, ObservableList<IPlayer> players, Difficulty difficulty, GameType gameType, GameView gv, Lobby lobby) {
+    public GameManager(GraphicsContext gc, ObservableList<PlayerInGame> players, Difficulty difficulty, GameType gameType, GameView gv, Lobby lobby) {
         this.gc = gc;
         this.gv = gv;
         this.lobby = lobby;
@@ -192,17 +204,29 @@ public class GameManager implements ContactListener, Observer {
             try {
                 // Hosting happens off-site. IE not by any of the users.
                 client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
+                sendPuck();
             } catch (IOException ex) {
-                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
-        } else {
+        } else if (gameType == GameType.MULTIPLAYER_BLUE || gameType == GameType.MULTIPLAYER_GREEN || gameType == GameType.SPECTATING) {
             try {
                 client = new Client(rmiDefaults.DEFAULT_SERVER_IP(), rmiDefaults.DEFAULT_PORT());
             } catch (IOException ex) {
-                Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
+        } else {
+
         }
         this.client.addObserver(this);
+    }
+
+    private void sendPuck() {
+        Vec2 puckPos = gameworld.getPuck().getPosition();
+        float x = puckPos.x;
+        float y = puckPos.y;
+        String fuckyou = "MULTIPLAYER_PP" + String.format("%6.2f", x) + String.format("%6.2f", y);
+        fuckyou = fuckyou.replace(',', '.');
+        client.sendMessage(fuckyou);
     }
 
     /**
@@ -489,19 +513,19 @@ public class GameManager implements ContactListener, Observer {
         float x = gameworld.getPod(index).getPosition().x;
         double radius = MathUtillities.getPodRadius();
         Pod p = gameworld.getPod(index);
-	boolean lessthan;
-	boolean greaterthan;
-	
-	if (gametype == gametype.MULTIPLAYER_RED) {
-	    lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
-	    greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);	   
-	} else if(gametype == gametype.MULTIPLAYER_BLUE) {
-	    lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.E).x - radius);
-	    greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.F).x + radius);	   
-	} else {
-	    lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.G).x + radius);
-	    greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.H).x - radius);	   
-	}
+        boolean lessthan;
+        boolean greaterthan;
+
+        if (gametype == gametype.MULTIPLAYER_RED) {
+            lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
+            greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
+        } else if (gametype == gametype.MULTIPLAYER_BLUE) {
+            lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.E).x - radius);
+            greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.F).x + radius);
+        } else {
+            lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.G).x + radius);
+            greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.H).x - radius);
+        }
 
         if (playerMoveRight & lessthan) {
             p.moveRight(index);
@@ -510,7 +534,7 @@ public class GameManager implements ContactListener, Observer {
             p.moveLeft(index);
         }
 
-	// send movement to server.
+        // send movement to server.
         //client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
     }
 
@@ -523,6 +547,16 @@ public class GameManager implements ContactListener, Observer {
      */
     public void player_Move(GameType gametype, String leftOrRight) {
         client.sendMessage(gametype.toString().substring(0, 14) + " " + leftOrRight);
+    }
+
+    /**
+     * Moves the puck to a new position specified by x and y.
+     *
+     * @param x the new x position of the pod
+     * @param y the new y position of the pod
+     */
+    public void puck_Move(float x, float y) {
+        gameworld.getPuck().setPosition(new Vec2(x, y));
     }
 
     /**
@@ -555,6 +589,14 @@ public class GameManager implements ContactListener, Observer {
                 }
 
             }, 0, (long) (1 / 0.06));
+
+            pollTimer = new Timer("pollTimer", true);
+            pollTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    sendPuck();
+                }
+            }, 0, (long) (1 / 0.03));
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -594,8 +636,8 @@ public class GameManager implements ContactListener, Observer {
                             // Scores
                             SoundManager.setTrack(SoundManager.SoundEffects.Oh_Baby_A_Triple);
 
-                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                            System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getScore());
+                            System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getScore());
                             System.out.println("---------------------------");
 
                         } else {
@@ -605,7 +647,7 @@ public class GameManager implements ContactListener, Observer {
                             // Own goal
                             SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
 
-                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getScore());
                             System.out.println("---------------------------");
 
                         }
@@ -617,8 +659,8 @@ public class GameManager implements ContactListener, Observer {
                         // Scores
                         SoundManager.setTrack(SoundManager.SoundEffects.intervention_420);
 
-                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                        System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
+                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getScore());
+                        System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getScore());
                         System.out.println("---------------------------");
                     }
                     //Set next round
@@ -645,8 +687,8 @@ public class GameManager implements ContactListener, Observer {
                             // Scores
                             SoundManager.play(SoundManager.SoundEffects.Oh_Baby_A_Triple);
 
-                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                            System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getRanking());
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getScore());
+                            System.out.println("plus: " + puck.getTouched(1).getPlayer().getName() + " " + puck.getTouched(1).getPlayer().getScore());
                             System.out.println("---------------------------");
                         } else {
 
@@ -655,7 +697,7 @@ public class GameManager implements ContactListener, Observer {
                             // Scores
                             SoundManager.play(SoundManager.SoundEffects._2SAD4ME);
 
-                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
+                            System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getScore());
                             System.out.println("---------------------------");
                         }
                     } else {
@@ -666,8 +708,8 @@ public class GameManager implements ContactListener, Observer {
                         // Scores
                         SoundManager.play(SoundManager.SoundEffects.DAMN_SON_WHERED_YOU_FIND_THIS);
 
-                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getRanking());
-                        System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getRanking());
+                        System.out.println("min: " + g.getPlayer().getName() + " " + g.getPlayer().getScore());
+                        System.out.println("plus: " + puck.getTouched(0).getPlayer().getName() + " " + puck.getTouched(0).getPlayer().getScore());
                         System.out.println("---------------------------");
                     }
                     //Set next round

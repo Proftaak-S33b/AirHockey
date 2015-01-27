@@ -7,11 +7,7 @@ import game.AI.Difficulty;
 import game.Human;
 import java.io.IOException;
 import java.net.URL;
-import java.rmi.RemoteException;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,12 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
@@ -78,7 +69,7 @@ public class GameView implements Initializable {
     private GameManager gamemanager;
     private Difficulty difficulty;
     final URL resource = getClass().getResource("nietvanzelf.mp3");
-    private ObservableList<IPlayer> players;
+    private ObservableList<PlayerInGame> players;
     private boolean gameStarted = false;
     private double count = -0.005;
     //Movement commands
@@ -93,7 +84,7 @@ public class GameView implements Initializable {
 
         //Initialize score table
         columnPlayer.setCellValueFactory(new PropertyValueFactory("Name"));
-        columnScore.setCellValueFactory(new PropertyValueFactory("Ranking"));
+        columnScore.setCellValueFactory(new PropertyValueFactory("Score"));
     }
 
     /**
@@ -106,9 +97,9 @@ public class GameView implements Initializable {
         if (!gameStarted) {
             currentPlayer = player;
             players = FXCollections.observableArrayList();
-            players.add(currentPlayer);
-            players.add(new AI("Blue", 20));
-            players.add(new AI("Green", 20));
+            players.add(new PlayerInGame(currentPlayer.getName()));
+            players.add(new PlayerInGame("Blue"));
+            players.add(new PlayerInGame("Green"));
             tableScore.setItems((ObservableList) players);
             this.difficulty = difficulty;
             gamemanager = new GameManager(gc, players, difficulty, GameType.SINGLEPLAYER, this, null);
@@ -150,8 +141,8 @@ public class GameView implements Initializable {
             public void handle(long now) {
                 boolean gameBusy = gamemanager.draw();
                 //Refresh scoretable
-                ObservableList<IPlayer> data = FXCollections.observableArrayList();
-                for (IPlayer player : players) {
+                ObservableList<PlayerInGame> data = FXCollections.observableArrayList();
+                for (PlayerInGame player : players) {
                     data.add(player);
                 }
                 players.removeAll(players);
@@ -202,26 +193,25 @@ public class GameView implements Initializable {
             } else if (playersInLobby.get(1).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_BLUE;
                 System.out.println("U are player blue");
-		gameCanvas.getTransforms().add(new Rotate(120, 250, 180));
-            } else if (playersInLobby.get(2).getName().equals(currentPlayer.getName())){
+                gameCanvas.getTransforms().add(new Rotate(120, 250, 180));
+            } else if (playersInLobby.get(2).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_GREEN;
                 System.out.println("U are player green");
-		gameCanvas.getTransforms().add(new Rotate(240, 250, 180));
-            }else
-            {
+                gameCanvas.getTransforms().add(new Rotate(240, 250, 180));
+            } else {
                 gametype = GameType.SPECTATING;
                 System.out.println("U are player green");
             }
             //Add all players to gamedata
             players = FXCollections.observableArrayList();
-            for(IPlayer tempPlayer : playersInLobby){
-                players.add(tempPlayer);
+            for (IPlayer tempPlayer : playersInLobby) {
+                players.add(new PlayerInGame(tempPlayer.getName()));
             }
+            tableScore.setItems((ObservableList) players);
             //Set difficulty to prevent errors
             difficulty = Difficulty.NORMAL;
             gamemanager = new GameManager(gc, players, difficulty, gametype, this, currentLobby);
             Timer t = new Timer("CountdownTimer", true);
-
             t.schedule(new TimerTask() {
 
                 @Override
@@ -254,13 +244,14 @@ public class GameView implements Initializable {
                 @Override
                 public void handle(long now) {
                     boolean gameBusy = gamemanager.draw();
-                    //Refresh scoretable
-                    ObservableList<IPlayer> data = FXCollections.observableArrayList();
-                    for (IPlayer player : players) {
-                        data.add(player);
-                    }
-                    players.removeAll(players);
-                    players.addAll(data);
+
+//                    //Refresh scoretable
+//                    ObservableList<PlayerInGame> data = FXCollections.observableArrayList();
+//                    for (PlayerInGame player : players) {
+//                        data.add(player);
+//                    }
+//                    players.removeAll(players);
+//                    players.addAll(data);
 
                     if (!gameBusy) {
                         this.stop();
@@ -279,26 +270,26 @@ public class GameView implements Initializable {
      * @param event
      */
     public void setTekst(ActionEvent event) {
-	boolean stringnotempty = !textChat.getText().equals("");
-	if (gametype != GameType.SINGLEPLAYER & stringnotempty) {
-	    // Send it to everyone else.
-	    gamemanager.sendMessage(textChat.getText());
-	    // Add it to the box locally.
-	    listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
-	}
-	else if (stringnotempty) {
+        boolean stringnotempty = !textChat.getText().equals("");
+        if (gametype != GameType.SINGLEPLAYER & stringnotempty) {
+            // Send it to everyone else.
+            gamemanager.sendMessage(textChat.getText());
+            // Add it to the box locally.
+            listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
+        } else if (stringnotempty) {
             listChat.getItems().add(players.get(0).getName() + ": " + textChat.getText());
             listChat.getItems().add("AI: " + new AI("", 20).chat());
             textChat.clear();
         }
     }
-    
+
     /**
      * Method for handling incoming messages from the controller.
-     * @param message 
+     *
+     * @param message
      */
-    public void setTekst(String message){
-	listChat.getItems().add(message);
+    public void setTekst(String message) {
+        listChat.getItems().add(message);
     }
 
     /**
@@ -308,8 +299,8 @@ public class GameView implements Initializable {
      */
     public void exit(ActionEvent event) {
         try {
-        gamemanager.destroy();
-        aniTimer.stop();  
+            gamemanager.destroy();
+            aniTimer.stop();
             Node node = (Node) event.getSource();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             Stage stage = (Stage) node.getScene().getWindow();
@@ -324,9 +315,9 @@ public class GameView implements Initializable {
      * Checks which buttons are pressed and moves the player
      */
     private void player_Move() {
-        if (playerMoveLeft == true){
+        if (playerMoveLeft == true) {
             gamemanager.player_Move(gametype, "Left");
-        }else if (playerMoveRight == true){
+        } else if (playerMoveRight == true) {
             gamemanager.player_Move(gametype, "Right");
         }
     }

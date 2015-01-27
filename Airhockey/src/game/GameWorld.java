@@ -5,7 +5,7 @@
  */
 package game;
 
-import networking.IPlayer;
+import GUI.PlayerInGame;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.ObservableList;
@@ -21,7 +21,7 @@ public class GameWorld {
     //Game objects
     private Puck puck;
     private final ArrayList<Pod> pods;
-    private final ArrayList<IPlayer> players;
+    private final List<PlayerInGame> players;
 
     //Physics object
     private final World world;
@@ -33,7 +33,7 @@ public class GameWorld {
      * @param players An ArrayList of Player objects that will take part in this
      * game. Only the first 3 will be used.
      */
-    public GameWorld(ObservableList<IPlayer> players) {
+    public GameWorld(ObservableList<PlayerInGame> players) {
         //Create world
         world = new World(new Vec2(0.0f, 0.0f));
         //Create puck
@@ -108,8 +108,8 @@ public class GameWorld {
      * @return Returns the player object with the specified name. If player doesn't
      * excist return null
      */
-    public IPlayer getPlayer(String name) {
-        for (IPlayer p : players) {
+    public PlayerInGame getPlayer(String name) {
+        for (PlayerInGame p : players) {
             if (p.getName().equals(name)) {
                 return p;
             }
@@ -176,7 +176,7 @@ public class GameWorld {
      * Gets a list of players
      * @return an arraylist of players in this game
      */
-    public List<IPlayer> getPlayers(){
+    public List<PlayerInGame> getPlayers(){
         return players;
     }
 }

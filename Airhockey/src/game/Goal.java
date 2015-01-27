@@ -5,7 +5,7 @@
  */
 package game;
 
-import networking.IPlayer;
+import GUI.PlayerInGame;
 import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.common.MathUtils;
 import org.jbox2d.common.Vec2;
@@ -20,7 +20,7 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 public class Goal {
     private final GameWorld world;
-    private final IPlayer player;
+    private final PlayerInGame player;
 
     //Physics object
     private Body body;
@@ -33,7 +33,7 @@ public class Goal {
      * @param pos1 left position of the goal
      * @param pos2 right position of the goal
      */
-    public Goal(IPlayer player, GameWorld world, Vec2 pos1, Vec2 pos2) {
+    public Goal(PlayerInGame player, GameWorld world, Vec2 pos1, Vec2 pos2) {
         this.world = world;
         this.player = player;
         //Calculate lenght of the goal
@@ -76,7 +76,7 @@ public class Goal {
      * get the player from the goal
      * @return the player
      */
-    public IPlayer getPlayer() {
+    public PlayerInGame getPlayer() {
         return player;
     }
 }

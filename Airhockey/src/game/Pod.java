@@ -5,6 +5,7 @@
  */
 package game;
 
+import GUI.PlayerInGame;
 import networking.IPlayer;
 import org.jbox2d.collision.shapes.CircleShape;
 import org.jbox2d.common.Vec2;
@@ -19,7 +20,7 @@ import org.jbox2d.dynamics.FixtureDef;
  */
 public class Pod {
     //Game objects
-    private final IPlayer player;
+    private final PlayerInGame player;
     private final Body body;
     
     private final float rc = 1.74f;
@@ -31,7 +32,7 @@ public class Pod {
      * @param player The player this pod belongs to.
      * @param Position The start position
      */
-    public Pod(GameWorld world, IPlayer player, Vec2 Position) {
+    public Pod(GameWorld world, PlayerInGame player, Vec2 Position) {
         this.player = player;
         //body definition
         BodyDef bd = new BodyDef();
@@ -56,7 +57,7 @@ public class Pod {
      * get the player from the pod
      * @return The player this object belongs to
      */
-    public IPlayer getPlayer() {
+    public PlayerInGame getPlayer() {
         return this.player;
     }
 
