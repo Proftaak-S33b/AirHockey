@@ -252,7 +252,6 @@ public class GameView implements Initializable {
 //                    }
 //                    players.removeAll(players);
 //                    players.addAll(data);
-
                     if (!gameBusy) {
                         this.stop();
                     } else {
@@ -315,10 +314,14 @@ public class GameView implements Initializable {
      * Checks which buttons are pressed and moves the player
      */
     private void player_Move() {
-        if (playerMoveLeft == true) {
-            gamemanager.player_Move(gametype, "Left");
-        } else if (playerMoveRight == true) {
-            gamemanager.player_Move(gametype, "Right");
+        if (gametype == GameType.SINGLEPLAYER) {
+            gamemanager.player_Move(playerMoveRight, playerMoveLeft, gametype);
+        } else {
+            if (playerMoveLeft == true) {
+                gamemanager.player_Move(gametype, "Left");
+            } else if (playerMoveRight == true) {
+                gamemanager.player_Move(gametype, "Right");
+            }
         }
     }
 
