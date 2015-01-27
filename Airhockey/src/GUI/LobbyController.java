@@ -13,8 +13,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -90,8 +88,8 @@ public class LobbyController implements Initializable, Observer {
         currentPlayer = player;
         currentLobby = lobby;
         this.client = client;
-        lobby.addPlayer(player);
-        client.addObserver(this);
+        currentLobby.addPlayer(player);
+        this.client.addObserver(this);
 
         //Set stage title
         Stage stage = (Stage) tablePlayers.getScene().getWindow();

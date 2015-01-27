@@ -55,12 +55,13 @@ public class Client extends Observable {
                                 lobbyList.notify();
                             }
                         } else if (message instanceof Lobby) {
-                            //TODO get this object back to the caller of "addLobby"...
                             System.out.println("Received lobby: " + message.toString());
                             System.out.println("Amount of players: " + ((Lobby) message).getPlayersAmount());
                             Client.this.lobby = (Lobby) message;
                             Client.super.setChanged();
                             Client.super.notifyObservers(message);
+                            //This breaks it for the creator, but not for the joiner of the lobby
+                            //setLobby(lobby);
                         } else {
                             System.out.println("Unknown class type received: " + message.getClass().getName());
                         }
@@ -119,7 +120,19 @@ public class Client extends Observable {
     }
 
     /**
+     * To be called by inner class thread messagehandling.
+     *
+     * @param lobby the new lobby to be set
+     */
+    private void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+        setChanged();
+        notifyObservers(lobby);
+    }
+
+    /**
      * Sends any command to the server.
+     *
      * @param message
      */
     private void send(Command message) {
@@ -177,14 +190,15 @@ public class Client extends Observable {
 
     /**
      * Updates player's movement to the server.
+     *
      * @param player the user moving.
      * @param x the new x coordinate of the pod.
      * @param y the new y coordinate of the pod.
      */
-    public void sendMovement(IPlayer player, float x, float y){
-	send(new SendMovement(player, x, y));
+    public void sendMovement(IPlayer player, float x, float y) {
+        send(new SendMovement(player, x, y));
     }
-    
+
     /**
      * Gets all the lobbies from the server. Will block until the lobbies have
      * been received.
