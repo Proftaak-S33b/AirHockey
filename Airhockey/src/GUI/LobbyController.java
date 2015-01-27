@@ -145,8 +145,7 @@ public class LobbyController implements Initializable, Observer {
             }
 
             //If host ready start game
-            System.out.println(readyStates.get(0).toString() + ", " + readyStates.get(1) + ", " + readyStates.get(2));
-            if (readyStates.get(0)/* && readyStates.get(1) && readyStates.get(2)*/) {
+            if (ready) {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("GameView.fxml"));
                     Stage stage = (Stage) chatBox.getScene().getWindow();
@@ -188,10 +187,14 @@ public class LobbyController implements Initializable, Observer {
     public void readyButton(ActionEvent evt) {
         if (ready) {
             readyButton.getStyleClass().remove("ready");
-            currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), false);
+            client.sendMessage("ready: false");
+            currentLobby.setPlayerState(0, false);
+            System.out.println("readybutton false");
         } else {
             readyButton.getStyleClass().add("ready");
-            currentLobby.setPlayerState(currentLobby.getAllPlayers().indexOf(currentPlayer), true);
+            client.sendMessage("ready: true");
+            currentLobby.setPlayerState(0, true);
+            System.out.println("readybutton true");
         }
         ready = !ready;
     }
@@ -228,9 +231,37 @@ public class LobbyController implements Initializable, Observer {
     @Override
     public void update(Observable o, Object o1) {
         if (o1 instanceof String) {
+            String message = (String) o1;
+            if(message.startsWith("Welcome to the game ")){
+                if(currentPlayer.getName().equals(message.substring(20, message.length() -1))){
+                    System.out.println("this player"); 
+                }else{
+                    currentLobby.addPlayer(new Human(message.substring(20, message.length() -1), message.substring(19), 20));
+                }
             Platform.runLater(() -> {
                 chatBox.getItems().add(o1);
+                updateLobbyInfo();
             });
+            }
+            else if(message.startsWith("ready: ")){
+                System.out.println(message.substring(7));
+                if(message.substring(7).equals("true")){
+                    currentLobby.setPlayerState(0, true);
+                    ready = true;
+                }
+                else
+                {
+                    currentLobby.setPlayerState(0, false);
+                    ready = false;
+                }
+                Platform.runLater(() -> {
+                    updateLobbyInfo();
+                });
+            }
+            else{
+            Platform.runLater(() -> {
+                chatBox.getItems().add(o1);
+            });}
         } else if (o1 instanceof Lobby) {
             Platform.runLater(() -> {
                 System.out.println("update Lobby");
