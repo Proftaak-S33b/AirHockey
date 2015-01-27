@@ -247,6 +247,12 @@ public class LobbyController implements Initializable, Observer {
                 System.out.println(message.substring(7));
                 if(message.substring(7).equals("true")){
                     currentLobby.setPlayerState(0, true);
+                    if(currentLobby.getAllPlayers().size() == 2)
+                    {
+                        currentLobby.removePlayer(currentPlayer);
+                        currentLobby.addPlayer(new Human("Blue", "Blue", 0));
+                        currentLobby.addPlayer(currentPlayer);
+                    }
                     ready = true;
                 }
                 else
