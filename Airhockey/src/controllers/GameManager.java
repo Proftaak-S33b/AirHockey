@@ -505,11 +505,9 @@ public class GameManager implements ContactListener, Observer {
 
         if (playerMoveRight & lessthan) {
             p.moveRight(index);
-            client.sendMessage(gametype.toString().substring(0, 14) + " Right");
         }
         if (playerMoveLeft & greaterthan) {
             p.moveLeft(index);
-            client.sendMessage(gametype.toString().substring(0, 14) + " Left");
         }
 
 	// send movement to server.
@@ -523,41 +521,8 @@ public class GameManager implements ContactListener, Observer {
      * @param y
      * @param gametype
      */
-    public void player_Move(GameType gametype, float x, float y) {
-
-        int index;
-
-        switch (gametype) {
-            case MULTIPLAYER_BLUE:
-                index = 1;
-                break;
-            case MULTIPLAYER_GREEN:
-                index = 2;
-                break;
-            case MULTIPLAYER_RED:
-            default:
-                index = 0;
-                break;
-        }
-
-        float x1 = gameworld.getPod(index).getPosition().x;
-        double radius = MathUtillities.getPodRadius();
-        Pod p = gameworld.getPod(index);
-        boolean lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
-        boolean greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
-
-        boolean moveleft = p.getPosition().x > x;
-        boolean moveright = p.getPosition().x < x;
-
-        if (moveleft && lessthan) {
-            p.moveRight(index);
-        }
-        if (moveright && greaterthan) {
-            p.moveLeft(index);
-        }
-
-	// send movement to server.
-        //client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
+    public void player_Move(GameType gametype, String leftOrRight) {
+        client.sendMessage(gametype.toString().substring(0, 14) + " " + leftOrRight);
     }
 
     /**
