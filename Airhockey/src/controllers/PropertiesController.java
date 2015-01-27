@@ -181,7 +181,7 @@ public final class PropertiesController {
             OutputStream output = new FileOutputStream("config.properties");
 
             //Set RMI server properties
-            props.setProperty("rmiurl", "145.144.249.94");
+            props.setProperty("rmiurl", "localhost");
             props.setProperty("rmiport", "4444");
             props.setProperty("rmiregistry", "serverdata");
 
