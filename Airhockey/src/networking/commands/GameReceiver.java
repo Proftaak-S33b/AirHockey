@@ -69,7 +69,7 @@ public class GameReceiver extends Receiver {
      */
     public void sendMovement(GameType gametype, float x, float y) {
 	// Movement handled by overload.
-	gamemanager.player_Move(gametype, x, y);
+	//gamemanager.player_Move(gametype, x, y);
     }
 
     /**
