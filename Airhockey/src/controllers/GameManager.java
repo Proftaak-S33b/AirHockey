@@ -439,7 +439,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
     }
 
     /**
-     * Is the player moving right or left?
+     * Is the player moving right or left? Called from client.
      *
      * @param playerMoveRight
      * @param playerMoveLeft
@@ -476,12 +476,12 @@ public class GameManager implements ContactListener, ChangeListener<String> {
 	}
 	
 	// send movement to server.
-	//client.sendMovement(gv.currentPlayer, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
+	client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
 	
     }
 
     /**
-     * Player movement over network.
+     * Player movement over network. Called from server.
      *
      * @param x
      * @param y
@@ -521,7 +521,7 @@ public class GameManager implements ContactListener, ChangeListener<String> {
 	}
 	
 	// send movement to server.
-	client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
+	//client.sendMovement(gametype, gameworld.getPod(0).getPosition().x, gameworld.getPod(0).getPosition().y);
 	
     }
     
