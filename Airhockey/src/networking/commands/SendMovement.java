@@ -1,33 +1,34 @@
 package networking.commands;
 
+import controllers.GameManager.GameType;
 import networking.*;
 
 /**
  * Sends movement of a player to the server.
  * @author Etienne
  */
-public class SendMovement implements ServerCommand{
+public class SendMovement implements GameCommand{
 
-    IPlayer player;
+    GameType gametype;
     float x;
     float y;
 
-    public SendMovement(IPlayer player, float x, float y) {
-	this.player = player;
+    public SendMovement(GameType gametype, float x, float y) {
+	this.gametype = gametype;
 	this.x = x;
 	this.y = y;
     }
         
-    ServerReceiver receiver;
+    GameReceiver receiver;
     
     @Override
-    public void setReceiver(ServerReceiver receiver) {
+    public void setReceiver(GameReceiver receiver) {
 	this.receiver = receiver;
     }
 
     @Override
     public void execute() {
-	receiver.sendMovement(player, x, y);
+	receiver.sendMovement(gametype, x, y);
     }
     
 }

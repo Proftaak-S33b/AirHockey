@@ -1,5 +1,6 @@
 package networking.sockets;
 
+import controllers.GameManager.GameType;
 import java.io.*;
 import java.net.*;
 import java.util.List;
@@ -191,12 +192,13 @@ public class Client extends Observable {
     /**
      * Updates player's movement to the server.
      *
-     * @param player the user moving.
+     * @param type the user moving.
      * @param x the new x coordinate of the pod.
      * @param y the new y coordinate of the pod.
      */
-    public void sendMovement(IPlayer player, float x, float y) {
-        send(new SendMovement(player, x, y));
+    public void sendMovement(GameType type, float x, float y) {
+        send(new SendMovement(type, x, y));
+	System.out.println("Sent movement.");
     }
 
     /**

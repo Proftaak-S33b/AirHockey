@@ -1,6 +1,7 @@
 package networking.commands;
 
 import controllers.GameManager;
+import controllers.GameManager.GameType;
 import java.util.concurrent.LinkedBlockingQueue;
 import networking.IPlayer;
 
@@ -28,6 +29,24 @@ public class GameReceiver extends Receiver {
         Receiver();
         this.gamemanager = gamemanager;
         queue = new LinkedBlockingQueue<>();
+	
+	 Thread messageHandler = new Thread() {
+            @Override
+            public void run() {
+                while (running) {
+                    try {
+                        Command command = queue.take();
+                        if (command instanceof GameCommand) {
+                            executeCommand((GameCommand) command);
+                        }
+                    } catch (InterruptedException ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
+        };
+        messageHandler.setDaemon(true);
+        messageHandler.start();
     }
 
     /**
@@ -44,16 +63,13 @@ public class GameReceiver extends Receiver {
     /**
      * Moves the pod from other players over the network.
      *
-     * @param player the user moving.
+     * @param gametype the user moving.
      * @param x the new x coordinate of the pod.
      * @param y the new y coordinate of the pod.
      */
-    public void applyMovement(IPlayer player, float x, float y) {
-	// decide who to move
-        //gamemanager.gameworld.getPlayer(player.getName());
-        // decide where to move
-
-        // move
+    public void sendMovement(GameType gametype, float x, float y) {
+	// Movement handled by overload.
+	gamemanager.player_Move(gametype, x, y);
     }
 
     /**

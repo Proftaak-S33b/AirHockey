@@ -1,5 +1,6 @@
 package networking.commands;
 
+import controllers.GameManager.GameType;
 import java.util.ArrayList;
 import java.util.List;
 import networking.IPlayer;
@@ -55,12 +56,12 @@ public class ServerReceiver extends Receiver {
 
     /**
      * Broadcasts player movement to the other players.
-     * @param player the user moving.
+     * @param gametype the user moving.
      * @param x the new x coordinate of the pod.
      * @param y the new y coordinate of the pod.
      */
-    public void sendMovement(IPlayer player, float x, float y){
-	//
+    public void sendMovement(GameType gametype, float x, float y){
+	sendToAll(new SendMovement(gametype, x, y));
     }
     
     /**
