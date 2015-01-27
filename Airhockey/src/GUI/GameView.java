@@ -33,6 +33,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import networking.IPlayer;
 import networking.standalone.Lobby;
@@ -201,9 +202,11 @@ public class GameView implements Initializable {
             } else if (playersInLobby.get(1).getName().equals(currentPlayer.getName())) {
                 gametype = GameType.MULTIPLAYER_BLUE;
                 System.out.println("U are player blue");
+		gameCanvas.getTransforms().add(new Rotate(120, 250, 180));
             } else if (playersInLobby.get(2).getName().equals(currentPlayer.getName())){
                 gametype = GameType.MULTIPLAYER_GREEN;
                 System.out.println("U are player green");
+		gameCanvas.getTransforms().add(new Rotate(240, 250, 180));
             }else
             {
                 gametype = GameType.SPECTATING;

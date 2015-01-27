@@ -489,8 +489,19 @@ public class GameManager implements ContactListener, Observer {
         float x = gameworld.getPod(index).getPosition().x;
         double radius = MathUtillities.getPodRadius();
         Pod p = gameworld.getPod(index);
-        boolean lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
-        boolean greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);
+	boolean lessthan;
+	boolean greaterthan;
+	
+	if (gametype == gametype.MULTIPLAYER_RED) {
+	    lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.C).x - radius);
+	    greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.B).x + radius);	   
+	} else if(gametype == gametype.MULTIPLAYER_BLUE) {
+	    lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.E).x - radius);
+	    greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.F).x + radius);	   
+	} else {
+	    lessthan = x < (MathUtillities.getCoordinates(MathUtillities.Corner.G).x + radius);
+	    greaterthan = x > (MathUtillities.getCoordinates(MathUtillities.Corner.H).x - radius);	   
+	}
 
         if (playerMoveRight & lessthan) {
             p.moveRight(index);
