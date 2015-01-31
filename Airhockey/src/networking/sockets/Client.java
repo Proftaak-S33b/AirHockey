@@ -6,6 +6,8 @@ import java.net.*;
 import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import networking.IPlayer;
@@ -158,6 +160,13 @@ public class Client extends Observable {
      * @return the current Lobby object
      */
     public Lobby getLobby() {
+        while (this.lobby == null){
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         return this.lobby;
     }
 
